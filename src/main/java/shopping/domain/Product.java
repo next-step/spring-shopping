@@ -1,5 +1,8 @@
 package shopping.domain;
 
+import org.springframework.util.StringUtils;
+import shopping.exception.ProductException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,9 +32,33 @@ public class Product {
     private long price;
 
     public Product(String name, String imageUrl, Long price) {
+        validateName(name);
+        validateImageUrl(imageUrl);
+        validatePrice(price);
         this.name = name;
         this.imageUrl = imageUrl;
         this.price = price;
+    }
+
+    private void validateName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            throw new ProductException("상품 이름이 존재하지 않습니다");
+        }
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new ProductException("상품 이름은 최대 " + MAX_NAME_LENGTH + "자여야합니다");
+        }
+    }
+
+    private void validatePrice(long price) {
+        if (price < MIN_PRICE) {
+            throw new ProductException("상품 가격은 " + MIN_PRICE + "이상이어야합니다");
+        }
+    }
+
+    private void validateImageUrl(String imageUrl) {
+        if (StringUtils.isEmpty(imageUrl)) {
+            throw new ProductException("상품 이미지가 존재하지 않습니다");
+        }
     }
 
     protected Product() {
