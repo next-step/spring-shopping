@@ -9,24 +9,22 @@ public class Image {
 
     @Enumerated(value = EnumType.STRING)
     private ImageStoreType imageStoreType;
-    private String filePath;
     private String fileName;
 
     protected Image() {
     }
 
-    public Image(ImageStoreType imageStoreType, String filePath, String fileName) {
+    public Image(ImageStoreType imageStoreType, String fileName) {
         this.imageStoreType = imageStoreType;
-        this.filePath = filePath;
         this.fileName = fileName;
+    }
+
+    public String toUrl() {
+        return imageStoreType.getPath() + fileName;
     }
 
     public ImageStoreType getImageStoreType() {
         return imageStoreType;
-    }
-
-    public String getFilePath() {
-        return filePath;
     }
 
     public String getFileName() {

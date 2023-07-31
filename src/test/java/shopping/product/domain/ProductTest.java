@@ -25,6 +25,6 @@ class ProductTest {
     }
 
     private static Image createLocalImage() {
-        return new Image(ImageStoreType.LOCAL_STATIC, "path", "name");
+        return new Image(ImageStoreType.LOCAL_STATIC, "name");
     }
 }
