@@ -22,4 +22,8 @@ public class Money {
     public boolean isSmallerThan(Money otherMoney) {
         return this.amount.compareTo(otherMoney.amount) < 0;
     }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
 }

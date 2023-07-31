@@ -61,4 +61,9 @@ public class Product {
     public Money getPrice() {
         return price;
     }
+
+    public void updateValue(String name, String price) {
+        this.name = name;
+        this.price = new Money(price);
+    }
 }
