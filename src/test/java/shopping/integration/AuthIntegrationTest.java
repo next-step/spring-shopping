@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -48,7 +50,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void nullEmail() {
         // given
-        LoginRequest loginRequest = new LoginRequest(null, "1234");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", null);
+        loginRequest.put("password", "1234");
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -67,7 +71,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void nullPassword() {
         // given
-        LoginRequest loginRequest = new LoginRequest("test@example.com", null);
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "test@example.com");
+        loginRequest.put("password", null);
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -86,7 +92,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void blankEmail() {
         // given
-        LoginRequest loginRequest = new LoginRequest("  ", "1234");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "   ");
+        loginRequest.put("password", "1234");
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -105,7 +113,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void blankPassword() {
         // given
-        LoginRequest loginRequest = new LoginRequest("test@example.com", "   ");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "test@example.com");
+        loginRequest.put("password", "    ");
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -124,7 +134,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void longEmail() {
         // given
-        LoginRequest loginRequest = new LoginRequest("test@example.com".repeat(100), "1234");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "test@example.com".repeat(100));
+        loginRequest.put("password", "1234");
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -143,7 +155,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void longPassword() {
         // given
-        LoginRequest loginRequest = new LoginRequest("test@example.com", "1234".repeat(100));
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "test@example.com");
+        loginRequest.put("password", "1234".repeat(100));
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -162,7 +176,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void notRegisteredEmail() {
         // given
-        LoginRequest loginRequest = new LoginRequest("wrongemail@example.com", "1234");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "wrongEmail@example.com");
+        loginRequest.put("password", "1234");
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -181,7 +197,9 @@ class AuthIntegrationTest extends IntegrationTest {
     @Test
     void wrongPassword() {
         // given
-        LoginRequest loginRequest = new LoginRequest("test@example.com", "wrongpassword");
+        Map<String, String> loginRequest = new HashMap<>();
+        loginRequest.put("email", "test@example.com");
+        loginRequest.put("password", "wrongPassword");
 
         // when
         ExtractableResponse<Response> response = RestAssured
