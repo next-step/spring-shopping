@@ -12,7 +12,6 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
 public class Product {
 
     public static final int MAX_NAME_LENGTH = 25;
