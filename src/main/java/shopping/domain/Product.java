@@ -39,4 +39,20 @@ public class Product {
         this.imageUrl = imageUrl;
         this.price = new ProductPrice(price);
     }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name.getName();
+    }
+
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    public int getPrice() {
+        return this.price.getPrice();
+    }
 }

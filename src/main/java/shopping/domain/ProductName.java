@@ -22,4 +22,8 @@ public class ProductName {
             throw new ShoppingException("상품 이름은 비어있거나 공백이면 안됩니다. 입력값: " + value);
         }
     }
+
+    public String getName() {
+        return this.name;
+    }
 }
