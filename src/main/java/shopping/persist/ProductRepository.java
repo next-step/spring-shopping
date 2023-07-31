@@ -1,5 +1,7 @@
 package shopping.persist;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import shopping.domain.Product;
@@ -29,5 +31,9 @@ public class ProductRepository {
                     productEntity.getPrice()));
         }
         return Optional.empty();
+    }
+
+    public List<Product> findAllProducts() {
+        return Collections.emptyList();
     }
 }

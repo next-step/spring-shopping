@@ -1,11 +1,14 @@
 package shopping.service;
 
 import java.text.MessageFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
 import shopping.domain.exception.StatusCodeException;
 import shopping.dto.ProductCreateRequest;
+import shopping.dto.ProductsGetResponse;
 import shopping.persist.ProductRepository;
 
 @Service
@@ -32,5 +35,14 @@ public class ProductService {
                     throw new StatusCodeException(MessageFormat.format("이미 존재하는 product\"{0}\" 입니다.", request),
                             ALREADY_EXIST_PRODUCT);
                 });
+    }
+
+    @Transactional(readOnly = true)
+    public ProductsGetResponse findAllProducts() {
+        List<Product> products = productRepository.findAllProducts();
+        return new ProductsGetResponse(products.stream()
+                .map(product -> new ProductsGetResponse.ProductElement(product.getId(), product.getName(),
+                        product.getImageUrl(), product.getPrice()))
+                .collect(Collectors.toList()));
     }
 }
