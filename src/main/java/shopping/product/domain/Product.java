@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import org.springframework.http.HttpStatus;
+import shopping.common.vo.Image;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Money;
 
@@ -16,17 +17,18 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String imagePath;
+    @Embedded
+    private Image image;
     @Embedded
     private Money price;
 
     protected Product() {
     }
 
-    public Product(String name, String imagePath, Money price) {
+    public Product(String name, Image image, Money price) {
         validateNotNegative(price);
         this.name = name;
-        this.imagePath = imagePath;
+        this.image = image;
         this.price = price;
     }
 
@@ -40,7 +42,23 @@ public class Product {
         }
     }
 
-    public Product(String name, String imagePath, String price) {
-        this(name, imagePath, new Money(price));
+    public Product(String name, Image image, String price) {
+        this(name, image, new Money(price));
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public Money getPrice() {
+        return price;
     }
 }
