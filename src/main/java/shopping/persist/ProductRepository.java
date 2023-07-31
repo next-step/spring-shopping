@@ -1,8 +1,8 @@
 package shopping.persist;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.domain.Product;
 import shopping.persist.entity.ProductEntity;
@@ -34,6 +34,10 @@ public class ProductRepository {
     }
 
     public List<Product> findAllProducts() {
-        return Collections.emptyList();
+        List<ProductEntity> productEntities = productJpaRepository.findAll();
+        return productEntities.stream()
+                .map(productEntity -> new Product(productEntity.getId(), productEntity.getName(),
+                        productEntity.getImageUrl(), productEntity.getPrice()))
+                .collect(Collectors.toList());
     }
 }

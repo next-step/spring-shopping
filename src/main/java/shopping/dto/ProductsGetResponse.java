@@ -41,10 +41,13 @@ public final class ProductsGetResponse {
 
     public static final class ProductElement {
 
-        private final Long id;
-        private final String name;
-        private final String imageUrl;
-        private final String price;
+        private Long id;
+        private String name;
+        private String imageUrl;
+        private String price;
+
+        public ProductElement() {
+        }
 
         public ProductElement(final Long id, final String name, final String imageUrl, final String price) {
             this.id = id;

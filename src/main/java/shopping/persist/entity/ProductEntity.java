@@ -14,16 +14,19 @@ public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private final Long id;
+    private Long id;
 
     @Column(name = "name", nullable = false, unique = true, length = 20)
-    private final String name;
+    private String name;
 
     @Column(name = "image_url", nullable = false)
-    private final String imageUrl;
+    private String imageUrl;
 
     @Column(name = "price", nullable = false)
-    private final String price;
+    private String price;
+
+    public ProductEntity() {
+    }
 
     public ProductEntity(final Long id, final String name, final String imageUrl, final String price) {
         this.id = id;

@@ -40,6 +40,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductsGetResponse findAllProducts() {
         List<Product> products = productRepository.findAllProducts();
+
         return new ProductsGetResponse(products.stream()
                 .map(product -> new ProductsGetResponse.ProductElement(product.getId(), product.getName(),
                         product.getImageUrl(), product.getPrice()))

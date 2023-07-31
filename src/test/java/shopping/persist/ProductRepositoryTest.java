@@ -95,6 +95,7 @@ class ProductRepositoryTest extends JpaTest {
         }
 
         private void assertProduct(final List<Product> result, final Product... expected) {
+            assertThat(result).hasSize(expected.length);
             for (int i = 0; i < result.size(); i++) {
                 assertProduct(result.get(i), expected[i]);
             }
