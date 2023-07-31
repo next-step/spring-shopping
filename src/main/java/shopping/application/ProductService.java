@@ -2,9 +2,11 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import shopping.domain.Product;
+import shopping.dto.FindProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -15,7 +17,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<FindProductResponse> findAll() {
+
+        return productRepository.findAll().stream()
+                .map(FindProductResponse::of)
+                .collect(Collectors.toList());
     }
 }
