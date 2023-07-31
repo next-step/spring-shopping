@@ -7,7 +7,7 @@ import shopping.persist.entity.ProductEntity;
 import shopping.persist.repository.ProductJpaRepository;
 
 @Repository
-public final class ProductRepository {
+public class ProductRepository {
 
     private final ProductJpaRepository productJpaRepository;
 
