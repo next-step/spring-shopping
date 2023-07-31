@@ -16,7 +16,7 @@ public class ProductEntity {
     @Column(name = "id")
     private final Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private final String name;
 
     @Column(name = "image_url")
@@ -25,7 +25,7 @@ public class ProductEntity {
     @Column(name = "price")
     private final String price;
 
-    public ProductEntity(Long id, String name, String imageUrl, String price) {
+    public ProductEntity(final Long id, final String name, final String imageUrl, final String price) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
