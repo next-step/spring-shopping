@@ -6,6 +6,8 @@ import shopping.auth.TokenProvider;
 import shopping.domain.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
+import shopping.exception.PasswordNotMatchException;
+import shopping.exception.UserNotFoundException;
 import shopping.repository.UserRepository;
 
 @Service
@@ -19,9 +21,9 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(); // TODO CustomException
+                .orElseThrow(() -> new UserNotFoundException(loginRequest.getEmail()));
         if (!PasswordUtil.match(loginRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException();
+            throw new PasswordNotMatchException();
         }
         String accessToken = TokenProvider.makeToken(user);
 

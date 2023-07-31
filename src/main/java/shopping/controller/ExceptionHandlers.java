@@ -6,11 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import shopping.dto.ErrorResponse;
+import shopping.exception.ShoppingBaseException;
 
 @RestControllerAdvice
 public class ExceptionHandlers {
 
     Logger log = LoggerFactory.getLogger(ExceptionHandlers.class);
+
+    @ExceptionHandler(ShoppingBaseException.class)
+    public ResponseEntity<ErrorResponse> handleShoppingBaseException(ShoppingBaseException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(e.getStatusCode()).body(new ErrorResponse(e.getMessage()));
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
