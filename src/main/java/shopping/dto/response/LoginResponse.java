@@ -6,8 +6,12 @@ public class LoginResponse {
     public LoginResponse() {
     }
 
-    public LoginResponse(final String accessToken) {
+    private LoginResponse(final String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public static LoginResponse of(final String accessToken) {
+        return new LoginResponse(accessToken);
     }
 
     public String getAccessToken() {
