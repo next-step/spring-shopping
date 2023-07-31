@@ -1,15 +1,20 @@
 package shopping.domain;
 
+import javax.persistence.Embeddable;
 import shopping.exception.ShoppingException;
 
+@Embeddable
 public class ProductPrice {
 
-    private int value;
+    private int price;
 
-    public ProductPrice(final int value) {
-        validatePriceLessThanEqualZero(value);
+    protected ProductPrice() {
+    }
 
-        this.value = value;
+    public ProductPrice(final int price) {
+        validatePriceLessThanEqualZero(price);
+
+        this.price = price;
     }
 
     private void validatePriceLessThanEqualZero(final int value) {

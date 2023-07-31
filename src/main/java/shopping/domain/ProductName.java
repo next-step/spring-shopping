@@ -1,15 +1,20 @@
 package shopping.domain;
 
+import javax.persistence.Embeddable;
 import shopping.exception.ShoppingException;
 
+@Embeddable
 public class ProductName {
 
-    private final String value;
+    private String name;
 
-    public ProductName(final String value) {
-        validateIsNotNullOrEmpty(value);
+    protected ProductName() {
+    }
 
-        this.value = value;
+    public ProductName(final String name) {
+        validateIsNotNullOrEmpty(name);
+
+        this.name = name;
     }
 
     private void validateIsNotNullOrEmpty(final String value) {
