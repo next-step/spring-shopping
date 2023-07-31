@@ -1,4 +1,4 @@
-CREATE TABLE product
+CREATE TABLE products
 (
     id    bigint auto_increment primary key,
     name  varchar(20)  not null,
@@ -6,7 +6,7 @@ CREATE TABLE product
     price int          not null
 );
 
-CREATE TABLE user
+CREATE TABLE users
 (
     id       bigint auto_increment primary key,
     email    varchar(50)  not null,
