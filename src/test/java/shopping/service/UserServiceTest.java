@@ -5,13 +5,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.LoginRequest;
@@ -42,14 +40,14 @@ class UserServiceTest {
         final UserEntity userEntity = new UserEntity(1L, userEmail, userPassword);
 
         when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userEntity));
-        when(jwtProvider.getToken(userEmail)).thenReturn(accessToken);
+        when(jwtProvider.generateToken(userEmail)).thenReturn(accessToken);
 
         /* when */
         LoginResponse loginResponse = userService.login(loginRequest);
 
         /* then */
         verify(userRepository).findByEmail(userEmail);
-        verify(jwtProvider).getToken(userEmail);
+        verify(jwtProvider).generateToken(userEmail);
         assertThat(loginResponse.getAccessToken()).isEqualTo(accessToken);
     }
 
