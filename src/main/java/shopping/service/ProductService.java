@@ -19,7 +19,7 @@ public class ProductService {
 
     public List<ProductResponse> findAllProducts() {
         return productRepository.findAll().stream()
-            .map(ProductResponse::from)
+            .map(ProductResponse::of)
             .collect(Collectors.toUnmodifiableList());
     }
 }
