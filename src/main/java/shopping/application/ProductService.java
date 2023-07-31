@@ -1,7 +1,6 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
-import shopping.domain.Product;
 import shopping.dto.FindProductResponse;
 import shopping.repository.ProductRepository;
 
