@@ -1,12 +1,14 @@
 package shopping.service;
 
 import java.util.Objects;
+import org.springframework.stereotype.Service;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.repository.UserRepository;
 import shopping.utils.JwtProvider;
 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -24,7 +26,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 틀립니다");
         }
 
-        String accessToken = jwtProvider.getToken(userEntity.getEmail());
+        String accessToken = jwtProvider.generateToken(userEntity.getEmail());
 
         return LoginResponse.of(accessToken);
     }
