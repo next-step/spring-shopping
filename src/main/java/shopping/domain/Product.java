@@ -9,6 +9,10 @@ public final class Product {
     private final Image imageUrl;
     private final Price price;
 
+    public Product(final String name, final String imageUrl, final String price) {
+        this(null, name, imageUrl, price);
+    }
+
     public Product(final Long id, final String name, final String imageUrl, final String price) {
         this.id = id;
         this.name = new Name(name);
