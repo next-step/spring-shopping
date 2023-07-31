@@ -1,10 +1,27 @@
 package shopping.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class User {
 
-    private final Long id;
-    private final String email;
-    private final String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 50)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    protected User() {
+
+    }
 
     public User(Long id, String email, String password) {
         this.id = id;
