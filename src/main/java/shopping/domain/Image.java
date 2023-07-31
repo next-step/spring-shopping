@@ -4,7 +4,7 @@ import java.util.Objects;
 
 final class Image {
 
-    private static final String DEFAULT_PRODUCT_IMAGE_URL = "/default-product.png";
+    private static final String DEFAULT_PRODUCT_IMAGE_URL = "images/default-product.png";
 
     private final String value;
 

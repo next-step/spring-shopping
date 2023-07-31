@@ -9,11 +9,14 @@ import shopping.service.ProductService;
 @Component
 final class ProductConfigurer {
 
-    private static final ProductCreateRequest SOJU_PRODUCT_CREATE_REQUEST = new ProductCreateRequest("소주", null,
+    private static final ProductCreateRequest SOJU_PRODUCT_CREATE_REQUEST = new ProductCreateRequest("소주",
+            "images/soju.jpeg",
             "5000");
-    private static final ProductCreateRequest BEER_PRODUCT_CREATE_REQUEST = new ProductCreateRequest("맥주", null,
+    private static final ProductCreateRequest BEER_PRODUCT_CREATE_REQUEST = new ProductCreateRequest("맥주",
+            "images/beer.jpeg",
             "5500");
-    private static final ProductCreateRequest MAKGEOLLI_PRODUCT_CREATE_REQUEST = new ProductCreateRequest("막걸리", null,
+    private static final ProductCreateRequest MAKGEOLLI_PRODUCT_CREATE_REQUEST = new ProductCreateRequest("막걸리",
+            "images/makgeolli.png",
             "6000");
 
     private final ProductService productService;
