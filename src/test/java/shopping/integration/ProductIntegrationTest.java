@@ -27,7 +27,6 @@ class ProductIntegrationTest extends IntegrationTest {
         /* when */
         final ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-            .contentType(MediaType.TEXT_HTML_VALUE)
             .when().get("/")
             .then().log().all()
             .extract();
