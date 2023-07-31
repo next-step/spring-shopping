@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS product
+(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255) NOT NULL,
+    price BIGINT NOT NULL,
+    PRIMARY KEY(id)
+);
