@@ -3,31 +3,29 @@ package shopping.domain.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "product")
 public class ProductEntity {
 
     @Id @GeneratedValue
     private Long id;
     private String name;
-    private String imageFileName;
+    private String imageUuid;
     private int price;
 
-    protected ProductEntity() {
+    public ProductEntity() {
     }
 
-    public ProductEntity(final Long id, final String name, final String imageFileName,
+    public ProductEntity(final Long id, final String name, final String imageUuid,
         final int price) {
         this.id = id;
         this.name = name;
-        this.imageFileName = imageFileName;
+        this.imageUuid = imageUuid;
         this.price = price;
     }
 
-    public ProductEntity(final String name, final String imageFileName, final int price) {
-        this(null, name, imageFileName, price);
+    public ProductEntity(final String name, final String imageUuid, final int price) {
+        this(null, name, imageUuid, price);
     }
 
     public Long getId() {
@@ -38,8 +36,8 @@ public class ProductEntity {
         return name;
     }
 
-    public String getImageFileName() {
-        return imageFileName;
+    public String getImageUuid() {
+        return imageUuid;
     }
 
     public int getPrice() {
