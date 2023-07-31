@@ -12,12 +12,24 @@ import shopping.infrastructure.JwtProvider;
 import shopping.integration.config.IntegrationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 @IntegrationTest
 public class AuthIntegrationTest {
 
     @Autowired
     JwtProvider jwtProvider;
+
+    @Test
+    @DisplayName("로그인 페이지 접속 테스트")
+    void loginPage() {
+        RestAssured.given().log().all()
+                .contentType(MediaType.TEXT_HTML_VALUE)
+                .when().get("/login")
+                .then().statusCode(HttpStatus.OK.value())
+                .body(containsString("Login"))
+                .log().all();
+    }
 
     @Test
     @DisplayName("로그인에 성공한다.")
