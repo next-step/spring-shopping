@@ -20,7 +20,7 @@
 
   <section class="product-container">
     <div th:each="product : ${products}">
-      <img class="w-280 h-280 cover-image" th:src="${product.imageUrl}"/> <!-- 상품 이미지 -->
+      <img class="w-280 h-280 cover-image" th:src="${product.image}"/> <!-- 상품 이미지 -->
       <div class="flex justify-between w-280 p-5">
         <div class="product-info">
           <span class="product-info__name " th:text="${product.name}"></span> <!-- 상품 이름 -->

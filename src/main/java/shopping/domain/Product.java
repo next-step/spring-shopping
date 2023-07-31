@@ -21,7 +21,9 @@ public class Product {
     @Embedded
     private ProductName name;
 
-    private String imageUrl;
+    @Column(name = "image")
+    @Embedded
+    private ProductImage image;
 
     @Column(name = "price")
     @Embedded
@@ -32,11 +34,11 @@ public class Product {
 
     public Product(
         final String name,
-        final String imageUrl,
+        final String image,
         final int price
     ) {
         this.name = new ProductName(name);
-        this.imageUrl = imageUrl;
+        this.image = new ProductImage(image);
         this.price = new ProductPrice(price);
     }
 
@@ -48,8 +50,8 @@ public class Product {
         return this.name.getName();
     }
 
-    public String getImageUrl() {
-        return this.imageUrl;
+    public String getImage() {
+        return this.image.getImage();
     }
 
     public int getPrice() {
