@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
 import shopping.domain.exception.StatusCodeException;
 import shopping.dto.ProductCreateRequest;
-import shopping.dto.ProductsGetResponse;
+import shopping.dto.ProductResponse;
 import shopping.persist.ProductRepository;
 
 @Service
@@ -38,12 +38,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductsGetResponse findAllProducts() {
+    public List<ProductResponse> findAllProducts() {
         List<Product> products = productRepository.findAllProducts();
-
-        return new ProductsGetResponse(products.stream()
-                .map(product -> new ProductsGetResponse.ProductElement(product.getId(), product.getName(),
-                        product.getImageUrl(), product.getPrice()))
-                .collect(Collectors.toList()));
+        return products.stream()
+                .map(product -> new ProductResponse(product.getId(), product.getName(), product.getImageUrl(),
+                        product.getPrice()))
+                .collect(Collectors.toList());
     }
 }

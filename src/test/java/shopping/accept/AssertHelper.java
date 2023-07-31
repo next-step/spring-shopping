@@ -1,19 +1,19 @@
 package shopping.accept;
 
-import static org.hamcrest.Matchers.hasItems;
-
 import io.restassured.response.ValidatableResponse;
+import java.util.Arrays;
+import org.hamcrest.Matchers;
 import org.springframework.http.HttpStatus;
-import shopping.dto.ProductsGetResponse;
 
 class AssertHelper {
 
     static final class Product {
 
         static void assertAllProducts(final ValidatableResponse response,
-                final ProductsGetResponse productsGetResponse) {
-            response.statusCode(HttpStatus.OK.value())
-                    .body("products", hasItems(productsGetResponse.getProducts()));
+                String... exactlyExpected) {
+            response.statusCode(HttpStatus.OK.value());
+            Arrays.stream(exactlyExpected)
+                    .forEach(expected -> response.body(Matchers.containsString(expected)));
         }
     }
 }

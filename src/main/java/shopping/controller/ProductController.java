@@ -1,9 +1,10 @@
 package shopping.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import shopping.dto.ProductsGetResponse;
+import shopping.dto.ProductResponse;
 import shopping.service.ProductService;
 
 @Controller
@@ -17,8 +18,8 @@ public class ProductController {
 
     @GetMapping("/")
     public String findAllProducts(Model model) {
-        ProductsGetResponse response = productService.findAllProducts();
-        model.addAttribute("products", response.getProducts());
+        List<ProductResponse> response = productService.findAllProducts();
+        model.addAttribute("products", response);
         return "index";
     }
 }
