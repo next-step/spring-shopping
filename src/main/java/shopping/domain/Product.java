@@ -31,4 +31,20 @@ public class Product {
         this.image = image;
         this.price = price;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }
