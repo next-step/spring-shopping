@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.User;
 import shopping.dto.LoginRequest;
@@ -31,6 +32,9 @@ class AuthServiceTest {
     @Mock
     private TokenProvider tokenProvider;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @DisplayName("로그인 성공시 액세스 토큰 반환")
     @Test
     void loginSuccess() {
@@ -44,6 +48,8 @@ class AuthServiceTest {
         Mockito.when(userRepository.findByEmail(mail))
                 .thenReturn(Optional.of(user));
         Mockito.when(tokenProvider.issueToken(user)).thenReturn(accessToken);
+        Mockito.when(passwordEncoder.match(loginRequest.getPassword(), user.getPassword()))
+                .thenReturn(true);
 
         // when
         LoginResponse loginResponse = authService.login(loginRequest);
@@ -80,6 +86,8 @@ class AuthServiceTest {
 
         Mockito.when(userRepository.findByEmail(mail))
                 .thenReturn(Optional.of(user));
+        Mockito.when(passwordEncoder.match(loginRequest.getPassword(), user.getPassword()))
+                .thenReturn(false);
 
         // when & then
         assertThatCode(() -> authService.login(loginRequest))

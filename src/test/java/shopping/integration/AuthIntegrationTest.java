@@ -7,13 +7,33 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.auth.PasswordEncoder;
+import shopping.domain.User;
 import shopping.dto.LoginRequest;
+import shopping.repository.UserRepository;
 
 class AuthIntegrationTest extends IntegrationTest {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    @BeforeEach
+    void setUp() {
+        super.setUp();
+        String password = "1234";
+        String encodedPassword = passwordEncoder.encode(password);
+        userRepository.save(new User("test@example.com", encodedPassword));
+    }
 
     @DisplayName("로그인 페이지 연동")
     @Test

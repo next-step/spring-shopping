@@ -1,7 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
-import shopping.auth.PasswordUtil;
+import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.User;
 import shopping.dto.LoginRequest;
@@ -17,15 +17,19 @@ public class AuthService {
 
     private final TokenProvider tokenProvider;
 
-    public AuthService(UserRepository userRepository, TokenProvider tokenProvider) {
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthService(UserRepository userRepository, TokenProvider tokenProvider,
+            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new UserNotFoundException(loginRequest.getEmail()));
-        if (!PasswordUtil.match(loginRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.match(loginRequest.getPassword(), user.getPassword())) {
             throw new PasswordNotMatchException();
         }
         String accessToken = tokenProvider.issueToken(user);
