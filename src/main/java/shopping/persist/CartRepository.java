@@ -45,8 +45,7 @@ public class CartRepository {
 
         CartEntity persistCart = cartProductEntities.get(0).getCartEntity();
         Cart cart = new Cart(persistCart.getId(), persistCart.getUserId());
-        cartProductEntities.forEach(
-                cartProductEntity -> cart.addProduct(productEntityToDomain(cartProductEntity.getProductEntity())));
+        cartProductEntities.forEach(cartProductEntity -> addProductToCart(cart, cartProductEntity));
         return cart;
     }
 
@@ -57,9 +56,14 @@ public class CartRepository {
         return new Cart(cartEntity.getId(), cartEntity.getUserId());
     }
 
-    private Product productEntityToDomain(ProductEntity productEntity) {
-        return new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
+    private void addProductToCart(Cart cart, CartProductEntity cartProductEntity) {
+
+        ProductEntity productEntity = cartProductEntity.getProductEntity();
+
+        Product product = new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
                 productEntity.getPrice());
+        cart.addProduct(product);
+        cart.updateProduct(product, cartProductEntity.getCount());
     }
 
     public void updateCart(Cart cart) {

@@ -86,7 +86,7 @@ class CartRepositoryTest extends JpaTest {
 
         private void saveCartProduct(Cart cart, ProductEntity productEntity) {
             cartProductJpaRepository.save(
-                    new CartProductEntity(null, new CartEntity(cart.getCartId(), cart.getUserId()), productEntity));
+                    new CartProductEntity(null, new CartEntity(cart.getCartId(), cart.getUserId()), productEntity, 1));
         }
 
         private void assertCart(Cart result, Map<Product, Integer> expected) {
