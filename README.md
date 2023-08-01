@@ -22,10 +22,11 @@
 
 ## 용어 사전
 
-| 한글명 | 영문      |
-|-----|---------|
-| 상품  | Product |
-| 회원  | Member  |
+| 한글명     | 영문          |
+|---------|-------------|
+| 상품      | Product     |
+| 회원      | Member      |
+| 장바구니 상품 | CartProduct |
 
 ## 요구 사항
 
@@ -64,6 +65,37 @@
     - [x] 로그인에 성공하면 메인 페이지로 리다이렉트된다.
 
 ### 3단계
+
+- [ ] 장바구니 상품 도메인을 정의한다.
+    -[ ] 장바구니 상품은 회원 ID, 상품 ID, 상품 개수로 구성된다.
+    -[ ] 장바구니 상품 개수는 1개 이상이여야한다.
+- [ ] 장바구니와 관련된 아래 기능을 구현합니다.
+    -[ ] 장바구니 기능은 인가된 회원만 사용할 수 있다.
+        - [ ] 인가는 JWT 토큰을 이용하며 요청 헤더의 `Authorization` 값에 `Bearer ${accessToken}`형식이어야한다.
+    -[ ] 장바구니에 상품 아이템 추가
+    ```http request
+  POST /cart?memberId={memberId}&productId={productId}
+  ```
+    -[ ] 장바구니에 담긴 아이템 목록 조회
+  ```http request
+  GET /cart/{memberId}
+  ``` 
+
+    -[ ] 장바구니에 담긴 아이템 수량 변경
+  ```http request
+  PUT /cart/{cartProductId}/increase
+  
+  PUT /cart/{cartProductId}/decrease
+  ```
+
+    -[ ] 장바구니에 담긴 아이템 제거
+  ```http request
+  DELETE /cart/{cartProductId}
+  ```
+
+- [ ] 웹 페이지와 연동한다.
+    - [ ] 로그인 페이지로 이동할 수 있다.
+    - [ ] 로그인에 성공하면 메인 페이지로 리다이렉트된다.
 
 ### 4단계
 
