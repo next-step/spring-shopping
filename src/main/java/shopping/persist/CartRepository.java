@@ -2,6 +2,9 @@ package shopping.persist;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.domain.Cart;
 import shopping.domain.Product;
@@ -67,5 +70,52 @@ public class CartRepository {
     }
 
     public void updateCart(Cart cart) {
+        CartEntity cartEntity = cartJpaRepository.findById(cart.getCartId())
+                .orElseThrow(() -> new IllegalStateException(
+                        MessageFormat.format("cartId\"{0}\" 에 해당하는 Cart를 찾을 수 없습니다.", cart.getCartId())));
+        List<CartProductEntity> cartProductEntities = cartProductJpaRepository.findAllByCartEntity(cartEntity);
+
+        Map<Long, CartProductEntity> idIndexedCartProductEntities = cartProductEntities.stream()
+                .collect(Collectors.toMap(CartProductEntity::getId, cartProductEntity -> cartProductEntity));
+        cart.getProductCounts().forEach((key, value) -> idIndexedCartProductEntities.get(key.getId()).setCount(value));
+
+        List<CartProductEntity> deleteCartProductEntities = getDeletedProducts(cart, cartProductEntities);
+
+        cartProductJpaRepository.deleteAllInBatch(deleteCartProductEntities);
+    }
+
+    private List<CartProductEntity> getDeletedProducts(Cart cart, List<CartProductEntity> cartProductEntities) {
+        List<CartProductEntity> deleteCartProductEntities = getZeroCountedProductEntities(
+                cartProductEntities);
+
+        addDeletedCartProductEntities(cart, cartProductEntities, deleteCartProductEntities);
+
+        return deleteCartProductEntities;
+    }
+
+    private List<CartProductEntity> getZeroCountedProductEntities(List<CartProductEntity> cartProductEntities) {
+        return cartProductEntities.stream()
+                .filter(cartProductEntity -> cartProductEntity.getCount() == 0)
+                .collect(Collectors.toList());
+    }
+
+    private void addDeletedCartProductEntities(Cart cart, List<CartProductEntity> cartProductEntities,
+            List<CartProductEntity> deleteCartProductEntities) {
+        Set<Long> persistedProductIds = cartProductEntities.stream()
+                .map(cartProductEntity -> cartProductEntity.getProductEntity().getId())
+                .collect(Collectors.toSet());
+
+        Set<Long> domainProductIds = cart.getProductCounts().keySet().stream()
+                .map(Product::getId)
+                .collect(Collectors.toSet());
+
+        persistedProductIds.removeAll(domainProductIds);
+
+        Map<Long, CartProductEntity> productIdIndexedCartProductEntities = cartProductEntities.stream()
+                .collect(Collectors.toMap(cartProductEntity -> cartProductEntity.getProductEntity().getId(),
+                        cartProductEntity -> cartProductEntity));
+
+        persistedProductIds.forEach(deleteTarget -> deleteCartProductEntities.add(
+                productIdIndexedCartProductEntities.get(deleteTarget)));
     }
 }
