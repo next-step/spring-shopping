@@ -44,7 +44,6 @@ payload : Member(ID)
     "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcyNjUyMzAwLCJleHAiOjE2NzI2NTU5MDAsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FETUlOIl19.uaUXk5GkqB6QE_qlZisk3RZ3fL74zDADqbJl6LoLkSc"
 }
 ```
-- [ ] 로그인 API
-- [ ] 사용자 검증
-- [ ] 토큰 생성 및 반환
-- [ ] 로그인 후, 상품목록 페이지(/)로 리다이렉트
+- [x] 로그인 API
+- [x] 사용자 검증
+- [x] 토큰 생성 및 반환
