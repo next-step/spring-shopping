@@ -15,8 +15,11 @@ public class AuthService {
 
     private final UserRepository userRepository;
 
-    public AuthService(UserRepository userRepository) {
+    private final TokenProvider tokenProvider;
+
+    public AuthService(UserRepository userRepository, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
+        this.tokenProvider = tokenProvider;
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
@@ -25,7 +28,7 @@ public class AuthService {
         if (!PasswordUtil.match(loginRequest.getPassword(), user.getPassword())) {
             throw new PasswordNotMatchException();
         }
-        String accessToken = TokenProvider.makeToken(user);
+        String accessToken = tokenProvider.issueToken(user);
 
         return new LoginResponse(accessToken);
     }
