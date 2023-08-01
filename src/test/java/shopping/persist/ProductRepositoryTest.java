@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.domain.Product;
 
+@DisplayName("ProductRepository 클래스")
 @ContextConfiguration(classes = {ProductRepository.class})
 class ProductRepositoryTest extends JpaTest {
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.domain.User;
 
+@DisplayName("UserRepository 클래스")
 @ContextConfiguration(classes = {UserRepository.class})
 class UserRepositoryTest extends JpaTest {
 

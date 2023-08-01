@@ -19,7 +19,6 @@ import shopping.persist.ProductRepository;
 public class CartService {
 
     private static final String PRODUCT_NOT_FOUND = "CART-SERVICE-401";
-    private static final String CART_NOT_FOUND = "CART-SERVICE-402";
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
@@ -31,7 +30,7 @@ public class CartService {
 
     @Transactional
     public void addProduct(final long userId, final CartAddRequest request) {
-        Cart cart = findCartByUserId(userId);
+        Cart cart = getCartByUserId(userId);
         Product product = findProductById(request.getProductId());
 
         cart.addProduct(product);
@@ -41,7 +40,7 @@ public class CartService {
 
     @Transactional
     public void updateProduct(final long userId, final CartUpdateRequest request) {
-        Cart cart = findCartByUserId(userId);
+        Cart cart = getCartByUserId(userId);
         Product product = findProductById(request.getProductId());
 
         cart.updateProduct(product, request.getCount());
@@ -51,7 +50,7 @@ public class CartService {
 
     @Transactional
     public void deleteProduct(final long userId, final long productId) {
-        Cart cart = findCartByUserId(userId);
+        Cart cart = getCartByUserId(userId);
         Product product = findProductById(productId);
 
         cart.deleteProduct(product);
@@ -61,7 +60,7 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public CartResponse findCart(final long userId) {
-        Cart cart = findCartByUserId(userId);
+        Cart cart = getCartByUserId(userId);
 
         List<ProductResponse> products = cart.getProductCounts().entrySet().stream()
                 .map(entry -> new ProductResponse(entry.getKey().getId(), entry.getValue(),
@@ -71,11 +70,11 @@ public class CartService {
         return new CartResponse(cart.getCartId(), products);
     }
 
-    private Cart findCartByUserId(long userId) {
-        return cartRepository.findByUserId(userId).orElseThrow(
-                () -> new StatusCodeException(
-                        MessageFormat.format("userId \"{0}\"에 해당하는 Cart를 찾을 수 없습니다.", userId),
-                        CART_NOT_FOUND));
+    private Cart getCartByUserId(long userId) {
+        if (cartRepository.existCartByUserId(userId)) {
+            cartRepository.newCart(userId);
+        }
+        return cartRepository.getByUserId(userId);
     }
 
     private Product findProductById(long productId) {

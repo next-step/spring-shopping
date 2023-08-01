@@ -51,7 +51,7 @@ class CartServiceTest {
             CartAddRequest request = new CartAddRequest(9999999999L);
             Cart cart = new Cart(1L, 1L);
 
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.of(cart));
+            when(cartRepository.getByUserId(anyLong())).thenReturn(cart);
             when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
             // when
@@ -59,21 +59,6 @@ class CartServiceTest {
 
             // then
             assertStatusCodeException(exception, "CART-SERVICE-401");
-        }
-
-        @Test
-        @DisplayName("userId에 해당하는 cart를 찾을 수 없으면, StatusCodeException을 던진다.")
-        void throw_StatusCodeException_when_cart_not_found() {
-            // given
-            CartAddRequest request = new CartAddRequest(9999999999L);
-
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.empty());
-
-            // when
-            Exception exception = catchException(() -> cartService.addProduct(1L, request));
-
-            // then
-            assertStatusCodeException(exception, "CART-SERVICE-402");
         }
     }
 
@@ -87,7 +72,7 @@ class CartServiceTest {
             CartUpdateRequest request = new CartUpdateRequest(9999999999L, 100);
             Cart cart = new Cart(1L, 1L);
 
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.of(cart));
+            when(cartRepository.getByUserId(anyLong())).thenReturn(cart);
             when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
             // when
@@ -95,21 +80,6 @@ class CartServiceTest {
 
             // then
             assertStatusCodeException(exception, "CART-SERVICE-401");
-        }
-
-        @Test
-        @DisplayName("userId에 해당하는 cart를 찾을 수 없으면, StatusCodeException을 던진다.")
-        void throw_StatusCodeException_when_cart_not_found() {
-            // given
-            CartUpdateRequest request = new CartUpdateRequest(9999999999L, 100);
-
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.empty());
-
-            // when
-            Exception exception = catchException(() -> cartService.updateProduct(1L, request));
-
-            // then
-            assertStatusCodeException(exception, "CART-SERVICE-402");
         }
     }
 
@@ -125,7 +95,7 @@ class CartServiceTest {
             long productId = 99999999L;
             Cart cart = new Cart(1L, 1L);
 
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.of(cart));
+            when(cartRepository.getByUserId(anyLong())).thenReturn(cart);
             when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
             // when
@@ -133,42 +103,6 @@ class CartServiceTest {
 
             // then
             assertStatusCodeException(exception, "CART-SERVICE-401");
-        }
-
-        @Test
-        @DisplayName("userId에 해당하는 cart를 찾을 수 없으면, StatusCodeException을 던진다.")
-        void throw_StatusCodeException_when_cart_not_found() {
-            // given
-            long userId = 999999L;
-            long productId = 99999999L;
-
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.empty());
-
-            // when
-            Exception exception = catchException(() -> cartService.deleteProduct(userId, productId));
-
-            // then
-            assertStatusCodeException(exception, "CART-SERVICE-402");
-        }
-    }
-
-    @Nested
-    @DisplayName("findCart 메소드는")
-    class findCart_method {
-
-        @Test
-        @DisplayName("userId에 해당하는 cart를 찾을 수 없으면, StatusCodeException을 던진다.")
-        void throw_StatusCodeException_when_cart_not_found() {
-            // given
-            long userId = 999999L;
-
-            when(cartRepository.findByUserId(anyLong())).thenReturn(Optional.empty());
-
-            // when
-            Exception exception = catchException(() -> cartService.findCart(userId));
-
-            // then
-            assertStatusCodeException(exception, "CART-SERVICE-402");
         }
     }
 }
