@@ -26,7 +26,6 @@ public class CartController {
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody CartRequest request,
                                            @RequestHeader(value = "Authorization") String bearerToken) {
-        System.out.println("bearerToken = " + bearerToken);
         final String token = bearerToken.split(" ")[1];
         cartService.addProduct(request, Long.parseLong(jwtProvider.getPayload(token)));
         return new ResponseEntity<>(HttpStatus.CREATED);
