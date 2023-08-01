@@ -29,7 +29,7 @@ public class JwtProvider {
         try {
             return Jwts.parser()
                 .setSigningKey(secretKey)
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody()
                 .getExpiration()
                 .after(new Date());
@@ -41,7 +41,7 @@ public class JwtProvider {
     public String parseToken(final String token) {
         return Jwts.parser()
             .setSigningKey(secretKey)
-            .parseClaimsJwt(token)
+            .parseClaimsJws(token)
             .getBody()
             .getSubject();
     }
