@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.dto.CartItemQuantityRequest;
 import shopping.dto.CartRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.LoginRequest;
@@ -93,5 +94,39 @@ public class CartIntegrationTest {
                 .extract().as(CartResponse[].class);
 
         assertThat(cartResponses).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("장바구니 수량을 변경할 수 있다.")
+    void updateCartItemQuantity() {
+        // given
+        String accessToken = RestAssured
+                .given().log().all()
+                .body(new LoginRequest("test@gmail.com", "test1234"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all().extract().as(LoginResponse.class).getAccessToken();
+
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(new CartRequest(1L))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
+
+        // when, then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(new CartItemQuantityRequest(1L, 3))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().patch("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }
