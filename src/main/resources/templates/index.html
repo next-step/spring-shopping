@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-    <title>Shopping</title>
+  <meta charset="UTF-8"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+  <title>Shopping</title>
 </head>
 <body>
 <div class="root">
-    <nav class="nav flex justify-end">
-        <div class="flex items-center gap-15">
-            <a class="nav-button" href="/">상품</a>
-            <a class="nav-button" href="/shopping">장바구니</a>
-            <a class="nav-button" href="/order-history">주문목록</a>
-            <a class="nav-button" href="/login">로그인</a>
-        </div>
-    </nav>
+  <nav class="nav flex justify-end">
+    <div class="flex items-center gap-15">
+      <a class="nav-button" href="/">상품</a>
+      <a class="nav-button" href="/cart">장바구니</a>
+      <a class="nav-button" href="/order-history">주문목록</a>
+      <a class="nav-button" href="/login">로그인</a>
+    </div>
+  </nav>
 
-    <section class="product-container">
-        <div th:each="product : ${products}">
-            <img class="w-280 h-280 cover-image" th:src="${product.image}"/>
-            <div class="flex justify-between w-280 p-5">
-                <div class="product-info">
-                    <span class="product-info__name" th:text="${product.name}"></span>
-                    <span class="product-info__price" th:text="${product.price}"></span>
-                </div>
-                <button class="product-btn" th:onclick="addCartItem([[${product.id}]])" type="submit">
-                    <img alt="장바구니" src="assets/svgs/cart.svg"/>
-                </button>
-            </div>
+  <section class="product-container">
+    <div th:each="product : ${products}">
+      <img class="w-280 h-280 cover-image" th:src="${product.image}"/>
+      <div class="flex justify-between w-280 p-5">
+        <div class="product-info">
+          <span class="product-info__name" th:text="${product.name}"></span>
+          <span class="product-info__price" th:text="${product.price}"></span>
         </div>
-    </section>
+        <button class="product-btn" th:onclick="addCartItem([[${product.id}]])" type="submit">
+          <img alt="장바구니" src="assets/svgs/cart.svg"/>
+        </button>
+      </div>
+    </div>
+  </section>
 </div>
 </body>
 <script th:src="@{/js/cart.js}"></script>

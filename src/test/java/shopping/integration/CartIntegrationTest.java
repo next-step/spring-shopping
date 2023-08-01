@@ -21,7 +21,7 @@ public class CartIntegrationTest {
     void loginPage() {
         RestAssured.given().log().all()
                 .contentType(MediaType.TEXT_HTML_VALUE)
-                .when().get("/shopping")
+                .when().get("/cart")
                 .then().statusCode(HttpStatus.OK.value())
                 .log().all();
     }

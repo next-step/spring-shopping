@@ -21,7 +21,7 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("/shopping")
+    @GetMapping("/cart")
     public String cartPage() {
         return "cart";
     }
