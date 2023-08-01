@@ -11,6 +11,11 @@ import shopping.domain.exception.StatusCodeException;
 @DisplayName("User 클래스")
 class UserTest {
 
+    private void assertStatusCodeException(final Exception exception, final String expectedStatus) {
+        assertThat(exception.getClass()).isEqualTo(StatusCodeException.class);
+        assertThat(((StatusCodeException) exception).getStatus()).isEqualTo(expectedStatus);
+    }
+
     @Nested
     @DisplayName("new 생성자는")
     class new_constructor {
@@ -56,10 +61,43 @@ class UserTest {
             // then
             assertStatusCodeException(exception, "AUTH-403");
         }
+    }
 
-        private void assertStatusCodeException(final Exception exception, final String expectedStatus) {
-            assertThat(exception.getClass()).isEqualTo(StatusCodeException.class);
-            assertThat(((StatusCodeException) exception).getStatus()).isEqualTo(expectedStatus);
+    @Nested
+    @DisplayName("assertPassword 메소드는")
+    class assertPassword_method {
+
+        @Test
+        @DisplayName("일치하는 비밀번호가 들어오면 예외를 던지지 않는다.")
+        void does_not_throw_exception_when_password_matched() {
+            // given
+            String email = "hello@hello.world";
+            String password = "hello!123";
+
+            User user = new User(email, password);
+
+            // when
+            Exception exception = catchException(() -> user.assertPassword(password));
+
+            // then
+            assertThat(exception).isNull();
+        }
+
+        @Test
+        @DisplayName("일치하는 비밀번호가 들어오면 예외를 던진다.")
+        void throw_StatusCodeException_when_password_not_matched() {
+            // given
+            String email = "hello@hello.world";
+            String password = "hello!123";
+            String invalidPassword = "bye!123";
+
+            User user = new User(email, password);
+
+            // when
+            Exception exception = catchException(() -> user.assertPassword(invalidPassword));
+
+            // then
+            assertStatusCodeException(exception, "AUTH-401");
         }
     }
 

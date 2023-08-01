@@ -94,4 +94,11 @@ public final class User {
                 ", password='" + password + '\'' +
                 '}';
     }
+
+    public void assertPassword(final String password) {
+        if (this.password.equals(password)) {
+            return;
+        }
+        throw new StatusCodeException("비밀번호가 일치하지 않습니다.", UserExceptionStatus.LOGIN_FAILED.getStatus());
+    }
 }
