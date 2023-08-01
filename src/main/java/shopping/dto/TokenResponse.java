@@ -4,23 +4,17 @@ import java.util.Objects;
 
 public final class TokenResponse {
 
-    private String type;
-    private String message;
+    private String accessToken;
 
     TokenResponse() {
     }
 
-    public TokenResponse(String type, String message) {
-        this.type = type;
-        this.message = message;
+    public TokenResponse(final String accessToken) {
+        this.accessToken = accessToken;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getMessage() {
-        return message;
+    public String getAccessToken() {
+        return accessToken;
     }
 
     @Override
@@ -32,19 +26,18 @@ public final class TokenResponse {
             return false;
         }
         TokenResponse that = (TokenResponse) o;
-        return Objects.equals(type, that.type) && Objects.equals(message, that.message);
+        return Objects.equals(accessToken, that.accessToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, message);
+        return Objects.hash(accessToken);
     }
 
     @Override
     public String toString() {
         return "TokenResponse{" +
-                "type='" + type + '\'' +
-                ", message='" + message + '\'' +
+                "accessToken='" + accessToken + '\'' +
                 '}';
     }
 }

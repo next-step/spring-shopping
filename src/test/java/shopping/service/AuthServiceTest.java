@@ -75,7 +75,7 @@ class AuthServiceTest {
             TokenResponse result = authService.authenticate(request);
 
             // then
-            assertIsJwt(result);
+            assertThat(result.getAccessToken()).isNotNull();
         }
 
         @Test
@@ -91,11 +91,6 @@ class AuthServiceTest {
 
             // then
             assertStatusCodeException(exception, "AUTH-SERVICE-402");
-        }
-
-        private void assertIsJwt(final TokenResponse result) {
-            assertThat(result.getType()).isEqualTo("Bearer");
-            assertThat(result.getMessage()).isNotNull();
         }
     }
 }

@@ -43,7 +43,7 @@ public class AuthService {
     }
 
     @Transactional(readOnly = true)
-    public TokenResponse authenticate(LoginRequest request) {
+    public TokenResponse authenticate(final LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new StatusCodeException(
                         MessageFormat.format("email\"{0}\"에 해당하는 user를 찾을 수 없습니다.", request.getEmail()),
@@ -51,6 +51,6 @@ public class AuthService {
 
         user.assertPassword(request.getPassword());
 
-        return new TokenResponse(jwtUtils.type(), jwtUtils.generate(user));
+        return new TokenResponse(jwtUtils.generate(user));
     }
 }
