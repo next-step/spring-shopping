@@ -1,11 +1,14 @@
 package shopping.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.response.CartItemResponse;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -35,4 +38,9 @@ public class CartService {
         cartItemRepository.save(cartItemEntity);
     }
 
+    public List<CartItemResponse> getCartItems(final Long userId) {
+        return cartItemRepository.findByUserId(userId).stream()
+            .map(CartItemResponse::of)
+            .collect(Collectors.toUnmodifiableList());
+    }
 }

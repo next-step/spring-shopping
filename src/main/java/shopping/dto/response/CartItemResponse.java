@@ -6,25 +6,28 @@ public class CartItemResponse {
 
     private Long cartItemId;
     private String name;
-    private String imageFileName;
+    private String imageUuidFileName;
     private int price;
     private int quantity;
 
+    public CartItemResponse() {
+    }
+
     private CartItemResponse(final Long cartItemId, final String name,
-        final String imageFileName, final int price,
+        final String imageUuidFileName, final int price,
         final int quantity) {
         this.cartItemId = cartItemId;
         this.name = name;
-        this.imageFileName = imageFileName;
+        this.imageUuidFileName = imageUuidFileName;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public static CartItemResponse from(CartItemEntity cartItem) {
+    public static CartItemResponse of(CartItemEntity cartItem) {
         return new CartItemResponse(
             cartItem.getId(),
             cartItem.getProduct().getName(),
-            cartItem.getProduct().getImageFileName(),
+            cartItem.getProduct().getImageUuidFileName(),
             cartItem.getProduct().getPrice(),
             cartItem.getQuantity()
         );
@@ -38,8 +41,8 @@ public class CartItemResponse {
         return name;
     }
 
-    public String getImageFileName() {
-        return imageFileName;
+    public String getImageUuidFileName() {
+        return imageUuidFileName;
     }
 
     public int getPrice() {
