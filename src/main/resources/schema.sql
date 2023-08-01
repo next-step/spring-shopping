@@ -14,3 +14,14 @@ CREATE TABLE IF NOT EXISTS `users`
     password VARCHAR(100) NOT NULL,
     PRIMARY KEY(id)
 );
+
+CREATE TABLE IF NOT EXISTS `cart_item`
+(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    user_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(product_id) REFERENCES product(id)
+);
