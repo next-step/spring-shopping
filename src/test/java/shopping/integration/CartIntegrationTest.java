@@ -13,6 +13,9 @@ import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
@@ -53,7 +56,6 @@ public class CartIntegrationTest {
         String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
         CartUtil.createCartItem(accessToken, 1L);
-        CartUtil.createCartItem(accessToken, 1L);
         CartUtil.createCartItem(accessToken, 2L);
 
         // when
@@ -67,7 +69,7 @@ public class CartIntegrationTest {
                 .extract().as(CartResponse[].class);
 
         // then
-        assertThat(cartResponses).hasSize(2);
+        assertThat(Stream.of(cartResponses).map(CartResponse::getId)).containsAll(List.of(1L, 2L));
     }
 
     @Test

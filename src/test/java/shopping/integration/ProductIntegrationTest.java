@@ -16,6 +16,7 @@ public class ProductIntegrationTest {
     @Test
     @DisplayName("메인에서 상품 목록을 조회할 수 있다.")
     void findAllProducts() {
+        // when
         Response response = RestAssured.given().log().all()
                 .contentType(MediaType.TEXT_HTML_VALUE)
                 .when().get("/")
@@ -23,11 +24,13 @@ public class ProductIntegrationTest {
                 .statusCode(200)
                 .extract().response();
 
-        System.out.println(response.getBody().prettyPrint());
         List<String> images = response.htmlPath().getList("html.body.div.section.div.img.@src");
-        List<String> names = response.htmlPath().getList("html.body.div.section.div.div.div");
+        List<String> names = response.htmlPath().getList("**.findAll {it.@class == 'product-info__name'}");
+        List<String> prices = response.htmlPath().getList("**.findAll {it.@class == 'product-info__price'}");
 
+        // then
         assertThat(images).contains("/assets/images/chicken.png", "/assets/images/pizza.png");
-        assertThat(names).contains("치킨20000", "피자25000");
+        assertThat(names).contains("치킨", "피자");
+        assertThat(prices).contains("20000", "25000");
     }
 }
