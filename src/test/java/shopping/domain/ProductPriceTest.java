@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.DisplayName;
@@ -28,5 +29,17 @@ class ProductPriceTest {
         assertThatCode(() -> new ProductPrice(value))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("상품 가격은 0이하면 안됩니다. 입력값: " + value);
+    }
+
+    @Test
+    @DisplayName("상품 가격이 동일하면 동일한 객체이다.")
+    void equals() {
+        /* given */
+        final ProductPrice origin = new ProductPrice(100);
+        final ProductPrice another = new ProductPrice(100);
+
+        /* when & then */
+        assertThat(origin).isEqualTo(another);
+        assertThat(origin).hasSameHashCodeAs(another);
     }
 }

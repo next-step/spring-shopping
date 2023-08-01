@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.DisplayName;
@@ -32,5 +33,17 @@ class ProductNameTest {
         assertThatCode(() -> new ProductName(value))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("상품 이름은 비어있거나 공백이면 안됩니다. 입력값: " + value);
+    }
+
+    @Test
+    @DisplayName("상품 이름이 동일하면 동일한 객체이다.")
+    void equals() {
+        /* given */
+        final ProductName origin = new ProductName("마라탕");
+        final ProductName another = new ProductName("마라탕");
+
+        /* when & then */
+        assertThat(origin).isEqualTo(another);
+        assertThat(origin).hasSameHashCodeAs(another);
     }
 }

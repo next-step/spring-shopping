@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import java.util.Objects;
 import javax.persistence.Embeddable;
 import shopping.exception.ShoppingException;
 
@@ -25,5 +26,22 @@ public class ProductPrice {
 
     public int getPrice() {
         return this.price;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final ProductPrice that = (ProductPrice) o;
+        return price == that.price;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(price);
     }
 }

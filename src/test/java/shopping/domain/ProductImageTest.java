@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.DisplayName;
@@ -27,10 +28,22 @@ class ProductImageTest {
     void createProductImageFailWithNullOrEmptyValue(final String value) {
         /* given */
 
-        
+
         /* when & then */
         assertThatCode(() -> new ProductImage(value))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("상품 이미지는 비어있거나 공백이면 안됩니다. 입력값: " + value);
+    }
+
+    @Test
+    @DisplayName("상품 이미지가 동일하면 동일한 객체이다.")
+    void equals() {
+        /* given */
+        final ProductImage origin = new ProductImage("/assets/img/chicken.png");
+        final ProductImage another = new ProductImage("/assets/img/chicken.png");
+
+        /* when & then */
+        assertThat(origin).isEqualTo(another);
+        assertThat(origin).hasSameHashCodeAs(another);
     }
 }
