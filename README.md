@@ -10,21 +10,15 @@
 - [x] 사용자 정보는 `email`, `password`로 이루어져 있다.
 - [x] 로그인 인증 방식은 JWT로 합니다.
 	- request
-	  ```
-			POST /login/token HTTP/1.1
-			content-type: application/json
-			host: localhost: 8080
-				
-			{
-				"password": "password",
-				"email": "admin@email.com"
-			}
+		```
+		POST /login/token
+		{
+			"password": "password",
+			"email": "admin@email.com"
+		}
 		```
 	- response
-	  ```
-		HTTP/1.1 200 
-		Content-Type: application/json
-	
+		```
 		{
 			"accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcyNjUyMzAwLCJleHAiOjE2NzI2NTU5MDAsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FETUlOIl19.uaUXk5GkqB6QE_qlZisk3RZ3fL74zDADqbJl6LoLkSc"
 		}
@@ -44,6 +38,14 @@
 	- `Authrozation: <type> <credentials>`
 	- [ ] 헤더에서 사용자 정보 파악
 	- [ ] 장바구니에 상품 아이템 추가
+		- request
+			```
+			POST /carts
+			{
+				"productId": 1
+			}
+			```
+		- response `201 CREATED`
 	- [ ] 장바구니에 담긴 아이템 목록 조회
 	- [ ] 장바구니에 담긴 아이템 수량 변경
 	- [ ] 장바구니에 담긴 아이템 제거
