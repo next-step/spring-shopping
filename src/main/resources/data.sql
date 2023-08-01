@@ -11,3 +11,8 @@ INSERT INTO product(name, image_url, price) VALUES('돈까스', 'https://cdn.011
 -- member table
 INSERT INTO member(email, password) VALUES('woowa1@woowa.com', '1234');
 INSERT INTO member(email, password) VALUES('woowa2@woowa.com', '1234');
+
+-- cart table
+INSERT INTO cart(member_id, product_id, quantity) VALUES (1L, 1L, 5);
+INSERT INTO cart(member_id, product_id, quantity) VALUES (1L, 2L, 5);
+INSERT INTO cart(member_id, product_id, quantity) VALUES (1L, 3L, 5);
