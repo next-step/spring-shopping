@@ -13,10 +13,16 @@ public final class User {
             ".*[!@#$%^&*(),.?\":{}|<>].*";
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
 
+    private final Long id;
     private final String email;
     private final String password;
 
     public User(final String email, final String password) {
+        this(null, email, password);
+    }
+
+    public User(final Long id, final String email, final String password) {
+        this.id = id;
         validateEmail(email);
         validatePassword(password);
         this.email = email;
@@ -39,6 +45,18 @@ public final class User {
                 password, MINIMUM_PASSWORD_LENGTH), UserExceptionStatus.INVALID_PASSWORD.getStatus());
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -48,18 +66,20 @@ public final class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, password);
+        return Objects.hash(id, email, password);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
