@@ -1,5 +1,6 @@
 package shopping.utils;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class StringUtils {
@@ -8,7 +9,7 @@ public class StringUtils {
     private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
     public static boolean isBlank(String value) {
-        if (value == null || value.isBlank()) {
+        if (Objects.isNull(value) || value.isBlank()) {
             return true;
         }
 

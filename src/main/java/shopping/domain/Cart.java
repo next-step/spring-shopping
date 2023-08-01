@@ -2,6 +2,8 @@ package shopping.domain;
 
 import shopping.exception.CartException;
 
+import java.util.Objects;
+
 public class Cart {
 
     public static final int MIN_PRODUCT_QUANTITY = 1;
@@ -29,13 +31,13 @@ public class Cart {
     }
 
     private void validateProduct(Product product) {
-        if (product == null) {
+        if (Objects.isNull(product)) {
             throw new CartException("product가 존재하지 않습니다");
         }
     }
 
     private void validateMember(Member member) {
-        if (member == null) {
+        if (Objects.isNull(member)) {
             throw new CartException("member가 존재하지 않습니다");
         }
     }
