@@ -11,6 +11,7 @@ import shopping.dto.request.LoginRequest;
 public class TestFixture {
 
     private static Long sequence = 1L;
+
     public static ProductEntity createProductEntity(String name, int price) {
         return new ProductEntity(sequence, name, "uuid" + sequence++, price);
     }
@@ -25,13 +26,14 @@ public class TestFixture {
             .extract();
     }
 
-    public static ExtractableResponse<Response> addCartItem(String accessToken, CartItemAddRequest cartItemAddRequest) {
+    public static ExtractableResponse<Response> addCartItem(String accessToken,
+        CartItemAddRequest cartItemAddRequest) {
         return RestAssured
             .given().log().all()
             .auth().oauth2(accessToken)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cartItemAddRequest)
-            .when().post("/cart")
+            .when().post("/cart/items")
             .then().log().all()
             .extract();
     }

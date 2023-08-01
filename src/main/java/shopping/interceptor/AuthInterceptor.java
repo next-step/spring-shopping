@@ -4,11 +4,14 @@ import java.util.Objects;
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.utils.JwtProvider;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
+    private static Logger logger = LoggerFactory.getLogger(AuthInterceptor.class);
     private final JwtProvider jwtProvider;
 
     public AuthInterceptor(final JwtProvider jwtProvider) {
@@ -18,6 +21,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response,
         final Object handler) throws Exception {
+        logger.info("[AuthInterceptor] url : {}", request.getRequestURI());
+
         final String header = request.getHeader("Authorization");
         if (Objects.isNull(header)) {
             throw new AuthenticationException("등록된 사용자가 아닙니다");

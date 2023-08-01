@@ -76,4 +76,26 @@ class CartServiceTest {
         verify(cartItemRepository).findByUserId(userId);
         assertThat(cartItemResponses).hasSize(cartItems.size());
     }
+
+    @Test
+    @DisplayName("성공 : 장바구니 아이템 갯수를 수정한다.")
+    void successUpdateCartItem() {
+        /* given */
+
+        /* when */
+
+        /* then */
+
+    }
+
+    @Test
+    @DisplayName("성공 : 장바구니 아이템을 삭제한다.")
+    void successDeleteCartItem() {
+        /* given */
+
+        /* when */
+
+        /* then */
+
+    }
 }
