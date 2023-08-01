@@ -15,9 +15,36 @@
 
 - 장바구니와 관련된 아래 기능을 구현합니다.
     - [ ] 장바구니에 상품 아이템 추가
+        ```
+        POST /cart HTTP/1.1
+        content-type: application/json
+        host: localhost:8080
+        
+        {
+            "productId": 1
+        }
+        ```
     - [ ] 장바구니에 담긴 아이템 목록 조회
+        ```
+        GET /cart HTTP/1.1
+        host: localhost:8080
+        ```
     - [ ] 장바구니에 담긴 아이템 수량 변경
+        ```
+        PUT /cartitems/1 HTTP/1.1
+        content-type: application/json
+        host: localhost:8080
+        
+        {
+            "quantity": 2
+        }
+        ```
     - [ ] 장바구니에 담긴 아이템 제거
+        ```
+        DELETE /cartitems/1 HTTP/1.1
+        content-type: application/json
+        host: localhost:8080
+        ```
 - 사용자 정보는 요청 Header의 Authorization 필드를 사용해 인증 처리를 하여 얻습니다.
     - [ ] 인증 방식은 bearer인증을 사용합니다.
     - [ ] `Authorization: <type> <credentials>`
