@@ -8,12 +8,15 @@ import org.springframework.http.MediaType;
 import shopping.dto.CartItemQuantityRequest;
 import shopping.dto.CartRequest;
 import shopping.dto.CartResponse;
+import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +50,78 @@ public class CartIntegrationTest {
                 .when().post("/carts")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    @DisplayName("장바구니 상품 추가 시 productId는 null일 수 없다.")
+    void addCartNullProductId() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        Map<String, Long> request = new HashMap<>();
+        request.put("productId", null);
+
+        // when
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("productId는 필수 항목입니다.");
+    }
+
+    @Test
+    @DisplayName("장바구니 상품 추가 시 productId는 0일 수 없다.")
+    void addCartZeroProductId() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        Map<String, Long> request = new HashMap<>();
+        request.put("productId", 0L);
+
+        // when
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다.");
+    }
+
+    @Test
+    @DisplayName("장바구니 상품 추가 시 productId는 음수일 수 없다.")
+    void addCartNegativeProductId() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        Map<String, Long> request = new HashMap<>();
+        request.put("productId", -1L);
+
+        // when
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다.");
     }
 
     @Test

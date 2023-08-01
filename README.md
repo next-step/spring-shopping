@@ -47,9 +47,9 @@
 		}
 		```
 	- response `201 CREATED`
-	- [ ] `productId`가 `null`이면 오류 메시지 반환
-	- [ ] `productId`가 0 또는 음수이면 오류 메시지 반환
-	- [ ] `productId`가 존재하지 않으면 오류 메시지 반환
+	- [x] `productId`가 `null`이면 오류 메시지 반환
+	- [x] `productId`가 0 또는 음수이면 오류 메시지 반환
+	- [x] `productId`가 존재하지 않으면 오류 메시지 반환
 
 - [x] 장바구니에 담긴 아이템 목록 조회
 	- request : `GET /carts`
