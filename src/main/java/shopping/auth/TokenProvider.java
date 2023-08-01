@@ -36,7 +36,7 @@ public class TokenProvider {
 
     public String getEmail(String token) {
         return Jwts.parser()
-                .setSigningKey(secretKey)
+                .setSigningKey(secretKey.getBytes())
                 .parseClaimsJws(token)
                 .getBody()
                 .get(EMAIL, String.class);

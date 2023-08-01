@@ -26,7 +26,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (accessToken == null) {
             throw new AuthException();
         }
-        String email = tokenProvider.getEmail(accessToken);
+        String email = tokenProvider.getEmail(accessToken.substring(7));
         request.setAttribute("email", email);
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
