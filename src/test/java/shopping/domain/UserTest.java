@@ -48,4 +48,31 @@ class UserTest {
         assertThat(item.getProduct()).isEqualTo(product);
         assertThat(item.getQuantity()).isEqualTo(3);
     }
+
+    @Test
+    @DisplayName("장바구니에 상품이 존재하면 true를 반환한다.")
+    void contains() {
+        // given
+        User user = new User();
+        Product product = new Product();
+        CartItem item = user.addCartItem(product);
+
+        // when, then
+        assertThat(user.containsCartItem(item)).isTrue();
+    }
+
+    @Test
+    @DisplayName("장바구니에 상품이 존재하면 true를 반환한다.")
+    void notContains() {
+        // given
+        User user = new User();
+        User user2 = new User();
+        Product product = new Product();
+        user.addCartItem(product);
+
+        CartItem other = new CartItem(user2, product, 3);
+
+        // when, then
+        assertThat(user.containsCartItem(other)).isFalse();
+    }
 }

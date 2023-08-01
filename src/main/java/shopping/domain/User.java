@@ -53,7 +53,11 @@ public class User {
                 .filter(cartItem -> cartItem.getProduct().equals(product))
                 .findAny();
     }
-    
+
+    public boolean containsCartItem(CartItem cartItem) {
+        return cartItems.contains(cartItem);
+    }
+
     public Long getId() {
         return id;
     }
