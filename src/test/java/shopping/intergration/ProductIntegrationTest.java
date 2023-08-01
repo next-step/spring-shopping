@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-class ProductIntegrationTest {
+class ProductIntegrationTest extends IntegrationTest {
 
     @Test
     @DisplayName("상품 목록을 조회한다.")
