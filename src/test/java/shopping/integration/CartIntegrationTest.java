@@ -188,7 +188,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("장바구니 수량은 양의 정수입니다.");
+        assertThat(response.getMessage()).isEqualTo("수량은 0보다 작거나 같을 수 없습니다.");
     }
 
     @Test
@@ -213,7 +213,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("장바구니 수량은 양의 정수입니다.");
+        assertThat(response.getMessage()).isEqualTo("수량은 0보다 작거나 같을 수 없습니다.");
     }
 
     @Test

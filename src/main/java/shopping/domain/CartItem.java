@@ -23,7 +23,7 @@ public class CartItem {
     private Product product;
 
     @Column
-    private int quantity;
+    private Quantity quantity;
 
     protected CartItem() {
 
@@ -33,7 +33,7 @@ public class CartItem {
         this.id = id;
         this.user = user;
         this.product = product;
-        this.quantity = quantity;
+        this.quantity = new Quantity(quantity);
     }
 
     public CartItem(User user, Product product, int quantity) {
@@ -41,11 +41,11 @@ public class CartItem {
     }
 
     public void increaseQuantity() {
-        this.quantity++;
+        quantity = quantity.increase();
     }
 
     public void updateQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantity = this.quantity.update(quantity);
     }
 
     public Long getId() {
@@ -61,7 +61,6 @@ public class CartItem {
     }
 
     public int getQuantity() {
-        return quantity;
+        return quantity.getValue();
     }
-
 }

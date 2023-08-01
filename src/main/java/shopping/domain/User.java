@@ -38,12 +38,15 @@ public class User {
     }
 
     public CartItem addCartItem(Product product) {
-        CartItem item = findCartItem(product)
-                .orElseGet(() -> {
-                    CartItem newItem = new CartItem(this, product, 0);
-                    cartItems.add(newItem);
-                    return newItem;
-                });
+        Optional<CartItem> itemOptional = findCartItem(product);
+
+        if (itemOptional.isEmpty()) {
+            CartItem newItem = new CartItem(this, product, 1);
+            cartItems.add(newItem);
+            return newItem;
+        }
+
+        CartItem item = itemOptional.get();
         item.increaseQuantity();
         return item;
     }

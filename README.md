@@ -63,7 +63,7 @@
 		}
 		```
 	- response : `204 NO CONTENT`
-	- [ ] `quantity`가 0 또는 음수이면 오류 메시지 반환
+	- [x] `quantity`가 0 또는 음수이면 오류 메시지 반환
 	- [ ] `cartItemId`가 db에 존재하지 않는 경우 오류 메시지 반환
 
 - [x] 장바구니에 담긴 아이템 제거
