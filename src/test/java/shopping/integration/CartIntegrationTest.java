@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.CartItemQuantityRequest;
-import shopping.dto.CartRequest;
+import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
+import shopping.dto.CartUpdateRequest;
 import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
 import shopping.integration.config.IntegrationTest;
@@ -44,7 +44,7 @@ public class CartIntegrationTest {
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .body(new CartRequest(1L))
+                .body(new CartCreateRequest(1L))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/carts")
@@ -158,7 +158,7 @@ public class CartIntegrationTest {
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .body(new CartItemQuantityRequest(3))
+                .body(new CartUpdateRequest(3))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().patch("/carts/1")

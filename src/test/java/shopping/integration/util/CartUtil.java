@@ -3,7 +3,7 @@ package shopping.integration.util;
 import io.restassured.RestAssured;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.CartRequest;
+import shopping.dto.CartCreateRequest;
 
 public class CartUtil {
 
@@ -11,7 +11,7 @@ public class CartUtil {
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .body(new CartRequest(productId))
+                .body(new CartCreateRequest(productId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/carts")

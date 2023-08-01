@@ -3,17 +3,17 @@ package shopping.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.exception.ShoppingException;
 
-public class CartRequest {
+public class CartCreateRequest {
     private Long productId;
 
-    private CartRequest() {
+    private CartCreateRequest() {
     }
 
     @JsonCreator
-    public CartRequest(Long productId) {
+    public CartCreateRequest(Long productId) {
         validateNotNull(productId);
         validatePositive(productId);
-        
+
         this.productId = productId;
     }
 

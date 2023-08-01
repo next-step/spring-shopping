@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.CartService;
-import shopping.dto.CartItemQuantityRequest;
-import shopping.dto.CartRequest;
+import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
+import shopping.dto.CartUpdateRequest;
 import shopping.infrastructure.JwtProvider;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addProduct(@RequestBody CartRequest request,
+    public ResponseEntity<Void> addProduct(@RequestBody CartCreateRequest request,
                                            @RequestHeader(value = "Authorization") String bearerToken) {
         final String token = bearerToken.split(" ")[1];
         cartService.addProduct(request, Long.parseLong(jwtProvider.getPayload(token)));
@@ -46,7 +46,7 @@ public class CartController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateQuantity(@RequestBody CartItemQuantityRequest request,
+    public ResponseEntity<Void> updateQuantity(@RequestBody CartUpdateRequest request,
                                                @PathVariable Long id,
                                                @RequestHeader(value = "Authorization") String bearerToken) {
         final String token = bearerToken.split(" ")[1];

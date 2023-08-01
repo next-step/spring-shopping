@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartItem;
 import shopping.domain.Product;
 import shopping.domain.User;
-import shopping.dto.CartItemQuantityRequest;
-import shopping.dto.CartRequest;
+import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
+import shopping.dto.CartUpdateRequest;
 import shopping.repository.CartItemRespository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -31,7 +31,7 @@ public class CartService {
     }
 
     @Transactional
-    public void addProduct(CartRequest request, Long userId) {
+    public void addProduct(CartCreateRequest request, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         Product product = productRepository.findById(request.getProductId()).orElseThrow();
 
@@ -50,7 +50,7 @@ public class CartService {
     }
 
     @Transactional
-    public void update(CartItemQuantityRequest request, Long cartItemId, Long userId) {
+    public void update(CartUpdateRequest request, Long cartItemId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
         CartItem item = cartItemRespository.findById(cartItemId).orElseThrow();
 
