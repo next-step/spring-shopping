@@ -129,4 +129,35 @@ public class CartIntegrationTest {
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
+
+    @Test
+    @DisplayName("장바구니 수량을 삭제할 수 있다.")
+    void deleteCartItem() {
+        // given
+        String accessToken = RestAssured
+                .given().log().all()
+                .body(new LoginRequest("test@gmail.com", "test1234"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all().extract().as(LoginResponse.class).getAccessToken();
+
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(new CartRequest(1L))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
+
+        // when, then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when().delete("/carts/1")
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
