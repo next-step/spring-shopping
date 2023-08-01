@@ -36,8 +36,8 @@ public class CartItemEntity {
         this.quantity = quantity;
     }
 
-    public CartItemEntity(final UserEntity user, final ProductEntity product, final int quantity) {
-        this(null, user, product, quantity);
+    public CartItemEntity(final UserEntity user, final ProductEntity product) {
+        this(null, user, product, 1);
     }
 
     public Long getId() {
