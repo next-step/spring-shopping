@@ -12,16 +12,16 @@ public class MemberEmail {
     private static final Pattern emailPattern = Pattern.compile(
         "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
-    private String email;
+    private String value;
 
     protected MemberEmail() {
     }
 
-    public MemberEmail(final String email) {
-        validateIsNotNullOrEmpty(email);
-        validateEmailFormat(email);
+    public MemberEmail(final String value) {
+        validateIsNotNullOrEmpty(value);
+        validateEmailFormat(value);
 
-        this.email = email;
+        this.value = value;
     }
 
     private void validateIsNotNullOrEmpty(final String email) {
@@ -36,8 +36,8 @@ public class MemberEmail {
         }
     }
 
-    public String getEmail() {
-        return this.email;
+    public String getValue() {
+        return this.value;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class MemberEmail {
             return false;
         }
         final MemberEmail that = (MemberEmail) o;
-        return Objects.equals(email, that.email);
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(value);
     }
 }

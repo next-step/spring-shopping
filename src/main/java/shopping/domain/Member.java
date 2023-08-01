@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -17,12 +18,12 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "email")
     @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "email"))
     private MemberEmail email;
 
-    @Column(name = "password")
     @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "password"))
     private MemberPassword password;
 
     protected Member() {
@@ -37,11 +38,11 @@ public class Member {
         return this.id;
     }
 
-    public String getEmail() {
-        return this.email.getEmail();
+    public MemberEmail getEmail() {
+        return this.email;
     }
 
-    public String getPassword() {
-        return this.password.getPassword();
+    public MemberPassword getPassword() {
+        return this.password;
     }
 }

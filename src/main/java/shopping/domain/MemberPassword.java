@@ -10,16 +10,16 @@ public class MemberPassword {
 
     public static final int MAX_LENGTH = 30;
 
-    private String password;
+    private String value;
 
     protected MemberPassword() {
     }
 
-    public MemberPassword(final String password) {
-        validateIsNotNullOrEmpty(password);
-        validateGreaterThanMaxLength(password);
+    public MemberPassword(final String value) {
+        validateIsNotNullOrEmpty(value);
+        validateGreaterThanMaxLength(value);
 
-        this.password = password;
+        this.value = value;
     }
 
     private void validateGreaterThanMaxLength(final String password) {
@@ -34,8 +34,8 @@ public class MemberPassword {
         }
     }
 
-    public String getPassword() {
-        return this.password;
+    public String getValue() {
+        return this.value;
     }
 
     @Override
@@ -47,11 +47,11 @@ public class MemberPassword {
             return false;
         }
         final MemberPassword that = (MemberPassword) o;
-        return Objects.equals(password, that.password);
+        return Objects.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(password);
+        return Objects.hash(value);
     }
 }
