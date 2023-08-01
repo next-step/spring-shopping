@@ -15,9 +15,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private final List<CartItem> cartItems = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +22,9 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     protected User() {
 
@@ -49,6 +49,8 @@ public class User {
     }
 
     public CartItem addCartItem(Product product) {
-        return null;
+        CartItem item = new CartItem(this, product, 1);
+        cartItems.add(item);
+        return item;
     }
 }
