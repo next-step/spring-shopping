@@ -1,17 +1,26 @@
 package shopping.controller;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import shopping.dto.ErrorResponse;
+import shopping.exception.AuthException;
 import shopping.exception.ShoppingBaseException;
 
-@RestControllerAdvice
+@ControllerAdvice
 public class ExceptionHandlers {
 
     Logger log = LoggerFactory.getLogger(ExceptionHandlers.class);
+
+    @ExceptionHandler({AuthException.class, SignatureException.class, ExpiredJwtException.class})
+    public String handleAuthException(Exception e) {
+        log.error(e.getMessage());
+        return "redirect:/login";
+    }
 
     @ExceptionHandler(ShoppingBaseException.class)
     public ResponseEntity<ErrorResponse> handleShoppingBaseException(ShoppingBaseException e) {
