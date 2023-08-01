@@ -20,6 +20,11 @@ public class CartRepository {
     }
 
     public Optional<Cart> findByMemberIdAndProductId(Long memberId, Long productId) {
-        return null;
+        return entityManager.createQuery("select c from Cart c where c.member.id = :memberId and c.product.id = :productId", Cart.class)
+                .setParameter("productId", productId)
+                .setParameter("memberId", memberId)
+                .getResultList()
+                .stream()
+                .findAny();
     }
 }
