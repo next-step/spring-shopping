@@ -11,6 +11,7 @@ import shopping.dto.CartResponse;
 import shopping.dto.LoginResponse;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
+import shopping.integration.util.CartUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,25 +52,9 @@ public class CartIntegrationTest {
         // given
         String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .body(new CartRequest(1L))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
-                .then().log().all()
-                .statusCode(HttpStatus.CREATED.value());
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .body(new CartRequest(2L))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
-                .then().log().all()
-                .statusCode(HttpStatus.CREATED.value());
+        CartUtil.createCartItem(accessToken, 1L);
+        CartUtil.createCartItem(accessToken, 1L);
+        CartUtil.createCartItem(accessToken, 2L);
 
         // when
         CartResponse[] cartResponses = RestAssured
@@ -81,6 +66,7 @@ public class CartIntegrationTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(CartResponse[].class);
 
+        // then
         assertThat(cartResponses).hasSize(2);
     }
 
@@ -89,16 +75,7 @@ public class CartIntegrationTest {
     void updateCartItemQuantity() {
         // given
         String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .body(new CartRequest(1L))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
-                .then().log().all()
-                .statusCode(HttpStatus.CREATED.value());
+        CartUtil.createCartItem(accessToken, 1L);
 
         // when, then
         RestAssured
@@ -117,16 +94,7 @@ public class CartIntegrationTest {
     void deleteCartItem() {
         // given
         String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .body(new CartRequest(1L))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
-                .then().log().all()
-                .statusCode(HttpStatus.CREATED.value());
+        CartUtil.createCartItem(accessToken, 1L);
 
         // when, then
         RestAssured
