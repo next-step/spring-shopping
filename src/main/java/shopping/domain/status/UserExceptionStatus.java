@@ -2,6 +2,7 @@ package shopping.domain.status;
 
 public enum UserExceptionStatus {
 
+    LOGIN_FAILED("AUTH-401"),
     INVALID_EMAIL("AUTH-402"),
     INVALID_PASSWORD("AUTH-403"),
     ;

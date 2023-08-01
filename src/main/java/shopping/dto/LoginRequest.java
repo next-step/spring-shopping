@@ -1,4 +1,4 @@
-package shopping.accept;
+package shopping.dto;
 
 import java.util.Objects;
 

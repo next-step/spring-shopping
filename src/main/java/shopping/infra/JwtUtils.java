@@ -11,6 +11,7 @@ import shopping.domain.User;
 @Component
 public final class JwtUtils {
 
+    private static final String TYPE = "Bearer";
     private final String secretKey;
     private final long validityInMilliseconds;
 
@@ -35,5 +36,9 @@ public final class JwtUtils {
 
     public String payload(final String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String type() {
+        return TYPE;
     }
 }
