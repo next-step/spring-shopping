@@ -167,6 +167,56 @@ public class CartIntegrationTest {
     }
 
     @Test
+    @DisplayName("장바구니 항목 변경 시 수량이 0인 경우 오류를 반환한다.")
+    void updateCartItemWithZeroQuantity() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        CartUtil.createCartItem(accessToken, 1L);
+        Map<String, Integer> request = new HashMap<>();
+        request.put("quantity", 0);
+
+        // when, then
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().patch("/carts/1")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("장바구니 수량은 양의 정수입니다.");
+    }
+
+    @Test
+    @DisplayName("장바구니 항목 변경 시 수량이 음수인 경우 오류를 반환한다.")
+    void updateCartItemWithNegativeQuantity() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        CartUtil.createCartItem(accessToken, 1L);
+        Map<String, Integer> request = new HashMap<>();
+        request.put("quantity", -1);
+
+        // when, then
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().patch("/carts/1")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("장바구니 수량은 양의 정수입니다.");
+    }
+
+    @Test
     @DisplayName("장바구니 수량을 삭제할 수 있다.")
     void deleteCartItem() {
         // given
