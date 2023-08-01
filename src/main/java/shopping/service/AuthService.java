@@ -2,6 +2,7 @@ package shopping.service;
 
 import java.text.MessageFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.User;
 import shopping.domain.exception.StatusCodeException;
 import shopping.dto.UserJoinRequest;
@@ -21,6 +22,7 @@ public class AuthService {
         this.jwtUtils = jwtUtils;
     }
 
+    @Transactional
     public void joinUser(final UserJoinRequest request) {
         throwIfExistUser(request);
 

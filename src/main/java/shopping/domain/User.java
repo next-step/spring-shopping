@@ -5,6 +5,7 @@ import java.util.Objects;
 import shopping.domain.exception.StatusCodeException;
 import shopping.domain.status.UserExceptionStatus;
 
+// TODO: EMAIL, PASSWORD 최소, 최대길이 검증 로직  추가
 public final class User {
 
     private static final String EMAIL_REGEX =
