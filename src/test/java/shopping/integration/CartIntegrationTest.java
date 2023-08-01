@@ -122,10 +122,10 @@ public class CartIntegrationTest {
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .body(new CartItemQuantityRequest(1L, 3))
+                .body(new CartItemQuantityRequest(3))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts")
+                .when().patch("/carts/1")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }

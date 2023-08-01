@@ -44,6 +44,10 @@ public class CartItem {
         this.quantity++;
     }
 
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }
@@ -59,4 +63,5 @@ public class CartItem {
     public int getQuantity() {
         return quantity;
     }
+
 }

@@ -37,22 +37,6 @@ public class User {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public List<CartItem> getCartItems() {
-        return cartItems;
-    }
-
     public CartItem addCartItem(Product product) {
         CartItem item = findCartItem(product)
                 .orElseGet(() -> {
@@ -68,5 +52,21 @@ public class User {
         return cartItems.stream()
                 .filter(cartItem -> cartItem.getProduct().equals(product))
                 .findAny();
+    }
+    
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
 }
