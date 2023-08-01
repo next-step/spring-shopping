@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS cart_items;
+
 CREATE TABLE products
 (
     id    bigint auto_increment primary key,
