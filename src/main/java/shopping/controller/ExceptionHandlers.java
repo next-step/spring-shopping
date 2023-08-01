@@ -5,6 +5,7 @@ import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import shopping.dto.ErrorResponse;
@@ -20,6 +21,21 @@ public class ExceptionHandlers {
     public String handleAuthException(Exception e) {
         log.error(e.getMessage());
         return "redirect:/login";
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
+            Exception e) {
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(HttpMessageConversionException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageConversionException(
+            HttpMessageConversionException e) {
+
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body(new ErrorResponse("입력이 잘못되었습니다."));
     }
 
     @ExceptionHandler(ShoppingBaseException.class)

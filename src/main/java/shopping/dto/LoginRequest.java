@@ -1,5 +1,7 @@
 package shopping.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.util.Assert;
 
 public class LoginRequest {
@@ -7,16 +9,19 @@ public class LoginRequest {
     private static final int PASSWORD_MAX_LENGTH = 100;
     private static final int EMAIL_MAX_LENGTH = 100;
 
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
 
-    public LoginRequest(final String email, final String password) {
+    @JsonCreator
+    public LoginRequest(@JsonProperty("email") final String email,
+            @JsonProperty("password") final String password) {
         validate(email, password);
         this.email = email;
         this.password = password;
     }
 
     private void validate(String email, String password) {
+        // TODO: Spring Validator 적용? 여부 판단
         Assert.notNull(email, "이메일을 입력해야 합니다.");
         Assert.isTrue(!email.isBlank(), "이메일을 입력해야 합니다.");
         Assert.isTrue(email.length() <= EMAIL_MAX_LENGTH,
