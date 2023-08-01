@@ -3,7 +3,7 @@ package shopping.dto;
 import shopping.domain.CartItem;
 
 public class CartResponse {
-    private Long cartItemId;
+    private Long id;
     private String name;
     private String image;
     private int price;
@@ -12,8 +12,8 @@ public class CartResponse {
     private CartResponse() {
     }
 
-    public CartResponse(Long cartItemId, String name, String image, int price, int quantity) {
-        this.cartItemId = cartItemId;
+    public CartResponse(Long id, String name, String image, int price, int quantity) {
+        this.id = id;
         this.name = name;
         this.image = image;
         this.price = price;
@@ -30,8 +30,8 @@ public class CartResponse {
         );
     }
 
-    public Long getCartItemId() {
-        return cartItemId;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

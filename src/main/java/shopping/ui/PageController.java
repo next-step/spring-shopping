@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import shopping.application.ProductService;
 
 @Controller
-public class MainController {
+public class PageController {
 
     private final ProductService productService;
 
-    public MainController(ProductService productService) {
+    public PageController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -19,6 +19,11 @@ public class MainController {
         model.addAttribute("products", productService.findAllProducts());
 
         return "index";
+    }
+
+    @GetMapping("/shopping")
+    public String cartPage() {
+        return "cart";
     }
 }
 

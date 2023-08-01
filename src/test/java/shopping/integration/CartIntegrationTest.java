@@ -15,6 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
 public class CartIntegrationTest {
+
+    @Test
+    @DisplayName("장바구니 페이지 접속 테스트.")
+    void loginPage() {
+        RestAssured.given().log().all()
+                .contentType(MediaType.TEXT_HTML_VALUE)
+                .when().get("/shopping")
+                .then().statusCode(HttpStatus.OK.value())
+                .log().all();
+    }
+
     @Test
     @DisplayName("장바구니에 상품을 추가할 수 있다.")
     void addCart() {
