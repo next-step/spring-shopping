@@ -20,11 +20,11 @@
 
   <section class="product-container">
     <div th:each="product : ${products}">
-      <img class="w-280 h-280 cover-image" th:src="${product.getImageUrl()}"/> <!-- 상품 이미지 -->
+      <img class="w-280 h-280 cover-image" th:src="${product.getImageUrl()}"/>
       <div class="flex justify-between w-280 p-5">
         <div class="product-info">
-          <span class="product-info__name" th:text="${product.getName()}"></span> <!-- 상품 이름 -->
-          <span class="product-info__price" th:text="${product.getPrice()}"></span> <!-- 상품 가격 -->
+          <span class="product-info__name" th:text="${product.getName()}"></span>
+          <span class="product-info__price" th:text="${product.getPrice()}"></span>
         </div>
         <button type="submit" class="product-btn" th:onclick="addCartItem([[${product.getId()}]])">
           <img src="assets/svgs/cart.svg" alt="장바구니"/>
