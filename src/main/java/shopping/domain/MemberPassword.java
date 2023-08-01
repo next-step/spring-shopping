@@ -1,14 +1,19 @@
 package shopping.domain;
 
 import java.util.Objects;
+import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
 import shopping.exception.ShoppingException;
 
+@Embeddable
 public class MemberPassword {
 
     public static final int MAX_LENGTH = 30;
 
-    private final String password;
+    private String password;
+
+    protected MemberPassword() {
+    }
 
     public MemberPassword(final String password) {
         validateIsNotNullOrEmpty(password);
@@ -27,6 +32,10 @@ public class MemberPassword {
         if (!StringUtils.hasText(password)) {
             throw new ShoppingException("회원 비밀번호는 비어있거나 공백이면 안됩니다. 입력값: " + password);
         }
+    }
+
+    public String getPassword() {
+        return this.password;
     }
 
     @Override

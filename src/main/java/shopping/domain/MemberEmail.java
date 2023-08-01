@@ -2,15 +2,20 @@ package shopping.domain;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
+import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
 import shopping.exception.ShoppingException;
 
+@Embeddable
 public class MemberEmail {
 
     private static final Pattern emailPattern = Pattern.compile(
         "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
     private String email;
+
+    protected MemberEmail() {
+    }
 
     public MemberEmail(final String email) {
         validateIsNotNullOrEmpty(email);
@@ -29,6 +34,10 @@ public class MemberEmail {
         if (!emailPattern.matcher(email).matches()) {
             throw new ShoppingException("회원 이메일이 형식에 맞지 않습니다. 입력값: " + email);
         }
+    }
+
+    public String getEmail() {
+        return this.email;
     }
 
     @Override
