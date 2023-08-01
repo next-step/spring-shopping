@@ -3,9 +3,6 @@ package shopping.application;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import shopping.domain.Product;
-import shopping.dto.ProductRequest;
 import shopping.dto.ProductResponse;
 import shopping.repository.ProductRepository;
 
@@ -23,14 +20,5 @@ public class ProductService {
                 .stream()
                 .map(ProductResponse::of)
                 .collect(Collectors.toUnmodifiableList());
-    }
-
-    @Transactional
-    public void insert(ProductRequest productRequest) {
-        productRepository.save(new Product(
-                productRequest.getName(),
-                productRequest.getImageUrl(),
-                productRequest.getPrice()
-        ));
     }
 }
