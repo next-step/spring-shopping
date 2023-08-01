@@ -7,7 +7,7 @@ import shopping.domain.member.Password;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingException;
+import shopping.exception.ShoppingApiException;
 import shopping.repository.MemberRepository;
 import shopping.security.JwtTokenProvider;
 
@@ -24,7 +24,7 @@ public class LoginService {
 
     public LoginResponse login(final LoginRequest loginRequest) {
         final Member member = memberRepository.findByEmail(Email.from(loginRequest.getEmail()))
-                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_MEMBER_EMAIL));
+                .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_MEMBER_EMAIL));
 
         final Password requestPassword = Password.from(loginRequest.getPassword());
         member.matchPassword(requestPassword);
