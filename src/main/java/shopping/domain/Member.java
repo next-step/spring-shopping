@@ -31,7 +31,7 @@ public class Member {
 
     private void validatePassword(String password) {
         if (StringUtils.isBlank(password)) {
-            throw new MemberException("사용자 이름이 존재하지 않습니다");
+            throw new MemberException("사용자 비밀번호가 존재하지 않습니다");
         }
     }
 
@@ -55,7 +55,7 @@ public class Member {
         return email;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean matchPassword(String password) {
+        return this.password.equals(password);
     }
 }
