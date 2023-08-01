@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -53,8 +54,19 @@ public class User {
     }
 
     public CartItem addCartItem(Product product) {
-        CartItem item = new CartItem(this, product, 1);
-        cartItems.add(item);
+        CartItem item = findCartItem(product)
+                .orElseGet(() -> {
+                    CartItem newItem = new CartItem(this, product, 0);
+                    cartItems.add(newItem);
+                    return newItem;
+                });
+        item.increaseQuantity();
         return item;
+    }
+
+    private Optional<CartItem> findCartItem(Product product) {
+        return cartItems.stream()
+                .filter(cartItem -> cartItem.getProduct().equals(product))
+                .findAny();
     }
 }

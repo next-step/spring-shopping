@@ -40,6 +40,10 @@ public class CartItem {
         this(null, user, product, quantity);
     }
 
+    public void increaseQuantity() {
+        this.quantity++;
+    }
+
     public Long getId() {
         return id;
     }
