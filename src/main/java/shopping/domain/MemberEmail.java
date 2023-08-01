@@ -2,6 +2,7 @@ package shopping.domain;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
+import org.springframework.util.StringUtils;
 import shopping.exception.ShoppingException;
 
 public class MemberEmail {
@@ -19,7 +20,7 @@ public class MemberEmail {
     }
 
     private void validateIsNotNullOrEmpty(final String email) {
-        if (email == null || email.isBlank()) {
+        if (!StringUtils.hasText(email)) {
             throw new ShoppingException("회원 이메일은 비어있거나 공백이면 안됩니다. 입력값: " + email);
         }
     }

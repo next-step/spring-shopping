@@ -2,6 +2,7 @@ package shopping.domain;
 
 import java.util.Objects;
 import javax.persistence.Embeddable;
+import org.springframework.util.StringUtils;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -18,9 +19,9 @@ public class ProductImage {
         this.image = image;
     }
 
-    private void validateIsNotNullOrEmpty(final String value) {
-        if (value == null || value.isBlank()) {
-            throw new ShoppingException("상품 이미지는 비어있거나 공백이면 안됩니다. 입력값: " + value);
+    private void validateIsNotNullOrEmpty(final String image) {
+        if (!StringUtils.hasText(image)) {
+            throw new ShoppingException("상품 이미지는 비어있거나 공백이면 안됩니다. 입력값: " + image);
         }
     }
 

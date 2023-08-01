@@ -1,6 +1,7 @@
 package shopping.domain;
 
 import java.util.Objects;
+import org.springframework.util.StringUtils;
 import shopping.exception.ShoppingException;
 
 public class MemberPassword {
@@ -23,7 +24,7 @@ public class MemberPassword {
     }
 
     private void validateIsNotNullOrEmpty(final String password) {
-        if (password == null || password.isBlank()) {
+        if (!StringUtils.hasText(password)) {
             throw new ShoppingException("회원 비밀번호는 비어있거나 공백이면 안됩니다. 입력값: " + password);
         }
     }
