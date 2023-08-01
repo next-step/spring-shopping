@@ -12,6 +12,9 @@ import shopping.infrastructure.JwtProvider;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
@@ -64,5 +67,51 @@ public class AuthIntegrationTest {
 
         // then
         assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
+    }
+
+    @Test
+    @DisplayName("email이 null인 경우 로그인에 실패한다.")
+    void loginWithNullEmail() {
+        // given
+        Map<String, String> request = new HashMap<>();
+        request.put("email", null);
+        request.put("password", "abc");
+
+        // when
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("email은 필수 항목입니다.");
+    }
+
+    @Test
+    @DisplayName("password가 null인 경우 로그인에 실패한다.")
+    void loginWithNullPassword() {
+        // given
+        Map<String, String> request = new HashMap<>();
+        request.put("email", "test@woowa.com");
+        request.put("password", null);
+
+        // when
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("password는 필수 항목입니다.");
     }
 }

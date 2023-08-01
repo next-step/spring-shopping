@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.exception.ShoppingException;
 
 public class LoginRequest {
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
+
+    public LoginRequest() {
+    }
 
     @JsonCreator
     public LoginRequest(String email, String password) {
