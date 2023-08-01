@@ -11,7 +11,7 @@ public class Password {
 
     private static final String PASSWORD_REGEX_PATTERN = "^(?=.*[a-z])(?=.*[!@#$%^&*])(?=.{7,18}$).*";
 
-    @Column(name = "password", length = 18)
+    @Column(name = "password", nullable = false, length = 18)
     private String value;
 
     protected Password() {

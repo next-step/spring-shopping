@@ -15,7 +15,7 @@ class PasswordTest {
     @ParameterizedTest
     @ValueSource(strings = {"abc$131", "abc$131!&*asdBBB1"})
     @DisplayName("패스워드를 생성할 수 있다.")
-    void createPassword(String value) {
+    void createPassword(final String value) {
         final Password password = Password.from(value);
 
         assertThat(password.getValue()).isEqualTo(value);
@@ -25,7 +25,7 @@ class PasswordTest {
     @NullAndEmptySource
     @ValueSource(strings = {"abc$13", "abcdefghqwe", "1234567", "abcdefg!@#123123544"})
     @DisplayName("소문자, 특수문자 7글자 이상 18글자 이하가 아닌 입력으로 패스워드를 생성할 때 예외를 던진다.")
-    void validatePassword(String value) {
+    void validatePassword(final String value) {
         assertThatThrownBy(() -> Password.from(value))
                 .isInstanceOf(ShoppingException.class)
                 .hasMessage("패스워드는 소문자, 특수문자 7글자 이상 18글자 이하여야 합니다.");
@@ -34,9 +34,9 @@ class PasswordTest {
     @Test
     @DisplayName("입력된 비밀번호와 일치하는지 여부를 확인한다.")
     void match() {
-        String samePassword = "abc$!13";
-        String notSamePassword = "abc1$!13";
-        Password password = Password.from(samePassword);
+        final String samePassword = "abc$!13";
+        final String notSamePassword = "abc1$!13";
+        final Password password = Password.from(samePassword);
 
         assertThat(password.isMatch(Password.from(samePassword))).isTrue();
         assertThat(password.isMatch(Password.from(notSamePassword))).isFalse();

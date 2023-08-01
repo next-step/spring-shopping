@@ -9,7 +9,7 @@ import shopping.exception.ShoppingException;
 @Embeddable
 public class Price {
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private int value;
 
     protected Price() {

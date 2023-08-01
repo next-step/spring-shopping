@@ -11,7 +11,8 @@ import shopping.exception.ShoppingException;
 public class ProductImage {
 
     private static final int MAX_IMAGE_LENGTH = 255;
-    @Column(name = "image")
+
+    @Column(name = "image", nullable = false)
     private String value;
 
     protected ProductImage() {

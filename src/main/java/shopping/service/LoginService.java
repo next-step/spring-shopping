@@ -1,6 +1,7 @@
 package shopping.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.member.Email;
 import shopping.domain.member.Member;
 import shopping.domain.member.Password;
@@ -22,6 +23,7 @@ public class LoginService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Transactional(readOnly = true)
     public LoginResponse login(final LoginRequest loginRequest) {
         final Member member = memberRepository.findByEmail(Email.from(loginRequest.getEmail()))
                 .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_MEMBER_EMAIL));

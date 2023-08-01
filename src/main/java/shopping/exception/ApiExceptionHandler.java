@@ -9,7 +9,9 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(ShoppingApiException.class)
     public ResponseEntity<ApiExceptionResponse> exceptionHandleWithShoppingException(final ShoppingApiException e) {
-        return ResponseEntity.status(e.getHttpStatus()).body(ApiExceptionResponse.from(e.getMessage()));
+        return ResponseEntity
+                .status(e.getHttpStatus())
+                .body(ApiExceptionResponse.from(e.getMessage()));
     }
 
     static class ApiExceptionResponse {

@@ -12,9 +12,9 @@ import shopping.exception.ShoppingException;
 class ProductNameTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"123456789012345678901234567890", "1"})
+    @ValueSource(strings = {"12A456789012345BB89012345가890", "1"})
     @DisplayName("상품 이름을 생성할 수 있다.")
-    void createProductName(String value) {
+    void createProductName(final String value) {
         final ProductName productName = ProductName.from(value);
 
         assertThat(productName.getValue()).isEqualTo(value);
@@ -24,11 +24,9 @@ class ProductNameTest {
     @NullAndEmptySource
     @ValueSource(strings = {"1234567890123456789012345678901"})
     @DisplayName("빈 문자열이나 null , 30글자 이상의 입력으로 상품 이름을 생성할 때 예외를 던진다.")
-    void validateProductName(String value) {
+    void validateProductName(final String value) {
         assertThatThrownBy(() -> ProductName.from(value))
                 .isInstanceOf(ShoppingException.class)
                 .hasMessage("상품의 이름이 올바른 형식이 아닙니다.");
     }
-
-
 }

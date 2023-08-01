@@ -11,7 +11,8 @@ import shopping.exception.ShoppingException;
 public class ProductName {
 
     private static final int MAX_PRODUCT_NAME_LENGTH = 30;
-    @Column(name = "name")
+
+    @Column(name = "name", nullable = false, length = MAX_PRODUCT_NAME_LENGTH)
     private String value;
 
     protected ProductName() {
