@@ -6,9 +6,13 @@ import shopping.domain.CartItem;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.CartRequest;
+import shopping.dto.CartResponse;
 import shopping.repository.CartItemRespository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -32,5 +36,13 @@ public class CartService {
 
         CartItem cartItem = user.addCartItem(product);
         cartItemRespository.save(cartItem);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartResponse> findAll(Long userId) {
+        return cartItemRespository.findAll()
+                .stream()
+                .map(CartResponse::from)
+                .collect(Collectors.toUnmodifiableList());
     }
 }

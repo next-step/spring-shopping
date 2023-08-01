@@ -2,6 +2,7 @@ package shopping.ui;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -9,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.CartService;
 import shopping.dto.CartRequest;
+import shopping.dto.CartResponse;
 import shopping.infrastructure.JwtProvider;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/carts")
@@ -29,5 +33,11 @@ public class CartController {
         final String token = bearerToken.split(" ")[1];
         cartService.addProduct(request, Long.parseLong(jwtProvider.getPayload(token)));
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CartResponse>> findAll(@RequestHeader(value = "Authorization") String bearerToken) {
+        final String token = bearerToken.split(" ")[1];
+        return ResponseEntity.ok().body(cartService.findAll(Long.parseLong(jwtProvider.getPayload(token))));
     }
 }
