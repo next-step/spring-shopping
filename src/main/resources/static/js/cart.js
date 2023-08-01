@@ -30,14 +30,15 @@ const updateCartItemQuantity = (id, quantity) => {
         return;
     }
 
-    // TODO: [3단계] 장바구니 아이템 수량 변경 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch('/carts/' + id, {
+        method: 'PATCH',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({
+            'quantity': quantity
+        })
     }).then((response) => {
         window.location.reload();
     }).catch((error) => {
