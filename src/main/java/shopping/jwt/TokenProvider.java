@@ -11,9 +11,10 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-    @Value("${shopping.token.secretKey}")
-    private static String SECRET_KEY;
     private static final long TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
+
+    @Value("${shopping.token.secretKey}")
+    private String SECRET_KEY;
 
     public String createToken(Long id) {
         Date date = new Date();
