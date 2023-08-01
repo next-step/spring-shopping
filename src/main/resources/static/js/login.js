@@ -11,8 +11,7 @@ form.addEventListener('submit', (event) => {
         loginRequest[key] = value;
     }
 
-    // TODO: [2단계] 로그인 path에 맞게 변경
-    fetch('', {
+    fetch('/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,8 +20,8 @@ form.addEventListener('submit', (event) => {
     }).then((response) => {
         return response.json();
     }).then((data) => {
-        const {accessToken} = data;
-        sessionStorage.setItem('accessToken', accessToken);
+        const {token} = data;
+        sessionStorage.setItem('accessToken', token);
         window.location.href = '/';
     }).catch((error) => {
         alert(error);
