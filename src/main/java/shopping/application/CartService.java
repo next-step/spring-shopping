@@ -1,11 +1,14 @@
 package shopping.application;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import shopping.domain.CartItem;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.CartItemCreateRequest;
+import shopping.dto.CartItemResponse;
 import shopping.exception.UserNotFoundException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
@@ -38,5 +41,12 @@ public class CartService {
                 .orElseGet(() -> new CartItem(user, product));
 
         cartItemRepository.save(cartItem);
+    }
+
+    public List<CartItemResponse> findAllByEmail(String email) {
+        List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(email);
+        return cartItems.stream()
+                .map(CartItemResponse::of)
+                .collect(Collectors.toUnmodifiableList());
     }
 }
