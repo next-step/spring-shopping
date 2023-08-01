@@ -22,11 +22,16 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    public Member(String email, String password) {
+    public Member(Long id, String email, String password) {
         validateEmail(email);
         validatePassword(password);
+        this.id = id;
         this.email = email;
         this.password = password;
+    }
+
+    public Member(String email, String password) {
+        this(null, email, password);
     }
 
     private void validatePassword(String password) {

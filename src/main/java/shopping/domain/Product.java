@@ -29,13 +29,19 @@ public class Product {
     @Column(nullable = false)
     private long price;
 
-    public Product(String name, String imageUrl, Long price) {
+    public Product(Long id, String name, String imageUrl, long price) {
         validateName(name);
         validateImageUrl(imageUrl);
         validatePrice(price);
+
+        this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.price = price;
+    }
+
+    public Product(String name, String imageUrl, Long price) {
+        this(null, name, imageUrl, price);
     }
 
     private void validateName(String name) {

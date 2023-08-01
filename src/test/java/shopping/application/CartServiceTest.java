@@ -70,7 +70,7 @@ public class CartServiceTest {
             given(memberRepository.findById(anyLong())).willReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> cartService.addProduct(product.getId(), anyLong()));
+            Exception exception = catchException(() -> cartService.addProduct(anyLong(), product.getId()));
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);

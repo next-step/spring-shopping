@@ -21,14 +21,12 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @Column(nullable = false)
@@ -41,6 +39,10 @@ public class Cart {
         this.member = member;
         this.product = product;
         this.quantity = quantity;
+    }
+
+    protected Cart() {
+
     }
 
     private void validateQuantity(int quantity) {
@@ -59,6 +61,11 @@ public class Cart {
         if (Objects.isNull(member)) {
             throw new CartException("member가 존재하지 않습니다");
         }
+    }
+
+    public Cart increaseQuantity() {
+        quantity++;
+        return this;
     }
 
     public Long getId() {

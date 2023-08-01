@@ -28,5 +28,16 @@ public class CartService {
     }
 
     public void addProduct(Long memberId, Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException("상품Id에 해당하는 상품 존재하지 않습니다"));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException("회원Id에 해당하는 회원이 존재하지 않습니다"));
+
+        Cart cart = cartRepository.findByMemberIdAndProductId(memberId, productId)
+                .map(Cart::increaseQuantity)
+                .orElseGet(() -> new Cart(member, product, DEFAULT_PRODUCT_QUANTITY));
+
+        cartRepository.save(cart);
     }
 }

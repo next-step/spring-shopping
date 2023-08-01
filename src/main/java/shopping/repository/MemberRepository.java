@@ -21,4 +21,8 @@ public class MemberRepository {
                 .getResultStream()
                 .findAny();
     }
+
+    public Optional<Member> findById(Long id) {
+        return Optional.ofNullable(entityManager.find(Member.class, id));
+    }
 }
