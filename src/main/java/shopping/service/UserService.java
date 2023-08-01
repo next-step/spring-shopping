@@ -26,7 +26,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 틀립니다");
         }
 
-        String accessToken = jwtProvider.generateToken(userEntity.getEmail());
+        String accessToken = jwtProvider.generateToken(userEntity.getId());
 
         return LoginResponse.of(accessToken);
     }
