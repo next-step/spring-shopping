@@ -1,3 +1,6 @@
+drop table if exists PRODUCT;
+drop table if exists MEMBER;
+
 create table if not exists PRODUCT
 (
     product_id bigint auto_increment not null,
