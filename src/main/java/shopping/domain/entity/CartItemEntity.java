@@ -12,8 +12,7 @@ import javax.persistence.Table;
 @Table(name = "cart_item")
 public class CartItemEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,7 +25,7 @@ public class CartItemEntity {
 
     private int quantity;
 
-    protected CartItemEntity() {
+    public CartItemEntity() {
     }
 
     public CartItemEntity(final Long id, final UserEntity user, final ProductEntity product,
@@ -37,12 +36,8 @@ public class CartItemEntity {
         this.quantity = quantity;
     }
 
-    public CartItemEntity(final UserEntity user, final ProductEntity product) {
-        this(null, user, product, 1);
-    }
-
-    public void updateQuantity(final int quantity) {
-        this.quantity = quantity;
+    public CartItemEntity(final UserEntity user, final ProductEntity product, final int quantity) {
+        this(null, user, product, quantity);
     }
 
     public Long getId() {
