@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.dto.ErrorResponse;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.infrastructure.JwtProvider;
@@ -45,5 +46,37 @@ public class AuthIntegrationTest {
 
         // then
         assertThat(jwtProvider.getPayload(response.getAccessToken())).isEqualTo("1");
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 이메일로 로그인 시 로그인에 실패한다.")
+    void loginWithNotExistEmail() {
+        // when
+        ErrorResponse response = RestAssured.given().log().all()
+                .body(new LoginRequest("none@gmail.com", "test1234"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
+    }
+
+    @Test
+    @DisplayName("잘못된 비밀번호로 로그인 시 로그인에 실패한다.")
+    void loginWithWrongPassword() {
+        // when
+        ErrorResponse response = RestAssured.given().log().all()
+                .body(new LoginRequest("test@gmail.com", "invalid_password"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
     }
 }
