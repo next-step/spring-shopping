@@ -19,7 +19,7 @@ class ProductTest {
         @DisplayName("image url로 null이 들어올 경우, 기본 url이 설정된다.")
         void it_setting_default_image_when_input_null_image() {
             // given
-            Product expected = new Product(1L, "product", "/default-product.png", "5000");
+            Product expected = new Product(1L, "product", "images/default-product.png", "5000");
 
             // when
             Product product = new Product(1L, "product", null, "5000");

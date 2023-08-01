@@ -8,7 +8,8 @@ import io.restassured.response.ValidatableResponse;
 import java.util.Arrays;
 import org.hamcrest.Matchers;
 import org.springframework.http.HttpStatus;
-import shopping.domain.exception.StatusCodeException;
+import shopping.advice.ErrorTemplate;
+import shopping.dto.TokenResponse;
 
 class AssertHelper {
 
@@ -26,14 +27,14 @@ class AssertHelper {
 
         static void assertJwt(final ExtractableResponse<Response> response) {
             assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-            assertThat(response.body()).isInstanceOf(String.class);
+            assertThat(response.body().as(TokenResponse.class).getAccessToken()).isNotNull();
         }
 
         static void assertLoginFailed(final ExtractableResponse<Response> response) {
-            StatusCodeException statusCodeException = response.as(StatusCodeException.class);
-            
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            assertThat(statusCodeException.getStatus()).isEqualTo("AUTH-401");
+            ErrorTemplate errorTemplate = response.as(ErrorTemplate.class);
+
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+            assertThat(errorTemplate.getStatusCode()).isEqualTo("AUTH-401");
         }
     }
 }
