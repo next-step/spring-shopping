@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.ErrorResponse;
-import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.infrastructure.JwtProvider;
 import shopping.integration.config.IntegrationTest;
+import shopping.integration.util.AuthUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -36,29 +36,20 @@ public class AuthIntegrationTest {
     @DisplayName("로그인에 성공한다.")
     void loginSuccess() {
         // when
-        LoginResponse response = RestAssured.given().log().all()
-                .body(new LoginRequest("test@gmail.com", "test1234"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract().as(LoginResponse.class);
+        String token = AuthUtil.login("test@gmail.com", "test1234")
+                .as(LoginResponse.class)
+                .getAccessToken();
 
         // then
-        assertThat(jwtProvider.getPayload(response.getAccessToken())).isEqualTo("1");
+        assertThat(jwtProvider.getPayload(token)).isEqualTo("1");
     }
 
     @Test
     @DisplayName("존재하지 않는 이메일로 로그인 시 로그인에 실패한다.")
     void loginWithNotExistEmail() {
         // when
-        ErrorResponse response = RestAssured.given().log().all()
-                .body(new LoginRequest("none@gmail.com", "test1234"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .extract().as(ErrorResponse.class);
+        ErrorResponse response = AuthUtil.login("error", "test1234")
+                .as(ErrorResponse.class);
 
         // then
         assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
@@ -68,13 +59,8 @@ public class AuthIntegrationTest {
     @DisplayName("잘못된 비밀번호로 로그인 시 로그인에 실패한다.")
     void loginWithWrongPassword() {
         // when
-        ErrorResponse response = RestAssured.given().log().all()
-                .body(new LoginRequest("test@gmail.com", "invalid_password"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .extract().as(ErrorResponse.class);
+        ErrorResponse response = AuthUtil.login("test@gmail.com", "error")
+                .as(ErrorResponse.class);
 
         // then
         assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");

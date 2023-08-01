@@ -8,9 +8,9 @@ import org.springframework.http.MediaType;
 import shopping.dto.CartItemQuantityRequest;
 import shopping.dto.CartRequest;
 import shopping.dto.CartResponse;
-import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.integration.config.IntegrationTest;
+import shopping.integration.util.AuthUtil;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,13 +31,7 @@ public class CartIntegrationTest {
     @DisplayName("장바구니에 상품을 추가할 수 있다.")
     void addCart() {
         // given
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("test@gmail.com", "test1234"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all().extract().as(LoginResponse.class).getAccessToken();
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
         // when, then
         RestAssured
@@ -55,13 +49,7 @@ public class CartIntegrationTest {
     @DisplayName("장바구니 아이템 목록을 조회한다.")
     void findAllCartItems() {
         // given
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("test@gmail.com", "test1234"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all().extract().as(LoginResponse.class).getAccessToken();
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
         RestAssured
                 .given().log().all()
@@ -100,13 +88,7 @@ public class CartIntegrationTest {
     @DisplayName("장바구니 수량을 변경할 수 있다.")
     void updateCartItemQuantity() {
         // given
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("test@gmail.com", "test1234"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all().extract().as(LoginResponse.class).getAccessToken();
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
         RestAssured
                 .given().log().all()
@@ -134,13 +116,7 @@ public class CartIntegrationTest {
     @DisplayName("장바구니 수량을 삭제할 수 있다.")
     void deleteCartItem() {
         // given
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("test@gmail.com", "test1234"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all().extract().as(LoginResponse.class).getAccessToken();
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
         RestAssured
                 .given().log().all()
