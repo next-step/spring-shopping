@@ -48,6 +48,10 @@ public class User {
         return password;
     }
 
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
     public CartItem addCartItem(Product product) {
         CartItem item = new CartItem(this, product, 1);
         cartItems.add(item);

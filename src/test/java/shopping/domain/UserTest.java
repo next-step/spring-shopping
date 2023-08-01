@@ -29,4 +29,23 @@ class UserTest {
         assertThat(item.getProduct()).isEqualTo(product);
         assertThat(item.getQuantity()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("장바구니에 존재하는 상품을 추가하면 수량이 늘어난다.")
+    void addCartItemDuplicate() {
+        // given
+        User user = new User();
+        Product product = new Product();
+
+        // when
+        user.addCartItem(product);
+        user.addCartItem(product);
+        CartItem item = user.addCartItem(product);
+
+        // then
+        assertThat(item.getUser()).isEqualTo(user);
+        assertThat(user.getCartItems()).hasSize(1);
+        assertThat(item.getProduct()).isEqualTo(product);
+        assertThat(item.getQuantity()).isEqualTo(3);
+    }
 }
