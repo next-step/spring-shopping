@@ -12,3 +12,11 @@ CREATE TABLE users
     email    varchar(50)  not null,
     password varchar(255) not null
 );
+
+CREATE TABLE cart_items
+(
+    id         bigint auto_increment primary key,
+    user_id    bigint not null,
+    product_id bigint not null,
+    quantity   int    not null
+);

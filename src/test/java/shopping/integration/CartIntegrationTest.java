@@ -29,6 +29,7 @@ public class CartIntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .body(new CartRequest(1L))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/carts")
                 .then().log().all()
