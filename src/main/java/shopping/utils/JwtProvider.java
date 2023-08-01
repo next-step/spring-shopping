@@ -1,5 +1,6 @@
 package shopping.utils;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
@@ -22,5 +23,26 @@ public class JwtProvider {
             .setIssuedAt(issuedAt)
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
+    }
+
+    public boolean validate(final String token) {
+        try {
+            return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJwt(token)
+                .getBody()
+                .getExpiration()
+                .after(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public String parseToken(final String token) {
+        return Jwts.parser()
+            .setSigningKey(secretKey)
+            .parseClaimsJwt(token)
+            .getBody()
+            .getSubject();
     }
 }
