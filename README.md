@@ -64,13 +64,14 @@ Authorization: Bearer {jwt_token}
 ```
 POST /cart/products/{productid}
 ```
-- [ ] 장바구니에 상품 아이템 추가
+- [ ] 장바구니에 상품 추가
+  - [ ] 이미 상품이 장바구니에 존재하면 수량을 1 증가한다
 
 #### Request
 ```
 GET /carts
 ```
-- [ ] 장바구니에 담긴 아이템 목록 조회
+- [ ] 장바구니에 담긴 상품 목록 조회
 
 #### Request
 ```
@@ -80,14 +81,14 @@ PATCH /cart/products/{productid}
   quantity: 1
 }
 ```
-- [ ] 장바구니에 담긴 아이템 수량 변경
+- [ ] 장바구니에 담긴 상품 수량 변경
   - [ ] 수량이 0이 되면 제거 
 
 #### Request
 ```
 DELETE /cart/products/{productid}
 ```
-- [ ] 장바구니에 담긴 아이템 제거
+- [ ] 장바구니에 담긴 상품 제거
 
 - [ ] 장바구니 페이지 연동
 
