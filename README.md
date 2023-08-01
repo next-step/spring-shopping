@@ -4,14 +4,20 @@
 
 ### Product
 - ID
-- 이름
-- 이미지
-- 가격
+- name
+- imageUrl
+- price
 
 ### Member
 - ID
 - email
 - password
+
+### Cart
+- ID
+- Member
+- Product
+- quantity
 
 ## ✅ 기능 정리
 
@@ -41,9 +47,49 @@ POST /login
 payload : Member(ID)
 ```
 {
-    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcyNjUyMzAwLCJleHAiOjE2NzI2NTU5MDAsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FETUlOIl19.uaUXk5GkqB6QE_qlZisk3RZ3fL74zDADqbJl6LoLkSc"
+    "accessToken": {jwt_token}
 }
 ```
 - [x] 로그인 API
 - [x] 사용자 검증
 - [x] 토큰 생성 및 반환
+
+### 장바구니
+#### Request Header
+```
+Authorization: Bearer {jwt_token}
+```
+
+#### Request
+```
+POST /cart/products/{productid}
+```
+- [ ] 장바구니에 상품 아이템 추가
+
+#### Request
+```
+GET /carts
+```
+- [ ] 장바구니에 담긴 아이템 목록 조회
+
+#### Request
+```
+PATCH /cart/products/{productid}
+
+{
+  quantity: 1
+}
+```
+- [ ] 장바구니에 담긴 아이템 수량 변경
+  - [ ] 수량이 0이 되면 제거 
+
+#### Request
+```
+DELETE /cart/products/{productid}
+```
+- [ ] 장바구니에 담긴 아이템 제거
+
+- [ ] 장바구니 페이지 연동
+
+### 장바구니 검증
+- 장바구니 상품 개수는 1이상이어야 합니다.
