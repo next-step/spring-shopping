@@ -33,6 +33,10 @@ public class Quantity {
         return new Quantity(value);
     }
 
+    public static Quantity defaultValue() {
+        return new Quantity(MIN_QUANTITY);
+    }
+
     public int getValue() {
         return this.value;
     }

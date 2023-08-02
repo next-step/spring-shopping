@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.response.CartItemResponse;
 import shopping.service.CartItemService;
 
 @RestController
@@ -17,14 +18,13 @@ public class CartItemController {
         this.cartItemService = cartItemService;
     }
 
-    @PostMapping("/cart-items")
-    public ResponseEntity<Void> addCartItem(
+    @PostMapping(value = "/cart-items")
+    public ResponseEntity<CartItemResponse> addCartItem(
             @RequestAttribute final Long loginMemberId,
             @RequestBody final CartItemAddRequest cartItemAddRequest
     ) {
-        cartItemService.addCartItem(loginMemberId, cartItemAddRequest);
+        final CartItemResponse cartItemResponse = cartItemService.addCartItem(loginMemberId, cartItemAddRequest);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(cartItemResponse);
     }
-
 }

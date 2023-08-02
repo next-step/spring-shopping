@@ -1,6 +1,7 @@
 package shopping.intergration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.response.ProductResponse;
 import shopping.intergration.helper.LoginHelper;
 
 class CartItemIntegrationTest extends IntegrationTest {
@@ -33,5 +35,10 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThatCode(() -> response.jsonPath().getLong("cartItemId")).doesNotThrowAnyException();
+        final ProductResponse product = response.jsonPath().getObject("product", ProductResponse.class);
+        assertThat(product)
+                .extracting("id", "name", "image", "price")
+                .contains(productId, "Chicken", "/image/Chicken.png", 10_000);
     }
 }

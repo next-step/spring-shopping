@@ -35,6 +35,10 @@ public class CartItem {
     protected CartItem() {
     }
 
+    public CartItem(final Member member, final Product product) {
+        this(member, product, Quantity.defaultValue());
+    }
+
     public CartItem(final Member member, final Product product, final Quantity quantity) {
         this.member = member;
         this.product = product;

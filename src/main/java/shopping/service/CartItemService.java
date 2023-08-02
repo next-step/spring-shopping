@@ -3,10 +3,10 @@ package shopping.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
-import shopping.domain.cart.Quantity;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.response.CartItemResponse;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingApiException;
 import shopping.repository.CartItemRepository;
@@ -20,27 +20,25 @@ public class CartItemService {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
 
-    public CartItemService(
-            final CartItemRepository cartItemRepository,
-            final ProductRepository productRepository,
-            final MemberRepository memberRepository
-    ) {
+    public CartItemService(final CartItemRepository cartItemRepository, final ProductRepository productRepository,
+            final MemberRepository memberRepository) {
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
         this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public void addCartItem(final Long memberId, final CartItemAddRequest cartItemAddRequest) {
+    public CartItemResponse addCartItem(final Long memberId, final CartItemAddRequest cartItemAddRequest) {
         final Member member = getMemberById(memberId);
         final Product product = getProductById(cartItemAddRequest.getProductId());
 
         if (existsCartItem(member, product)) {
-            increaseCartItemQuantity(member, product);
-            return;
+            final CartItem cartItem = increaseCartItemQuantity(member, product);
+            return CartItemResponse.from(cartItem);
         }
 
-        addNewCartItem(member, product);
+        final CartItem cartItem = addNewCartItem(member, product);
+        return CartItemResponse.from(cartItem);
     }
 
     private Member getMemberById(final Long memberId) {
@@ -57,13 +55,14 @@ public class CartItemService {
         return cartItemRepository.existsByMemberAndProduct(member, product);
     }
 
-    private void increaseCartItemQuantity(final Member member, final Product product) {
+    private CartItem increaseCartItemQuantity(final Member member, final Product product) {
         final CartItem cartItem = cartItemRepository.getByMemberAndProduct(member, product);
         cartItem.plusQuantity();
+        return cartItem;
     }
 
-    private void addNewCartItem(final Member member, final Product product) {
-        CartItem cartItem = new CartItem(member, product, Quantity.from(1));
-        cartItemRepository.save(cartItem);
+    private CartItem addNewCartItem(final Member member, final Product product) {
+        CartItem cartItem = new CartItem(member, product);
+        return cartItemRepository.save(cartItem);
     }
 }
