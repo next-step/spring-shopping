@@ -20,7 +20,7 @@ class ImageTest {
     @DisplayName("이미지 주소는 255자를 넘으면 오류를 반환한다.")
     void createImangeWithLength256() {
         // when, then
-        assertThatCode(() -> new Image("a".repeat(255)))
+        assertThatCode(() -> new Image("a".repeat(256)))
                 .isInstanceOf(ShoppingException.class)
                 .hasMessage("이미지 주소는 255자를 넘을 수 없습니다.");
     }
