@@ -18,6 +18,7 @@ import shopping.domain.User;
 import shopping.dto.request.LoginRequest;
 import shopping.repository.UserRepository;
 
+@DisplayName("인증 인수 테스트")
 class AuthIntegrationTest extends IntegrationTest {
 
     @Autowired

@@ -18,6 +18,7 @@ import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.CartItemResponse;
 
+@DisplayName("장바구니 인수 테스트")
 class CartIntegrationTest extends IntegrationTest {
 
     @DisplayName("장바구니에 상품 추가 성공시 201 Created")

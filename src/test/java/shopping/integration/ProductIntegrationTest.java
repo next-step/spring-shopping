@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import shopping.domain.Product;
 import shopping.repository.ProductRepository;
 
+@DisplayName("상품 인수 테스트")
 class ProductIntegrationTest extends IntegrationTest {
 
     @Autowired
