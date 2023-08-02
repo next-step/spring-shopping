@@ -6,9 +6,8 @@ const addCartItem = (productId) => {
         return;
     }
 
-    // TODO: [3단계] 장바구니 아이템 추가 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch(`/cart/products/${productId}`, {
+        method: 'POST',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
