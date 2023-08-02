@@ -13,6 +13,7 @@ import shopping.persist.entity.CartProductEntity;
 import shopping.persist.entity.ProductEntity;
 import shopping.persist.repository.CartJpaRepository;
 import shopping.persist.repository.CartProductJpaRepository;
+import shopping.persist.repository.ProductJpaRepository;
 
 @Repository
 public class CartRepository {
@@ -21,10 +22,13 @@ public class CartRepository {
 
     private final CartJpaRepository cartJpaRepository;
     private final CartProductJpaRepository cartProductJpaRepository;
+    private final ProductJpaRepository productJpaRepository;
 
-    CartRepository(CartJpaRepository cartJpaRepository, CartProductJpaRepository cartProductJpaRepository) {
+    CartRepository(CartJpaRepository cartJpaRepository, CartProductJpaRepository cartProductJpaRepository,
+            ProductJpaRepository productJpaRepository) {
         this.cartJpaRepository = cartJpaRepository;
         this.cartProductJpaRepository = cartProductJpaRepository;
+        this.productJpaRepository = productJpaRepository;
     }
 
     public boolean existCartByUserId(long userId) {
@@ -76,7 +80,9 @@ public class CartRepository {
         List<CartProductEntity> cartProductEntities = cartProductJpaRepository.findAllByCartEntity(cartEntity);
 
         Map<Long, CartProductEntity> idIndexedCartProductEntities = cartProductEntities.stream()
-                .collect(Collectors.toMap(CartProductEntity::getId, cartProductEntity -> cartProductEntity));
+                .collect(Collectors.toMap(cartProductEntity -> cartProductEntity.getProductEntity().getId(),
+                        cartProductEntity -> cartProductEntity));
+
         cart.getProductCounts().forEach((key, value) -> idIndexedCartProductEntities.get(key.getId()).setCount(value));
 
         List<CartProductEntity> deleteCartProductEntities = getDeletedProducts(cart, cartProductEntities);
@@ -117,5 +123,18 @@ public class CartRepository {
 
         persistedProductIds.forEach(deleteTarget -> deleteCartProductEntities.add(
                 productIdIndexedCartProductEntities.get(deleteTarget)));
+    }
+
+    public void addProduct(Cart cart, Product product) {
+        CartEntity cartEntity = cartJpaRepository.findById(cart.getCartId())
+                .orElseThrow(() -> new IllegalStateException(
+                        MessageFormat.format("id \"{0}\" 에 해당하는 cart를 찾을 수 없습니다", cart.getCartId())));
+        ProductEntity productEntity = productJpaRepository.findById(product.getId())
+                .orElseThrow(() -> new IllegalStateException(
+                        MessageFormat.format("id \"{0}\" 에 해당하는 product를 찾을 수 없습니다", product.getId())));
+
+        CartProductEntity cartProductEntity = new CartProductEntity(null, cartEntity, productEntity, 1);
+
+        cartProductJpaRepository.save(cartProductEntity);
     }
 }

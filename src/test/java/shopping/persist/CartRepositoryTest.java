@@ -86,7 +86,7 @@ class CartRepositoryTest extends JpaTest {
         void return_empty_cart_if_empty_cartproduct() {
             // given
             UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
-            ProductEntity productEntity = saveProduct("product", "/images/default.png", "10000");
+            saveProduct("product", "/images/default.png", "10000");
 
             cartRepository.newCart(userEntity.getId());
 
@@ -114,7 +114,6 @@ class CartRepositoryTest extends JpaTest {
             Cart cart = cartRepository.newCart(userEntity.getId());
 
             saveCartProduct(cart, productEntity);
-
             cart = cartRepository.getByUserId(userEntity.getId());
 
             Product product = extractFirstProduct(cart);
@@ -141,7 +140,6 @@ class CartRepositoryTest extends JpaTest {
             Cart cart = cartRepository.newCart(userEntity.getId());
 
             saveCartProduct(cart, productEntity);
-
             cart = cartRepository.getByUserId(userEntity.getId());
 
             Product product = extractFirstProduct(cart);
@@ -167,7 +165,6 @@ class CartRepositoryTest extends JpaTest {
             Cart cart = cartRepository.newCart(userEntity.getId());
 
             saveCartProduct(cart, productEntity);
-
             cart = cartRepository.getByUserId(userEntity.getId());
 
             Product product = extractFirstProduct(cart);
@@ -187,6 +184,31 @@ class CartRepositoryTest extends JpaTest {
             return cart.getProductCounts().entrySet().stream()
                     .findFirst()
                     .orElseThrow(IllegalStateException::new).getKey();
+        }
+    }
+
+    @Nested
+    @DisplayName("addProduct 메소드는")
+    class addProduct_method {
+
+        @Test
+        @DisplayName("cart와 product를 받아, 새로운 CartProductEntity를 저장한다")
+        void save_new_cartProductEntity() {
+            // given
+            UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
+
+            Product product = PersistFixture.Product.withEntity(saveProduct("product", "/images/default.png", "10000"));
+
+            Cart cart = cartRepository.newCart(userEntity.getId());
+
+            cartRepository.addProduct(cart, product);
+            Map<Product, Integer> expected = Map.of(product, 1);
+
+            // when
+            Cart result = cartRepository.getByUserId(userEntity.getId());
+
+            // then
+            assertCart(result, expected);
         }
     }
 }
