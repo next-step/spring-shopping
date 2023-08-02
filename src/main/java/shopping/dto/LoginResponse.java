@@ -2,10 +2,13 @@ package shopping.dto;
 
 public class LoginResponse {
 
-    private final String accessToken;
+    private String accessToken;
 
     public LoginResponse(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    private LoginResponse() {
     }
 
     public String getAccessToken() {
