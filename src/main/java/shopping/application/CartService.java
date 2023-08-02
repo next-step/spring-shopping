@@ -64,7 +64,13 @@ public class CartService {
 
     @Transactional
     public void delete(Long cartItemId, Long userId) {
-        CartItem item = cartItemRespository.findById(cartItemId).orElseThrow();
+        User user = findUserById(userId);
+        CartItem item = findCartItemById(cartItemId);
+
+        if (!user.containsCartItem(item)) {
+            throw new ShoppingException("유효하지 않은 cart item 입니다 : " + cartItemId);
+        }
+
         cartItemRespository.delete(item);
     }
 

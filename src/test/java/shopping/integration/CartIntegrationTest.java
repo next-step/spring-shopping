@@ -167,7 +167,7 @@ public class CartIntegrationTest {
     }
 
     @Test
-    @DisplayName("해당 사용자의 장바구니 항목 변경 시 id가 존재하지 않는 경우 오류를 반환한다.")
+    @DisplayName("해당 사용자의 장바구니 항목 변경 시 장바구니에 id가 포함되지 않은 경우 오류를 반환한다.")
     void updateCartItemWithOthersCartItem() {
         // given
         String accessToken1 = AuthUtil.login().as(LoginResponse.class).getAccessToken();
@@ -287,5 +287,55 @@ public class CartIntegrationTest {
                 .when().delete("/carts/1")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("해당 사용자의 장바구니 항목 삭제 시 id가 존재하지 않는 경우 오류를 반환한다.")
+    void deleteCartItemWithNonExistId() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        CartUtil.createCartItem(accessToken, 1L);
+
+        // when, then
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/carts/2")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 : 2");
+    }
+
+    @Test
+    @DisplayName("해당 사용자의 장바구니 항목 삭제 시 장바구니에 id가 포함되지 않은 경우 오류를 반환한다.")
+    void deleteCartItemWithOthersCartItem() {
+        // given
+        String accessToken1 = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        CartUtil.createCartItem(accessToken1, 1L);
+
+        String accessToken2 = AuthUtil.login("test2@gmail.com", "test1234")
+                .as(LoginResponse.class)
+                .getAccessToken();
+
+        CartUtil.createCartItem(accessToken2, 1L);
+
+        // when, then
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken1)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/carts/2")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("유효하지 않은 cart item 입니다 : 2");
     }
 }

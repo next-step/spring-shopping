@@ -70,7 +70,8 @@
 - [x] 장바구니에 담긴 아이템 제거
 	- request : `DELETE /carts/{id}`
 	- response : `204 NO CONTENT`
-	- [ ] `cartItemId`가 db에 존재하지 않는 경우 오류 메시지 반환
+	- [x] `cartItemId`가 db에 존재하지 않는 경우 오류 메시지 반환
+	- [x] `User`가 `CartItem`을 갖고 있지 않으면 오류 메시지 반환
 
 - [x] 장바구니 페이지 연동
 - [x] 사용자 토큰이 만료되었을 시 인증 실패 메시지 반환
