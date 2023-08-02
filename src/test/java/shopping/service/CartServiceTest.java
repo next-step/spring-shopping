@@ -88,16 +88,16 @@ class CartServiceTest {
         ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
         CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
 
-        Long cartItemId = 1L;
-        int quantity = 3; // +1, -1
-        when(cartItemRepository.findById(cartItemId)).thenReturn(
-            Optional.of(cartItemChicken));
+        Long cartItemId = cartItemChicken.getId();
+        int updateQuantity = 3;
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));
 
         /* when */
-        cartService.updateCartItemQuantity(cartItemId, new CartItemUpdateRequest(quantity), userId);
+        cartService.updateCartItemQuantity(cartItemId, new CartItemUpdateRequest(updateQuantity),
+            userId);
 
         /* then */
-        Assertions.assertThat(cartItemChicken.getQuantity()).isEqualTo(quantity);
+        Assertions.assertThat(cartItemChicken.getQuantity()).isEqualTo(updateQuantity);
 
     }
 
@@ -105,10 +105,19 @@ class CartServiceTest {
     @DisplayName("성공 : 장바구니 아이템을 삭제한다.")
     void successDeleteCartItem() {
         /* given */
+        Long userId = 1L;
+        UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
+        ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
+        CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
+
+        Long cartItemId = cartItemChicken.getId();
+        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));
 
         /* when */
+        cartService.removeCartItem(cartItemId, userId);
 
         /* then */
-
+        verify(cartItemRepository).findById(cartItemId);
+        verify(cartItemRepository).delete(cartItemChicken);
     }
 }
