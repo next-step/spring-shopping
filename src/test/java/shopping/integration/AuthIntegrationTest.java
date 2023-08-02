@@ -114,4 +114,48 @@ public class AuthIntegrationTest {
         // then
         assertThat(response.getMessage()).isEqualTo("password는 필수 항목입니다.");
     }
+
+    @Test
+    @DisplayName("access token이 존재하지 않는 경우 오류를 반환한다.")
+    void noAccessToken() {
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(response.getMessage()).isEqualTo("토큰 정보가 없습니다.");
+    }
+
+    @Test
+    @DisplayName("access token type이 올바르지 않은 경우 오류를 반환한다.")
+    void invalidAccessTokenType() {
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .header("Authorization", "abcd aaaa")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("access token이 올바르지 않은 경우 오류를 반환한다.")
+    void invalidAccessToken() {
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2("abcd")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다.");
+    }
 }
