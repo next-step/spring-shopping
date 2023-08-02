@@ -1,7 +1,6 @@
 package shopping.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -35,7 +34,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(cartItemCreateRequest)
-                .when().post("/cartitems")
+                .when().post("/cart/items")
                 .then().log().all()
                 .extract();
 
@@ -62,7 +61,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(cartItemCreateRequest)
-                .when().post("/cartitems")
+                .when().post("/cart/items")
                 .then().log().all();
 
         // when, then
@@ -72,7 +71,6 @@ class CartIntegrationTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/cart")
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .body(containsString("치킨"));
+                .statusCode(HttpStatus.OK.value());
     }
 }

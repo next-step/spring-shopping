@@ -1,7 +1,6 @@
 package shopping.controller;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import shopping.application.CartService;
+import shopping.auth.RequestToken;
 import shopping.dto.CartItemCreateRequest;
 import shopping.dto.CartItemResponse;
 
@@ -28,19 +28,16 @@ public class CartController {
 
     @PostMapping("/cart/items")
     public ResponseEntity<Void> createCartItem(
-            HttpServletRequest request,
+            @RequestToken String email,
             @RequestBody CartItemCreateRequest cartItemCreateRequest) {
 
-        String email = (String) request.getAttribute("email");
         cartService.createCartItem(email, cartItemCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/cart/items")
-    public ResponseEntity<List<CartItemResponse>> getCartItems(
-            HttpServletRequest request) {
+    public ResponseEntity<List<CartItemResponse>> getCartItems(@RequestToken String email) {
 
-        String email = (String) request.getAttribute("email");
         List<CartItemResponse> cartItems = cartService.findAllByEmail(email);
         return ResponseEntity.ok().body(cartItems);
     }
