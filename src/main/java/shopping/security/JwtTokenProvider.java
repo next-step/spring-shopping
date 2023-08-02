@@ -8,7 +8,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import shopping.domain.member.Email;
 
 @Component
 public class JwtTokenProvider {
@@ -19,8 +18,8 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.expire-time}")
     private long validityInMilliseconds;
 
-    public String createToken(final Email payload) {
-        final Claims claims = Jwts.claims().setSubject(payload.getValue());
+    public String createToken(final Long payload) {
+        final Claims claims = Jwts.claims().setSubject(String.valueOf(payload));
         final Date now = new Date();
         final Date validity = new Date(now.getTime() + validityInMilliseconds);
 

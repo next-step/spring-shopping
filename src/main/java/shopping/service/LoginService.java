@@ -31,7 +31,7 @@ public class LoginService {
         final Password requestPassword = Password.from(loginRequest.getPassword());
         member.matchPassword(requestPassword);
 
-        final String token = jwtTokenProvider.createToken(member.getEmail());
+        final String token = jwtTokenProvider.createToken(member.getId());
         return new LoginResponse(token);
     }
 }
