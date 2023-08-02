@@ -46,6 +46,9 @@ public class CartProductService {
     }
 
     public List<FindCartProductResponse> findCartProducts(Long memberId) {
-        return List.of();
+        return cartProductRepository.findAllByMemberId(memberId)
+                .stream()
+                .map(FindCartProductResponse::from)
+                .collect(Collectors.toList());
     }
 }
