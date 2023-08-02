@@ -7,6 +7,10 @@ public class CartProductQuantity {
 
     private final int value;
 
+    protected CartProductQuantity() {
+        this.value = 0;
+    }
+
     public CartProductQuantity(final int value) {
         validateCountLessThanEqualZero(value);
 

@@ -26,20 +26,16 @@ public class CartProduct {
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "quantity"))
-    private CartProductQuantity quantity;
+    private CartProductQuantity quantity = new CartProductQuantity(1);
 
     protected CartProduct() {
     }
 
     public CartProduct(
-        final Long id,
         final Long memberId,
-        final Long productId,
-        final CartProductQuantity quantity
+        final Long productId
     ) {
-        this.id = id;
         this.memberId = memberId;
         this.productId = productId;
-        this.quantity = quantity;
     }
 }
