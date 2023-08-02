@@ -18,3 +18,14 @@ create table if not exists MEMBER
     password varchar(18) not null,
     primary key(member_id)
 );
+
+create table if not exists CART_ITEM
+(
+    cart_item_id bigint auto_increment not null,
+    member_id bigint not null,
+    product_id bigint not null,
+    quantity int not null,
+    primary key(cart_item_id),
+    foreign key (member_id) references MEMBER(member_id),
+    foreign key (product_id) references PRODUCT(product_id)
+);
