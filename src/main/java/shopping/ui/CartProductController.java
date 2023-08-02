@@ -22,5 +22,6 @@ public class CartProductController {
     @ResponseBody
     @PostMapping("/{productId}")
     public void addCartProduct(@PathVariable Long productId, HttpServletRequest request) {
+        cartProductService.addProduct((Long) request.getAttribute("memberId"), productId);
     }
 }
