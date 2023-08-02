@@ -3,7 +3,7 @@ package shopping.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import shopping.controller.TokenInterceptor;
+import shopping.auth.TokenInterceptor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

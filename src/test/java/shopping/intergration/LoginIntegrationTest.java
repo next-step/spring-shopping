@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.auth.JwtTokenProvider;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.ErrorCode;
-import shopping.security.JwtTokenProvider;
 
 class LoginIntegrationTest extends IntegrationTest {
 

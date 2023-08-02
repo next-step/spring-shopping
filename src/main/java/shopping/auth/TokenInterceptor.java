@@ -1,4 +1,4 @@
-package shopping.controller;
+package shopping.auth;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingApiException;
-import shopping.security.JwtTokenProvider;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {

@@ -2,6 +2,7 @@ package shopping.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.auth.JwtTokenProvider;
 import shopping.domain.member.Email;
 import shopping.domain.member.Member;
 import shopping.domain.member.Password;
@@ -10,7 +11,6 @@ import shopping.dto.response.LoginResponse;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingApiException;
 import shopping.repository.MemberRepository;
-import shopping.security.JwtTokenProvider;
 
 @Service
 public class LoginService {

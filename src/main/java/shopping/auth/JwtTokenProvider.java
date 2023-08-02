@@ -1,4 +1,4 @@
-package shopping.security;
+package shopping.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
