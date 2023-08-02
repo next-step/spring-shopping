@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -135,5 +137,55 @@ class CartIntegrationTest extends IntegrationTest {
                 .getList(".", CartItemResponse.class);
 
         assertThat(cartItemResponses.get(0).getQuantity()).isEqualTo(3);
+    }
+
+
+    @DisplayName("장바구니 물건 수량 변경시 수량이 양수가 아니면 BadRequest")
+    @Test
+    void updateCartItemsQuantityNotPositiveQuantity() {
+        // given
+        CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
+        String accessToken = RestAssured
+                .given().log().all()
+                .body(new LoginRequest("admin@example.com", "123456789"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .extract().jsonPath().getString("accessToken");
+
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(cartItemCreateRequest)
+                .when().post("/cart/items")
+                .then().log().all();
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/cart/items")
+                .then().log().all()
+                .extract();
+        List<Long> cartItemIds = response.jsonPath()
+                .getList(".", CartItemResponse.class)
+                .stream()
+                .map(CartItemResponse::getId)
+                .collect(Collectors.toList());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("quantity", 0);
+
+        // when, then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().patch("/cart/items/{:id}", cartItemIds.get(0))
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
