@@ -14,10 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.domain.CartItem;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.CartItemCreateRequest;
+import shopping.dto.CartItemUpdateRequest;
+import shopping.exception.CartItemNotFoundException;
 import shopping.exception.UserNotFoundException;
+import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -103,5 +107,76 @@ class CartServiceTest {
 
         // then
         verify(cartItemRepository, times(1)).save(any());
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 수량 변경")
+    @Test
+    void updateCartItemQuantity() {
+        // given
+        CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
+        String email = "test@example.com";
+        User user = new User(1L, email, "1234");
+        Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+        when(cartItemRepository.findById(1L))
+                .thenReturn(Optional.of(new CartItem(1L, user, product, 1)));
+
+        // when
+        assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+                .doesNotThrowAnyException();
+
+        // then
+        verify(cartItemRepository, times(1)).save(new CartItem(1L, user, product, 5));
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 수량 변경시 유저 없으면 예외 발생")
+    @Test
+    void updateCartItemQuantityNotUserFound() {
+        // given
+        CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
+        String email = "test@example.com";
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.empty());
+
+        // when, then
+        assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 수량 변경시 장바구니 아이템 없으면 예외 발생")
+    @Test
+    void updateCartItemQuantityNotCartItemFound() {
+        // given
+        CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
+        String email = "test@example.com";
+        User user = new User(1L, email, "1234");
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+        when(cartItemRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // when, then
+        assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+                .isInstanceOf(CartItemNotFoundException.class);
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 수량 변경시 유저의 장바구니 아이템이 아닐 시 접근 제한 예외 발생")
+    @Test
+    void updateCartItemQuantityNotUsersItem() {
+        // given
+        CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
+        String email = "test@example.com";
+        User user1 = new User(1L, email, "1234");
+        User user2 = new User(2L, "a@b.c", "1234");
+        Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.of(user1));
+        when(cartItemRepository.findById(1L))
+                .thenReturn(Optional.of(new CartItem(1L, user2, product, 1)));
+
+        // when, then
+        assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+                .isInstanceOf(UserNotMatchException.class);
     }
 }

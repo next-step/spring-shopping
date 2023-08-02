@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -64,5 +65,24 @@ public class CartItem {
 
     public CartItem updateQuantity(Integer quantity) {
         return new CartItem(this.id, this.user, this.product, quantity);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(id, cartItem.id) && Objects.equals(user,
+                cartItem.user) && Objects.equals(product, cartItem.product)
+                && Objects.equals(quantity, cartItem.quantity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, product, quantity);
     }
 }

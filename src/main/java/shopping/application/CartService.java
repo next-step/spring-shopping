@@ -10,7 +10,9 @@ import shopping.domain.User;
 import shopping.dto.CartItemCreateRequest;
 import shopping.dto.CartItemResponse;
 import shopping.dto.CartItemUpdateRequest;
+import shopping.exception.CartItemNotFoundException;
 import shopping.exception.UserNotFoundException;
+import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -59,10 +61,10 @@ public class CartService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(email));
         CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
 
         if (!cartItem.getUser().equals(user)) {
-            throw new RuntimeException();
+            throw new UserNotMatchException();
         }
 
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
