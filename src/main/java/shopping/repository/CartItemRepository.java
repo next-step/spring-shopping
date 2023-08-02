@@ -11,5 +11,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     Optional<CartItem> findByUserAndProduct(User user, Product product);
 
+    // TODO : 쿼리 최적화
     List<CartItem> findAllByUserEmail(String email);
 }

@@ -50,13 +50,13 @@
       let element = '<hr class="divide-line-gray mt-10" />';
       data.forEach(cartItem => {
         element += `
-                    <div class="shopping-container">
+                    <div class="cart-container">
                       <div class="flex gap-15 mt-10">
                         <img class="w-144 h-144 cover-image" src="${cartItem.imageUrl}"/>
-                        <span class="shopping-name">${cartItem.name}</span>
+                        <span class="cart-name">${cartItem.name}</span>
                       </div>
                       <div class="flex-col-center justify-around gap-15">
-                        <button class="shopping-trash-svg" onclick="removeCartItem(${cartItem.id})">
+                        <button class="cart-trash-svg" onclick="removeCartItem(${cartItem.id})">
                             <img src="./assets/svgs/trash.svg" alt="삭제" />
                         </button>
                         <div class="number-input-container">

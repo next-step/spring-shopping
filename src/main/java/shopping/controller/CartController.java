@@ -21,7 +21,12 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @PostMapping("/cartitems")
+    @GetMapping("/cart")
+    public String getCartPage() {
+        return "cart";
+    }
+
+    @PostMapping("/cart/items")
     public ResponseEntity<Void> createCartItem(
             HttpServletRequest request,
             @RequestBody CartItemCreateRequest cartItemCreateRequest) {
@@ -31,12 +36,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/cart")
-    public String getCartPage() {
-        return "cart";
-    }
-
-    @GetMapping("/cartitems")
+    @GetMapping("/cart/items")
     public ResponseEntity<List<CartItemResponse>> getCartItems(
             HttpServletRequest request) {
 

@@ -16,7 +16,7 @@
 - 장바구니와 관련된 아래 기능을 구현합니다.
     - [ ] 장바구니에 상품 아이템 추가
         ```
-        POST /cart HTTP/1.1
+        POST /cart/items HTTP/1.1
         content-type: application/json
         host: localhost:8080
         
@@ -26,12 +26,12 @@
         ```
     - [ ] 장바구니에 담긴 아이템 목록 조회
         ```
-        GET /cart HTTP/1.1
+        GET /cart/items HTTP/1.1
         host: localhost:8080
         ```
     - [ ] 장바구니에 담긴 아이템 수량 변경
         ```
-        PUT /cartitems/1 HTTP/1.1
+        PATCH /cart/items/1 HTTP/1.1
         content-type: application/json
         host: localhost:8080
         
@@ -41,7 +41,7 @@
         ```
     - [ ] 장바구니에 담긴 아이템 제거
         ```
-        DELETE /cartitems/1 HTTP/1.1
+        DELETE /cart/items/1 HTTP/1.1
         content-type: application/json
         host: localhost:8080
         ```
