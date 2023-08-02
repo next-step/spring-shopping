@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.product;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;

@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.member;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

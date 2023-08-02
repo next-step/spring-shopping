@@ -10,9 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.Member;
-import shopping.domain.MemberEmail;
-import shopping.domain.MemberPassword;
+import shopping.domain.member.Member;
+import shopping.domain.member.MemberEmail;
+import shopping.domain.member.MemberPassword;
 import shopping.dto.request.LoginRequest;
 import shopping.repository.MemberRepository;
 

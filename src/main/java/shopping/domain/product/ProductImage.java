@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.product;
 
 import java.util.Objects;
 import javax.persistence.Embeddable;

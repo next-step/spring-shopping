@@ -2,7 +2,7 @@ package shopping.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import shopping.domain.Product;
+import shopping.domain.product.Product;
 import shopping.repository.ProductRepository;
 
 @Service

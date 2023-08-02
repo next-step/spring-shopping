@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.member;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
