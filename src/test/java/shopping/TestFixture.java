@@ -37,4 +37,12 @@ public class TestFixture {
             .then().log().all()
             .extract();
     }
+
+    public static ExtractableResponse<Response> readCartItems(String accessToken) {
+        return RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .when().get("/cart/items")
+            .then().log().all().extract();
+    }
 }
