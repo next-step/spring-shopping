@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Member;
 import shopping.dto.LoginRequest;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenProvider;
+import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
 
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class AuthServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
-    private TokenProvider tokenProvider;
+    private TokenManager tokenProvider;
 
     @Nested
     @DisplayName("login 메소드는")

@@ -5,7 +5,7 @@ import shopping.domain.Member;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenProvider;
+import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
 
 
@@ -13,9 +13,9 @@ import shopping.repository.MemberRepository;
 public class AuthService {
 
     private MemberRepository memberRepository;
-    private TokenProvider tokenProvider;
+    private TokenManager tokenProvider;
 
-    public AuthService(MemberRepository memberRepository, TokenProvider tokenProvider) {
+    public AuthService(MemberRepository memberRepository, TokenManager tokenProvider) {
         this.memberRepository = memberRepository;
         this.tokenProvider = tokenProvider;
     }

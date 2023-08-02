@@ -1,12 +1,10 @@
 package shopping.integration;
 
 import io.restassured.RestAssured;
-import io.restassured.authentication.FormAuthConfig;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 import shopping.dto.LoginRequest;
-import shopping.dto.LoginResponse;
 
 public class AuthIntegrationSupporter {
 
