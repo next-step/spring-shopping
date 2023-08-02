@@ -70,4 +70,17 @@ public class CartService {
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
         cartItemRepository.save(updatedCartItem);
     }
+
+    public void deleteCartItem(String email, Long id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+        CartItem cartItem = cartItemRepository.findById(id)
+                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
+
+        if (!cartItem.getUser().equals(user)) {
+            throw new UserNotMatchException();
+        }
+
+        cartItemRepository.deleteById(id);
+    }
 }

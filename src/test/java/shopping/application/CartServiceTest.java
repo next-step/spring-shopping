@@ -179,4 +179,71 @@ class CartServiceTest {
         assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
                 .isInstanceOf(UserNotMatchException.class);
     }
+
+    @DisplayName("장바구니에 담긴 아이템 삭제")
+    @Test
+    void deleteCartItem() {
+        // given
+        String email = "test@example.com";
+        User user = new User(1L, email, "1234");
+        Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+        when(cartItemRepository.findById(1L))
+                .thenReturn(Optional.of(new CartItem(1L, user, product, 1)));
+
+        // when
+        assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+                .doesNotThrowAnyException();
+
+        // then
+        verify(cartItemRepository, times(1)).deleteById(1L);
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 삭제시 유저 없으면 예외 발생")
+    @Test
+    void deleteCartItemNotUserFound() {
+        // given
+        String email = "test@example.com";
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.empty());
+
+        // when, then
+        assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 삭제시 장바구니 아이템 없으면 예외 발생")
+    @Test
+    void deleteCartItemNotCartItemFound() {
+        // given
+        String email = "test@example.com";
+        User user = new User(1L, email, "1234");
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.of(user));
+        when(cartItemRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // when, then
+        assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+                .isInstanceOf(CartItemNotFoundException.class);
+    }
+
+    @DisplayName("장바구니에 담긴 아이템 삭제시 유저의 장바구니 아이템이 아닐 시 접근 제한 예외 발생")
+    @Test
+    void deleteCartItemNotUsersItem() {
+        // given
+        String email = "test@example.com";
+        User user1 = new User(1L, email, "1234");
+        User user2 = new User(2L, "a@b.c", "1234");
+        Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
+        when(userRepository.findByEmail(email))
+                .thenReturn(Optional.of(user1));
+        when(cartItemRepository.findById(1L))
+                .thenReturn(Optional.of(new CartItem(1L, user2, product, 1)));
+
+        // when, then
+        assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+                .isInstanceOf(UserNotMatchException.class);
+    }
 }

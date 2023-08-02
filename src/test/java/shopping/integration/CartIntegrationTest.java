@@ -139,7 +139,6 @@ class CartIntegrationTest extends IntegrationTest {
         assertThat(cartItemResponses.get(0).getQuantity()).isEqualTo(3);
     }
 
-
     @DisplayName("장바구니 물건 수량 변경시 수량이 양수가 아니면 BadRequest")
     @Test
     void updateCartItemsQuantityNotPositiveQuantity() {
@@ -187,5 +186,63 @@ class CartIntegrationTest extends IntegrationTest {
                 .when().patch("/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("장바구니 물건 삭제")
+    @Test
+    void deleteCartItem() {
+        // given
+        CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
+        String accessToken = RestAssured
+                .given().log().all()
+                .body(new LoginRequest("admin@example.com", "123456789"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .extract().jsonPath().getString("accessToken");
+
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(cartItemCreateRequest)
+                .when().post("/cart/items")
+                .then().log().all();
+
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/cart/items")
+                .then().log().all()
+                .extract();
+        List<Long> cartItemIds = response.jsonPath()
+                .getList(".", CartItemResponse.class)
+                .stream()
+                .map(CartItemResponse::getId)
+                .collect(Collectors.toList());
+
+        // when
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/cart/items/{:id}", cartItemIds.get(0))
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+
+        // then
+        ExtractableResponse<Response> result = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/cart/items")
+                .then().log().all()
+                .extract();
+        int length = result.jsonPath()
+                .getList(".", CartItemResponse.class).size();
+
+        assertThat(length).isEqualTo(cartItemIds.size() - 1);
     }
 }
