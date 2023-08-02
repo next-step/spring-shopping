@@ -18,9 +18,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String authorization = request.getHeader(AUTHORIZATION_HEADER);
-
         if (authorization != null && authorization.startsWith(BEARER_PREFIX)) {
             Long memberId = tokenManager.decodeToken(authorization.substring(BEARER_PREFIX.length()));
             request.setAttribute("memberId", memberId);
