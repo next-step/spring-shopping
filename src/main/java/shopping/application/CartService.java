@@ -8,6 +8,7 @@ import shopping.domain.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.CartUpdateRequest;
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRespository;
 import shopping.repository.ProductRepository;
@@ -42,8 +43,7 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public List<CartResponse> findAll(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow()
+        return findUserById(userId)
                 .getCartItems()
                 .stream()
                 .map(CartResponse::from)
@@ -55,9 +55,7 @@ public class CartService {
         User user = findUserById(userId);
         CartItem item = findCartItemById(cartItemId);
 
-        if (!user.containsCartItem(item)) {
-            throw new ShoppingException("유효하지 않은 cart item 입니다 : " + cartItemId);
-        }
+        validateUserContainsItem(user, item);
 
         item.updateQuantity(request.getQuantity());
     }
@@ -67,23 +65,29 @@ public class CartService {
         User user = findUserById(userId);
         CartItem item = findCartItemById(cartItemId);
 
-        if (!user.containsCartItem(item)) {
-            throw new ShoppingException("유효하지 않은 cart item 입니다 : " + cartItemId);
-        }
+        validateUserContainsItem(user, item);
 
         cartItemRespository.delete(item);
     }
 
+    private void validateUserContainsItem(User user, CartItem item) {
+        if (!user.containsCartItem(item)) {
+            throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
+        }
+    }
+
     private CartItem findCartItemById(Long id) {
         return cartItemRespository.findById(id)
-                .orElseThrow(() -> new ShoppingException("존재하지 않는 장바구니 상품 id입니다 : " + id));
+                .orElseThrow(() -> new ShoppingException(ErrorType.CART_ITEM_NO_EXIST, id));
     }
 
     private User findUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ShoppingException("존재하지 않는 사용자 id입니다 : " + id));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ShoppingException(ErrorType.USER_NO_EXIST, id));
     }
 
     private Product findProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new ShoppingException("존재하지 않는 상품 id입니다 : " + id));
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ShoppingException(ErrorType.PRODUCT_NO_EXIST, id));
     }
 }

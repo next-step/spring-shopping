@@ -1,6 +1,7 @@
 package shopping.domain;
 
 
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
 import javax.persistence.Embeddable;
@@ -21,7 +22,7 @@ public class Quantity {
 
     private void validatePositive(int quantity) {
         if (quantity <= 0) {
-            throw new ShoppingException("수량은 0보다 작거나 같을 수 없습니다.");
+            throw new ShoppingException(ErrorType.QUANTITY_INVALID);
         }
     }
 

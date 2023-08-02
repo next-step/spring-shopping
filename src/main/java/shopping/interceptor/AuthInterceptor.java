@@ -2,6 +2,7 @@ package shopping.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 import shopping.infrastructure.JwtProvider;
 
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
+    private static final String TOKEN_TYPE = "Bearer";
+    private static final String AUTHENTICATION_HEADER = "Authorization";
+    
     private final JwtProvider jwtProvider;
 
     public AuthInterceptor(JwtProvider jwtProvider) {
@@ -19,8 +23,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        final String accessToken = request.getHeader("Authorization");
-        System.out.println("accessToken = " + accessToken);
+        final String accessToken = request.getHeader(AUTHENTICATION_HEADER);
         validateNotNull(accessToken);
 
         final String token = extractToken(accessToken);
@@ -33,21 +36,21 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private void validateToken(String token) {
         if (!jwtProvider.validateToken(token)) {
-            throw new ShoppingException("토큰이 유효하지 않습니다.");
+            throw new ShoppingException(ErrorType.TOKEN_INVALID);
         }
     }
 
     private void validateNotNull(String accessToken) {
         if (accessToken == null) {
-            throw new ShoppingException("토큰 정보가 없습니다.");
+            throw new ShoppingException(ErrorType.NO_TOKEN);
         }
     }
 
     private String extractToken(String accessToken) {
         final String tokenType = accessToken.split(" ")[0];
 
-        if (!tokenType.equals("Bearer")) {
-            throw new ShoppingException("토큰이 유효하지 않습니다.");
+        if (!tokenType.equals(TOKEN_TYPE)) {
+            throw new ShoppingException(ErrorType.TOKEN_INVALID);
         }
 
         final String token = accessToken.split(" ")[1];

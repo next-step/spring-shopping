@@ -1,6 +1,7 @@
 package shopping.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
 public class CartCreateRequest {
@@ -19,13 +20,13 @@ public class CartCreateRequest {
 
     private void validatePositive(Long productId) {
         if (productId <= 0) {
-            throw new ShoppingException("productId는 양의 정수입니다.");
+            throw new ShoppingException(ErrorType.PRODUCT_INVALID);
         }
     }
 
     private void validateNotNull(Long productId) {
         if (productId == null) {
-            throw new ShoppingException("productId는 필수 항목입니다.");
+            throw new ShoppingException(ErrorType.PRODUCT_NULL);
         }
     }
 

@@ -9,6 +9,6 @@ import shopping.dto.ErrorResponse;
 public class GlobalExceptionHandler {
     @ExceptionHandler(ShoppingException.class)
     public ResponseEntity<ErrorResponse> handleShoppingException(ShoppingException e) {
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), e.getStatus());
     }
 }

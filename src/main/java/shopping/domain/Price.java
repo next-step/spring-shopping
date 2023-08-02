@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
 import javax.persistence.Embeddable;
@@ -21,7 +22,7 @@ public class Price {
 
     private void validateIsPositive(int value) {
         if (value <= 0) {
-            throw new ShoppingException("가격은 음수일 수 없습니다.");
+            throw new ShoppingException(ErrorType.PRICE_INVALID);
         }
     }
 

@@ -6,6 +6,7 @@ import shopping.domain.Password;
 import shopping.domain.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 import shopping.infrastructure.JwtProvider;
 import shopping.infrastructure.SHA256PasswordEncoder;
@@ -28,7 +29,7 @@ public class AuthService {
         Email email = new Email(request.getEmail());
         Password password = Password.createEncodedPassword(request.getPassword(), encoder);
         User user = userRepository.findByEmailAndPassword(email, password)
-                .orElseThrow(() -> new ShoppingException("잘못된 로그인 요청입니다."));
+                .orElseThrow(() -> new ShoppingException(ErrorType.WRONG_LOGIN_REQUEST));
 
         return new LoginResponse(jwtProvider.create(user.getId().toString()));
     }

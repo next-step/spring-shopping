@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
 import javax.persistence.Embeddable;
@@ -25,13 +26,13 @@ public class Email {
 
     private void validateLength(String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new ShoppingException("이메일 길이는 50자를 넘을 수 없습니다.");
+            throw new ShoppingException(ErrorType.EMAIL_TOO_LONG);
         }
     }
 
     private void validateForm(String value) {
         if (!value.matches(FORM_PATTERN)) {
-            throw new ShoppingException("이메일 형식이 올바르지 않습니다.");
+            throw new ShoppingException(ErrorType.EMAIL_INVALID_FORM);
         }
     }
 

@@ -1,11 +1,26 @@
 package shopping.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class ShoppingException extends RuntimeException {
-    public ShoppingException(String message) {
-        super(message);
+
+    private HttpStatus status;
+
+    public ShoppingException(ErrorType errorType) {
+        super(errorType.getMessage());
+        this.status = errorType.getStatus();
     }
 
-    public ShoppingException(String message, Throwable e) {
-        super(message, e);
+    public ShoppingException(ErrorType errorType, Object value) {
+        this(errorType, value, null);
+    }
+
+    public ShoppingException(ErrorType errorType, Object value, Throwable cause) {
+        super(errorType.getMessage() + value.toString(), cause);
+        this.status = errorType.getStatus();
+    }
+
+    public HttpStatus getStatus() {
+        return status;
     }
 }

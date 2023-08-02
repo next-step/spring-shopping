@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
 import javax.persistence.Embeddable;
@@ -23,7 +24,7 @@ public class Image {
 
     private void validateLength(String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new ShoppingException("이미지 주소는 255자를 넘을 수 없습니다.");
+            throw new ShoppingException(ErrorType.IMAGE_TOO_LONG);
         }
     }
 

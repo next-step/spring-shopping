@@ -1,6 +1,7 @@
 package shopping.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
 public class LoginRequest {
@@ -21,13 +22,13 @@ public class LoginRequest {
 
     private void validatePasswordNotNull(String password) {
         if (password == null) {
-            throw new ShoppingException("password는 필수 항목입니다.");
+            throw new ShoppingException(ErrorType.PASSWORD_NULL);
         }
     }
 
     private void validateEmailNotNull(String email) {
         if (email == null) {
-            throw new ShoppingException("email은 필수 항목입니다.");
+            throw new ShoppingException(ErrorType.EMAIL_NULL);
         }
     }
 
