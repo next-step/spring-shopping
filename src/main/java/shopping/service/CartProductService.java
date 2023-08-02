@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartProduct;
 import shopping.dto.request.CartProductRequest;
+import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
 
@@ -20,18 +21,22 @@ public class CartProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public CartProduct createCartProduct(
         final Long memberId,
         final CartProductRequest cartProductRequest
     ) {
         final Long productId = cartProductRequest.getProductId();
 
-        // TODO: 언해피케이스 때 수정
-        productRepository.findById(productId);
-        cartProductRepository.findByMemberIdAndProductId(memberId, productId);
+        productRepository.findById(productId)
+            .orElseThrow(() -> new ShoppingException("존재하지 않는 상품입니다. 입력값: " + productId));
 
-        final CartProduct cartProduct = new CartProduct(memberId, productId);
+        cartProductRepository.findByMemberIdAndProductId(memberId, productId)
+            .ifPresent(cartProduct -> {
+                throw new ShoppingException(
+                    "이미 장바구니에 담긴 상품입니다. 입력값: " + cartProduct.getProductId());
+            });
 
-        return cartProductRepository.save(cartProduct);
+        return cartProductRepository.save(new CartProduct(memberId, productId));
     }
 }

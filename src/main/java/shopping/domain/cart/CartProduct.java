@@ -38,4 +38,20 @@ public class CartProduct {
         this.memberId = memberId;
         this.productId = productId;
     }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public Long getMemberId() {
+        return this.memberId;
+    }
+
+    public Long getProductId() {
+        return this.productId;
+    }
+
+    public CartProductQuantity getQuantity() {
+        return this.quantity;
+    }
 }
