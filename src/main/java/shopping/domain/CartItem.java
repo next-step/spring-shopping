@@ -61,4 +61,8 @@ public class CartItem {
     public CartItem addQuantity(Integer count) {
         return new CartItem(this.id, this.user, this.product, this.quantity + count);
     }
+
+    public CartItem updateQuantity(Integer quantity) {
+        return new CartItem(this.id, this.user, this.product, quantity);
+    }
 }

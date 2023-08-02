@@ -34,7 +34,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(tokenProvider))
-                .addPathPatterns("/cart/items");
+                .addPathPatterns("/cart/items/**");
     }
 
     @Override

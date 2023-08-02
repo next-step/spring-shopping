@@ -6,7 +6,7 @@ const addCartItem = (productId) => {
     return;
   }
 
-  fetch('/cartitems', {
+  fetch('/cart/items', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${credentials}`,
