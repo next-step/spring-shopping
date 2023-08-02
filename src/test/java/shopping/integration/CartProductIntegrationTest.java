@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("상품 추가 기능")
+@DisplayName("장바구니 기능")
 public class CartProductIntegrationTest extends IntegrationTest {
 
     @DisplayName("장바구니에 상품을 추가한다")
@@ -24,5 +24,15 @@ public class CartProductIntegrationTest extends IntegrationTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
+    }
+
+    @DisplayName("장바구니에 있는 상품을 조회한다")
+    @Test
+    void findCartProducts() {
+        // when
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.findCartProducts();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }
