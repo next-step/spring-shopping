@@ -46,16 +46,14 @@
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      console.log("응답 : ", response);
       return response.json();
     }).then((data) => {
-      console.log("데이터 : ", data);
       let element = '<hr class="divide-line-gray mt-10" />';
       data.forEach(cartItem => {
         element += `
                     <div class="cart-container">
                       <div class="flex gap-15 mt-10">
-                        <img class="w-144 h-144 cover-image" src="assets/${cartItem.imageUuidFileName}"/> <!-- 장바구니 아이템 상품의 이미지 -->
+                        <img class="w-144 h-144 cover-image" src="assets/${cartItem.imageUuidFileName}"/>
                         <span class="cart-name">${cartItem.name}</span>
                       </div>
                       <div class="flex-col-center justify-around gap-15">
@@ -63,7 +61,7 @@
                             <img src="./assets/svgs/trash.svg" alt="삭제" />
                         </button>
                         <div class="number-input-container">
-                          <input type="number" class="number-input" value="${cartItem.quantity}" /> <!-- 장바구니 아이템 수량 -->
+                          <input type="number" class="number-input" value="${cartItem.quantity}" />
                           <div>
                             <button class="number-input-button" onclick="updateCartItemQuantity(${cartItem.cartItemId}, ${cartItem.quantity} + 1)">▲</button>
                             <button class="number-input-button" onclick="updateCartItemQuantity(${cartItem.cartItemId}, ${cartItem.quantity} - 1)">▼</button>
