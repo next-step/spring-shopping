@@ -22,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(jwtProvider))
             .excludePathPatterns(
-                "/assets/**", "/js/**", "/css/**", "/error/**",
+                "/assets/**", "/js/**", "/css/**", "/error/**", "/favicon.ico",
                 "/", "/user/login/**", "/cart");
     }
 
