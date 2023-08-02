@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import shopping.product.domain.Product;
 import shopping.product.domain.vo.Money;
 
 @Entity
@@ -28,6 +29,11 @@ public class CartItem {
         this.productName = productName;
         this.productPrice = productPrice;
         this.quantity = quantity;
+    }
+
+    public boolean isProductChanged(Product product) {
+        return !this.productName.equals(product.getName()) ||
+            !this.productPrice.equals(product.getPrice());
     }
 
     public Long getId() {
