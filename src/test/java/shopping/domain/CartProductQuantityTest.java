@@ -7,10 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import shopping.domain.cart.CartProductCount;
+import shopping.domain.cart.CartProductQuantity;
 import shopping.exception.ShoppingException;
 
-class CartProductCountTest {
+class CartProductQuantityTest {
 
     @Test
     @DisplayName("장바구니 상품 개수를 생성한다.")
@@ -19,7 +19,7 @@ class CartProductCountTest {
         final int value = 7;
 
         /* when & then */
-        assertThatCode(() -> new CartProductCount(value))
+        assertThatCode(() -> new CartProductQuantity(value))
             .doesNotThrowAnyException();
     }
 
@@ -27,7 +27,7 @@ class CartProductCountTest {
     @ValueSource(ints = {-1, 0})
     @DisplayName("장바구니 상품 개수이 0이하 인 경우, ShoppingException을 던진다.")
     void createCartProductCountFailWithLessThanEqualZero(final int value) {
-        assertThatCode(() -> new CartProductCount(value))
+        assertThatCode(() -> new CartProductQuantity(value))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("장바구니 상품 개수은 0이하면 안됩니다. 입력값: " + value);
     }
@@ -36,8 +36,8 @@ class CartProductCountTest {
     @DisplayName("장바구니 상품 개수이 동일하면 동일한 객체이다.")
     void equals() {
         /* given */
-        final CartProductCount origin = new CartProductCount(100);
-        final CartProductCount another = new CartProductCount(100);
+        final CartProductQuantity origin = new CartProductQuantity(100);
+        final CartProductQuantity another = new CartProductQuantity(100);
 
         /* when & then */
         assertThat(origin).isEqualTo(another);

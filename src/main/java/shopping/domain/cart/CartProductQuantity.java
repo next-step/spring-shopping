@@ -3,11 +3,11 @@ package shopping.domain.cart;
 import java.util.Objects;
 import shopping.exception.ShoppingException;
 
-public class CartProductCount {
+public class CartProductQuantity {
 
     private final int value;
 
-    public CartProductCount(final int value) {
+    public CartProductQuantity(final int value) {
         validateCountLessThanEqualZero(value);
 
         this.value = value;
@@ -27,7 +27,7 @@ public class CartProductCount {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final CartProductCount that = (CartProductCount) o;
+        final CartProductQuantity that = (CartProductQuantity) o;
         return value == that.value;
     }
 
