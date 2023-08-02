@@ -16,7 +16,7 @@ public class Product {
     private Long id;
 
     @Column(nullable = false, length = 20)
-    private String name;
+    private Name name;
 
     @Column(nullable = false)
     private String image;
@@ -29,7 +29,7 @@ public class Product {
 
     public Product(Long id, String name, String image, int price) {
         this.id = id;
-        this.name = name;
+        this.name = new Name(name);
         this.image = image;
         this.price = new Price(price);
     }
@@ -39,7 +39,7 @@ public class Product {
     }
 
     public String getName() {
-        return name;
+        return name.getValue();
     }
 
     public String getImage() {
