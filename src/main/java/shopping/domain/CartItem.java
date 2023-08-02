@@ -26,7 +26,6 @@ public class CartItem {
     private Quantity quantity;
 
     protected CartItem() {
-
     }
 
     public CartItem(Long id, User user, Product product, int quantity) {

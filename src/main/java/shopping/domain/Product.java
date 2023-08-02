@@ -22,7 +22,7 @@ public class Product {
     private String image;
 
     @Column
-    private int price;
+    private Price price;
 
     protected Product() {
     }
@@ -31,7 +31,7 @@ public class Product {
         this.id = id;
         this.name = name;
         this.image = image;
-        this.price = price;
+        this.price = new Price(price);
     }
 
     public Long getId() {
@@ -47,6 +47,6 @@ public class Product {
     }
 
     public int getPrice() {
-        return price;
+        return price.getValue();
     }
 }
