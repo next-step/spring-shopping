@@ -24,7 +24,7 @@ public class User {
     private Email email;
 
     @Column(nullable = false)
-    private String password;
+    private Password password;
 
     @OneToMany
     @JoinColumn(name = "user_id")
@@ -37,7 +37,7 @@ public class User {
     public User(Long id, String email, String password) {
         this.id = id;
         this.email = new Email(email);
-        this.password = password;
+        this.password = new Password(password);
     }
 
     public CartItem addCartItem(Product product) {
@@ -69,11 +69,11 @@ public class User {
     }
 
     public String getEmail() {
-        return email.getValue();
+        return email.getEmail();
     }
 
     public String getPassword() {
-        return password;
+        return password.getPassword();
     }
 
     public List<CartItem> getCartItems() {

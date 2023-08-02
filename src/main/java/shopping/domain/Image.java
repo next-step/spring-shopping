@@ -9,16 +9,16 @@ public class Image {
 
     private static final int MAX_LENGTH = 255;
 
-    private final String value;
+    private final String image;
 
     protected Image() {
-        this.value = null;
+        this.image = null;
     }
 
     public Image(String value) {
         validateLength(value);
 
-        this.value = value;
+        this.image = value;
     }
 
     private void validateLength(String value) {
@@ -27,7 +27,7 @@ public class Image {
         }
     }
 
-    public String getValue() {
-        return value;
+    public String getImage() {
+        return image;
     }
 }

@@ -51,7 +51,7 @@ public class AuthIntegrationTest {
     @DisplayName("존재하지 않는 이메일로 로그인 시 로그인에 실패한다.")
     void loginWithNotExistEmail() {
         // when
-        ErrorResponse response = AuthUtil.login("error", "test1234")
+        ErrorResponse response = AuthUtil.login("error@abc.com", "test1234")
                 .as(ErrorResponse.class);
 
         // then

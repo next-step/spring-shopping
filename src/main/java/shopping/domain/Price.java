@@ -7,16 +7,16 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Price {
 
-    private final int value;
+    private final int price;
 
     protected Price() {
-        this.value = 0;
+        this.price = 0;
     }
 
     public Price(int value) {
         validateIsPositive(value);
-        
-        this.value = value;
+
+        this.price = value;
     }
 
     private void validateIsPositive(int value) {
@@ -25,7 +25,7 @@ public class Price {
         }
     }
 
-    public int getValue() {
-        return value;
+    public int getPrice() {
+        return price;
     }
 }

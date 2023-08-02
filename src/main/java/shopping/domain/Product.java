@@ -39,14 +39,14 @@ public class Product {
     }
 
     public String getName() {
-        return name.getValue();
+        return name.getName();
     }
 
     public String getImage() {
-        return image.getValue();
+        return image.getImage();
     }
 
     public int getPrice() {
-        return price.getValue();
+        return price.getPrice();
     }
 }

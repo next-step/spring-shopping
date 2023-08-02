@@ -8,17 +8,17 @@ import javax.persistence.Embeddable;
 public class Name {
 
     private static final int MAX_LENGTH = 20;
-    
-    private final String value;
+
+    private final String name;
 
     protected Name() {
-        this.value = null;
+        this.name = null;
     }
 
     public Name(String value) {
         validateLength(value);
 
-        this.value = value;
+        this.name = value;
     }
 
     private void validateLength(String value) {
@@ -27,7 +27,7 @@ public class Name {
         }
     }
 
-    public String getValue() {
-        return value;
+    public String getName() {
+        return name;
     }
 }

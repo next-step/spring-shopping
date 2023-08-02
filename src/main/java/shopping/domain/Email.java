@@ -10,17 +10,17 @@ public class Email {
     private static final int MAX_LENGTH = 50;
     private static final String FORM_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
-    private final String value;
+    private final String email;
 
     protected Email() {
-        this.value = null;
+        this.email = null;
     }
 
     public Email(String value) {
         validateLength(value);
         validateForm(value);
 
-        this.value = value;
+        this.email = value;
     }
 
     private void validateLength(String value) {
@@ -35,7 +35,7 @@ public class Email {
         }
     }
 
-    public String getValue() {
-        return value;
+    public String getEmail() {
+        return email;
     }
 }
