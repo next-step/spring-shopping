@@ -110,4 +110,36 @@ class CartIntegrationTest extends IntegrationTest {
         assertThat(updatedCartItems.get(0).getQuantity()).isEqualTo(
             cartItemUpdateRequest.getQuantity());
     }
+
+    @Test
+    @DisplayName("성공 : 장바구니에 있는 하나의 아이템을 삭제한다")
+    void successRemoveCartItem() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long cartItemId = cartItems.get(0).getCartItemId();
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .when().delete("/cart/items/{cartItemId}", cartItemId)
+            .then().log().all().extract();
+
+        /* then */
+        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(updatedCartItems).isEmpty();
+    }
 }
