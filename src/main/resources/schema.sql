@@ -13,7 +13,7 @@ CREATE TABLE member
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE cart
+CREATE TABLE cart_product
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id  BIGINT NOT NULL,

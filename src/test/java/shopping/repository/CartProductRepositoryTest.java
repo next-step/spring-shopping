@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import shopping.domain.Cart;
+import shopping.domain.CartProduct;
 
 import java.util.Optional;
 
@@ -13,10 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("CartRepository 클래스")
 @SpringBootTest
-public class CartRepositoryTest {
+public class CartProductRepositoryTest {
 
     @Autowired
-    private CartRepository cartRepository;
+    private CartProductRepository cartRepository;
 
     @Nested
     @DisplayName("findByMemberIdAndProductId 메소드는")
@@ -30,7 +30,7 @@ public class CartRepositoryTest {
             Long productId = 1L;
 
             // when
-            Optional<Cart> cartOptional = cartRepository.findByMemberIdAndProductId(memberId, productId);
+            Optional<CartProduct> cartOptional = cartRepository.findByMemberIdAndProductId(memberId, productId);
 
             // then
             assertThat(cartOptional).isPresent();

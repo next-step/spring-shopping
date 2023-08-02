@@ -7,12 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.Cart;
+import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
-import shopping.repository.CartRepository;
+import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
 
@@ -25,13 +25,13 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("CartService 클래스")
 @ExtendWith(MockitoExtension.class)
-public class CartServiceTest {
+public class CartProductServiceTest {
 
     @InjectMocks
-    private CartService cartService;
+    private CartProductService cartService;
 
     @Mock
-    private CartRepository cartRepository;
+    private CartProductRepository cartRepository;
 
     @Mock
     private MemberRepository memberRepository;
@@ -98,7 +98,7 @@ public class CartServiceTest {
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
             int initialQuantity = 5;
-            Cart cart = new Cart(member, product, initialQuantity);
+            CartProduct cart = new CartProduct(member, product, initialQuantity);
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));

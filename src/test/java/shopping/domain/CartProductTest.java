@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
 @DisplayName("Cart 클래스")
-class CartTest {
+class CartProductTest {
 
     @Nested
     @DisplayName("new Cart는")
@@ -24,7 +24,7 @@ class CartTest {
             int quantity = 15;
 
             // when
-            Exception exception = catchException(() -> new Cart(member, product, quantity));
+            Exception exception = catchException(() -> new CartProduct(member, product, quantity));
 
             // then
             assertThat(exception).isNull();
@@ -39,7 +39,7 @@ class CartTest {
             int invalidQuantity = 0;
 
             // when
-            Exception exception = catchException(() -> new Cart(member, product, invalidQuantity));
+            Exception exception = catchException(() -> new CartProduct(member, product, invalidQuantity));
 
             // then
             assertThat(exception).isInstanceOf(CartException.class);
@@ -55,7 +55,7 @@ class CartTest {
             int quantity = 15;
 
             // when
-            Exception exception = catchException(() -> new Cart(member, product, quantity));
+            Exception exception = catchException(() -> new CartProduct(member, product, quantity));
 
             // then
             assertThat(exception).isInstanceOf(CartException.class);
@@ -71,7 +71,7 @@ class CartTest {
             int quantity = 15;
 
             // when
-            Exception exception = catchException(() -> new Cart(member, product, quantity));
+            Exception exception = catchException(() -> new CartProduct(member, product, quantity));
 
             // then
             assertThat(exception).isInstanceOf(CartException.class);

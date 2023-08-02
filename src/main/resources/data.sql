@@ -13,6 +13,6 @@ INSERT INTO member(email, password) VALUES('woowa1@woowa.com', '1234');
 INSERT INTO member(email, password) VALUES('woowa2@woowa.com', '1234');
 
 -- cart table
-INSERT INTO cart(member_id, product_id, quantity) VALUES (1L, 1L, 5);
-INSERT INTO cart(member_id, product_id, quantity) VALUES (1L, 2L, 5);
-INSERT INTO cart(member_id, product_id, quantity) VALUES (1L, 3L, 5);
+INSERT INTO cart_product(member_id, product_id, quantity) VALUES (1L, 1L, 5);
+INSERT INTO cart_product(member_id, product_id, quantity) VALUES (1L, 2L, 5);
+INSERT INTO cart_product(member_id, product_id, quantity) VALUES (1L, 3L, 5);

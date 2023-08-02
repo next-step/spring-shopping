@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import java.util.Objects;
 
 @Entity
-public class Cart {
+public class CartProduct {
 
     public static final int MIN_PRODUCT_QUANTITY = 1;
 
@@ -32,7 +32,7 @@ public class Cart {
     @Column(nullable = false)
     private int quantity;
 
-    public Cart(Member member, Product product, int quantity) {
+    public CartProduct(Member member, Product product, int quantity) {
         validateMember(member);
         validateProduct(product);
         validateQuantity(quantity);
@@ -41,7 +41,7 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    protected Cart() {
+    protected CartProduct() {
 
     }
 
@@ -63,7 +63,7 @@ public class Cart {
         }
     }
 
-    public Cart increaseQuantity() {
+    public CartProduct increaseQuantity() {
         quantity++;
         return this;
     }
