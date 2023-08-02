@@ -18,6 +18,7 @@ import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
@@ -93,7 +94,7 @@ class CartServiceTest {
             Optional.of(cartItemChicken));
 
         /* when */
-        cartService.updateCartItemQuantity(cartItemId, quantity, userId);
+        cartService.updateCartItemQuantity(cartItemId, new CartItemUpdateRequest(quantity), userId);
 
         /* then */
         Assertions.assertThat(cartItemChicken.getQuantity()).isEqualTo(quantity);

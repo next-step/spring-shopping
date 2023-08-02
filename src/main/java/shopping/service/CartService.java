@@ -9,6 +9,7 @@ import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
@@ -46,13 +47,13 @@ public class CartService {
     }
 
     @Transactional
-    public void updateCartItemQuantity(final Long cartItemId, final int quantity,
-        final Long userId) {
+    public void updateCartItemQuantity(final Long cartItemId,
+        final CartItemUpdateRequest cartItemUpdateRequest, final Long userId) {
         final CartItemEntity cartItem = cartItemRepository.findById(cartItemId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 상품입니다."));
         if (!Objects.equals(cartItem.getUser().getId(), userId)) {
             throw new IllegalArgumentException("유저의 장바구니 상품이 아닙니다.");
         }
-        cartItem.updateQuantity(quantity);
+        cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
     }
 }

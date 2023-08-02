@@ -4,7 +4,7 @@ public class CartItemUpdateRequest {
 
     private int quantity;
 
-    private CartItemUpdateRequest() {
+    public CartItemUpdateRequest() {
     }
 
     public CartItemUpdateRequest(final int quantity) {
