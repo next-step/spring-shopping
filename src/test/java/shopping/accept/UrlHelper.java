@@ -5,6 +5,7 @@ import static io.restassured.RestAssured.given;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import shopping.dto.CartAddRequest;
 import shopping.dto.CartUpdateRequest;
@@ -39,7 +40,7 @@ class UrlHelper {
 
         static ExtractableResponse<Response> addProduct(CartAddRequest cartAddRequest, String accessToken) {
             return given().log().all()
-                    .auth().oauth2(accessToken)
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .body(cartAddRequest)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -50,7 +51,7 @@ class UrlHelper {
 
         static ExtractableResponse<Response> findCart(String accessToken) {
             return given().log().all()
-                    .auth().oauth2(accessToken)
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .when().get("/carts")
@@ -60,7 +61,7 @@ class UrlHelper {
 
         static ExtractableResponse<Response> updateCart(CartUpdateRequest cartUpdateRequest, String accessToken) {
             return given().log().all()
-                    .auth().oauth2(accessToken)
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .body(cartUpdateRequest)
@@ -71,7 +72,7 @@ class UrlHelper {
 
         public static ExtractableResponse<Response> deleteCart(long deleteTargetId, String accessToken) {
             return given().log().all()
-                    .auth().oauth2(accessToken)
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .param("product-id", deleteTargetId)
                     .when().delete("/carts")

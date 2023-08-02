@@ -4,6 +4,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.accept.AssertHelper.Http;
@@ -18,9 +19,14 @@ import shopping.dto.TokenResponse;
 @DisplayName("Cart 인수테스트")
 class CartAcceptanceTest extends AcceptanceTest {
 
-    private static final LoginRequest ADMIN_REQUEST = new LoginRequest("admin@hello.world", "admin!123");
-    private static final String ACCESS_TOKEN = UrlHelper.Auth.login(ADMIN_REQUEST).as(TokenResponse.class)
-            .getAccessToken();
+    private String accessToken;
+
+    @BeforeEach
+    void setUpAdmin() {
+        LoginRequest adminRequest = new LoginRequest("admin@hello.world", "admin!123");
+        this.accessToken = UrlHelper.Auth.login(adminRequest).as(TokenResponse.class)
+                .getAccessToken();
+    }
 
     @Test
     @DisplayName("POST /carts API는 product를 cart에 추가한다.")
@@ -30,7 +36,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         CartAddRequest request = new CartAddRequest(productResponse.getId());
 
         // when
-        ExtractableResponse<Response> result = Cart.addProduct(request, ACCESS_TOKEN);
+        ExtractableResponse<Response> result = Cart.addProduct(request, accessToken);
 
         // then
         Http.assertIsCreated(result);
@@ -59,7 +65,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         CartAddRequest request = new CartAddRequest(9999999L);
 
         // when
-        ExtractableResponse<Response> result = UrlHelper.Cart.addProduct(request, ACCESS_TOKEN);
+        ExtractableResponse<Response> result = UrlHelper.Cart.addProduct(request, accessToken);
 
         // then
         AssertHelper.Cart.assertProductNotFound(result);
@@ -70,11 +76,11 @@ class CartAcceptanceTest extends AcceptanceTest {
     void find_all_products_in_cart() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), ACCESS_TOKEN));
+        allProducts.forEach(product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         CartResponse exactlyExpected = getExpectedCartResponse(allProducts);
 
         // when
-        ExtractableResponse<Response> result = UrlHelper.Cart.findCart(ACCESS_TOKEN);
+        ExtractableResponse<Response> result = UrlHelper.Cart.findCart(accessToken);
 
         // then
         AssertHelper.Cart.assertCart(result, exactlyExpected);
@@ -85,28 +91,28 @@ class CartAcceptanceTest extends AcceptanceTest {
     void update_product_count() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> Cart.addProduct(new CartAddRequest(product.getId()), ACCESS_TOKEN));
+        allProducts.forEach(product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         ProductResponse updateTarget = allProducts.get(0);
         int updateCount = 100_000;
 
         CartUpdateRequest request = new CartUpdateRequest(updateTarget.getId(), updateCount);
 
         // when
-        Cart.updateCart(request, ACCESS_TOKEN);
-        ExtractableResponse<Response> findResult = Cart.findCart(ACCESS_TOKEN);
+        Cart.updateCart(request, accessToken);
+        ExtractableResponse<Response> findResult = Cart.findCart(accessToken);
 
         // then
         AssertHelper.Cart.assertCartUpdated(findResult, updateTarget.getId(), updateCount);
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, CART-402를 던진다.")
+    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, CART-SERVICE-401를 던진다.")
     void throw_cart_402_when_no_updatable_product() {
         // given
         CartUpdateRequest request = new CartUpdateRequest(999999999L, 100_000);
 
         // when
-        ExtractableResponse<Response> result = Cart.updateCart(request, ACCESS_TOKEN);
+        ExtractableResponse<Response> result = Cart.updateCart(request, accessToken);
 
         // then
         AssertHelper.Cart.assertUpdatableProductNotFound(result);
@@ -117,14 +123,14 @@ class CartAcceptanceTest extends AcceptanceTest {
     void throw_cart_403_when_not_positive() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> Cart.addProduct(new CartAddRequest(product.getId()), ACCESS_TOKEN));
+        allProducts.forEach(product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         ProductResponse updateTarget = allProducts.get(0);
         int updateCount = 0;
 
         CartUpdateRequest request = new CartUpdateRequest(updateTarget.getId(), updateCount);
 
         // when
-        ExtractableResponse<Response> result = Cart.updateCart(request, ACCESS_TOKEN);
+        ExtractableResponse<Response> result = Cart.updateCart(request, accessToken);
 
         // then
         AssertHelper.Cart.assertUpdateCountNotPositive(result);
@@ -135,24 +141,24 @@ class CartAcceptanceTest extends AcceptanceTest {
     void delete_product() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), ACCESS_TOKEN));
+        allProducts.forEach(product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         long deleteTargetId = allProducts.get(0).getId();
 
         // when
-        ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, ACCESS_TOKEN);
+        ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, accessToken);
 
         // then
         AssertHelper.Http.assertIsNoContent(result);
     }
 
     @Test
-    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-401을 던진다.")
+    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-SERVICE-401을 던진다.")
     void throw_cart_401_when_no_product_id() {
         // given
         long deleteTargetId = 999999999L;
 
         // when
-        ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, ACCESS_TOKEN);
+        ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, accessToken);
 
         // then
         AssertHelper.Cart.assertDeleteFailed(result);

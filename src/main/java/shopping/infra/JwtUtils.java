@@ -14,7 +14,7 @@ public final class JwtUtils {
     private final String secretKey;
     private final long validityInMilliseconds;
 
-    private JwtUtils(@Value("${security.jwt.token.secret-key:testKey}") String secretKey,
+    JwtUtils(@Value("${security.jwt.token.secret-key:testKey}") String secretKey,
             @Value("${security.jwt.token.expire-length:3000000}") long validityInMilliseconds) {
         this.secretKey = secretKey;
         this.validityInMilliseconds = validityInMilliseconds;
@@ -34,6 +34,6 @@ public final class JwtUtils {
     }
 
     public String payload(final String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token.substring(7)).getBody().getSubject();
     }
 }

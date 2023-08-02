@@ -33,7 +33,7 @@ class JwtUtilsTest {
             String accessToken = jwtUtils.generate(user);
 
             // then
-            assertThat(Long.valueOf(jwtUtils.payload(accessToken))).isEqualTo(user.getId());
+            assertThat(Long.valueOf(jwtUtils.payload("bearer " + accessToken))).isEqualTo(user.getId());
         }
     }
 }

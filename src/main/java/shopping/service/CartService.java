@@ -35,7 +35,7 @@ public class CartService {
 
         cart.addProduct(product);
 
-        cartRepository.updateCart(cart);
+        cartRepository.addProduct(cart, product);
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class CartService {
         cartRepository.updateCart(cart);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public CartResponse findCart(final long userId) {
         Cart cart = getCartByUserId(userId);
 
@@ -71,7 +71,7 @@ public class CartService {
     }
 
     private Cart getCartByUserId(long userId) {
-        if (cartRepository.existCartByUserId(userId)) {
+        if (!cartRepository.existCartByUserId(userId)) {
             cartRepository.newCart(userId);
         }
         return cartRepository.getByUserId(userId);

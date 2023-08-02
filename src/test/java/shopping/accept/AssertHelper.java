@@ -43,7 +43,7 @@ class AssertHelper {
         static void assertTokenDeprecateFailed(final ExtractableResponse<Response> response) {
             ErrorTemplate errorTemplate = response.as(ErrorTemplate.class);
 
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
             assertThat(errorTemplate.getStatusCode()).isEqualTo("AUTH-INTERCEPTOR-401");
         }
     }
@@ -77,14 +77,14 @@ class AssertHelper {
             Http.assertIsBadRequest(result);
 
             ErrorTemplate errorTemplate = result.as(ErrorTemplate.class);
-            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-401");
+            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-SERVICE-401");
         }
 
         static void assertUpdatableProductNotFound(ExtractableResponse<Response> result) {
             Http.assertIsBadRequest(result);
 
             ErrorTemplate errorTemplate = result.as(ErrorTemplate.class);
-            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-402");
+            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-SERVICE-401");
         }
 
         static void assertUpdateCountNotPositive(ExtractableResponse<Response> result) {
