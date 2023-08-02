@@ -36,6 +36,9 @@ const updateCartItemQuantity = (id, quantity) => {
     },
     body: JSON.stringify({'quantity': quantity})
   }).then((response) => {
+    if (response.status === 400) {
+      alert("수량을 더이상 내릴 수 없습니다!")
+    }
     window.location.reload();
   }).catch((error) => {
     console.error(error);
@@ -49,7 +52,7 @@ const removeCartItem = (id) => {
     window.location.href = '/login';
     return;
   }
-  
+
   fetch('/cart/items/' + id, {
     method: 'DELETE',
     headers: {
