@@ -6,9 +6,8 @@ const addCartItem = (productId) => {
     return;
   }
 
-  // TODO: [3단계] 장바구니 아이템 추가 스펙에 맞게 변경
   fetch('/cart/items', {
-    method: 'post',
+    method: 'POST',
     headers: {
       'Authorization': `Bearer ${credentials}`,
       'Content-Type': 'application/json'
@@ -22,7 +21,6 @@ const addCartItem = (productId) => {
 }
 
 const updateCartItemQuantity = (id, quantity) => {
-  console.log(id, quantity);
   const credentials = sessionStorage.getItem('accessToken');
   if (!credentials) {
     alert('사용자 정보가 없습니다.');
@@ -30,10 +28,8 @@ const updateCartItemQuantity = (id, quantity) => {
     return;
   }
 
-  console.log(`/cart/items/${id}/quantity`);
-  // TODO: [3단계] 장바구니 아이템 수량 변경 스펙에 맞게 변경
   fetch(`/cart/items/${id}/quantity`, {
-    method: 'put',
+    method: 'PUT',
     headers: {
       'Authorization': `Bearer ${credentials}`,
       'Content-Type': 'application/json'
@@ -53,10 +49,9 @@ const removeCartItem = (id) => {
     window.location.href = '/login';
     return;
   }
-
-  // TODO: [3단계] 장바구니 아이템 삭제 스펙에 맞게 변경
-  fetch('', {
-    method: '',
+  
+  fetch(`/cart/items/${id}`, {
+    method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${credentials}`,
       'Content-Type': 'application/json'
