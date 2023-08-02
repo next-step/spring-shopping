@@ -21,6 +21,7 @@ import shopping.exception.PasswordNotMatchException;
 import shopping.exception.UserNotFoundException;
 import shopping.repository.UserRepository;
 
+@DisplayName("인증 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
@@ -59,7 +60,7 @@ class AuthServiceTest {
         assertThat(loginResponse.getAccessToken()).isEqualTo(accessToken);
     }
 
-    @DisplayName("유저가 데이터베이스에 없을 떄 예외 발생")
+    @DisplayName("로그인 시 유저가 데이터베이스에 없을 떄 예외 발생")
     @Test
     void loginFailWhenUserNotInDB() {
         // given
@@ -75,7 +76,7 @@ class AuthServiceTest {
                 .isInstanceOf(UserNotFoundException.class);
     }
 
-    @DisplayName("비밀번호 틀렸을 시 예외 발생")
+    @DisplayName("로그인 시 비밀번호 틀렸을 시 예외 발생")
     @Test
     void loginFailWhenPasswordMisMatch() {
         // given

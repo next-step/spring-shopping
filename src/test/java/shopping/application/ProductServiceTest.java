@@ -27,7 +27,6 @@ class ProductServiceTest {
     @Test
     void findAll() {
         // given
-
         Product chicken = new Product(1L, "치킨", "/chicken.jpg", 10_000L);
         Product pizza = new Product(2L, "피자", "/pizza.jpg", 20_000L);
         Product salad = new Product(3L, "샐러드", "/salad.jpg", 5_000L);

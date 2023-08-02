@@ -20,7 +20,7 @@ import shopping.dto.response.CartItemResponse;
 
 class CartIntegrationTest extends IntegrationTest {
 
-    @DisplayName("장바구니에 상품 추가")
+    @DisplayName("장바구니에 상품 추가 성공시 201 Created")
     @Test
     void addCartItem() {
         // given
@@ -48,7 +48,7 @@ class CartIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
-    @DisplayName("장바구니 물건 조회")
+    @DisplayName("장바구니 물건 조회 성공시 200 Ok")
     @Test
     void getCartItems() {
         // given
@@ -80,7 +80,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .statusCode(HttpStatus.OK.value());
     }
 
-    @DisplayName("장바구니 물건 수량 변경")
+    @DisplayName("장바구니 물건 수량 변경 성공시 200 Ok")
     @Test
     void updateCartItemsQuantity() {
         // given
@@ -139,7 +139,7 @@ class CartIntegrationTest extends IntegrationTest {
         assertThat(cartItemResponses.get(0).getQuantity()).isEqualTo(3);
     }
 
-    @DisplayName("장바구니 물건 수량 변경시 수량이 양수가 아니면 BadRequest")
+    @DisplayName("장바구니 물건 수량 변경시 수량이 양수가 아니면 400 BadRequest")
     @Test
     void updateCartItemsQuantityNotPositiveQuantity() {
         // given
@@ -188,7 +188,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
-    @DisplayName("장바구니 물건 삭제")
+    @DisplayName("장바구니 물건 삭제 성공시 204 No content")
     @Test
     void deleteCartItem() {
         // given

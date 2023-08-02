@@ -15,7 +15,7 @@ class ProductIntegrationTest extends IntegrationTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @DisplayName("상품 목록 페이지를 조회한다.")
+    @DisplayName("상품 목록 페이지를 조회 성공시 200 Ok")
     @Test
     void getAllProduct() {
         // given
