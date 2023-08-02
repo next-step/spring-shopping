@@ -62,20 +62,20 @@ Authorization: Bearer {jwt_token}
 
 #### Request
 ```
-POST /cart/products/{productid}
+POST /cart/products/{productId}
 ```
-- [ ] 장바구니에 상품 추가
-  - [ ] 이미 상품이 장바구니에 존재하면 수량을 1 증가한다
+- [x] 장바구니에 상품 추가
+  - [x] 이미 상품이 장바구니에 존재하면 수량을 1 증가한다
 
 #### Request
 ```
-GET /carts
+GET /cart/products
 ```
 - [ ] 장바구니에 담긴 상품 목록 조회
 
 #### Request
 ```
-PATCH /cart/products/{productid}
+PATCH /cart/products/{productId}
 
 {
   quantity: 1
@@ -86,10 +86,9 @@ PATCH /cart/products/{productid}
 
 #### Request
 ```
-DELETE /cart/products/{productid}
+DELETE /cart/products/{productId}
 ```
 - [ ] 장바구니에 담긴 상품 제거
-
 - [ ] 장바구니 페이지 연동
 
 ### 장바구니 검증
