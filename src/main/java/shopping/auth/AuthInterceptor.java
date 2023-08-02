@@ -13,7 +13,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private final TokenProvider tokenProvider;
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public AuthInterceptor(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import shopping.dto.ErrorResponse;
+import shopping.dto.response.ErrorResponse;
 import shopping.exception.AuthException;
 import shopping.exception.ShoppingBaseException;
 

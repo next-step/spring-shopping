@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.response;
 
 import java.util.Objects;
 import shopping.domain.Product;

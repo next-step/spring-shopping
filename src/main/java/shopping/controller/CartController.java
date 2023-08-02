@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import shopping.application.CartService;
 import shopping.auth.RequestToken;
-import shopping.dto.CartItemCreateRequest;
-import shopping.dto.CartItemResponse;
-import shopping.dto.CartItemUpdateRequest;
+import shopping.dto.request.CartItemCreateRequest;
+import shopping.dto.request.CartItemUpdateRequest;
+import shopping.dto.response.CartItemResponse;
 
 @Controller
 public class CartController {
@@ -50,8 +50,7 @@ public class CartController {
     public ResponseEntity<Void> updateCartItemQuantity(
             @RequestToken String email,
             @PathVariable Long id,
-            @RequestBody CartItemUpdateRequest cartItemUpdateRequest
-    ) {
+            @RequestBody CartItemUpdateRequest cartItemUpdateRequest) {
 
         cartService.updateCartItemQuantity(email, id, cartItemUpdateRequest);
         return ResponseEntity.ok().build();
@@ -60,8 +59,7 @@ public class CartController {
     @DeleteMapping("/cart/items/{id}")
     public ResponseEntity<Void> deleteCartItem(
             @RequestToken String email,
-            @PathVariable Long id
-    ) {
+            @PathVariable Long id) {
 
         cartService.deleteCartItem(email, id);
         return ResponseEntity.noContent().build();

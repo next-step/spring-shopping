@@ -13,10 +13,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.CartItemCreateRequest;
-import shopping.dto.CartItemResponse;
-import shopping.dto.CartItemUpdateRequest;
-import shopping.dto.LoginRequest;
+import shopping.dto.request.CartItemCreateRequest;
+import shopping.dto.request.CartItemUpdateRequest;
+import shopping.dto.request.LoginRequest;
+import shopping.dto.response.CartItemResponse;
 
 class CartIntegrationTest extends IntegrationTest {
 

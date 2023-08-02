@@ -3,7 +3,7 @@ package shopping.application;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import shopping.dto.ProductResponse;
+import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 @Service

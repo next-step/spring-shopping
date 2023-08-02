@@ -8,9 +8,9 @@ import shopping.domain.CartItem;
 import shopping.domain.Email;
 import shopping.domain.Product;
 import shopping.domain.User;
-import shopping.dto.CartItemCreateRequest;
-import shopping.dto.CartItemResponse;
-import shopping.dto.CartItemUpdateRequest;
+import shopping.dto.request.CartItemCreateRequest;
+import shopping.dto.request.CartItemUpdateRequest;
+import shopping.dto.response.CartItemResponse;
 import shopping.exception.CartItemNotFoundException;
 import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
@@ -35,10 +35,11 @@ public class CartService {
     public void createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
-        Product product = productRepository.getReferenceById(cartItemCreateRequest.getProductId());
+        Product product = productRepository
+                .getReferenceById(cartItemCreateRequest.getProductId());
 
-        Optional<CartItem> originalCartItem = cartItemRepository.findByUserAndProduct(user,
-                product);
+        Optional<CartItem> originalCartItem = cartItemRepository
+                .findByUserAndProduct(user, product);
 
         CartItem cartItem = originalCartItem
                 .map(item -> item.addQuantity(1))
@@ -59,29 +60,31 @@ public class CartService {
             Long id,
             CartItemUpdateRequest cartItemUpdateRequest) {
 
-        User user = userRepository.findByEmail(new Email(email))
-                .orElseThrow(() -> new UserNotFoundException(email));
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
-
-        if (!cartItem.getUser().equals(user)) {
-            throw new UserNotMatchException();
-        }
+        CartItem cartItem = findCartItem(email, id);
 
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
         cartItemRepository.save(updatedCartItem);
     }
 
     public void deleteCartItem(String email, Long id) {
+        findCartItem(email, id);
+
+        cartItemRepository.deleteById(id);
+    }
+
+    private CartItem findCartItem(String email, Long id) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
 
+        validateUserMatch(user, cartItem);
+        return cartItem;
+    }
+
+    private void validateUserMatch(User user, CartItem cartItem) {
         if (!cartItem.getUser().equals(user)) {
             throw new UserNotMatchException();
         }
-
-        cartItemRepository.deleteById(id);
     }
 }

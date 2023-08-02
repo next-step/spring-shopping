@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Product;
-import shopping.dto.ProductResponse;
+import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)

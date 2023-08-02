@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import shopping.application.ProductService;
-import shopping.dto.ProductResponse;
+import shopping.dto.response.ProductResponse;
 
 @Controller
 public class ProductController {

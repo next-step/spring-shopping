@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.request;
 
 import org.springframework.util.Assert;
 
