@@ -1,7 +1,10 @@
 package shopping.domain;
 
 import java.util.Objects;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,13 +25,14 @@ public class Product {
     @Column(name = "image_url", nullable = false, length = 255)
     private String imageUrl;
 
-    @Column(name = "price", nullable = false)
-    private Long price;
+    @Embedded
+    @AttributeOverrides(@AttributeOverride(name = "price", column = @Column(name = "price", nullable = false)))
+    private Price price;
 
     public Product(String name, String imageUrl, Long price) {
         this.name = name;
         this.imageUrl = imageUrl;
-        this.price = price;
+        this.price = new Price(price);
     }
 
     public Product(Long id, String name, String imageUrl, Long price) {
@@ -53,7 +57,7 @@ public class Product {
     }
 
     public Long getPrice() {
-        return price;
+        return price.getPrice();
     }
 
     @Override

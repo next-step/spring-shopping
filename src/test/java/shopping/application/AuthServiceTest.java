@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
+import shopping.domain.Email;
 import shopping.domain.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
@@ -45,7 +46,7 @@ class AuthServiceTest {
         User user = new User(1L, mail, password);
         String accessToken = "eeeee.wwww.asasas";
 
-        Mockito.when(userRepository.findByEmail(mail))
+        Mockito.when(userRepository.findByEmail(new Email(mail)))
                 .thenReturn(Optional.of(user));
         Mockito.when(tokenProvider.issueToken(user)).thenReturn(accessToken);
         Mockito.when(passwordEncoder.match(loginRequest.getPassword(), user.getPassword()))
@@ -66,7 +67,7 @@ class AuthServiceTest {
         String password = "1234";
         LoginRequest loginRequest = new LoginRequest(mail, password);
 
-        Mockito.when(userRepository.findByEmail(mail))
+        Mockito.when(userRepository.findByEmail(new Email(mail)))
                 .thenReturn(Optional.empty());
 
         // when & then
@@ -84,7 +85,7 @@ class AuthServiceTest {
         LoginRequest loginRequest = new LoginRequest(mail, wrongPassword);
         User user = new User(1L, mail, password);
 
-        Mockito.when(userRepository.findByEmail(mail))
+        Mockito.when(userRepository.findByEmail(new Email(mail)))
                 .thenReturn(Optional.of(user));
         Mockito.when(passwordEncoder.match(loginRequest.getPassword(), user.getPassword()))
                 .thenReturn(false);

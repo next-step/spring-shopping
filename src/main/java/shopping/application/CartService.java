@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import shopping.domain.CartItem;
+import shopping.domain.Email;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.CartItemCreateRequest;
@@ -32,7 +33,7 @@ public class CartService {
     }
 
     public void createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         Product product = productRepository.getReferenceById(cartItemCreateRequest.getProductId());
 
@@ -47,7 +48,7 @@ public class CartService {
     }
 
     public List<CartItemResponse> findAllByEmail(String email) {
-        List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(email);
+        List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
         return cartItems.stream()
                 .map(CartItemResponse::of)
                 .collect(Collectors.toUnmodifiableList());
@@ -58,7 +59,7 @@ public class CartService {
             Long id,
             CartItemUpdateRequest cartItemUpdateRequest) {
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
@@ -72,7 +73,7 @@ public class CartService {
     }
 
     public void deleteCartItem(String email, Long id) {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         CartItem cartItem = cartItemRepository.findById(id)
                 .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));

@@ -18,7 +18,7 @@ public class PasswordEncoder {
         return digest.equals(hashedPassword);
     }
 
-    public String encode(String password, byte[] salt) {
+    private String encode(String password, byte[] salt) {
         try {
             KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
@@ -37,14 +37,14 @@ public class PasswordEncoder {
         return encode(password, getSalt());
     }
 
-    public byte[] getSalt() {
+    private byte[] getSalt() {
         Random random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         return salt;
     }
 
-    public byte[] getSalt(String digest) {
+    private byte[] getSalt(String digest) {
         return Base64.getDecoder().decode(digest.substring(0, 24));
     }
 }

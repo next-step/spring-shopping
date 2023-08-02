@@ -3,6 +3,7 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
+import shopping.domain.Email;
 import shopping.domain.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
@@ -27,7 +28,7 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail())
+        User user = userRepository.findByEmail(new Email(loginRequest.getEmail()))
                 .orElseThrow(() -> new UserNotFoundException(loginRequest.getEmail()));
         if (!passwordEncoder.match(loginRequest.getPassword(), user.getPassword())) {
             throw new PasswordNotMatchException();

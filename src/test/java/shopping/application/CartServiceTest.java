@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartItem;
+import shopping.domain.Email;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.CartItemCreateRequest;
@@ -47,7 +48,7 @@ class CartServiceTest {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
         String email = "test@example.com";
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(new User(1L, email, "1234")));
         when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
                 .thenReturn(new Product(1L, "chicken", "/chicken.jpg", 10_000L));
@@ -66,7 +67,7 @@ class CartServiceTest {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
         String email = "test@example.com";
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.empty());
 
         // when, then
@@ -80,7 +81,7 @@ class CartServiceTest {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
         String email = "test@example.com";
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(new User(1L, email, "1234")));
         when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
                 .thenThrow(EntityNotFoundException.class);
@@ -96,7 +97,7 @@ class CartServiceTest {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
         String email = "test@example.com";
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(new User(1L, email, "1234")));
         when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
                 .thenReturn(new Product(1L, "chicken", "/chicken.jpg", 10_000L));
@@ -117,7 +118,7 @@ class CartServiceTest {
         String email = "test@example.com";
         User user = new User(1L, email, "1234");
         Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(user));
         when(cartItemRepository.findById(1L))
                 .thenReturn(Optional.of(new CartItem(1L, user, product, 1)));
@@ -136,7 +137,7 @@ class CartServiceTest {
         // given
         CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
         String email = "test@example.com";
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.empty());
 
         // when, then
@@ -151,7 +152,7 @@ class CartServiceTest {
         CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
         String email = "test@example.com";
         User user = new User(1L, email, "1234");
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(user));
         when(cartItemRepository.findById(1L))
                 .thenReturn(Optional.empty());
@@ -168,9 +169,9 @@ class CartServiceTest {
         CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
         String email = "test@example.com";
         User user1 = new User(1L, email, "1234");
-        User user2 = new User(2L, "a@b.c", "1234");
+        User user2 = new User(2L, "aaa@bbb.ccc", "1234");
         Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(user1));
         when(cartItemRepository.findById(1L))
                 .thenReturn(Optional.of(new CartItem(1L, user2, product, 1)));
@@ -187,7 +188,7 @@ class CartServiceTest {
         String email = "test@example.com";
         User user = new User(1L, email, "1234");
         Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(user));
         when(cartItemRepository.findById(1L))
                 .thenReturn(Optional.of(new CartItem(1L, user, product, 1)));
@@ -205,7 +206,7 @@ class CartServiceTest {
     void deleteCartItemNotUserFound() {
         // given
         String email = "test@example.com";
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.empty());
 
         // when, then
@@ -219,7 +220,7 @@ class CartServiceTest {
         // given
         String email = "test@example.com";
         User user = new User(1L, email, "1234");
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(user));
         when(cartItemRepository.findById(1L))
                 .thenReturn(Optional.empty());
@@ -235,9 +236,9 @@ class CartServiceTest {
         // given
         String email = "test@example.com";
         User user1 = new User(1L, email, "1234");
-        User user2 = new User(2L, "a@b.c", "1234");
+        User user2 = new User(2L, "aaa@bbb.ccc", "1234");
         Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-        when(userRepository.findByEmail(email))
+        when(userRepository.findByEmail(new Email(email)))
                 .thenReturn(Optional.of(user1));
         when(cartItemRepository.findById(1L))
                 .thenReturn(Optional.of(new CartItem(1L, user2, product, 1)));

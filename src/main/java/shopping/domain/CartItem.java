@@ -1,7 +1,10 @@
 package shopping.domain;
 
 import java.util.Objects;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,8 +29,9 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity = 1;
+    @Embedded
+    @AttributeOverrides(@AttributeOverride(name = "quantity", column = @Column(name = "quantity", nullable = false)))
+    private Quantity quantity;
 
     public CartItem() {
     }
@@ -35,12 +39,13 @@ public class CartItem {
     public CartItem(Long id, User user, Product product, Integer quantity) {
         this(user, product);
         this.id = id;
-        this.quantity = quantity;
+        this.quantity = new Quantity(quantity);
     }
 
     public CartItem(User user, Product product) {
         this.user = user;
         this.product = product;
+        this.quantity = new Quantity();
     }
 
     public Long getId() {
@@ -56,11 +61,11 @@ public class CartItem {
     }
 
     public Integer getQuantity() {
-        return quantity;
+        return quantity.getQuantity();
     }
 
     public CartItem addQuantity(Integer count) {
-        return new CartItem(this.id, this.user, this.product, this.quantity + count);
+        return new CartItem(this.id, this.user, this.product, this.getQuantity() + count);
     }
 
     public CartItem updateQuantity(Integer quantity) {
