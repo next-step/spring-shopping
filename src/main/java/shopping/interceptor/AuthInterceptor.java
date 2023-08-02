@@ -26,6 +26,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         final String token = extractToken(accessToken);
         validateToken(token);
 
+        request.setAttribute("userId", jwtProvider.getPayload(token));
+
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
