@@ -1,7 +1,10 @@
 package shopping.intergration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.tuple;
+import static shopping.intergration.helper.RestAssuredHelper.addCartItem;
+import static shopping.intergration.helper.RestAssuredHelper.extractObject;
+import static shopping.intergration.helper.RestAssuredHelper.login;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -11,8 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.response.CartItemResponse;
+import shopping.dto.response.CartItemResponses;
 import shopping.dto.response.ProductResponse;
-import shopping.intergration.helper.LoginHelper;
 
 class CartItemIntegrationTest extends IntegrationTest {
 
@@ -22,7 +26,7 @@ class CartItemIntegrationTest extends IntegrationTest {
     @Test
     @DisplayName("장바구니에 상품을 추가한다.")
     void addProductToCart() {
-        final String accessToken = LoginHelper.login(EMAIL, PASSWORD);
+        final String accessToken = login(EMAIL, PASSWORD).getToken();
         final Long productId = 1L;
 
         final ExtractableResponse<Response> response = RestAssured
@@ -35,10 +39,36 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThatCode(() -> response.jsonPath().getLong("cartItemId")).doesNotThrowAnyException();
-        final ProductResponse product = response.jsonPath().getObject("product", ProductResponse.class);
+        final CartItemResponse cartItemResponse = extractObject(response, CartItemResponse.class);
+        final ProductResponse product = cartItemResponse.getProduct();
+        assertThat(cartItemResponse.getCartItemId()).isNotNull();
         assertThat(product)
                 .extracting("id", "name", "image", "price")
                 .contains(productId, "Chicken", "/image/Chicken.png", 10_000);
+    }
+
+    @Test
+    @DisplayName("장바구니에 상품 목록을 읽는다.")
+    void readCartItems() {
+        final String accessToken = login(EMAIL, PASSWORD).getToken();
+        addCartItem(accessToken, 1L);
+        addCartItem(accessToken, 1L);
+        addCartItem(accessToken, 2L);
+
+        final ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/cart-items")
+                .then().log().all().extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        final CartItemResponses cartItemResponses = extractObject(response, CartItemResponses.class);
+        assertThat(cartItemResponses.getCartItems()).hasSize(2)
+                .extracting("product.id", "product.name", "quantity")
+                .contains(
+                        tuple(1L, "Chicken", 2),
+                        tuple(2L, "Pizza", 1)
+                );
     }
 }

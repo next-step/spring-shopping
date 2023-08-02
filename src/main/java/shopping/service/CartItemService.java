@@ -1,5 +1,8 @@
 package shopping.service;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
@@ -7,6 +10,7 @@ import shopping.domain.member.Member;
 import shopping.domain.product.Product;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.response.CartItemResponse;
+import shopping.dto.response.CartItemResponses;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingApiException;
 import shopping.repository.CartItemRepository;
@@ -25,6 +29,15 @@ public class CartItemService {
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
         this.memberRepository = memberRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public CartItemResponses readCartItems(final Long memberId) {
+        List<CartItemResponse> cartItems = cartItemRepository.findAllByMemberId(memberId).stream()
+                .map(CartItemResponse::from)
+                .collect(toList());
+
+        return CartItemResponses.from(cartItems);
     }
 
     @Transactional

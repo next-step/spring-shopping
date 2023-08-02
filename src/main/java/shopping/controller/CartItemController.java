@@ -1,12 +1,14 @@
 package shopping.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.response.CartItemResponse;
+import shopping.dto.response.CartItemResponses;
 import shopping.service.CartItemService;
 
 @RestController
@@ -16,6 +18,13 @@ public class CartItemController {
 
     public CartItemController(final CartItemService cartItemService) {
         this.cartItemService = cartItemService;
+    }
+
+    @GetMapping("/cart-items")
+    public ResponseEntity<CartItemResponses> readCartItems(@RequestAttribute final Long loginMemberId) {
+        final CartItemResponses cartItemResponses = cartItemService.readCartItems(loginMemberId);
+
+        return ResponseEntity.ok(cartItemResponses);
     }
 
     @PostMapping(value = "/cart-items")
