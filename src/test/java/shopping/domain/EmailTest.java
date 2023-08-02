@@ -15,14 +15,14 @@ class EmailTest {
     @DisplayName("이메일 길이는 50자 이하이다.")
     void createEmailWithLength50() {
         // when, then
-        assertThatNoException().isThrownBy(() -> new Email("a".repeat(50)));
+        assertThatNoException().isThrownBy(() -> new Email("a".repeat(42) + "@abc.com"));
     }
 
     @Test
     @DisplayName("이메일 길이가 50자 초과이면 오류를 반환한다.")
     void createEmailWithLength51() {
         // when, then
-        assertThatCode(() -> new Email("a".repeat(51)))
+        assertThatCode(() -> new Email("a".repeat(43) + "@abc.com"))
                 .isInstanceOf(ShoppingException.class)
                 .hasMessage("이메일 길이는 50자를 넘을 수 없습니다.");
     }
