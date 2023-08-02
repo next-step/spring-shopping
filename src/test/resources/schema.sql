@@ -1,3 +1,4 @@
+drop table if exists CART_ITEM;
 drop table if exists PRODUCT;
 drop table if exists MEMBER;
 
