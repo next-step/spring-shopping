@@ -4,8 +4,11 @@ import java.util.Objects;
 
 public final class CartUpdateRequest {
 
-    private final long productId;
-    private final int count;
+    private long productId;
+    private int count;
+
+    CartUpdateRequest() {
+    }
 
     public CartUpdateRequest(long productId, int count) {
         this.productId = productId;

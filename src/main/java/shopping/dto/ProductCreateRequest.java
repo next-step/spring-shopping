@@ -4,9 +4,12 @@ import java.util.Objects;
 
 public final class ProductCreateRequest {
 
-    private final String name;
-    private final String imageUrl;
-    private final String price;
+    private String name;
+    private String imageUrl;
+    private String price;
+
+    ProductCreateRequest() {
+    }
 
     public ProductCreateRequest(final String name, final String imageUrl, final String price) {
         this.name = name;

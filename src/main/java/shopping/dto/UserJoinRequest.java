@@ -4,8 +4,11 @@ import java.util.Objects;
 
 public class UserJoinRequest {
 
-    private final String email;
-    private final String password;
+    private String email;
+    private String password;
+
+    UserJoinRequest() {
+    }
 
     public UserJoinRequest(String email, String password) {
         this.email = email;

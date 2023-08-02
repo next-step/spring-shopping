@@ -4,8 +4,11 @@ import java.util.Objects;
 
 public final class LoginRequest {
 
-    private final String email;
-    private final String password;
+    private String password;
+    private String email;
+
+    LoginRequest() {
+    }
 
     public LoginRequest(String email, String password) {
         this.email = email;
