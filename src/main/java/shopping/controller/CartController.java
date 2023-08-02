@@ -6,12 +6,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shopping.argumentresolver.annotation.UserId;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.service.CartService;
 
@@ -47,4 +50,11 @@ public class CartController {
         return "cart";
     }
 
+    @PutMapping("/items/{cartItemId}/quantity")
+    @ResponseBody
+    public ResponseEntity<Void> updateCartItemQuantity(@PathVariable Long cartItemId,
+        @RequestBody CartItemUpdateRequest cartItemUpdateRequest, @UserId Long userId) {
+        cartService.updateCartItemQuantity(cartItemId, cartItemUpdateRequest, userId);
+        return ResponseEntity.ok().build();
+    }
 }
