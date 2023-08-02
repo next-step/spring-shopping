@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,13 @@ public class CartController {
     public ResponseEntity<Void> updateCartItemQuantity(@PathVariable Long cartItemId,
         @RequestBody CartItemUpdateRequest cartItemUpdateRequest, @UserId Long userId) {
         cartService.updateCartItemQuantity(cartItemId, cartItemUpdateRequest, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/items/{cartItemId}")
+    @ResponseBody
+    public ResponseEntity<Void> removeCartItem(@PathVariable Long cartItemId, @UserId Long userId) {
+        cartService.removeCartItem(cartItemId, userId);
         return ResponseEntity.ok().build();
     }
 }
