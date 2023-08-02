@@ -1,6 +1,7 @@
 package shopping.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,7 @@ public class CartService {
     public void addCartItem(CartItemAddRequest cartItemAddRequest, Long userId) {
         final UserEntity userProxy = userRepository.getReferenceById(userId);
         final ProductEntity product = productRepository.findById(cartItemAddRequest.getProductId())
-            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 상품 ID입니다."));
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 장바구니 상품입니다."));
         final CartItemEntity cartItemEntity = new CartItemEntity(userProxy, product);
         cartItemRepository.save(cartItemEntity);
     }
@@ -42,5 +43,16 @@ public class CartService {
         return cartItemRepository.findByUserId(userId).stream()
             .map(CartItemResponse::of)
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Transactional
+    public void updateCartItemQuantity(final Long cartItemId, final int quantity,
+        final Long userId) {
+        final CartItemEntity cartItem = cartItemRepository.findById(cartItemId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 상품입니다."));
+        if (!Objects.equals(cartItem.getUser().getId(), userId)) {
+            throw new IllegalArgumentException("유저의 장바구니 상품이 아닙니다.");
+        }
+        cartItem.updateQuantity(quantity);
     }
 }
