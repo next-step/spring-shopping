@@ -11,7 +11,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private static final String EMAIL = "email";
 
     @Override
@@ -22,11 +21,8 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-
+            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String email = (String) request.getAttribute(EMAIL);
-        log.debug(email);
-        return email;
+        return request.getAttribute(EMAIL);
     }
 }

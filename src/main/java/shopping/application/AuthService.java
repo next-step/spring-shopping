@@ -15,9 +15,7 @@ import shopping.repository.UserRepository;
 public class AuthService {
 
     private final UserRepository userRepository;
-
     private final TokenProvider tokenProvider;
-
     private final PasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository, TokenProvider tokenProvider,

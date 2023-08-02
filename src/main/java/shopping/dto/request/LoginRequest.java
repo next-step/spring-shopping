@@ -21,7 +21,6 @@ public class LoginRequest {
     }
 
     private void validate(String email, String password) {
-        // TODO: Spring Validator 적용? 여부 판단
         Assert.notNull(email, "이메일을 입력해야 합니다.");
         Assert.isTrue(!email.isBlank(), "이메일을 입력해야 합니다.");
         Assert.isTrue(email.length() <= EMAIL_MAX_LENGTH,

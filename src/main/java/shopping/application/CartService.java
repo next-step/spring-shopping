@@ -55,10 +55,7 @@ public class CartService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateCartItemQuantity(
-            String email,
-            Long id,
-            CartItemUpdateRequest cartItemUpdateRequest) {
+    public void updateCartItemQuantity(String email, Long id, CartItemUpdateRequest cartItemUpdateRequest) {
 
         CartItem cartItem = findCartItem(email, id);
 

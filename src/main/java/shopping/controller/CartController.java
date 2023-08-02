@@ -41,7 +41,6 @@ public class CartController {
 
     @GetMapping("/cart/items")
     public ResponseEntity<List<CartItemResponse>> getCartItems(@RequestToken String email) {
-
         List<CartItemResponse> cartItems = cartService.findAllByEmail(email);
         return ResponseEntity.ok().body(cartItems);
     }
@@ -51,7 +50,6 @@ public class CartController {
             @RequestToken String email,
             @PathVariable Long id,
             @RequestBody CartItemUpdateRequest cartItemUpdateRequest) {
-
         cartService.updateCartItemQuantity(email, id, cartItemUpdateRequest);
         return ResponseEntity.ok().build();
     }
@@ -60,7 +58,6 @@ public class CartController {
     public ResponseEntity<Void> deleteCartItem(
             @RequestToken String email,
             @PathVariable Long id) {
-
         cartService.deleteCartItem(email, id);
         return ResponseEntity.noContent().build();
     }

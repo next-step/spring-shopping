@@ -22,9 +22,7 @@ public class Email {
         if (email == null) {
             throw new IllegalArgumentException("이메일은 null 일수 없습니다.");
         }
-
-        if (!Pattern.compile(EMAIL_PATTERN).matcher(email)
-                .matches()) {
+        if (!Pattern.compile(EMAIL_PATTERN).matcher(email).matches()) {
             throw new IllegalArgumentException("이메일 형식이 올바르지 않습니다.");
         }
     }
