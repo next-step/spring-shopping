@@ -19,10 +19,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, length = 50)
-    private String email;
+    private Email email;
+
     @Column(nullable = false)
     private String password;
+
     @OneToMany
     @JoinColumn(name = "user_id")
     private List<CartItem> cartItems = new ArrayList<>();
@@ -33,7 +36,7 @@ public class User {
 
     public User(Long id, String email, String password) {
         this.id = id;
-        this.email = email;
+        this.email = new Email(email);
         this.password = password;
     }
 
@@ -66,7 +69,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return email.getValue();
     }
 
     public String getPassword() {
