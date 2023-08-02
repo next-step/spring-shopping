@@ -64,7 +64,8 @@
 		```
 	- response : `204 NO CONTENT`
 	- [x] `quantity`가 0 또는 음수이면 오류 메시지 반환
-	- [ ] `cartItemId`가 db에 존재하지 않는 경우 오류 메시지 반환
+	- [x] `cartItemId`가 db에 존재하지 않는 경우 오류 메시지 반환
+	- [x] `User`가 `CartItem`을 갖고 있지 않으면 오류 메시지 반환
 
 - [x] 장바구니에 담긴 아이템 제거
 	- request : `DELETE /carts/{id}`

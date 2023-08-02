@@ -8,6 +8,7 @@ import shopping.domain.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.CartUpdateRequest;
+import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRespository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -32,8 +33,8 @@ public class CartService {
 
     @Transactional
     public void addProduct(CartCreateRequest request, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Product product = productRepository.findById(request.getProductId()).orElseThrow();
+        User user = findUserById(userId);
+        Product product = findProductById(request.getProductId());
 
         CartItem cartItem = user.addCartItem(product);
         cartItemRespository.save(cartItem);
@@ -51,8 +52,12 @@ public class CartService {
 
     @Transactional
     public void update(CartUpdateRequest request, Long cartItemId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
-        CartItem item = cartItemRespository.findById(cartItemId).orElseThrow();
+        User user = findUserById(userId);
+        CartItem item = findCartItemById(cartItemId);
+
+        if (!user.containsCartItem(item)) {
+            throw new ShoppingException("유효하지 않은 cart item 입니다 : " + cartItemId);
+        }
 
         item.updateQuantity(request.getQuantity());
     }
@@ -61,5 +66,18 @@ public class CartService {
     public void delete(Long cartItemId, Long userId) {
         CartItem item = cartItemRespository.findById(cartItemId).orElseThrow();
         cartItemRespository.delete(item);
+    }
+
+    private CartItem findCartItemById(Long id) {
+        return cartItemRespository.findById(id)
+                .orElseThrow(() -> new ShoppingException("존재하지 않는 장바구니 상품 id입니다 : " + id));
+    }
+
+    private User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ShoppingException("존재하지 않는 사용자 id입니다 : " + id));
+    }
+
+    private Product findProductById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new ShoppingException("존재하지 않는 상품 id입니다 : " + id));
     }
 }
