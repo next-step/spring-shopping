@@ -3,6 +3,7 @@ package shopping.domain;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import shopping.domain.exception.StatusCodeException;
 import shopping.domain.status.CartExceptionStatus;
 
@@ -20,7 +21,15 @@ public final class Cart {
 
     public void addProduct(final Product product) {
         validateNullProduct(product);
+        validateExistProduct(product);
         productCounts.put(product, productCounts.getOrDefault(product, 0) + 1);
+    }
+
+    private void validateExistProduct(final Product product) {
+        if (productCounts.containsKey(product)) {
+            throw new StatusCodeException(MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
+                    CartExceptionStatus.ALREADY_EXIST_PRODUCT.getStatus());
+        }
     }
 
     public void updateProduct(final Product product, final int count) {
@@ -75,5 +84,32 @@ public final class Cart {
 
     public Map<Product, Integer> getProductCounts() {
         return productCounts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Cart)) {
+            return false;
+        }
+        Cart cart = (Cart) o;
+        return userId == cart.userId && Objects.equals(cartId, cart.cartId) && Objects.equals(
+                productCounts, cart.productCounts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cartId, userId, productCounts);
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "cartId=" + cartId +
+                ", userId=" + userId +
+                ", productCounts=" + productCounts +
+                '}';
     }
 }

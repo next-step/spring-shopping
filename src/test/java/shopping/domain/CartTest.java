@@ -52,6 +52,22 @@ class CartTest {
             // then
             assertThat(exception).isInstanceOf(IllegalStateException.class);
         }
+
+        @Test
+        @DisplayName("이미 저장된 product가 들어오면, StatusCodeException을 던진다.")
+        void throw_StatusCodeException_when_input_exists_product() {
+            // given
+            Cart cart = new Cart(0L, 1L);
+            Product product = new Product("맥주", "images/default-product.png", "4500");
+
+            cart.addProduct(product);
+
+            // when
+            Exception exception = catchException(() -> cart.addProduct(product));
+
+            // then
+            assertStatusCodeException(exception, "CART-404");
+        }
     }
 
     @Nested
