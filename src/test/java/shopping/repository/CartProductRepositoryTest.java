@@ -30,7 +30,7 @@ public class CartProductRepositoryTest {
             Long productId = 1L;
 
             // when
-            Optional<CartProduct> cartOptional = cartRepository.findByMemberIdAndProductId(memberId, productId);
+            Optional<CartProduct> cartOptional = cartRepository.findOneByMemberIdAndProductId(memberId, productId);
 
             // then
             assertThat(cartOptional).isPresent();

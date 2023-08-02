@@ -5,11 +5,15 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
+import shopping.dto.FindCartProductResponse;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -19,12 +23,12 @@ public class CartProductService {
 
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
-    private final CartProductRepository cartRepository;
+    private final CartProductRepository cartProductRepository;
 
     public CartProductService(MemberRepository memberRepository, ProductRepository productRepository, CartProductRepository cartRepository) {
         this.memberRepository = memberRepository;
         this.productRepository = productRepository;
-        this.cartRepository = cartRepository;
+        this.cartProductRepository = cartRepository;
     }
 
     public void addProduct(Long memberId, Long productId) {
@@ -34,10 +38,14 @@ public class CartProductService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException("회원Id에 해당하는 회원이 존재하지 않습니다"));
 
-        CartProduct cart = cartRepository.findByMemberIdAndProductId(memberId, productId)
+        CartProduct cart = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
                 .map(CartProduct::increaseQuantity)
                 .orElseGet(() -> new CartProduct(member, product, DEFAULT_PRODUCT_QUANTITY));
 
-        cartRepository.save(cart);
+        cartProductRepository.save(cart);
+    }
+
+    public List<FindCartProductResponse> findCartProducts(Long memberId) {
+        return List.of();
     }
 }

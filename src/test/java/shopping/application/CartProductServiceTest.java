@@ -10,12 +10,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
+import shopping.dto.FindCartProductResponse;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,10 +30,10 @@ import static org.mockito.BDDMockito.given;
 public class CartProductServiceTest {
 
     @InjectMocks
-    private CartProductService cartService;
+    private CartProductService cartProductService;
 
     @Mock
-    private CartProductRepository cartRepository;
+    private CartProductRepository cartProductRepository;
 
     @Mock
     private MemberRepository memberRepository;
@@ -54,7 +56,7 @@ public class CartProductServiceTest {
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
 
             // when
-            Exception exception = catchException(() -> cartService.addProduct(product.getId(), member.getId()));
+            Exception exception = catchException(() -> cartProductService.addProduct(product.getId(), member.getId()));
 
             // then
             assertThat(exception).isNull();
@@ -70,7 +72,7 @@ public class CartProductServiceTest {
             given(memberRepository.findById(anyLong())).willReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> cartService.addProduct(anyLong(), product.getId()));
+            Exception exception = catchException(() -> cartProductService.addProduct(anyLong(), product.getId()));
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
@@ -85,7 +87,7 @@ public class CartProductServiceTest {
             given(productRepository.findById(anyLong())).willReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> cartService.addProduct(anyLong(), member.getId()));
+            Exception exception = catchException(() -> cartProductService.addProduct(anyLong(), member.getId()));
 
             // then
             assertThat(exception).isInstanceOf(ProductException.class);
@@ -102,13 +104,37 @@ public class CartProductServiceTest {
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
-            given(cartRepository.findByMemberIdAndProductId(product.getId(), member.getId())).willReturn(Optional.of(cart));
+            given(cartProductRepository.findOneByMemberIdAndProductId(product.getId(), member.getId())).willReturn(Optional.of(cart));
 
             // when
-            cartService.addProduct(product.getId(), member.getId());
+            cartProductService.addProduct(product.getId(), member.getId());
 
             // then
             assertThat(cart.getQuantity()).isEqualTo(initialQuantity + 1);
+        }
+    }
+
+    @Nested
+    @DisplayName("findCartProducts 메서드는")
+    class FindCartProducts_Method {
+
+        @Test
+        @DisplayName("장바구니에 있는 상품들을 반환한다.")
+        void returnCartProducts() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Product product = new Product(1L, "치킨", "image", 23000L);
+            int initialQuantity = 5;
+            CartProduct cartProduct = new CartProduct(member, product, initialQuantity);
+
+            given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(List.of(cartProduct));
+
+            // when
+            List<FindCartProductResponse> result = cartProductService.findCartProducts(member.getId());
+
+            // then
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0).getProductId()).isEqualTo(product.getId());
         }
     }
 }
