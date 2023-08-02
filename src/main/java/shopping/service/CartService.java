@@ -56,4 +56,14 @@ public class CartService {
         }
         cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
     }
+
+    @Transactional
+    public void removeCartItem(final Long cartItemId, final Long userId) {
+        final CartItemEntity cartItem = cartItemRepository.findById(cartItemId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 상품입니다."));
+        if (!Objects.equals(cartItem.getUser().getId(), userId)) {
+            throw new IllegalArgumentException("유저의 장바구니 상품이 아닙니다.");
+        }
+        cartItemRepository.delete(cartItem);
+    }
 }
