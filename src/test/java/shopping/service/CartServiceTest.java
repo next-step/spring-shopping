@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,9 +65,9 @@ class CartServiceTest {
         UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
         ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
         ProductEntity pizza = new ProductEntity(2L, "피자", "pizza.png", 25000);
-        CartItemEntity cartItemEntityChicken = new CartItemEntity(1L, user, chicken, 1);
-        CartItemEntity cartItemEntityPizza = new CartItemEntity(2L, user, pizza, 1);
-        List<CartItemEntity> cartItems = List.of(cartItemEntityChicken, cartItemEntityPizza);
+        CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
+        CartItemEntity cartItemPizza = new CartItemEntity(2L, user, pizza, 1);
+        List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
         when(cartItemRepository.findByUserId(userId)).thenReturn(cartItems);
 
         /* when */
@@ -81,10 +82,21 @@ class CartServiceTest {
     @DisplayName("성공 : 장바구니 아이템 갯수를 수정한다.")
     void successUpdateCartItem() {
         /* given */
+        Long userId = 1L;
+        UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
+        ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
+        CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
+
+        Long cartItemId = 1L;
+        int quantity = 3; // +1, -1
+        when(cartItemRepository.findById(cartItemId)).thenReturn(
+            Optional.of(cartItemChicken));
 
         /* when */
+        cartService.updateCartItemQuantity(cartItemId, quantity, userId);
 
         /* then */
+        Assertions.assertThat(cartItemChicken.getQuantity()).isEqualTo(quantity);
 
     }
 
