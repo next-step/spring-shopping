@@ -7,16 +7,16 @@ import shopping.product.domain.Product;
 public class ProductResponse {
     private Long id;
     private String name;
-    private String url;
+    private String imageUrl;
     private String price;
 
     private ProductResponse() {
     }
 
-    public ProductResponse(Long id, String name, String url, String price) {
+    public ProductResponse(Long id, String name, String imageUrl, String price) {
         this.id = id;
         this.name = name;
-        this.url = url;
+        this.imageUrl = imageUrl;
         this.price = price;
     }
 
@@ -43,8 +43,8 @@ public class ProductResponse {
         return name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getPrice() {

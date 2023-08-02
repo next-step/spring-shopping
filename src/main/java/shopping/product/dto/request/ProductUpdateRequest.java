@@ -2,15 +2,17 @@ package shopping.product.dto.request;
 
 public class ProductUpdateRequest {
 
-    private Long id;
     private String name;
     private String price;
+    private String imageUrl;
 
     private ProductUpdateRequest() {
     }
 
-    public Long getId() {
-        return id;
+    public ProductUpdateRequest(String name, String price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -19,5 +21,9 @@ public class ProductUpdateRequest {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

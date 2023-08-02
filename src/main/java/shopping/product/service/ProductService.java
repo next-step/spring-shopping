@@ -1,13 +1,10 @@
 package shopping.product.service;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import org.apache.tomcat.jni.Proc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.common.vo.Image;
 import shopping.exception.WooWaException;
 import shopping.product.domain.Product;
 import shopping.product.dto.request.ProductCreationRequest;
@@ -35,13 +32,17 @@ public class ProductService {
         return ProductResponse.listOf(productRepository.findAll());
     }
 
-    public void createProduct(ProductCreationRequest productCreationRequest, Image productImage) {
-        productRepository.save(productCreationRequest.toEntity(productImage));
+    public void createProduct(ProductCreationRequest productCreationRequest) {
+        productRepository.save(productCreationRequest.toEntity());
     }
 
-    public void updateProduct(ProductUpdateRequest productUpdateRequest) {
-        Product product = getProductById(productUpdateRequest.getId());
-        product.updateValue(productUpdateRequest.getName(), productUpdateRequest.getPrice());
+    public void updateProduct(ProductUpdateRequest productUpdateRequest, Long productId) {
+        Product product = getProductById(productId);
+        product.updateValues(
+            productUpdateRequest.getName(),
+            productUpdateRequest.getPrice(),
+            productUpdateRequest.getImageUrl()
+        );
     }
 
     public void deleteProduct(Long id) {

@@ -1,18 +1,26 @@
 package shopping.product.dto.request;
 
 import shopping.common.vo.Image;
+import shopping.common.vo.ImageStoreType;
 import shopping.product.domain.Product;
 
 public class ProductCreationRequest {
 
     private String name;
     private String price;
+    private String imageUrl;
 
     private ProductCreationRequest() {
     }
 
-    public Product toEntity(Image productImage) {
-        return new Product(name, productImage, price);
+    public ProductCreationRequest(String name, String price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
+    public Product toEntity() {
+        return new Product(name, new Image(ImageStoreType.NONE, imageUrl), price);
     }
 
     public String getName() {
@@ -21,5 +29,9 @@ public class ProductCreationRequest {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
