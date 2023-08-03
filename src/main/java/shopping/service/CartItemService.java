@@ -13,7 +13,7 @@ import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingApiException;
+import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
@@ -25,8 +25,11 @@ public class CartItemService {
     private final ProductRepository productRepository;
     private final MemberRepository memberRepository;
 
-    public CartItemService(final CartItemRepository cartItemRepository, final ProductRepository productRepository,
-            final MemberRepository memberRepository) {
+    public CartItemService(
+            final CartItemRepository cartItemRepository,
+            final ProductRepository productRepository,
+            final MemberRepository memberRepository
+    ) {
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
         this.memberRepository = memberRepository;
@@ -71,10 +74,7 @@ public class CartItemService {
     }
 
     @Transactional
-    public void deleteCartItem(
-            final Long memberId,
-            final Long cartItemId
-    ) {
+    public void deleteCartItem(final Long memberId, final Long cartItemId) {
         final Member member = getMemberById(memberId);
         final CartItem cartItem = getCartItemById(cartItemId);
         cartItem.validateMember(member);
@@ -84,19 +84,18 @@ public class CartItemService {
 
     private Member getMemberById(final Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_MEMBER_ID));
+                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_MEMBER_ID));
     }
 
     private Product getProductById(final Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_PRODUCT_ID));
+                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_PRODUCT_ID));
     }
 
     private CartItem getCartItemById(final Long cartItemId) {
         return cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_CART_ITEM_ID));
+                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_CART_ITEM_ID));
     }
-
 
     private boolean existsCartItem(final Member member, final Product product) {
         return cartItemRepository.existsByMemberAndProduct(member, product);

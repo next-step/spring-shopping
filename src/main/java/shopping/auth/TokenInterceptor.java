@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingApiException;
+import shopping.exception.ShoppingException;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
@@ -28,7 +28,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     ) {
         final String token = getToken(request);
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new ShoppingApiException(ErrorCode.TOKEN_INVALID);
+            throw new ShoppingException(ErrorCode.TOKEN_INVALID);
         }
         request.setAttribute("loginMemberId", jwtTokenProvider.getPayload(token));
         return true;
@@ -37,7 +37,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String getToken(final HttpServletRequest request) {
         final String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (!StringUtils.hasText(bearerToken)) {
-            throw new ShoppingApiException(ErrorCode.TOKEN_IS_EMPTY);
+            throw new ShoppingException(ErrorCode.TOKEN_IS_EMPTY);
         }
         return StringUtils.delete(bearerToken, BEARER_HEADER_NAME);
     }

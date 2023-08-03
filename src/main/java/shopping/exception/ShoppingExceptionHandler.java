@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ApiExceptionHandler {
+public class ShoppingExceptionHandler {
 
-    @ExceptionHandler(ShoppingApiException.class)
-    public ResponseEntity<ApiExceptionResponse> exceptionHandleWithShoppingException(final ShoppingApiException e) {
+    @ExceptionHandler(ShoppingException.class)
+    public ResponseEntity<ApiExceptionResponse> exceptionHandleWithShoppingApiException(final ShoppingException e) {
         return ResponseEntity
                 .status(e.getHttpStatus())
                 .body(ApiExceptionResponse.from(e.getMessage()));

@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingApiException;
+import shopping.exception.ShoppingException;
 
 @Entity
 public class CartItem {
@@ -57,7 +57,7 @@ public class CartItem {
 
     public void validateMember(final Member member) {
         if (!this.member.equals(member)) {
-            throw new ShoppingApiException(ErrorCode.FORBIDDEN_MODIFY_CART_ITEM);
+            throw new ShoppingException(ErrorCode.FORBIDDEN_MODIFY_CART_ITEM);
         }
     }
 

@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import shopping.exception.ShoppingApiException;
+import shopping.exception.ShoppingException;
 
 class QuantityTest {
 
@@ -24,7 +24,7 @@ class QuantityTest {
     @ValueSource(ints = {-1, 0, 1001})
     void validateQuantity(final int value) {
         Assertions.assertThatThrownBy(() -> Quantity.from(value))
-                .isInstanceOf(ShoppingApiException.class)
+                .isInstanceOf(ShoppingException.class)
                 .hasMessage("장바구니 상품 수량 개수는 1개 이상 1000개 이하여야합니다.");
     }
 }

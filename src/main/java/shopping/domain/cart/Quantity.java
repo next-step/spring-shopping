@@ -4,7 +4,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingApiException;
+import shopping.exception.ShoppingException;
 
 @Embeddable
 public class Quantity {
@@ -25,7 +25,7 @@ public class Quantity {
 
     private void validate(final int value) {
         if (value < MIN_QUANTITY || value > MAX_QUANTITY) {
-            throw new ShoppingApiException(ErrorCode.QUANTITY_INVALID);
+            throw new ShoppingException(ErrorCode.QUANTITY_INVALID);
         }
     }
 

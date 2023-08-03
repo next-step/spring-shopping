@@ -1,6 +1,5 @@
 package shopping.exception;
 
-
 import org.springframework.http.HttpStatus;
 
 public class ShoppingException extends RuntimeException {
@@ -20,3 +19,4 @@ public class ShoppingException extends RuntimeException {
         return errorCode.getMessage();
     }
 }
+

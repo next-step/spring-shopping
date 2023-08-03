@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingApiException;
+import shopping.exception.ShoppingException;
 
 @Entity
 public class Member {
@@ -38,7 +38,7 @@ public class Member {
 
     public void matchPassword(final Password requestPassword) {
         if (!this.password.isMatch(requestPassword)) {
-            throw new ShoppingApiException(ErrorCode.PASSWORD_NOT_MATCH);
+            throw new ShoppingException(ErrorCode.PASSWORD_NOT_MATCH);
         }
     }
 

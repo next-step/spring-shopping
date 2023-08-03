@@ -31,7 +31,7 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemResponses);
     }
 
-    @PostMapping(value = "/cart-items")
+    @PostMapping("/cart-items")
     public ResponseEntity<CartItemResponse> addCartItem(
             @RequestAttribute final Long loginMemberId,
             @RequestBody final CartItemAddRequest cartItemAddRequest
@@ -41,19 +41,22 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemResponse);
     }
 
-    @PatchMapping(value = "/cart-items/{cartItemId}")
+    @PatchMapping("/cart-items/{cartItemId}")
     public ResponseEntity<CartItemResponse> updateCartItem(
             @RequestAttribute final Long loginMemberId,
             @PathVariable final Long cartItemId,
             @RequestBody final CartItemUpdateRequest cartItemUpdateRequest
     ) {
-        final CartItemResponse cartItemResponse = cartItemService.updateCartItem(loginMemberId, cartItemId,
-                cartItemUpdateRequest);
+        final CartItemResponse cartItemResponse = cartItemService.updateCartItem(
+                loginMemberId,
+                cartItemId,
+                cartItemUpdateRequest
+        );
 
         return ResponseEntity.ok(cartItemResponse);
     }
 
-    @DeleteMapping(value = "/cart-items/{cartItemId}")
+    @DeleteMapping("/cart-items/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(
             @RequestAttribute final Long loginMemberId,
             @PathVariable final Long cartItemId
