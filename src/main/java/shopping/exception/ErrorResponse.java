@@ -2,14 +2,23 @@ package shopping.exception;
 
 public class ErrorResponse {
 
-    private final String message;
+    private ErrorCode errorCode;
+    private String message;
 
-    private ErrorResponse(final String message) {
-        this.message = message;
+    public ErrorResponse() {
     }
 
-    public static ErrorResponse of(final String message) {
-        return new ErrorResponse(message);
+    private ErrorResponse(final ErrorCode errorCode) {
+        this.errorCode = errorCode;
+        this.message = errorCode.getMessage();
+    }
+
+    public static ErrorResponse of(final ErrorCode errorCode) {
+        return new ErrorResponse(errorCode);
+    }
+
+    public ErrorCode getErrorCode() {
+        return errorCode;
     }
 
     public String getMessage() {

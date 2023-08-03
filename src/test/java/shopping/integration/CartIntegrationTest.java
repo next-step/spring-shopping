@@ -21,8 +21,8 @@ import shopping.dto.response.LoginResponse;
 @DisplayName("CartIntegrationTest")
 class CartIntegrationTest extends IntegrationTest {
 
-    @Override
     @BeforeEach
+    @Override
     public void setUp() {
         super.setUp();
     }
