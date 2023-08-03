@@ -34,4 +34,10 @@ public class CartProductRepository {
                 .stream()
                 .findAny();
     }
+
+    public void deleteById(Long id) {
+        entityManager.createQuery("delete from CartProduct c where c.id = :id")
+                .setParameter("id", id);
+
+    }
 }
