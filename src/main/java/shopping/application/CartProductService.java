@@ -57,9 +57,9 @@ public class CartProductService {
 
     public void updateCartProduct(Long id, UpdateCartProductRequest request) {
         if (request.getQuantity() < MIN_CART_PRODUCT_QUANTITY) {
-            throw new CartException("상품 수량은 " + MIN_CART_PRODUCT_QUANTITY + "개 이상이어야합니다");
+            cartProductRepository.deleteById(id);
+            return;
         }
-
         cartProductRepository.updateById(id, request.getQuantity());
     }
 
