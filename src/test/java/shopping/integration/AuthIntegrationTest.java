@@ -25,4 +25,45 @@ public class AuthIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
+    @DisplayName("이메일 형식이 아닐 경우 로그인을 할 수 없다")
+    @Test
+    void loginFail_WhenInvalidEmail() {
+        // given
+        String email = "woowaaaaaaaaaaaaaaaaa";
+        String password = "1234";
+
+        // when
+        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email, password);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @DisplayName("존재하지 않는 사용자일 경우 로그인을 할 수 없다")
+    @Test
+    void loginFail_WhenInvalidMember() {
+        // given
+        String email = "woowaaaaaaa@naver.com";
+        String password = "1234";
+
+        // when
+        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email, password);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @DisplayName("비밀번호가 틀렸을 경우 로그인을 할 수 없다")
+    @Test
+    void loginFail_WhenIncorrectPassword() {
+        // given
+        String email = "woowaaaaaaa@naver.com";
+        String password = "12345555555";
+
+        // when
+        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email, password);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
 }
