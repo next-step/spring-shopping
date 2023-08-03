@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("CartService 클래스")
@@ -188,19 +189,24 @@ public class CartProductServiceTest {
         }
 
         @Test
-        @DisplayName("갱신될 상품 수량이 1개 미만일 경우 CartException을 던진다")
-        void throwCartException_WhenQuantityIsNotPositive() {
+        @DisplayName("갱신될 상품 수량이 1개 미만일 경우 장바구니에서 제거한다")
+        void deleteCartProduct_WhenQuantityIsNotPositive() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
-            CartProduct cartProduct = new CartProduct(member, product, 5);
+            CartProduct cartProduct = new CartProduct(1L, member, product, 5);
             UpdateCartProductRequest updateRequest = new UpdateCartProductRequest(0);
 
+            doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
+
+
             // when
-            Exception exception = catchException(() -> cartProductService.updateCartProduct(cartProduct.getId(), updateRequest));
+            cartProductService.updateCartProduct(cartProduct.getId(), updateRequest);
 
             // then
-            assertThat(exception).isInstanceOf(CartException.class);
+            verify(cartProductRepository).deleteById(cartProduct.getId());
+            verify(cartProductRepository, never()).updateById(cartProduct.getId(),
+                updateRequest.getQuantity());
         }
     }
 }
