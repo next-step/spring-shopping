@@ -57,4 +57,9 @@ public class CartProductService {
 
         cartProduct.updateQuantity(request.getQuantity());
     }
+
+    @Transactional
+    public void deleteCartProduct(final Long cartProductId, final Long memberId) {
+        cartProductRepository.deleteByIdAndMemberId(cartProductId, memberId);
+    }
 }

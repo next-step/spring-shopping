@@ -193,4 +193,29 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
             .isEqualTo("장바구니 상품 개수는 0이하면 안됩니다. 입력값: 0");
     }
+
+
+    @Test
+    @DisplayName("장바구니 상품을 삭제한다.")
+    void deleteCartProduct() {
+        /* given */
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
+        CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
+
+        final Long cartProductId = 3L;
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+            .when().delete("/api/cart/{cartProductId}", cartProductId)
+            .then().log().all()
+            .extract();
+
+        /* then */
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
 }

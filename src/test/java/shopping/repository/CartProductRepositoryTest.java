@@ -54,4 +54,20 @@ class CartProductRepositoryTest {
         assertThat(exist).isPresent();
         assertThat(notExist).isNotPresent();
     }
+
+    @Test
+    @DisplayName("Id와 MemberId로 장바구니 상품을 제거할 수 있다. ")
+    void deleteByIdAndMemberId() {
+        /* given */
+        final Long existCartProductId = 1L;
+        final Long existMemberId = 1L;
+
+        /* when */
+        cartProductRepository.deleteByIdAndMemberId(existCartProductId, existMemberId);
+
+        /* then */
+        final Optional<CartProduct> originalCartProduct = cartProductRepository.findByMemberIdAndProductId(
+            existCartProductId, existMemberId);
+        assertThat(originalCartProduct).isNotPresent();
+    }
 }

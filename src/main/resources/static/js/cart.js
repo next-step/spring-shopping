@@ -48,7 +48,7 @@ const updateCartItemQuantity = (cartProductId, quantity) => {
   });
 }
 
-const removeCartItem = (id) => {
+const removeCartItem = (cartProductId) => {
   const credentials = sessionStorage.getItem('accessToken');
   if (!credentials) {
     alert('사용자 정보가 없습니다.');
@@ -56,14 +56,14 @@ const removeCartItem = (id) => {
     return;
   }
 
-  // TODO: [3단계] 장바구니 아이템 삭제 스펙에 맞게 변경
-  fetch('', {
-    method: '',
+  fetch(`/api/cart/${cartProductId}`, {
+    method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${credentials}`,
       'Content-Type': 'application/json'
     }
   }).then((response) => {
+    alert('삭제되었습니다.')
     window.location.reload();
   }).catch((error) => {
     console.error(error);

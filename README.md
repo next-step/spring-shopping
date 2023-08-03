@@ -77,7 +77,7 @@
         - [x] 상품이 존재하지 않는 경우 "존재하지 않는 상품입니다."로 응답한다.
         - [x] 장바구니에 이미 상품이 있는 경우 "이미 장바구니에 담긴 상품입니다."로 응답한다.
     ```http request
-  POST /cart
+  POST /api/cart
   
   {
   "productId": 5
@@ -85,20 +85,20 @@
   ```
     -[x] 장바구니에 담긴 아이템 목록 조회
   ```http request
-  GET /cart
+  GET /api/cart
   ``` 
 
     -[x] 장바구니에 담긴 아이템 수량 변경
   ```http request
-  PATCH /cart/{cartProductId}
+  PATCH /api/cart/{cartProductId}
   {
   "quantity": 5
   }
   ```
 
-    -[ ] 장바구니에 담긴 아이템 제거
+    -[x] 장바구니에 담긴 아이템 제거
   ```http request
-  DELETE /cart/{cartProductId}
+  DELETE /api/cart/{cartProductId}
   ```
 
 - [x] 웹 페이지와 연동한다.
