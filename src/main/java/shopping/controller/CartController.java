@@ -1,8 +1,6 @@
 package shopping.controller;
 
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +21,6 @@ import shopping.service.CartService;
 @RequestMapping("/cart")
 public class CartController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
     private final CartService cartService;
 
     public CartController(final CartService cartService) {
@@ -34,7 +31,6 @@ public class CartController {
     @ResponseBody
     public ResponseEntity<Void> addCartItem(@RequestBody CartItemAddRequest cartItemAddRequest,
         @UserId Long userId) {
-        logger.info("userID : {}, productId : {}", userId, cartItemAddRequest.getProductId());
         cartService.addCartItem(cartItemAddRequest, userId);
         return ResponseEntity.ok().build();
     }
