@@ -2,7 +2,6 @@ package shopping.exception.handler;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-import javax.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +35,8 @@ public class ExceptionHandlers {
             HttpMessageConversionException e) {
 
         log.error("HttpMessageConversionException : {}", e.getMessage());
-        return ResponseEntity.badRequest().body(new ErrorResponse("입력이 잘못되었습니다."));
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
-        log.error("EntityNotFoundException : {}", e.getMessage());
-        return ResponseEntity.badRequest().body(new ErrorResponse("입력이 잘못되었습니다."));
+        String originalErrorMessage = e.getCause().getCause().getMessage();
+        return ResponseEntity.badRequest().body(new ErrorResponse(originalErrorMessage));
     }
 
     @ExceptionHandler(ShoppingBaseException.class)

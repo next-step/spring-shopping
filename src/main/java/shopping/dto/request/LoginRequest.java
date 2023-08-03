@@ -9,8 +9,8 @@ public class LoginRequest {
     private static final int PASSWORD_MAX_LENGTH = 100;
     private static final int EMAIL_MAX_LENGTH = 100;
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
 
     @JsonCreator
     public LoginRequest(@JsonProperty("email") final String email,
@@ -21,7 +21,6 @@ public class LoginRequest {
     }
 
     private void validate(String email, String password) {
-        // TODO: Spring Validator 적용? 여부 판단
         Assert.notNull(email, "이메일을 입력해야 합니다.");
         Assert.isTrue(!email.isBlank(), "이메일을 입력해야 합니다.");
         Assert.isTrue(email.length() <= EMAIL_MAX_LENGTH,
