@@ -1,6 +1,7 @@
 package shopping.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,5 +51,15 @@ public class CartItemController {
                 cartItemUpdateRequest);
 
         return ResponseEntity.ok(cartItemResponse);
+    }
+
+    @DeleteMapping(value = "/cart-items/{cartItemId}")
+    public ResponseEntity<Void> deleteCartItem(
+            @RequestAttribute final Long loginMemberId,
+            @PathVariable final Long cartItemId
+    ) {
+        cartItemService.deleteCartItem(loginMemberId, cartItemId);
+
+        return ResponseEntity.ok().build();
     }
 }

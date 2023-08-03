@@ -70,6 +70,18 @@ public class CartItemService {
         return CartItemResponse.from(cartItem);
     }
 
+    @Transactional
+    public void deleteCartItem(
+            final Long memberId,
+            final Long cartItemId
+    ) {
+        final Member member = getMemberById(memberId);
+        final CartItem cartItem = getCartItemById(cartItemId);
+        cartItem.validateMember(member);
+
+        cartItemRepository.delete(cartItem);
+    }
+
     private Member getMemberById(final Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_MEMBER_ID));

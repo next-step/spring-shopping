@@ -9,8 +9,10 @@ import static shopping.intergration.helper.RestAssuredHelper.login;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.request.CartItemAddRequest;
@@ -18,11 +20,20 @@ import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
 import shopping.dto.response.ProductResponse;
+import shopping.repository.CartItemRepository;
 
 class CartItemIntegrationTest extends IntegrationTest {
 
     private static final String EMAIL = "yongs170@naver.com";
     private static final String PASSWORD = "123!@#asd";
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @AfterEach
+    void tearDown() {
+        cartItemRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("장바구니에 상품을 추가한다.")
@@ -94,5 +105,23 @@ class CartItemIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         final CartItemResponse cartItemResponse = extractObject(response, CartItemResponse.class);
         assertThat(cartItemResponse.getQuantity()).isEqualTo(updateQuantity);
+    }
+
+    @Test
+    @DisplayName("장바구니의 아이템을 삭제한다.")
+    void deleteCartItem() {
+        final String accessToken = login(EMAIL, PASSWORD).getToken();
+        addCartItem(accessToken, 1L);
+        addCartItem(accessToken, 1L);
+        final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
+
+        final ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/cart-items/{cartItemId}", targetCartItemId)
+                .then().log().all().extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }
