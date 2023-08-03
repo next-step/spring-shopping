@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import org.aspectj.bridge.Message;
 import shopping.exception.CartProductException;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.text.MessageFormat;
 import java.util.Objects;
 
 @Entity
@@ -52,19 +54,21 @@ public class CartProduct {
 
     private void validateQuantity(int quantity) {
         if (quantity < MIN_PRODUCT_QUANTITY) {
-            throw new CartProductException("상품의 개수는 최소 1개여야합니다");
+            throw new CartProductException(
+                    MessageFormat.format("상품의 개수는 최소 1개여야합니다 현재 개수 : {0}개", quantity)
+            );
         }
     }
 
     private void validateProduct(Product product) {
         if (Objects.isNull(product)) {
-            throw new CartProductException("product가 존재하지 않습니다");
+            throw new CartProductException("product 가 존재하지 않습니다");
         }
     }
 
     private void validateMember(Member member) {
         if (Objects.isNull(member)) {
-            throw new CartProductException("member가 존재하지 않습니다");
+            throw new CartProductException("member 가 존재하지 않습니다");
         }
     }
 

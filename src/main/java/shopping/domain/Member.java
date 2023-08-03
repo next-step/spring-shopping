@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.text.MessageFormat;
 
 @Entity
 public class Member {
@@ -45,7 +46,9 @@ public class Member {
             throw new MemberException("사용자 이메일이 존재하지 않습니다");
         }
         if (!StringUtils.isValidEmail(email)) {
-            throw new MemberException("올바른 이메일 형식이 아닙니다");
+            throw new MemberException(
+                    MessageFormat.format("올바른 이메일 형식이 아닙니다 email : {0}", email)
+            );
         }
     }
 

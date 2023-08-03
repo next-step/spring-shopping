@@ -1,5 +1,6 @@
 package shopping.application;
 
+import org.aspectj.bridge.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
@@ -13,6 +14,7 @@ import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,10 +37,14 @@ public class CartProductService {
 
     public void addProduct(Long memberId, Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductException("상품Id에 해당하는 상품 존재하지 않습니다"));
+                .orElseThrow(() -> new ProductException(
+                        MessageFormat.format("상품Id에 해당하는 상품 존재하지 않습니다 id : {0}", productId)
+                ));
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException("회원Id에 해당하는 회원이 존재하지 않습니다"));
+                .orElseThrow(() -> new MemberException(
+                        MessageFormat.format("회원Id에 해당하는 회원이 존재하지 않습니다 id : {0}", memberId)
+                ));
 
         CartProduct cart = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
                 .map(CartProduct::increaseQuantity)
