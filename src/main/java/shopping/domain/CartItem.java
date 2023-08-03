@@ -47,6 +47,10 @@ public class CartItem {
         this.quantity = this.quantity.update(quantity);
     }
 
+    public boolean checkSameProduct(final CartItem other) {
+        return this.product.equals(other.product);
+    }
+
     public Long getId() {
         return id;
     }
@@ -62,4 +66,6 @@ public class CartItem {
     public int getQuantity() {
         return quantity.getValue();
     }
+
+
 }

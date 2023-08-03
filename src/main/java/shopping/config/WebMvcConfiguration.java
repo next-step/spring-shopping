@@ -5,7 +5,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import shopping.interceptor.AuthInterceptor;
+import shopping.config.interceptor.AuthInterceptor;
 import shopping.ui.AuthenticationPrincipalArgumentResolver;
 
 import java.util.List;

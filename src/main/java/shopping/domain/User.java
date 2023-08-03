@@ -5,12 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -26,42 +21,14 @@ public class User {
     @Column(nullable = false)
     private Password password;
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
-    private List<CartItem> cartItems = new ArrayList<>();
-
     protected User() {
-
+        
     }
 
     public User(Long id, String email, String password) {
         this.id = id;
         this.email = new Email(email);
         this.password = new Password(password);
-    }
-
-    public CartItem addCartItem(Product product) {
-        Optional<CartItem> itemOptional = findCartItem(product);
-
-        if (itemOptional.isEmpty()) {
-            CartItem newItem = new CartItem(this, product, 1);
-            cartItems.add(newItem);
-            return newItem;
-        }
-
-        CartItem item = itemOptional.get();
-        item.increaseQuantity();
-        return item;
-    }
-
-    private Optional<CartItem> findCartItem(Product product) {
-        return cartItems.stream()
-                .filter(cartItem -> cartItem.getProduct().equals(product))
-                .findAny();
-    }
-
-    public boolean containsCartItem(CartItem cartItem) {
-        return cartItems.contains(cartItem);
     }
 
     public Long getId() {
@@ -74,9 +41,5 @@ public class User {
 
     public String getPassword() {
         return password.getPassword();
-    }
-
-    public List<CartItem> getCartItems() {
-        return cartItems;
     }
 }

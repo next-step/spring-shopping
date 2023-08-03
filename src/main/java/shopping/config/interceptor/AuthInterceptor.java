@@ -1,4 +1,4 @@
-package shopping.interceptor;
+package shopping.config.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +14,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private static final String TOKEN_TYPE = "Bearer";
     private static final String AUTHENTICATION_HEADER = "Authorization";
-    
+
     private final JwtProvider jwtProvider;
 
     public AuthInterceptor(JwtProvider jwtProvider) {

@@ -3,6 +3,7 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartItem;
+import shopping.domain.CartItems;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.CartCreateRequest;
@@ -10,7 +11,7 @@ import shopping.dto.CartResponse;
 import shopping.dto.CartUpdateRequest;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
-import shopping.repository.CartItemRespository;
+import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
 
@@ -22,29 +23,34 @@ public class CartService {
 
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final CartItemRespository cartItemRespository;
+    private final CartItemRepository cartItemRepository;
 
     public CartService(UserRepository userRepository,
                        ProductRepository productRepository,
-                       CartItemRespository cartItemRespository) {
+                       CartItemRepository cartItemRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
-        this.cartItemRespository = cartItemRespository;
+        this.cartItemRepository = cartItemRepository;
     }
 
     @Transactional
     public void addProduct(CartCreateRequest request, Long userId) {
         User user = findUserById(userId);
         Product product = findProductById(request.getProductId());
+        CartItems items = new CartItems(cartItemRepository.findAllByUserId(userId));
+        CartItem item = new CartItem(user, product, 1);
 
-        CartItem cartItem = user.addCartItem(product);
-        cartItemRespository.save(cartItem);
+        items.add(item);
+
+        CartItem persistenceItem = items.findSameProduct(item)
+                .orElseThrow();
+
+        cartItemRepository.save(persistenceItem);
     }
 
     @Transactional(readOnly = true)
     public List<CartResponse> findAll(Long userId) {
-        return findUserById(userId)
-                .getCartItems()
+        return cartItemRepository.findAllByUserId(userId)
                 .stream()
                 .map(CartResponse::from)
                 .collect(Collectors.toUnmodifiableList());
@@ -52,32 +58,32 @@ public class CartService {
 
     @Transactional
     public void update(CartUpdateRequest request, Long cartItemId, Long userId) {
-        User user = findUserById(userId);
+        CartItems items = new CartItems(cartItemRepository.findAllByUserId(userId));
         CartItem item = findCartItemById(cartItemId);
 
-        validateUserContainsItem(user, item);
+        validateUserContainsItem(items, item);
 
         item.updateQuantity(request.getQuantity());
     }
 
     @Transactional
     public void delete(Long cartItemId, Long userId) {
-        User user = findUserById(userId);
+        CartItems items = new CartItems(cartItemRepository.findAllByUserId(userId));
         CartItem item = findCartItemById(cartItemId);
 
-        validateUserContainsItem(user, item);
+        validateUserContainsItem(items, item);
 
-        cartItemRespository.delete(item);
+        cartItemRepository.delete(item);
     }
 
-    private void validateUserContainsItem(User user, CartItem item) {
-        if (!user.containsCartItem(item)) {
+    private void validateUserContainsItem(CartItems items, CartItem item) {
+        if (!items.contains(item)) {
             throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
         }
     }
 
     private CartItem findCartItemById(Long id) {
-        return cartItemRespository.findById(id)
+        return cartItemRepository.findById(id)
                 .orElseThrow(() -> new ShoppingException(ErrorType.CART_ITEM_NO_EXIST, id));
     }
 
