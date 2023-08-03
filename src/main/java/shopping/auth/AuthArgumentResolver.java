@@ -1,6 +1,5 @@
 package shopping.auth;
 
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -11,8 +10,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String AUTHORIZATION = "Authorization";
+
+    private final TokenProvider tokenProvider;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private static final String EMAIL = "email";
+
+    public AuthArgumentResolver(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -24,9 +29,9 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        String email = (String) request.getAttribute(EMAIL);
-        log.debug(email);
+        String accessToken = webRequest.getHeader(AUTHORIZATION);
+        String email = tokenProvider.getEmail(accessToken);
+        log.debug("접근한 유저의 이메일 : {}", email);
         return email;
     }
 }

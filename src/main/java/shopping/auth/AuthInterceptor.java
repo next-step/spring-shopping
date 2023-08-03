@@ -27,11 +27,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         String accessToken = request.getHeader(AUTHORIZATION);
         if (accessToken == null) {
+            log.error("액세스 토큰이 존재하지 않습니다.");
             throw new AuthException();
         }
-        String email = tokenProvider.getEmail(accessToken.substring(7));
-        request.setAttribute("email", email);
-        log.debug(email);
-        return HandlerInterceptor.super.preHandle(request, response, handler);
+        tokenProvider.getEmail(accessToken);
+        return true;
     }
 }

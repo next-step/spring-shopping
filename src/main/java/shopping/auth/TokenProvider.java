@@ -13,6 +13,7 @@ import shopping.domain.User;
 public class TokenProvider {
 
     private static final String EMAIL = "email";
+    private static final int START_INDEX_WITHOUT_BEARER = 7;
 
     @Value("${security.jwt.secret-key}")
     private String secretKey;
@@ -35,9 +36,10 @@ public class TokenProvider {
     }
 
     public String getEmail(String token) {
+        String tokenWithOutBearer = token.substring(START_INDEX_WITHOUT_BEARER);
         return Jwts.parser()
                 .setSigningKey(secretKey.getBytes())
-                .parseClaimsJws(token)
+                .parseClaimsJws(tokenWithOutBearer)
                 .getBody()
                 .get(EMAIL, String.class);
     }
