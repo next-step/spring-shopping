@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import shopping.application.CartProductService;
 import shopping.dto.FindCartProductResponse;
 import shopping.dto.UpdateCartProductRequest;
+import shopping.ui.argumentresolver.Login;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -29,8 +29,8 @@ public class CartProductController {
 
     @ResponseBody
     @GetMapping("/products")
-    public List<FindCartProductResponse> findCartProducts(HttpServletRequest request) {
-        return cartProductService.findCartProducts((Long) request.getAttribute("memberId"));
+    public List<FindCartProductResponse> findCartProducts(@Login Long memberId) {
+        return cartProductService.findCartProducts(memberId);
     }
 
     @GetMapping
@@ -40,8 +40,8 @@ public class CartProductController {
 
     @ResponseBody
     @PostMapping("/products/{productId}")
-    public void addCartProduct(@PathVariable Long productId, HttpServletRequest request) {
-        cartProductService.addProduct((Long) request.getAttribute("memberId"), productId);
+    public void addCartProduct(@PathVariable Long productId, @Login Long memberId) {
+        cartProductService.addProduct(memberId, productId);
     }
 
     @ResponseBody
