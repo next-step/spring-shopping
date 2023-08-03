@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 public class CartProduct {
 
-    public static final int MIN_PRODUCT_QUANTITY = 1;
+    private static final int MIN_PRODUCT_QUANTITY = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
