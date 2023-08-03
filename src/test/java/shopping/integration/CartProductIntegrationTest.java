@@ -10,7 +10,7 @@ import shopping.dto.UpdateCartProductRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("장바구니 기능")
-public class CartProductIntegrationTest extends IntegrationTest {
+class CartProductIntegrationTest extends IntegrationTest {
 
     @DisplayName("장바구니에 상품을 추가한다")
     @Test
@@ -24,6 +24,21 @@ public class CartProductIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+    }
+
+    @DisplayName("상품 id 에 해당하는 상품이 존재하지 않으면 BADREQUEST 상태를 반환한다.")
+    @Test
+    void returnStatusBadRequest_WhenProductIsNotExist() {
+        // given
+        Long memberId = 1L;
+        Long productId = 50L;
+
+        // when
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(memberId, productId);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
 
     }
 
