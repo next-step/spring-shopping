@@ -7,6 +7,7 @@ import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.FindCartProductResponse;
 import shopping.dto.UpdateCartProductRequest;
+import shopping.exception.CartException;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class CartProductService {
 
     public static final int DEFAULT_PRODUCT_QUANTITY = 1;
+    public static final int MIN_CART_PRODUCT_QUANTITY = 1;
 
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
@@ -54,6 +56,10 @@ public class CartProductService {
     }
 
     public void updateCartProduct(Long id, UpdateCartProductRequest request) {
+        if (request.getQuantity() < MIN_CART_PRODUCT_QUANTITY) {
+            throw new CartException("상품 수량은 " + MIN_CART_PRODUCT_QUANTITY + "개 이상이어야합니다");
+        }
+
         cartProductRepository.updateById(id, request.getQuantity());
     }
 
