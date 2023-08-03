@@ -1,6 +1,6 @@
 package shopping.exception;
 
-public class AuthException extends ShoppingException {
+public abstract class AuthException extends RuntimeException {
 
     public AuthException(String message) {
         super(message);
