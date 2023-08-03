@@ -69,6 +69,4 @@ public class CartItem {
     public int getQuantity() {
         return quantity.getValue();
     }
-
-
 }

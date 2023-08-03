@@ -43,10 +43,9 @@ public class CartService {
 
         items.add(item);
 
-        final CartItem persistenceItem = items.findSameProduct(item)
-                .orElseThrow();
-
-        cartItemRepository.save(persistenceItem);
+        if (items.contains(item)) {
+            cartItemRepository.save(item);
+        }
     }
 
     @Transactional(readOnly = true)
