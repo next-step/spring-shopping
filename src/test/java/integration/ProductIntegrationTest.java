@@ -1,4 +1,4 @@
-package shopping.integration;
+package integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,7 +10,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import shopping.integration.helper.CommonRestAssuredUtils;
+import integration.helper.CommonRestAssuredUtils;
 import shopping.product.dto.request.ProductCreationRequest;
 import shopping.product.dto.request.ProductUpdateRequest;
 import shopping.product.dto.response.ProductResponse;

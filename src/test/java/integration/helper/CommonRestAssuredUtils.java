@@ -1,4 +1,4 @@
-package shopping.integration.helper;
+package integration.helper;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;

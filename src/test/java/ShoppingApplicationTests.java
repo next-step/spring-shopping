@@ -1,9 +1,8 @@
-package shopping;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import shopping.ShoppingApplication;
 
-@SpringBootTest
+@SpringBootTest(classes = ShoppingApplication.class)
 class ShoppingApplicationTests {
 
     @Test
