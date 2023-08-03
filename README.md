@@ -71,11 +71,11 @@ POST /cart/products/{productId}
 ```
 GET /cart/products
 ```
-- [ ] 장바구니에 담긴 상품 목록 조회
+- [x] 장바구니에 담긴 상품 목록 조회
 
 #### Request
 ```
-PATCH /cart/products/{productId}
+PATCH /cart/{id}
 
 {
   quantity: 1
@@ -86,10 +86,9 @@ PATCH /cart/products/{productId}
 
 #### Request
 ```
-DELETE /cart/products/{productId}
+DELETE /cart/{id}
 ```
-- [ ] 장바구니에 담긴 상품 제거
-- [ ] 장바구니 페이지 연동
+- [x] 장바구니에 담긴 상품 제거
 
 ### 장바구니 검증
 - 장바구니 상품 개수는 1이상이어야 합니다.

@@ -51,9 +51,8 @@ const removeCartItem = (id) => {
         return;
     }
 
-    // TODO: [3단계] 장바구니 아이템 삭제 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch(`/cart/${id}`, {
+        method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
