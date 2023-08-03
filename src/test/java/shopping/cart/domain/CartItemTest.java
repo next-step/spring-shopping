@@ -1,10 +1,13 @@
 package shopping.cart.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.exception.WooWaException;
 import shopping.product.domain.Product;
 import shopping.product.domain.vo.Money;
 
@@ -24,5 +27,18 @@ class CartItemTest {
             assertThat(cartItem.isProductChanged(nameChangedProduct))::isTrue,
             assertThat(cartItem.isProductChanged(priceChangedProduct))::isTrue
         );
+    }
+
+    @Test
+    @DisplayName("본인의 장바구니가 아니면 예외를 던진다.")
+    void validateMyCartItem() {
+        CartItem cartItem = new CartItem(1L, 1L, "특가 피자", new Money("5000"), 3);
+        Long memberId = 1L;
+        Long otherMemberId = 10000L;
+
+        assertThatCode(() -> cartItem.validateMyCartItem(memberId)).doesNotThrowAnyException();
+        assertThatThrownBy(() -> cartItem.validateMyCartItem(otherMemberId))
+            .isInstanceOf(WooWaException.class)
+            .hasMessage("본인의 장바구니가 아닙니다. memberId: '" + otherMemberId + "' cartItemId: '" + cartItem.getId() + "'");
     }
 }

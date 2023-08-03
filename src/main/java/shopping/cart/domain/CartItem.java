@@ -1,9 +1,13 @@
 package shopping.cart.domain;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import shopping.exception.WooWaException;
 import shopping.product.domain.Product;
 import shopping.product.domain.vo.Money;
 
@@ -34,6 +38,17 @@ public class CartItem {
     public boolean isProductChanged(Product product) {
         return !this.productName.equals(product.getName()) ||
             !this.productPrice.equals(product.getPrice());
+    }
+
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void validateMyCartItem(Long memberId) {
+        if (!Objects.equals(this.memberId, memberId)) {
+            throw new WooWaException("본인의 장바구니가 아닙니다. memberId: '" + memberId + "' cartItemId: '"
+                + this.id + "'", BAD_REQUEST);
+        }
     }
 
     public Long getId() {

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.ProductCartItemDto;
 import shopping.cart.dto.request.CartItemCreationRequest;
+import shopping.cart.dto.request.CartItemQuantityUpdateRequest;
 import shopping.cart.dto.response.AllCartItemsResponse;
 import shopping.cart.dto.response.CartItemResponse;
 import shopping.cart.repository.CartItemRepository;
@@ -57,6 +58,30 @@ public class CartService {
         return productCartItemDtos.stream()
             .filter(productCartItemDto -> productCartItemDto.getCartItem().isProductChanged(productCartItemDto.getProduct()))
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Transactional
+    public void updateProductQuantity(Long memberId, Long cartItemId, CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest) {
+        getMemberById(memberId);
+        CartItem cartItem = getCartItem(cartItemId);
+        cartItem.validateMyCartItem(memberId);
+
+        cartItem.updateQuantity(cartItemQuantityUpdateRequest.getQuantity());
+    }
+
+    @Transactional
+    public void deleteCartItem(Long memberId, Long cartItemId) {
+        getMemberById(memberId);
+        CartItem cartItem = getCartItem(cartItemId);
+        cartItem.validateMyCartItem(memberId);
+
+        cartItemRepository.delete(cartItem);
+    }
+
+    private CartItem getCartItem(Long cartItemId) {
+        return cartItemRepository.findById(cartItemId)
+            .orElseThrow(() -> new WooWaException("존재하지 않은 장바구니 품목입니다 id: '" + cartItemId + "'",
+                BAD_REQUEST));
     }
 
     private Member getMemberById(Long memberId) {
