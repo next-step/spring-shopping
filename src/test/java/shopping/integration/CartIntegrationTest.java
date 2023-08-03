@@ -93,7 +93,6 @@ class CartIntegrationTest extends IntegrationTest {
 
         final Long invalidProductId = Long.MAX_VALUE;
         final CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(invalidProductId);
-        TestFixture.addCartItem(accessToken, cartItemAddRequest);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -126,7 +125,12 @@ class CartIntegrationTest extends IntegrationTest {
         TestFixture.addCartItem(accessToken, cartPizza);
 
         /* when */
-        final ExtractableResponse<Response> response = TestFixture.readCartItems(accessToken);
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .when().get("/cart/items")
+            .then().log().all()
+            .extract();
 
         /* then */
         List<CartItemResponse> cartItems = response.jsonPath().getList(".", CartItemResponse.class);
@@ -159,7 +163,8 @@ class CartIntegrationTest extends IntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cartItemUpdateRequest)
             .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
 
         /* then */
         final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
@@ -195,7 +200,8 @@ class CartIntegrationTest extends IntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cartItemUpdateRequest)
             .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
 
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
@@ -228,7 +234,8 @@ class CartIntegrationTest extends IntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cartItemUpdateRequest)
             .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
 
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
@@ -252,9 +259,10 @@ class CartIntegrationTest extends IntegrationTest {
             .getList(".", CartItemResponse.class);
 
         final Long cartItemId = cartItems.get(0).getCartItemId();
-        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(1001);
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(3);
 
-        final LoginRequest otherLoginRequest = new LoginRequest("test", "test");
+        final LoginRequest otherLoginRequest = new LoginRequest("other_test_email@woowafriends.com",
+            "test_password!");
         String otherAccessToken = TestFixture.login(otherLoginRequest).as(LoginResponse.class)
             .getAccessToken();
 
@@ -265,7 +273,8 @@ class CartIntegrationTest extends IntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cartItemUpdateRequest)
             .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
 
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
@@ -282,14 +291,8 @@ class CartIntegrationTest extends IntegrationTest {
         String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
-            .jsonPath()
-            .getList(".", CartItemResponse.class);
-
         final Long invalidCartItemId = Long.MAX_VALUE;
-        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(1001);
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(3);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -298,7 +301,8 @@ class CartIntegrationTest extends IntegrationTest {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(cartItemUpdateRequest)
             .when().put("/cart/items/{cartItemId}/quantity", invalidCartItemId)
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
 
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
@@ -328,7 +332,8 @@ class CartIntegrationTest extends IntegrationTest {
             .given().log().all()
             .auth().oauth2(accessToken)
             .when().delete("/cart/items/{cartItemId}", cartItemId)
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
 
         /* then */
         final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)

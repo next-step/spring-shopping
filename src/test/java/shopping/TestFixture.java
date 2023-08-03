@@ -43,6 +43,7 @@ public class TestFixture {
             .given().log().all()
             .auth().oauth2(accessToken)
             .when().get("/cart/items")
-            .then().log().all().extract();
+            .then().log().all()
+            .extract();
     }
 }
