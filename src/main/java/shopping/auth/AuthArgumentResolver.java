@@ -22,7 +22,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().equals(String.class) &&
-                parameter.hasParameterAnnotation(RequestToken.class);
+                parameter.hasParameterAnnotation(EmailFromAccessToken.class);
     }
 
     @Override

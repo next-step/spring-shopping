@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.CartService;
-import shopping.auth.RequestToken;
+import shopping.auth.EmailFromAccessToken;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
@@ -30,7 +30,7 @@ public class CartController {
 
     @PostMapping
     public ResponseEntity<Void> createCartItem(
-            @RequestToken String email,
+            @EmailFromAccessToken String email,
             @RequestBody CartItemCreateRequest cartItemCreateRequest) {
 
         cartService.createCartItem(email, cartItemCreateRequest);
@@ -38,7 +38,8 @@ public class CartController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CartItemResponse>> getCartItems(@RequestToken String email) {
+    public ResponseEntity<List<CartItemResponse>> getCartItems(
+            @EmailFromAccessToken String email) {
 
         List<CartItemResponse> cartItems = cartService.findAllByEmail(email);
         return ResponseEntity.ok().body(cartItems);
@@ -46,7 +47,7 @@ public class CartController {
 
     @PatchMapping("/{cartItemId}")
     public ResponseEntity<Void> updateCartItemQuantity(
-            @RequestToken String email,
+            @EmailFromAccessToken String email,
             @PathVariable Long cartItemId,
             @RequestBody CartItemUpdateRequest cartItemUpdateRequest) {
 
@@ -56,7 +57,7 @@ public class CartController {
 
     @DeleteMapping("/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(
-            @RequestToken String email,
+            @EmailFromAccessToken String email,
             @PathVariable Long cartItemId) {
 
         cartService.deleteCartItem(email, cartItemId);
