@@ -30,7 +30,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니에 아이템을 추가한다")
+    @DisplayName("성공 : 장바구니에 상품을 추가한다")
     void successAddItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -55,7 +55,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 장바구니에 이미 존재하는 아이템을 추가한다")
+    @DisplayName("실패 : 장바구니에 이미 존재하는 상품을 추가한다")
     void addDuplicateItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -106,7 +106,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니에 있는 하나의 아이템 수량을 수정한다")
+    @DisplayName("성공 : 장바구니에 있는 하나의 상품 수량을 수정한다")
     void successUpdateQuantityOfCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -142,7 +142,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 아이템 수량을 1개 미만으로 수정할 수 없다.")
+    @DisplayName("실패 : 상품 수량을 1개 미만으로 수정할 수 없다.")
     void updateCartItemQuantityUnder1() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -175,7 +175,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 아이템 수량을 1,000개 초과로 수정할 수 없다.")
+    @DisplayName("실패 : 상품 수량을 1,000개 초과로 수정할 수 없다.")
     void updateCartItemQuantityOver1000() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
