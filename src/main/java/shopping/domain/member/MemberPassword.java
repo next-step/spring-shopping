@@ -34,6 +34,10 @@ public class MemberPassword {
         }
     }
 
+    public boolean match(final String password) {
+        return this.value.equals(password);
+    }
+
     public String getValue() {
         return this.value;
     }

@@ -51,7 +51,7 @@ public class CartProduct {
         return this.productId;
     }
 
-    public CartProductQuantity getQuantity() {
-        return this.quantity;
+    public int getQuantity() {
+        return this.quantity.getValue();
     }
 }

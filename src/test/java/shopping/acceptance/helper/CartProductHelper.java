@@ -13,15 +13,17 @@ public class CartProductHelper {
         throw new UnsupportedOperationException();
     }
 
-    public static ExtractableResponse<Response> createCartProduct(final String jwt,
-        final CartProductRequest request) {
+    public static ExtractableResponse<Response> createCartProduct(
+        final String jwt,
+        final CartProductRequest request
+    ) {
         return RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
             .body(request)
-            .when().post("/cart")
+            .when().post("/api/cart")
             .then().log().all()
             .extract();
     }

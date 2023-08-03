@@ -3,7 +3,6 @@ package shopping.service;
 import org.springframework.stereotype.Service;
 import shopping.domain.member.Member;
 import shopping.domain.member.MemberEmail;
-import shopping.domain.member.MemberPassword;
 import shopping.dto.request.LoginRequest;
 import shopping.exception.ShoppingException;
 import shopping.repository.MemberRepository;
@@ -18,13 +17,11 @@ public class MemberService {
     }
 
     public Member matchMember(final LoginRequest loginRequest) {
-        final MemberEmail email = new MemberEmail(loginRequest.getEmail());
-        final MemberPassword password = new MemberPassword(loginRequest.getPassword());
+        final String email = loginRequest.getEmail();
+        final Member member = memberRepository.findByEmail(new MemberEmail(email))
+            .orElseThrow(() -> new ShoppingException("존재하지 않는 이메일입니다. 입력값: " + email));
 
-        final Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new ShoppingException("존재하지 않는 이메일입니다. 입력값: " + email.getValue()));
-
-        if (!member.getPassword().equals(password)) {
+        if (!member.matchPassword(loginRequest.getPassword())) {
             throw new ShoppingException("비밀번호가 일치하지 않습니다.");
         }
 

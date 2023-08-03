@@ -29,16 +29,15 @@ class MemberServiceTest {
     @DisplayName("로그인 정보와 일치하는 회원이 있는지 확인할 수 있다.")
     void matchMember() {
         /* given */
-        final MemberEmail email = new MemberEmail("woowacamp@naver.com");
-        final MemberPassword password = new MemberPassword("woowacamp");
-        final Member dummyMember = new Member(email, password);
+        final String email = "woowacamp@naver.com";
+        final String password = "woowacamp";
+        final Member dummyMember = new Member(new MemberEmail(email), new MemberPassword(password));
 
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(dummyMember));
+        given(memberRepository.findByEmail(new MemberEmail(email)))
+            .willReturn(Optional.of(dummyMember));
 
         /* when */
-        final Member result = memberService.matchMember(
-            new LoginRequest(email.getValue(), password.getValue())
-        );
+        final Member result = memberService.matchMember(new LoginRequest(email, password));
 
         /* then */
         assertThat(result.getEmail()).isEqualTo(email);

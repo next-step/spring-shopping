@@ -34,15 +34,19 @@ public class Member {
         this.password = password;
     }
 
+    public boolean matchPassword(final String password) {
+        return this.password.match(password);
+    }
+
     public Long getId() {
         return this.id;
     }
 
-    public MemberEmail getEmail() {
-        return this.email;
+    public String getEmail() {
+        return this.email.getValue();
     }
 
-    public MemberPassword getPassword() {
-        return this.password;
+    public String getPassword() {
+        return this.password.getValue();
     }
 }

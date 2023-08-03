@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import shopping.service.ProductService;
 
 @Controller
-public class ProductController {
+public class MainController {
 
     private final ProductService productService;
 
-    public ProductController(final ProductService productService) {
+    public MainController(final ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     public String getMainPage(final Model model) {
         model.addAttribute("products", productService.findAllProducts());
 

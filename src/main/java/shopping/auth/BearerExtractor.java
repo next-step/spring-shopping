@@ -13,7 +13,7 @@ public class BearerExtractor {
 
     public String extract(final HttpServletRequest request) {
         final String value = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (value == null || !StringUtils.hasText(value)) {
+        if (!StringUtils.hasText(value)) {
             throw new ShoppingAuthenticationException("토큰이 존재하지 않습니다.");
         }
         if (!value.startsWith(BEARER_TYPE)) {
