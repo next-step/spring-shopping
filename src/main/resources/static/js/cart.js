@@ -14,9 +14,15 @@ const addCartItem = (productId) => {
         },
         body: JSON.stringify({productId: productId})
     }).then((response) => {
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
         alert('장바구니에 담았습니다.');
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }
 
@@ -36,9 +42,15 @@ const updateCartItemQuantity = (id, quantity) => {
         },
         body: JSON.stringify({quantity: quantity})
     }).then((response) => {
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
         window.location.reload();
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }
 
@@ -57,8 +69,14 @@ const removeCartItem = (id) => {
             'Content-Type': 'application/json'
         }
     }).then((response) => {
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
         window.location.reload();
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }

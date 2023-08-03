@@ -18,7 +18,13 @@ form.addEventListener('submit', (event) => {
         },
         body: JSON.stringify(loginRequest)
     }).then((response) => {
-        return response.json();
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
+        return json;
     }).then((data) => {
         const {token} = data;
         sessionStorage.setItem('accessToken', token);
