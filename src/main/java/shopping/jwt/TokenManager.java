@@ -1,11 +1,8 @@
 package shopping.jwt;
 
-import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shopping.exception.TokenException;
@@ -39,11 +36,7 @@ public class TokenManager {
                     .parseClaimsJws(token)
                     .getBody()
                     .get(MEMBER_ID_KEY, Long.class);
-        } catch (UnsupportedJwtException |
-                 MalformedJwtException |
-                 SignatureException |
-                 ExpiredJwtException |
-                 IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new TokenException("토큰이 유효하지 않습니다");
         }
     }
