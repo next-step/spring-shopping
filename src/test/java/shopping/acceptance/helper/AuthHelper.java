@@ -3,26 +3,27 @@ package shopping.acceptance.helper;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import shopping.dto.request.CartProductRequest;
+import shopping.dto.request.LoginRequest;
 
-public class CartProductHelper {
+public class AuthHelper {
 
-    private CartProductHelper() {
+    private AuthHelper() {
         throw new UnsupportedOperationException();
     }
 
-    public static ExtractableResponse<Response> createCartProduct(final String jwt,
-        final CartProductRequest request) {
-        return RestAssured
+    public static String login(
+        final String email, final String password
+    ) {
+        final ExtractableResponse<Response> response = RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .body(request)
-            .when().post("/cart")
+            .body(new LoginRequest(email, password))
+            .when().post("/login")
             .then().log().all()
             .extract();
+
+        return response.jsonPath().getString("accessToken");
     }
 }

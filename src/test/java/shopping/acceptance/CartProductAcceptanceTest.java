@@ -7,8 +7,10 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.acceptance.helper.AuthHelper;
 import shopping.acceptance.helper.CartProductHelper;
 import shopping.dto.request.CartProductRequest;
 
@@ -16,10 +18,10 @@ import shopping.dto.request.CartProductRequest;
 class CartProductAcceptanceTest extends AcceptanceTest {
 
     @Test
-    @DisplayName("장바구니 상품을 추가한다.")
-    void createCartProduct() {
+    @DisplayName("장바구니 상품 관련 기능은 인증되지 않으면 사용할 수 없다.")
+    void checkAuthentication() {
         /* given */
-        final Long memberId = 1L;
+        final String jwt = "abcd";
         final CartProductRequest request = new CartProductRequest(3L);
 
         /* when */
@@ -27,7 +29,29 @@ class CartProductAcceptanceTest extends AcceptanceTest {
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header("memberId", memberId)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+            .body(request)
+            .when().post("/cart")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @Test
+    @DisplayName("장바구니 상품을 추가한다.")
+    void createCartProduct() {
+        /* given */
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
+        final CartProductRequest request = new CartProductRequest(3L);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
             .body(request)
             .when().post("/cart")
             .then().log().all()
@@ -41,7 +65,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     @DisplayName("상품이 존재하지 않는 경우 \"존재하지 않는 상품입니다.\"로 응답한다.")
     void createCartProductBadRequestWithDoesNotExistProduct() {
         /* given */
-        final Long memberId = 1L;
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
         final CartProductRequest request = new CartProductRequest(123L);
 
         /* when */
@@ -49,7 +73,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header("memberId", memberId)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
             .body(request)
             .when().post("/cart")
             .then().log().all()
@@ -65,16 +89,16 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     @DisplayName("장바구니 상품이 이미 존재하는 경우 \"이미 장바구니에 담긴 상품입니다.\"로 응답한다.")
     void createCartProductBadRequestWithExistCartProduct() {
         /* given */
-        final Long memberId = 1L;
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
         final CartProductRequest request = new CartProductRequest(3L);
-        CartProductHelper.createCartProduct(memberId, request);
+        CartProductHelper.createCartProduct(jwt, request);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header("memberId", memberId)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
             .body(request)
             .when().post("/cart")
             .then().log().all()

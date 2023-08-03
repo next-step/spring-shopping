@@ -1,18 +1,18 @@
 package shopping.service;
 
 import org.springframework.stereotype.Service;
-import shopping.auth.JwtProvider;
+import shopping.auth.JwtHelper;
 
 @Service
 public class AuthService {
 
-    private final JwtProvider jwtProvider;
+    private final JwtHelper jwtHelper;
 
-    public AuthService(final JwtProvider jwtProvider) {
-        this.jwtProvider = jwtProvider;
+    public AuthService(final JwtHelper jwtHelper) {
+        this.jwtHelper = jwtHelper;
     }
 
     public String createToken(final Long memberId) {
-        return jwtProvider.createToken(memberId);
+        return jwtHelper.createToken(memberId);
     }
 }
