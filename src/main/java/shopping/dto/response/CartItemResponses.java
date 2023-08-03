@@ -6,7 +6,7 @@ public class CartItemResponses {
 
     private List<CartItemResponse> cartItems;
 
-    protected CartItemResponses() {
+    private CartItemResponses() {
     }
 
     private CartItemResponses(final List<CartItemResponse> cartItems) {

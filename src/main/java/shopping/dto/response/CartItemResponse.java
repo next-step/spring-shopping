@@ -8,7 +8,7 @@ public class CartItemResponse {
     private final int quantity;
     private final ProductResponse product;
 
-    protected CartItemResponse(final Long cartItemId, final int quantity, final ProductResponse product) {
+    private CartItemResponse(final Long cartItemId, final int quantity, final ProductResponse product) {
         this.cartItemId = cartItemId;
         this.quantity = quantity;
         this.product = product;
