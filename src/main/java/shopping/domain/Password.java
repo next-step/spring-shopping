@@ -1,6 +1,7 @@
 package shopping.domain;
 
 import javax.persistence.Embeddable;
+import shopping.exception.ArgumentValidateFailException;
 
 @Embeddable
 public class Password {
@@ -17,7 +18,7 @@ public class Password {
 
     private void validate(String password) {
         if (password == null) {
-            throw new IllegalArgumentException("비밀번호는 null일 수 없습니다.");
+            throw new ArgumentValidateFailException("비밀번호는 null일 수 없습니다.");
         }
     }
 
