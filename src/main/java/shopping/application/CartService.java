@@ -2,10 +2,10 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.domain.CartItem;
-import shopping.domain.CartItems;
-import shopping.domain.Product;
-import shopping.domain.User;
+import shopping.domain.cart.CartItem;
+import shopping.domain.cart.CartItems;
+import shopping.domain.product.Product;
+import shopping.domain.user.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.CartUpdateRequest;

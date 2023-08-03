@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +22,7 @@ public class User {
     private Password password;
 
     protected User() {
-        
+
     }
 
     public User(Long id, String email, String password) {

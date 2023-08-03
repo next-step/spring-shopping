@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.user;
 
 import shopping.infrastructure.PasswordEncoder;
 

@@ -1,9 +1,9 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
-import shopping.domain.Email;
-import shopping.domain.Password;
-import shopping.domain.User;
+import shopping.domain.user.Email;
+import shopping.domain.user.Password;
+import shopping.domain.user.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.ErrorType;

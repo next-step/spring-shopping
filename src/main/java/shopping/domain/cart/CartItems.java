@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.cart;
 
 import java.util.Collections;
 import java.util.List;
