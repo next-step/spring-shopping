@@ -1,15 +1,16 @@
 package shopping.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import shopping.exception.CartException;
 
 public class UpdateCartProductRequest {
 
     private int quantity;
 
-    private UpdateCartProductRequest() {
-    }
 
-    public UpdateCartProductRequest(int quantity) {
+    @JsonCreator
+    public UpdateCartProductRequest(@JsonProperty int quantity) {
         validateQuantity(quantity);
         this.quantity = quantity;
     }

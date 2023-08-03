@@ -1,7 +1,8 @@
 package shopping.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.util.StringUtils;
-import shopping.exception.MemberException;
 import shopping.exception.RequestException;
 import shopping.utils.EmailUtils;
 
@@ -10,10 +11,9 @@ public class LoginRequest {
     private String email;
     private String password;
 
-    private LoginRequest() {
-    }
 
-    public LoginRequest(String email, String password) {
+    @JsonCreator
+    public LoginRequest(@JsonProperty String email, @JsonProperty String password) {
         validateEmail(email);
         validatePassword(password);
         this.email = email;

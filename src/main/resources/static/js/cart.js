@@ -38,9 +38,12 @@ const updateCartItemQuantity = (id, quantity) => {
             'quantity': quantity
         })
     }).then((response) => {
+        if (!response.ok) {
+            throw Error();
+        }
         window.location.reload();
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }
 

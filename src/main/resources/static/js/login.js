@@ -18,6 +18,9 @@ form.addEventListener('submit', (event) => {
         },
         body: JSON.stringify(loginRequest)
     }).then((response) => {
+        if (!response.ok) {
+            throw Error();
+        }
         return response.json();
     }).then((data) => {
         const {accessToken} = data;
