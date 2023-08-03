@@ -25,10 +25,10 @@ public class User {
 
     }
 
-    public User(final Long id, final String email, final String password) {
+    public User(final Long id, final Email email, final Password password) {
         this.id = id;
-        this.email = new Email(email);
-        this.password = new Password(password);
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() {

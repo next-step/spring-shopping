@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
-import shopping.infrastructure.JwtProvider;
+import shopping.infrastructure.TokenProvider;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 
@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.containsString;
 public class AuthIntegrationTest {
 
     @Autowired
-    JwtProvider jwtProvider;
+    TokenProvider tokenProvider;
 
     @Test
     @DisplayName("로그인 페이지 접속 테스트")
@@ -44,7 +44,7 @@ public class AuthIntegrationTest {
                 .getAccessToken();
 
         // then
-        assertThat(jwtProvider.getPayload(token)).isEqualTo("1");
+        assertThat(tokenProvider.getPayload(token)).isEqualTo("1");
     }
 
     @Test

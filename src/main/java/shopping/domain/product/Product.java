@@ -27,12 +27,12 @@ public class Product {
 
     protected Product() {
     }
-
-    public Product(final Long id, final String name, final String image, final int price) {
+    
+    public Product(final Long id, final Name name, final Image image, final Price price) {
         this.id = id;
-        this.name = new Name(name);
-        this.image = new Image(image);
-        this.price = new Price(price);
+        this.name = name;
+        this.image = image;
+        this.price = price;
     }
 
     public Long getId() {

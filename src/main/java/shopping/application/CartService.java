@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.CartItems;
+import shopping.domain.cart.Quantity;
 import shopping.domain.product.Product;
 import shopping.domain.user.User;
 import shopping.dto.CartCreateRequest;
@@ -38,11 +39,10 @@ public class CartService {
         final User user = findUserById(userId);
         final Product product = findProductById(request.getProductId());
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = new CartItem(user, product, 1);
+        final CartItem item = new CartItem(user, product, Quantity.ONE);
 
         items.add(item);
 
-        // TODO
         final CartItem persistenceItem = items.findSameProduct(item)
                 .orElseThrow();
 

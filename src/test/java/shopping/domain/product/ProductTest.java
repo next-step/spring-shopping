@@ -9,6 +9,6 @@ class ProductTest {
     @Test
     @DisplayName("상품은 id, 이름, 이미지, 가격 정보를 가지고 있다.")
     void createProduct() {
-        assertThatNoException().isThrownBy(() -> new Product(1L, "승윤", "img", 10000));
+        assertThatNoException().isThrownBy(() -> new Product(1L, new Name("치킨"), new Image("chicken.png"), new Price(2000)));
     }
 }

@@ -12,7 +12,7 @@ public class Password {
         this.password = null;
     }
 
-    public Password(final String password) {
+    private Password(final String password) {
         this.password = password;
     }
 
