@@ -38,7 +38,7 @@ class UserServiceTest {
         final String accessToken = "test_access_token";
 
         final LoginRequest loginRequest = new LoginRequest(userEmail, userPassword);
-        final UserEntity userEntity = new UserEntity(1L, userEmail, userPassword);
+        final UserEntity userEntity = new UserEntity(userId, userEmail, userPassword);
 
         when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userEntity));
         when(jwtProvider.generateToken(String.valueOf(userId))).thenReturn(accessToken);

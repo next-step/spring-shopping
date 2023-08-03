@@ -41,6 +41,7 @@ class UserIntegrationTest extends IntegrationTest {
 
         /* then */
         final LoginResponse loginResponse = response.as(LoginResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(loginResponse.getAccessToken()).isNotBlank();
     }
 
@@ -48,7 +49,7 @@ class UserIntegrationTest extends IntegrationTest {
     @DisplayName("로그인에 실패한다. - 이메일이 존재하지 않는다.")
     void loginFailEmailNotRegistered() {
         /* given */
-        final LoginRequest loginRequest = new LoginRequest(" ",
+        final LoginRequest loginRequest = new LoginRequest("invalid_email",
             "test_password!");
 
         /* when */

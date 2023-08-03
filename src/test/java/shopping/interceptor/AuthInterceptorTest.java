@@ -55,9 +55,9 @@ class AuthInterceptorTest {
         when(request.getHeader("Authorization")).thenReturn(null);
 
         /* when & then */
-        final ShoppingException ex = assertThrows(ShoppingException.class,
+        final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> authInterceptor.preHandle(request, null, null));
-        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.NO_AUTHENTICATION_HEADER);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NO_AUTHENTICATION_HEADER);
     }
 
     @Test
@@ -68,9 +68,9 @@ class AuthInterceptorTest {
         when(request.getHeader("Authorization")).thenReturn("Pearer ");
 
         /* when & then */
-        final ShoppingException ex = assertThrows(ShoppingException.class,
+        final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> authInterceptor.preHandle(request, null, null));
-        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.INVALID_TOKEN_TYPE);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_TOKEN_TYPE);
     }
 
     @Test
@@ -82,8 +82,8 @@ class AuthInterceptorTest {
         when(jwtProvider.validate("invalid_token")).thenReturn(false);
 
         /* when & then */
-        final ShoppingException ex = assertThrows(ShoppingException.class,
+        final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> authInterceptor.preHandle(request, null, null));
-        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.INVALID_TOKEN);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_TOKEN);
     }
 }

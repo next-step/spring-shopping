@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 @DisplayName("상품 인수 테스트")
 class ProductIntegrationTest extends IntegrationTest {
@@ -34,6 +35,7 @@ class ProductIntegrationTest extends IntegrationTest {
         /* then */
         final List<String> result = response.htmlPath()
             .getList("html.body.div.section.div.div.div.span");
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(result).containsAll(List.of("치킨", "피자", "사케"));
     }
 }
