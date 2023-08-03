@@ -1,13 +1,9 @@
 package shopping.controller;
 
-import java.util.List;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import shopping.application.ProductService;
-import shopping.dto.response.ProductResponse;
 
-@Controller
+@RestController
 public class ProductController {
 
     private final ProductService productService;
@@ -16,10 +12,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/")
-    public String index(Model model) {
-        List<ProductResponse> products = productService.findAll();
-        model.addAttribute("products", products);
-        return "index";
-    }
+    // TODO: 상품 추가 API?
+
 }
