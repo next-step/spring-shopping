@@ -176,8 +176,8 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 상품 수량을 1개 미만으로 수정할 수 없다.")
-    void updateCartItemQuantityUnder1() {
+    @DisplayName("성공 : 장바구니에 있는 하나의 상품 수량을 0으로 수정하면 삭제된다.")
+    void successUpdateQuantityOfCartItemToZero() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
@@ -192,6 +192,42 @@ class CartIntegrationTest extends IntegrationTest {
 
         final Long cartItemId = cartItems.get(0).getCartItemId();
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(0);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemUpdateRequest)
+            .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(updatedCartItems).isEmpty();
+    }
+
+    @Test
+    @DisplayName("실패 : 상품 수량을 0개 미만으로 수정할 수 없다.")
+    void updateCartItemQuantityUnder0() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(-1);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured

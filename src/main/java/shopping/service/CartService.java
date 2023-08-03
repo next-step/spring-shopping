@@ -23,6 +23,7 @@ public class CartService {
 
     public static final int ITEM_MIN_QUANTITY = 1;
     public static final int ITEM_MAX_QUANTITY = 1000;
+    public static final int QUANTITY_ZERO = 0;
 
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
@@ -57,11 +58,17 @@ public class CartService {
     public void updateCartItemQuantity(final Long cartItemId,
         final CartItemUpdateRequest cartItemUpdateRequest, final Long userId) {
         final CartItemEntity cartItem = findCartItemEntityBy(cartItemId);
-
         validateUserHasCartItem(userId, cartItem);
-        validateCartItemQuantity(cartItemUpdateRequest);
 
-        cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
+        final int updateQuantity = cartItemUpdateRequest.getQuantity();
+
+        if (updateQuantity == QUANTITY_ZERO) {
+            cartItemRepository.delete(cartItem);
+            return;
+        }
+
+        validateCartItemQuantity(updateQuantity);
+        cartItem.updateQuantity(updateQuantity);
     }
 
     @Transactional
@@ -94,8 +101,8 @@ public class CartService {
     }
 
     private void validateCartItemQuantity(
-        final CartItemUpdateRequest cartItemUpdateRequest) {
-        if (isOutOfBound(cartItemUpdateRequest.getQuantity())) {
+        final int quantity) {
+        if (isOutOfBound(quantity)) {
             throw new ShoppingException(ErrorCode.INVALID_CART_ITEM_QUANTITY);
         }
     }
