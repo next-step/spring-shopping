@@ -80,7 +80,7 @@ class CartServiceTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니 아이템 갯수를 수정한다.")
+    @DisplayName("성공 : 장바구니 상품 갯수를 수정한다.")
     void successUpdateCartItem() {
         /* given */
         Long userId = 1L;
@@ -102,7 +102,7 @@ class CartServiceTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니 아이템을 삭제한다.")
+    @DisplayName("성공 : 장바구니 상품을 삭제한다.")
     void successDeleteCartItem() {
         /* given */
         Long userId = 1L;
