@@ -6,6 +6,7 @@ import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.FindCartProductResponse;
+import shopping.dto.UpdateCartProductRequest;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -52,8 +53,8 @@ public class CartProductService {
                 .collect(Collectors.toList());
     }
 
-    public void updateCartProduct(Long id, int quantity) {
-        cartProductRepository.updateById(id, quantity);
+    public void updateCartProduct(Long id, UpdateCartProductRequest request) {
+        cartProductRepository.updateById(id, request.getQuantity());
     }
 
     public void deleteCartProduct(Long id) {

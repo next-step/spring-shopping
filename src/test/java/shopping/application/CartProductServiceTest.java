@@ -11,6 +11,7 @@ import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.FindCartProductResponse;
+import shopping.dto.UpdateCartProductRequest;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -127,7 +128,7 @@ public class CartProductServiceTest {
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
             int initialQuantity = 5;
-            CartProduct cartProduct = new CartProduct(member, product, initialQuantity);
+            CartProduct cartProduct = new CartProduct(1L, member, product, initialQuantity);
 
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(List.of(cartProduct));
 
@@ -174,15 +175,15 @@ public class CartProductServiceTest {
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
             CartProduct cartProduct = new CartProduct(member, product, 5);
-            int updateQuantity = 6;
+            UpdateCartProductRequest updateRequest = new UpdateCartProductRequest(6);
 
-            doNothing().when(cartProductRepository).updateById(cartProduct.getId(), updateQuantity);
+            doNothing().when(cartProductRepository).updateById(cartProduct.getId(), updateRequest.getQuantity());
 
             // when
-            cartProductService.updateCartProduct(cartProduct.getId(), updateQuantity);
+            cartProductService.updateCartProduct(cartProduct.getId(), updateRequest);
 
             // then
-            verify(cartProductRepository).updateById(cartProduct.getId(), updateQuantity);
+            verify(cartProductRepository).updateById(cartProduct.getId(), updateRequest.getQuantity());
         }
     }
 }

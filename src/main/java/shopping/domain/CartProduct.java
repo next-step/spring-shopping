@@ -32,13 +32,18 @@ public class CartProduct {
     @Column(nullable = false)
     private int quantity;
 
-    public CartProduct(Member member, Product product, int quantity) {
+    public CartProduct(Long id, Member member, Product product, int quantity) {
         validateMember(member);
         validateProduct(product);
         validateQuantity(quantity);
+        this.id = id;
         this.member = member;
         this.product = product;
         this.quantity = quantity;
+    }
+
+    public CartProduct(Member member, Product product, int quantity) {
+        this(null, member, product, quantity);
     }
 
     protected CartProduct() {
