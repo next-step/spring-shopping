@@ -25,7 +25,6 @@ public class Product {
     private Price price;
 
     protected Product() {
-
     }
 
     public Product(final String image, final String name, final int price) {
