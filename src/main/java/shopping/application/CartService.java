@@ -9,7 +9,7 @@ import shopping.domain.product.Product;
 import shopping.domain.user.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
-import shopping.dto.CartUpdateRequest;
+import shopping.dto.QuantityUpdateRequest;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
@@ -57,7 +57,7 @@ public class CartService {
     }
 
     @Transactional
-    public void update(final CartUpdateRequest request, final Long cartItemId, final Long userId) {
+    public void update(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
         final CartItem item = findCartItemById(cartItemId);
 

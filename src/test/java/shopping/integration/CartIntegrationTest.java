@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
-import shopping.dto.CartUpdateRequest;
 import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
+import shopping.dto.QuantityUpdateRequest;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
@@ -158,10 +158,10 @@ public class CartIntegrationTest {
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .body(new CartUpdateRequest(3))
+                .body(new QuantityUpdateRequest(3))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/1")
+                .when().patch("/carts/1/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
@@ -189,7 +189,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/2")
+                .when().patch("/carts/2/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -214,7 +214,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/2")
+                .when().patch("/carts/2/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -239,7 +239,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/1")
+                .when().patch("/carts/1/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -264,7 +264,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/1")
+                .when().patch("/carts/1/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);

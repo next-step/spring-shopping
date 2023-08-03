@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import shopping.application.CartService;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
-import shopping.dto.CartUpdateRequest;
+import shopping.dto.QuantityUpdateRequest;
 
 import java.util.List;
 
@@ -39,8 +39,8 @@ public class CartController {
         return ResponseEntity.ok().body(cartService.findAll(userId));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateQuantity(@RequestBody final CartUpdateRequest request,
+    @PatchMapping("/{id}/quantity")
+    public ResponseEntity<Void> updateQuantity(@RequestBody final QuantityUpdateRequest request,
                                                @PathVariable final Long id,
                                                @AuthenticationPrincipal final Long userId) {
         cartService.update(request, id, userId);

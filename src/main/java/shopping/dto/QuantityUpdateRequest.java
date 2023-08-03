@@ -1,12 +1,12 @@
 package shopping.dto;
 
-public class CartUpdateRequest {
+public class QuantityUpdateRequest {
     private int quantity;
 
-    private CartUpdateRequest() {
+    private QuantityUpdateRequest() {
     }
 
-    public CartUpdateRequest(final int quantity) {
+    public QuantityUpdateRequest(final int quantity) {
         this.quantity = quantity;
     }
 
