@@ -35,4 +35,17 @@ public class CartProductIntegrationTest extends IntegrationTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
+
+    @DisplayName("장바구니에 있는 상품을 제거한다")
+    @Test
+    void deleteCartProduct() {
+        // given
+        Long cartProductId = 1L;
+
+        // when
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.deleteCartProduct(cartProductId);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }

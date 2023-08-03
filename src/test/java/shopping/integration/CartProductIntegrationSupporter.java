@@ -41,4 +41,21 @@ public class CartProductIntegrationSupporter {
                 .when().get("/cart/products")
                 .then().log().all().extract();
     }
+
+    static ExtractableResponse<Response> deleteCartProduct(Long id) {
+        String email = "woowa1@woowa.com";
+        String password = "1234";
+
+        String accessToken = AuthIntegrationSupporter
+                .login(email, password)
+                .as(LoginResponse.class)
+                .getAccessToken();
+
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/cart/{id}", id)
+                .then().log().all().extract();
+    }
 }
