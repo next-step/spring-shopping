@@ -1,4 +1,4 @@
-package shopping.controller;
+package shopping.exception.handler;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
