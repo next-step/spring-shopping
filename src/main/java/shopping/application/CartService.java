@@ -57,26 +57,26 @@ public class CartService {
 
     public void updateCartItemQuantity(
             String email,
-            Long id,
+            Long cartItemId,
             CartItemUpdateRequest cartItemUpdateRequest) {
 
-        CartItem cartItem = findCartItem(email, id);
+        CartItem cartItem = findCartItem(email, cartItemId);
 
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
         cartItemRepository.save(updatedCartItem);
     }
 
-    public void deleteCartItem(String email, Long id) {
-        findCartItem(email, id);
+    public void deleteCartItem(String email, Long cartItemId) {
+        findCartItem(email, cartItemId);
 
-        cartItemRepository.deleteById(id);
+        cartItemRepository.deleteById(cartItemId);
     }
 
-    private CartItem findCartItem(String email, Long id) {
+    private CartItem findCartItem(String email, Long cartItemId) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(cartItemId)));
 
         validateUserMatch(user, cartItem);
         return cartItem;
