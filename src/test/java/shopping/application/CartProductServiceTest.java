@@ -12,6 +12,7 @@ import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.FindCartProductResponse;
 import shopping.dto.UpdateCartProductRequest;
+import shopping.exception.CartException;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -184,6 +185,22 @@ public class CartProductServiceTest {
 
             // then
             verify(cartProductRepository).updateById(cartProduct.getId(), updateRequest.getQuantity());
+        }
+
+        @Test
+        @DisplayName("갱신될 상품 수량이 1개 미만일 경우 CartException을 던진다")
+        void throwCartException_WhenQuantityIsNotPositive() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Product product = new Product(1L, "치킨", "image", 23000L);
+            CartProduct cartProduct = new CartProduct(member, product, 5);
+            UpdateCartProductRequest updateRequest = new UpdateCartProductRequest(0);
+
+            // when
+            Exception exception = catchException(() -> cartProductService.updateCartProduct(cartProduct.getId(), updateRequest));
+
+            // then
+            assertThat(exception).isInstanceOf(CartException.class);
         }
     }
 }
