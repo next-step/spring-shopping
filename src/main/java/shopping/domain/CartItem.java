@@ -72,6 +72,13 @@ public class CartItem {
         return new CartItem(this.id, this.user, this.product, quantity);
     }
 
+    public boolean isDifferentUser(User user) {
+        if (this.user == null) {
+            return true;
+        }
+        return !this.user.equals(user);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

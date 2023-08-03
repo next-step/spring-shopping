@@ -88,7 +88,7 @@ public class CartService {
     }
 
     private void validateUserMatch(User user, CartItem cartItem) {
-        if (!cartItem.getUser().equals(user)) {
+        if (cartItem.isDifferentUser(user)) {
             throw new UserNotMatchException();
         }
     }
