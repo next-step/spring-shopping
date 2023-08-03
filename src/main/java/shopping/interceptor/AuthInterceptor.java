@@ -41,13 +41,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
     }
 
-    private static void validateAuthorizationHeader(final String header) {
+    private void validateAuthorizationHeader(final String header) {
         if (Objects.isNull(header)) {
             throw new ShoppingException(ErrorCode.NO_AUTHENTICATION_HEADER);
         }
     }
 
-    private static void validateTokenType(final String header) {
+    private void validateTokenType(final String header) {
         if (!header.startsWith(BEARER_TOKEN_TYPE)) {
             throw new ShoppingException(ErrorCode.INVALID_TOKEN_TYPE);
         }
