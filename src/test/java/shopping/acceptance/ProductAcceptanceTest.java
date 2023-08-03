@@ -15,6 +15,7 @@ class ProductAcceptanceTest extends AcceptanceTest {
     @Test
     @DisplayName("모든 상품 목록을 포함하는 메인 페이지 HTML을 받는다.")
     void getMainPage() {
+        // TODO: HTML 테스트
         RestAssured
             .given().log().all()
             .accept(MediaType.TEXT_HTML_VALUE)

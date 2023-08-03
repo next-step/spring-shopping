@@ -2,18 +2,16 @@ package shopping.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import shopping.acceptance.helper.AuthHelper;
 import shopping.acceptance.helper.CartProductHelper;
+import shopping.acceptance.helper.RestHelper;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
 import shopping.dto.request.CartProductRequest;
 import shopping.dto.response.CartResponse;
@@ -31,15 +29,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductRequest request = new CartProductRequest(3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .body(request)
-            .when().post("/api/cart")
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart", jwt, request);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -53,15 +43,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductRequest request = new CartProductRequest(3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .body(request)
-            .when().post("/api/cart")
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart", jwt, request);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -75,15 +57,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductRequest request = new CartProductRequest(123L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .body(request)
-            .when().post("/api/cart")
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart", jwt, request);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -100,15 +74,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         CartProductHelper.createCartProduct(jwt, request);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .body(request)
-            .when().post("/api/cart")
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart", jwt, request);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -125,14 +91,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .when().get("/api/cart")
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper.get("/api/cart", jwt);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -148,19 +107,11 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
 
         final Long cartProductId = 1L;
-        final CartProductQuantityUpdateRequest cartProductQuantityUpdateRequest =
-            new CartProductQuantityUpdateRequest(2);
+        final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(2);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .body(cartProductQuantityUpdateRequest)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .when().patch("/api/cart/{cartProductId}", cartProductId)
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper
+            .patch("/api/cart/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -174,19 +125,11 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
 
         final Long cartProductId = 1L;
-        final CartProductQuantityUpdateRequest cartProductQuantityUpdateRequest =
-            new CartProductQuantityUpdateRequest(0);
+        final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(0);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .body(cartProductQuantityUpdateRequest)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .when().patch("/api/cart/{cartProductId}", cartProductId)
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper
+            .patch("/api/cart/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -205,14 +148,8 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final Long cartProductId = 3L;
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
-            .when().delete("/api/cart/{cartProductId}", cartProductId)
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper
+            .delete("/api/cart/{cartProductId}", jwt, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());

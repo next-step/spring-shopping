@@ -2,17 +2,17 @@ package shopping.acceptance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import shopping.acceptance.helper.RestHelper;
 import shopping.dto.request.LoginRequest;
 
 class AuthAcceptanceTest extends AcceptanceTest {
 
+    // TODO: 언해피케이스
     @Test
     @DisplayName("이메일과 비밀번호로 인증에 성공하면 accessToken을 제공한다.")
     void postLogin() {
@@ -22,14 +22,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         final LoginRequest request = new LoginRequest(email, password);
 
         /* when */
-        final ExtractableResponse<Response> response = RestAssured
-            .given().log().all()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .accept(MediaType.APPLICATION_JSON_VALUE)
-            .body(request)
-            .when().post("/api/login")
-            .then().log().all()
-            .extract();
+        final ExtractableResponse<Response> response = RestHelper.post("/api/login", request);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
