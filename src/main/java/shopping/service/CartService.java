@@ -90,7 +90,7 @@ public class CartService {
 
     private void validateDuplicateCartItem(final Long userId, final Long productId) {
         if (cartItemRepository.existsByUserIdAndProductId(userId, productId)) {
-            throw new ShoppingException(ErrorCode.DUPULICATE_CART_ITEM);
+            throw new ShoppingException(ErrorCode.DUPLICATE_CART_ITEM);
         }
     }
 

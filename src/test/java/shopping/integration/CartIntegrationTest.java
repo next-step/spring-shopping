@@ -79,7 +79,7 @@ class CartIntegrationTest extends IntegrationTest {
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.DUPULICATE_CART_ITEM);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.DUPLICATE_CART_ITEM);
     }
 
     @Test
