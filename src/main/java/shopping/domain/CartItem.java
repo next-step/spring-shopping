@@ -64,10 +64,6 @@ public class CartItem {
         return quantity.getQuantity();
     }
 
-    public CartItem addQuantity(Integer count) {
-        return new CartItem(this.id, this.user, this.product, this.getQuantity() + count);
-    }
-
     public CartItem updateQuantity(Integer quantity) {
         return new CartItem(this.id, this.user, this.product, quantity);
     }
