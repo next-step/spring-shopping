@@ -80,7 +80,7 @@
   POST /cart
   
   {
-  "productId": 5 , 
+  "productId": 5
   }
   ```
     -[x] 장바구니에 담긴 아이템 목록 조회
@@ -88,11 +88,12 @@
   GET /cart
   ``` 
 
-    -[ ] 장바구니에 담긴 아이템 수량 변경
+    -[x] 장바구니에 담긴 아이템 수량 변경
   ```http request
-  PUT /cart/{cartProductId}/increase
-  
-  PUT /cart/{cartProductId}/decrease
+  PATCH /cart/{cartProductId}
+  {
+  "quantity": 5
+  }
   ```
 
     -[ ] 장바구니에 담긴 아이템 제거

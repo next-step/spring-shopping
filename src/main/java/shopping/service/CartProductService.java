@@ -3,6 +3,7 @@ package shopping.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartProduct;
+import shopping.dto.request.CartProductQuantityUpdateRequest;
 import shopping.dto.request.CartProductRequest;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
@@ -15,8 +16,10 @@ public class CartProductService {
     private final CartProductRepository cartProductRepository;
     private final ProductRepository productRepository;
 
-    public CartProductService(final CartProductRepository cartProductRepository,
-        final ProductRepository productRepository) {
+    public CartProductService(
+        final CartProductRepository cartProductRepository,
+        final ProductRepository productRepository
+    ) {
         this.cartProductRepository = cartProductRepository;
         this.productRepository = productRepository;
     }
@@ -38,5 +41,20 @@ public class CartProductService {
             });
 
         return cartProductRepository.save(new CartProduct(memberId, productId));
+    }
+
+    @Transactional
+    public void updateCartProductQuantity(
+        final Long cartProductId,
+        final Long memberId,
+        final CartProductQuantityUpdateRequest request
+    ) {
+        final CartProduct cartProduct = cartProductRepository
+            .findByIdAndMemberId(cartProductId, memberId)
+            .orElseThrow(
+                () -> new ShoppingException("존재하지 않는 장바구니 상품입니다. 장바구니 상품 정보: " + cartProductId)
+            );
+
+        cartProduct.updateQuantity(request.getQuantity());
     }
 }

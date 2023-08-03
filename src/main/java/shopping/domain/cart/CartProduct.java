@@ -39,6 +39,10 @@ public class CartProduct {
         this.productId = productId;
     }
 
+    public void updateQuantity(final int quantity) {
+        this.quantity = new CartProductQuantity(quantity);
+    }
+
     public Long getId() {
         return this.id;
     }

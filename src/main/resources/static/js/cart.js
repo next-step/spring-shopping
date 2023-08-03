@@ -23,7 +23,7 @@ const addCartItem = (productId) => {
   });
 }
 
-const updateCartItemQuantity = (id, quantity) => {
+const updateCartItemQuantity = (cartProductId, quantity) => {
   const credentials = sessionStorage.getItem('accessToken');
   if (!credentials) {
     alert('사용자 정보가 없습니다.');
@@ -31,15 +31,17 @@ const updateCartItemQuantity = (id, quantity) => {
     return;
   }
 
-  // TODO: [3단계] 장바구니 아이템 수량 변경 스펙에 맞게 변경
-  fetch('', {
-    method: '',
+  fetch(`/api/cart/${cartProductId}`, {
+    method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${credentials}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({})
+    body: JSON.stringify({
+      'quantity': quantity
+    })
   }).then((response) => {
+    alert('수정되었습니다.')
     window.location.reload();
   }).catch((error) => {
     console.error(error);

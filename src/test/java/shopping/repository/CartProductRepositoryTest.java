@@ -34,4 +34,24 @@ class CartProductRepositoryTest {
         assertThat(exist).isPresent();
         assertThat(notExist).isNotPresent();
     }
+
+    @Test
+    @DisplayName("Id와 MemberId로 장바구니 상품을 찾을 수 있다.")
+    void findByIdAndMemberId() {
+        /* given */
+        final Long existCartProductId = 1L;
+        final Long existMemberId = 1L;
+        final Long notExistCartProductId = 1L;
+        final Long notExistMemberId = 2L;
+
+        /* when */
+        final Optional<CartProduct> exist = cartProductRepository.findByIdAndMemberId(
+            existCartProductId, existMemberId);
+        final Optional<CartProduct> notExist = cartProductRepository.findByIdAndMemberId(
+            notExistCartProductId, notExistMemberId);
+
+        /* then */
+        assertThat(exist).isPresent();
+        assertThat(notExist).isNotPresent();
+    }
 }

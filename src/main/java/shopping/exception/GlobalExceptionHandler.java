@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import shopping.exception.dto.ExceptionResponse;
 
+// TODO: 정상 응답, 예외 응답 모두 통일된 규격으로
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
