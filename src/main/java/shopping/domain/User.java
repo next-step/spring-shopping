@@ -27,7 +27,7 @@ public class User {
     @AttributeOverrides(@AttributeOverride(name = "password", column = @Column(name = "password", nullable = false, length = 100)))
     private Password password;
 
-    public User() {
+    protected User() {
     }
 
     public User(String email, String password) {

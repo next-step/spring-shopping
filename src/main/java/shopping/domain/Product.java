@@ -40,7 +40,7 @@ public class Product {
         this.id = id;
     }
 
-    public Product() {
+    protected Product() {
 
     }
 

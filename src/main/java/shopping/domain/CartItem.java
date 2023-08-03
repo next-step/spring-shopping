@@ -33,7 +33,7 @@ public class CartItem {
     @AttributeOverrides(@AttributeOverride(name = "quantity", column = @Column(name = "quantity", nullable = false)))
     private Quantity quantity;
 
-    public CartItem() {
+    protected CartItem() {
     }
 
     public CartItem(Long id, User user, Product product, Integer quantity) {
