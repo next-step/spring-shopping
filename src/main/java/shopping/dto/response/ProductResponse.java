@@ -60,4 +60,14 @@ public class ProductResponse {
     public int hashCode() {
         return Objects.hash(id, name, imageUrl, price);
     }
+
+    @Override
+    public String toString() {
+        return "ProductResponse{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

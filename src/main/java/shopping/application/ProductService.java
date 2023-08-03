@@ -31,8 +31,10 @@ public class ProductService {
     }
 
     public Page<ProductResponse> findAllByPage(Integer pageNumber) {
+        int page = pageNumber < PAGE_START_NUMBER
+                ? PAGE_START_NUMBER : pageNumber;
         Page<Product> products = productRepository
-                .findAll(PageRequest.of(pageNumber - PAGE_START_NUMBER, PRODUCT_PAGE_SIZE));
+                .findAll(PageRequest.of(page - PAGE_START_NUMBER, PRODUCT_PAGE_SIZE));
         return products.map(ProductResponse::of);
     }
 }
