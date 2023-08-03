@@ -35,6 +35,13 @@ public class CartProductRepository {
                 .findAny();
     }
 
+    public void updateById(Long id, int quantity) {
+        entityManager.createQuery("update from CartProduct c set c.quantity = :quantity where c.id = :id")
+                .setParameter("quantity", quantity)
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+
     public void deleteById(Long id) {
         entityManager.createQuery("delete from CartProduct c where c.id = :id")
                 .setParameter("id", id)

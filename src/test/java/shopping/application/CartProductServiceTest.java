@@ -162,4 +162,27 @@ public class CartProductServiceTest {
             verify(cartProductRepository).deleteById(cartProduct.getId());
         }
     }
+
+    @Nested
+    @DisplayName("updateCartProduct 메서드는")
+    class UpdateCartProduct_Method {
+
+        @Test
+        @DisplayName("장바구니에 있는 상품 수량을 변경한다")
+        void updateCartProduct() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Product product = new Product(1L, "치킨", "image", 23000L);
+            CartProduct cartProduct = new CartProduct(member, product, 5);
+            int updateQuantity = 6;
+
+            doNothing().when(cartProductRepository).updateById(cartProduct.getId(), updateQuantity);
+
+            // when
+            cartProductService.updateCartProduct(cartProduct.getId(), updateQuantity);
+
+            // then
+            verify(cartProductRepository).updateById(cartProduct.getId(), updateQuantity);
+        }
+    }
 }

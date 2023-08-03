@@ -52,6 +52,10 @@ public class CartProductService {
                 .collect(Collectors.toList());
     }
 
+    public void updateCartProduct(Long id, int quantity) {
+        cartProductRepository.updateById(id, quantity);
+    }
+
     public void deleteCartProduct(Long id) {
         cartProductRepository.deleteById(id);
     }
