@@ -30,7 +30,7 @@ public class LoginTokenInterceptor implements HandlerInterceptor {
 
         String accessToken = value.substring(BEARER_TYPE.length()).trim();
 
-        if (tokenProvider.validateToken(accessToken)) {
+        if (!tokenProvider.validateToken(accessToken)) {
             throw new WooWaException("권한이 없습니다", HttpStatus.UNAUTHORIZED);
         }
 
