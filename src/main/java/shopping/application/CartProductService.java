@@ -51,4 +51,7 @@ public class CartProductService {
                 .map(FindCartProductResponse::from)
                 .collect(Collectors.toList());
     }
+
+    public void deleteCartProduct(Long id) {
+    }
 }

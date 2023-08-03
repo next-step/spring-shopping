@@ -24,6 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("CartService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -135,6 +137,29 @@ public class CartProductServiceTest {
             // then
             assertThat(result).hasSize(1);
             assertThat(result.get(0).getProductId()).isEqualTo(product.getId());
+        }
+    }
+
+    @Nested
+    @DisplayName("deleteCartProduct 메서드는")
+    class DeleteCartProduct_Method {
+
+        @Test
+        @DisplayName("장바구니에 있는 상품을 제거한다")
+        void deleteCartProduct() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Product product = new Product(1L, "치킨", "image", 23000L);
+            int initialQuantity = 5;
+            CartProduct cartProduct = new CartProduct(member, product, initialQuantity);
+
+            doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
+
+            // when
+            cartProductService.deleteCartProduct(cartProduct.getId());
+
+            // then
+            verify(cartProductRepository).deleteById(cartProduct.getId());
         }
     }
 }
