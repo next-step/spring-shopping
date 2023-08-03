@@ -39,12 +39,9 @@ public class CartService {
     public void addCartItem(CartItemAddRequest cartItemAddRequest, Long userId) {
         final UserEntity userProxy = userRepository.getReferenceById(userId);
         final Long productId = cartItemAddRequest.getProductId();
-        final ProductEntity product = productRepository.findById(productId)
-            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 장바구니 상품입니다."));
+        final ProductEntity product = findProductBy(productId);
 
-        if (cartItemRepository.existsByUserIdAndProductId(userId, productId)) {
-            throw new ShoppingException(ErrorCode.DUPULICATE_CART_ITEM);
-        }
+        validateDuplicateCartItem(userId, productId);
 
         final CartItemEntity cartItemEntity = new CartItemEntity(userProxy, product);
         cartItemRepository.save(cartItemEntity);
@@ -59,28 +56,49 @@ public class CartService {
     @Transactional
     public void updateCartItemQuantity(final Long cartItemId,
         final CartItemUpdateRequest cartItemUpdateRequest, final Long userId) {
-        final CartItemEntity cartItem = cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 상품입니다."));
+        final CartItemEntity cartItem = findCartItemEntityBy(cartItemId);
 
-        if (!Objects.equals(cartItem.getUser().getId(), userId)) {
-            throw new IllegalArgumentException("유저의 장바구니 상품이 아닙니다.");
-        }
+        validateUserHasCartItem(userId, cartItem);
 
-        if (cartItemUpdateRequest.getQuantity() < ITEM_MIN_QUANTITY
-            || ITEM_MAX_QUANTITY < cartItemUpdateRequest.getQuantity()) {
-            throw new ShoppingException(ErrorCode.INVALID_CART_ITEM_QUANTITY);
-        }
+        validateCartItemQuantity(cartItemUpdateRequest);
 
         cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
     }
 
     @Transactional
     public void removeCartItem(final Long cartItemId, final Long userId) {
-        final CartItemEntity cartItem = cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 장바구니 상품입니다."));
-        if (!Objects.equals(cartItem.getUser().getId(), userId)) {
-            throw new IllegalArgumentException("유저의 장바구니 상품이 아닙니다.");
-        }
+        final CartItemEntity cartItem = findCartItemEntityBy(cartItemId);
+        validateUserHasCartItem(userId, cartItem);
         cartItemRepository.delete(cartItem);
+    }
+
+    private void validateUserHasCartItem(final Long userId, final CartItemEntity cartItem) {
+        if (!Objects.equals(cartItem.getUser().getId(), userId)) {
+            throw new ShoppingException(ErrorCode.INVALID_CART_ITEM);
+        }
+    }
+
+    private CartItemEntity findCartItemEntityBy(final Long cartItemId) {
+        return cartItemRepository.findById(cartItemId)
+            .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_CART_ITEM));
+    }
+
+    private ProductEntity findProductBy(final Long productId) {
+        return productRepository.findById(productId)
+            .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_PRODUCT));
+    }
+
+    private void validateDuplicateCartItem(final Long userId, final Long productId) {
+        if (cartItemRepository.existsByUserIdAndProductId(userId, productId)) {
+            throw new ShoppingException(ErrorCode.DUPULICATE_CART_ITEM);
+        }
+    }
+
+    private static void validateCartItemQuantity(
+        final CartItemUpdateRequest cartItemUpdateRequest) {
+        if (cartItemUpdateRequest.getQuantity() < ITEM_MIN_QUANTITY
+            || ITEM_MAX_QUANTITY < cartItemUpdateRequest.getQuantity()) {
+            throw new ShoppingException(ErrorCode.INVALID_CART_ITEM_QUANTITY);
+        }
     }
 }

@@ -83,7 +83,36 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니에 있는 아이템 목록을 조회한다")
+    @DisplayName("실패 : 장바구니에 존재하지 않는 상품을 추가한다")
+    void addInvalidProduct() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final Long invalidProductId = Long.MAX_VALUE;
+        final CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(invalidProductId);
+        TestFixture.addCartItem(accessToken, cartItemAddRequest);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemAddRequest)
+            .when().post("/cart/items")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_PRODUCT);
+    }
+
+    @Test
+    @DisplayName("성공 : 장바구니에 있는 상품 목록을 조회한다")
     void successReadItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -208,7 +237,77 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니에 있는 하나의 아이템을 삭제한다")
+    @DisplayName("실패 : 다른 사람의 장바구니 상품의 갯수를 수정할 수 없다")
+    void updateOtherUserCartItem() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(1001);
+
+        final LoginRequest otherLoginRequest = new LoginRequest("test", "test");
+        String otherAccessToken = TestFixture.login(otherLoginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(otherAccessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemUpdateRequest)
+            .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
+            .then().log().all().extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM);
+    }
+
+    @Test
+    @DisplayName("실패 : 장바구니에 없는 상품의 갯수를 수정할 수 없다.")
+    void updateWithInvalidCartItemId() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long invalidCartItemId = Long.MAX_VALUE;
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(1001);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemUpdateRequest)
+            .when().put("/cart/items/{cartItemId}/quantity", invalidCartItemId)
+            .then().log().all().extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM);
+    }
+
+    @Test
+    @DisplayName("성공 : 장바구니에 있는 하나의 상품을 삭제한다")
     void successRemoveCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
