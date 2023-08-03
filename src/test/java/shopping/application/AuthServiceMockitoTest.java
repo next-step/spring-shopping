@@ -21,9 +21,9 @@ import shopping.exception.PasswordNotMatchException;
 import shopping.exception.UserNotFoundException;
 import shopping.repository.UserRepository;
 
-@DisplayName("인증 서비스 테스트")
+@DisplayName("인증 서비스 Stub 테스트")
 @ExtendWith(MockitoExtension.class)
-class AuthServiceTest {
+class AuthServiceMockitoTest {
 
     @InjectMocks
     private AuthService authService;

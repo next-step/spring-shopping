@@ -28,9 +28,9 @@ import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
 
-@DisplayName("장바구니 서비스 테스트")
+@DisplayName("장바구니 서비스 Stub 테스트")
 @ExtendWith(MockitoExtension.class)
-class CartServiceTest {
+class CartServiceMockitoTest {
 
     @InjectMocks
     private CartService cartService;

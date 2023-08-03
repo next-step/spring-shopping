@@ -14,8 +14,9 @@ import shopping.domain.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
+@DisplayName("상품 서비스 Stub 테스트")
 @ExtendWith(MockitoExtension.class)
-class ProductServiceTest {
+class ProductServiceMockitoTest {
 
     @InjectMocks
     private ProductService productService;

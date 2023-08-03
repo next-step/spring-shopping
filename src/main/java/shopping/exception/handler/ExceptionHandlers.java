@@ -20,14 +20,14 @@ public class ExceptionHandlers {
 
     @ExceptionHandler({AuthException.class, SignatureException.class, ExpiredJwtException.class})
     public String handleAuthException(Exception e) {
-        log.error(e.getMessage());
+        log.error("AuthException : {}", e.getMessage());
         return "redirect:/login";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
             Exception e) {
-        log.error(e.getMessage());
+        log.error("IllegalArgumentException : {}", e.getMessage());
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
@@ -35,13 +35,13 @@ public class ExceptionHandlers {
     public ResponseEntity<ErrorResponse> handleHttpMessageConversionException(
             HttpMessageConversionException e) {
 
-        log.error(e.getMessage());
+        log.error("HttpMessageConversionException : {}", e.getMessage());
         return ResponseEntity.badRequest().body(new ErrorResponse("입력이 잘못되었습니다."));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
-        log.error(e.getMessage());
+        log.error("EntityNotFoundException : {}", e.getMessage());
         return ResponseEntity.badRequest().body(new ErrorResponse("입력이 잘못되었습니다."));
     }
 
