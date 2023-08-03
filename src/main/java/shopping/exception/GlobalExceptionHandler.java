@@ -25,4 +25,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
             .body(new ExceptionResponse(exception));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleException(
+        final Exception exception
+    ) {
+        exception.printStackTrace();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ExceptionResponse("서버 내부 예외가 발생했습니다."));
+    }
 }
