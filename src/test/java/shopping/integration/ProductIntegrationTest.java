@@ -9,12 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
 
 @DisplayName("상품 인수 테스트")
 class ProductIntegrationTest extends IntegrationTest {
 
     @BeforeEach
+    @Override
     public void setUp() {
         super.setUp();
     }

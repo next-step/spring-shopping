@@ -3,7 +3,10 @@ package shopping.exception;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
-    EMAIL_NOT_VALID(HttpStatus.UNAUTHORIZED, "유효하지 않은 이메일입니다.");
+
+    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알수없는 오류가 발생헀습니다."),
+    INVALID_EMAIL(HttpStatus.UNAUTHORIZED, "유효하지 않은 이메일입니다."),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "틀린 비밀번호 입니다.");
 
     private final HttpStatus status;
     private final String message;
