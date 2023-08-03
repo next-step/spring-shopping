@@ -16,11 +16,10 @@ public class CartProductIntegrationTest extends IntegrationTest {
     @Test
     void addProduct() {
         // given
-        Long memberId = 1L;
         Long productId = 5L;
 
         // when
-        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(memberId, productId);
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(productId);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -50,7 +49,7 @@ public class CartProductIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
-    @DisplayName("장바구니에 있는 상품 수량을 갱신한다.")
+    @DisplayName("장바구니에 있는 상품 수량을 갱신한다")
     @Test
     void updateCartProduct() {
         // given

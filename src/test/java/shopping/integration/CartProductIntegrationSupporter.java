@@ -9,7 +9,7 @@ import shopping.dto.UpdateCartProductRequest;
 
 public class CartProductIntegrationSupporter {
 
-    static ExtractableResponse<Response> addProduct(Long memberId, Long productId) {
+    static ExtractableResponse<Response> addProduct(Long productId) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 

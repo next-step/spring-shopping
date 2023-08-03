@@ -26,4 +26,9 @@ public class GlobalControllerAdvice {
     ResponseEntity<ErrorResponse> catchShoppingException(ShoppingException exception) {
         return ResponseEntity.badRequest().body(new ErrorResponse(exception.getMessage()));
     }
+
+    @ExceptionHandler(Exception.class)
+    ResponseEntity<ErrorResponse> catchException() {
+        return ResponseEntity.internalServerError().body(new ErrorResponse("서버 내부에서 오류가 발생했습니다"));
+    }
 }
