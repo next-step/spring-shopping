@@ -15,12 +15,12 @@ public class JwtProvider {
     @Value("${jwt.expiration}")
     private Long expirationMilliSeconds;
 
-    public String generateToken(final Long userId) {
-        Date issuedAt = new Date(System.currentTimeMillis());
+    public String generateToken(final String subject) {
+        Date now = new Date(System.currentTimeMillis());
         return Jwts.builder()
-            .setSubject(String.valueOf(userId))
-            .setExpiration(new Date(issuedAt.getTime() + expirationMilliSeconds))
-            .setIssuedAt(issuedAt)
+            .setSubject(subject)
+            .setExpiration(new Date(now.getTime() + expirationMilliSeconds))
+            .setIssuedAt(now)
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
     }

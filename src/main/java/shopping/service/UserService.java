@@ -28,7 +28,8 @@ public class UserService {
             .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_EMAIL));
         validatePassword(loginRequest, userEntity);
 
-        return LoginResponse.from(jwtProvider.generateToken(userEntity.getId()));
+        final String accessToken = jwtProvider.generateToken(String.valueOf(userEntity.getId()));
+        return LoginResponse.from(accessToken);
     }
 
     private void validatePassword(final LoginRequest loginRequest, final UserEntity userEntity) {
