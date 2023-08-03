@@ -1,6 +1,7 @@
 package shopping.dto.response;
 
 public class LoginResponse {
+
     private String accessToken;
 
     public LoginResponse() {
@@ -10,7 +11,7 @@ public class LoginResponse {
         this.accessToken = accessToken;
     }
 
-    public static LoginResponse of(final String accessToken) {
+    public static LoginResponse from(final String accessToken) {
         return new LoginResponse(accessToken);
     }
 

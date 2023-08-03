@@ -10,12 +10,12 @@ public class GlobalControllerAdvice {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         final ErrorCode errorCode = ErrorCode.UNKNOWN_ERROR;
-        return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
+        return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.from(errorCode));
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleApplicationException(ShoppingException e) {
         final ErrorCode errorCode = e.getErrorCode();
-        return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.of(errorCode));
+        return ResponseEntity.status(errorCode.getStatus()).body(ErrorResponse.from(errorCode));
     }
 }

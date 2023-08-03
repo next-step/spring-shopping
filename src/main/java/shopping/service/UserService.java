@@ -30,6 +30,6 @@ public class UserService {
 
         String accessToken = jwtProvider.generateToken(userEntity.getId());
 
-        return LoginResponse.of(accessToken);
+        return LoginResponse.from(accessToken);
     }
 }

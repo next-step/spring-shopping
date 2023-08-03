@@ -23,7 +23,7 @@ public class CartItemResponse {
         this.quantity = quantity;
     }
 
-    public static CartItemResponse of(CartItemEntity cartItem) {
+    public static CartItemResponse from(CartItemEntity cartItem) {
         return new CartItemResponse(
             cartItem.getId(),
             cartItem.getProduct().getName(),

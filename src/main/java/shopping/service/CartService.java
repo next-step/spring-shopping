@@ -49,7 +49,7 @@ public class CartService {
 
     public List<CartItemResponse> getCartItems(final Long userId) {
         return cartItemRepository.findByUserId(userId).stream()
-            .map(CartItemResponse::of)
+            .map(CartItemResponse::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
