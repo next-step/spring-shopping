@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.auth.TokenProvider;
+import shopping.auth.domain.LoggedInMember;
 import shopping.exception.WooWaException;
 
 @Component
@@ -33,7 +34,7 @@ public class LoginTokenInterceptor implements HandlerInterceptor {
             throw new WooWaException("권한이 없습니다", HttpStatus.UNAUTHORIZED);
         }
 
-        request.setAttribute(MEMBER_KEY, tokenProvider.getPayload(accessToken));
+        request.setAttribute(MEMBER_KEY, new LoggedInMember(tokenProvider.getPayload(accessToken)));
         return true;
     }
 }

@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.annotation.AuthMember;
+import shopping.auth.domain.LoggedInMember;
 import shopping.cart.dto.request.CartItemCreationRequest;
 import shopping.cart.dto.request.CartItemQuantityUpdateRequest;
 import shopping.cart.dto.response.AllCartItemsResponse;
@@ -29,32 +31,32 @@ public class CartController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCartItem(@AuthMember Long memberId,
-        CartItemCreationRequest cartItemCreationRequest) {
+    public void addCartItem(@AuthMember LoggedInMember loggedInMember,
+        @RequestBody CartItemCreationRequest cartItemCreationRequest) {
         validNotNull(cartItemCreationRequest.getProductId());
-        cartService.addCartItem(memberId, cartItemCreationRequest);
+        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public AllCartItemsResponse findAllCartItems(@AuthMember Long memberId) {
-        return cartService.findAllCartItem(memberId);
+    public AllCartItemsResponse findAllCartItems(@AuthMember LoggedInMember loggedInMember) {
+        return cartService.findAllCartItem(loggedInMember);
     }
 
     @PatchMapping("/{cartItemId}/quantity")
     @ResponseStatus(HttpStatus.OK)
     public void updateCartItemQuantity(
-        @AuthMember Long memberId,
+        @AuthMember LoggedInMember loggedInMember,
         @PathVariable Long cartItemId,
-        CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest
+        @RequestBody CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest
     ) {
         validNotNull(cartItemQuantityUpdateRequest.getQuantity());
-        cartService.updateProductQuantity(memberId, cartItemId, cartItemQuantityUpdateRequest);
+        cartService.updateProductQuantity(loggedInMember, cartItemId, cartItemQuantityUpdateRequest);
     }
 
     @DeleteMapping("/{cartItemId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteCartItemQuantity(@AuthMember Long memberId, @PathVariable Long cartItemId) {
-        cartService.deleteCartItem(memberId, cartItemId);
+    public void deleteCartItemQuantity(@AuthMember LoggedInMember loggedInMember, @PathVariable Long cartItemId) {
+        cartService.deleteCartItem(loggedInMember, cartItemId);
     }
 }

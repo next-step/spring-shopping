@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.ProductCartItemDto;
 import shopping.cart.dto.request.CartItemCreationRequest;
@@ -37,8 +38,8 @@ public class CartService {
     }
 
     @Transactional
-    public void addCartItem(Long memberId, CartItemCreationRequest cartItemCreationRequest) {
-        Member member = getMemberById(memberId);
+    public void addCartItem(LoggedInMember loggedInMember, CartItemCreationRequest cartItemCreationRequest) {
+        Member member = getMemberById(loggedInMember.getId());
         Product product = getProductById(cartItemCreationRequest.getProductId());
 
         CartItem cartItem = new CartItem(member.getId(), product.getId(), product.getName(), product.getPrice(),
@@ -47,8 +48,8 @@ public class CartService {
         cartItemRepository.save(cartItem);
     }
 
-    public AllCartItemsResponse findAllCartItem(Long memberId) {
-        List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByMemberId(memberId);
+    public AllCartItemsResponse findAllCartItem(LoggedInMember loggedInMember) {
+        List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByMemberId(loggedInMember.getId());
         List<CartItemResponse> changedCartItems = CartItemResponse.listOf(findChangedCartItem(productCartItemDtos));
 
         return new AllCartItemsResponse(!changedCartItems.isEmpty(), CartItemResponse.listOf(productCartItemDtos), changedCartItems);
@@ -61,19 +62,19 @@ public class CartService {
     }
 
     @Transactional
-    public void updateProductQuantity(Long memberId, Long cartItemId, CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest) {
-        getMemberById(memberId);
+    public void updateProductQuantity(LoggedInMember loggedInMember, Long cartItemId, CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest) {
+        getMemberById(loggedInMember.getId());
         CartItem cartItem = getCartItem(cartItemId);
-        cartItem.validateMyCartItem(memberId);
+        cartItem.validateMyCartItem(loggedInMember.getId());
 
         cartItem.updateQuantity(cartItemQuantityUpdateRequest.getQuantity());
     }
 
     @Transactional
-    public void deleteCartItem(Long memberId, Long cartItemId) {
-        getMemberById(memberId);
+    public void deleteCartItem(LoggedInMember loggedInMember, Long cartItemId) {
+        getMemberById(loggedInMember.getId());
         CartItem cartItem = getCartItem(cartItemId);
-        cartItem.validateMyCartItem(memberId);
+        cartItem.validateMyCartItem(loggedInMember.getId());
 
         cartItemRepository.delete(cartItem);
     }

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.request.CartItemCreationRequest;
 import shopping.cart.dto.response.AllCartItemsResponse;
@@ -37,8 +38,9 @@ class CartServiceTest {
         Long memberId = memberRepository.save(new Member("email", "password")).getId();
         Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
         CartItemCreationRequest cartItemCreationRequest = new CartItemCreationRequest(productId);
+        LoggedInMember loggedInMember = new LoggedInMember(memberId);
 
-        cartService.addCartItem(memberId, cartItemCreationRequest);
+        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
         CartItem cartItem = cartItemRepository.findAll().get(0);
         assertCartItem(1L, memberId, productId, "피자", new Money("10000"), cartItem);
@@ -50,9 +52,10 @@ class CartServiceTest {
         Long memberId = memberRepository.save(new Member("email", "password")).getId();
         Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
         CartItemCreationRequest cartItemCreationRequest = new CartItemCreationRequest(productId);
-        cartService.addCartItem(memberId, cartItemCreationRequest);
+        LoggedInMember loggedInMember = new LoggedInMember(memberId);
+        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
-        AllCartItemsResponse allCartItem = cartService.findAllCartItem(memberId);
+        AllCartItemsResponse allCartItem = cartService.findAllCartItem(loggedInMember);
 
         assertThat(allCartItem).extracting(AllCartItemsResponse::isChanged)
             .isEqualTo(false);
@@ -71,10 +74,12 @@ class CartServiceTest {
         Product product = new Product("피자", "imageUrl", "10000");
         Long productId =  productRepository.save(product).getId();
         CartItemCreationRequest cartItemCreationRequest = new CartItemCreationRequest(productId);
-        cartService.addCartItem(memberId, cartItemCreationRequest);
+        LoggedInMember loggedInMember = new LoggedInMember(memberId);
+
+        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
         product.updateValues("특가 피자", "5000", "changedImage");
 
-        AllCartItemsResponse allCartItem = cartService.findAllCartItem(memberId);
+        AllCartItemsResponse allCartItem = cartService.findAllCartItem(loggedInMember);
 
         assertThat(allCartItem).extracting(AllCartItemsResponse::isChanged)
             .isEqualTo(true);
