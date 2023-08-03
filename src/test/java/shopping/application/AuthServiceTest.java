@@ -37,8 +37,8 @@ public class AuthServiceTest {
     class login_Method {
 
         @Test
-        @DisplayName("유효한 회원일 경우, 토큰을 담은 LoginResponse를 반환한다")
-        void returnLoginResponse_WhenValidMember() {
+        @DisplayName("유효한 회원일 경우 로그인에 성공한다")
+        void LoginSuccess_WhenValidMember() {
             // given
             String email = "woowa1@woowa.com";
             String password = "1234";
@@ -58,7 +58,7 @@ public class AuthServiceTest {
         }
 
         @Test
-        @DisplayName("존재하지 않는 회원일 경우 AuthException을 던진다")
+        @DisplayName("존재하지 않는 회원일 경우 AuthException 을 던진다")
         void throwAuthException_WhenInvalidMember() {
             // given
             String email = "woo@woowa.com";
@@ -76,7 +76,7 @@ public class AuthServiceTest {
         }
 
         @Test
-        @DisplayName("비밀번호가 일치하지 않을 경우, AuthException을 던진다")
+        @DisplayName("비밀번호가 일치하지 않을 경우, AuthException 을 던진다")
         void throwAuthException_WhenNotMatchPassword() {
             // given
             String email = "woowa1@woowa.com";

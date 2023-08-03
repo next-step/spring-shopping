@@ -1,6 +1,6 @@
 package shopping.domain;
 
-import shopping.exception.CartException;
+import shopping.exception.CartProductException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,19 +52,19 @@ public class CartProduct {
 
     private void validateQuantity(int quantity) {
         if (quantity < MIN_PRODUCT_QUANTITY) {
-            throw new CartException("상품의 개수는 최소 1개여야합니다");
+            throw new CartProductException("상품의 개수는 최소 1개여야합니다");
         }
     }
 
     private void validateProduct(Product product) {
         if (Objects.isNull(product)) {
-            throw new CartException("product가 존재하지 않습니다");
+            throw new CartProductException("product가 존재하지 않습니다");
         }
     }
 
     private void validateMember(Member member) {
         if (Objects.isNull(member)) {
-            throw new CartException("member가 존재하지 않습니다");
+            throw new CartProductException("member가 존재하지 않습니다");
         }
     }
 

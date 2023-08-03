@@ -7,7 +7,6 @@ import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.FindCartProductResponse;
 import shopping.dto.UpdateCartProductRequest;
-import shopping.exception.CartException;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;

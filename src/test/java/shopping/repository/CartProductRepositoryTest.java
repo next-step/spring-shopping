@@ -23,7 +23,7 @@ public class CartProductRepositoryTest {
     class FindByMemberIdAndProductId_Method {
 
         @Test
-        @DisplayName("memberId와 productId에 해당하는 cart를 반환한다")
+        @DisplayName("memberId와 productId에 해당하는 cartProduct 를 반환한다")
         void returnCartByMemberIdAndProductId() {
             // given
             Long memberId = 1L;
