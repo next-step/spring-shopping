@@ -1,5 +1,6 @@
 package integration;
 
+import static integration.helper.ProductHelper.createProduct;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.RestAssured;
@@ -68,14 +69,6 @@ class ProductIntegrationTest extends IntegrationTest {
 
         // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-    }
-
-    private static ExtractableResponse<Response> createProduct(ProductCreationRequest productCreationRequest) {
-        ExtractableResponse<Response> response = CommonRestAssuredUtils.post(
-            "/products",
-            productCreationRequest
-        );
-        return response;
     }
 
     @Test

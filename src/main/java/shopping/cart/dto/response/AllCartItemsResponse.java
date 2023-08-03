@@ -4,22 +4,22 @@ import java.util.List;
 
 public class AllCartItemsResponse {
 
-    private boolean isChanged;
+    private boolean changed;
     private List<CartItemResponse> cartItemResponses;
     private List<CartItemResponse> changedCartItemResponses;
 
     private AllCartItemsResponse() {
     }
 
-    public AllCartItemsResponse(boolean isChanged, List<CartItemResponse> cartItemResponses,
+    public AllCartItemsResponse(boolean changed, List<CartItemResponse> cartItemResponses,
         List<CartItemResponse> changedCartItemResponses) {
-        this.isChanged = isChanged;
+        this.changed = changed;
         this.cartItemResponses = cartItemResponses;
         this.changedCartItemResponses = changedCartItemResponses;
     }
 
     public boolean isChanged() {
-        return isChanged;
+        return changed;
     }
 
     public List<CartItemResponse> getCartItemResponses() {

@@ -8,8 +8,19 @@ import org.springframework.http.MediaType;
 
 public class CommonRestAssuredUtils {
 
+    public static final String DEFAULT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkxMDUxMTUyLCJleHAiOjkxNjkxMDUxMTUyfQ.AEu-Z9ndgW24b5M45dj6uSY3ZgY1JpSmB3S05wJZhwo";
+
     public static ExtractableResponse<Response> get(String url) {
         return RestAssured.given().log().all()
+            .when()
+            .get(url)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> get(String url, String token) {
+        return RestAssured.given().log().all()
+            .header("Authorization", "Bearer " + token)
             .when()
             .get(url)
             .then().log().all()
@@ -55,6 +66,17 @@ public class CommonRestAssuredUtils {
             .extract();
     }
 
+    public static <T> ExtractableResponse<Response> post(String url, T body, String token) {
+        return RestAssured.given().log().all()
+            .body(body)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("Authorization", "Bearer " + token)
+            .when()
+            .post(url)
+            .then().log().all()
+            .extract();
+    }
+
     public static ExtractableResponse<Response> delete(String url) {
         return RestAssured.given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -73,10 +95,10 @@ public class CommonRestAssuredUtils {
             .extract();
     }
 
-    public static <T> ExtractableResponse<Response> delete(String url, T pathParam, String parameterName, T parameterValue) {
+    public static <T> ExtractableResponse<Response> delete(String url, T pathParam, String token) {
         return RestAssured.given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .param(parameterName, parameterValue)
+            .header("Authorization", "Bearer " + token)
             .when()
             .delete(url, pathParam)
             .then().log().all()
@@ -99,6 +121,17 @@ public class CommonRestAssuredUtils {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
             .put(url, pathParam)
+            .then().log().all()
+            .extract();
+    }
+
+    public static <T> ExtractableResponse<Response> patch(String url, T pathParam, T body, String token) {
+        return RestAssured.given().log().all()
+            .body(body)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .header("Authorization", "Bearer " + token)
+            .when()
+            .patch(url, pathParam)
             .then().log().all()
             .extract();
     }
