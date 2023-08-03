@@ -22,6 +22,7 @@ import shopping.domain.User;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.exception.CartItemNotFoundException;
+import shopping.exception.ProductAlreadyInCartException;
 import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
@@ -56,8 +57,10 @@ class CartServiceMockitoTest {
             String email = "test@example.com";
             when(userRepository.findByEmail(new Email(email)))
                     .thenReturn(Optional.of(new User(1L, email, "1234")));
-            when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
-                    .thenReturn(new Product(1L, "chicken", "/chicken.jpg", 10_000L));
+            when(productRepository.findById(cartItemCreateRequest.getProductId()))
+                    .thenReturn(Optional.of(new Product(1L, "chicken", "/chicken.jpg", 10_000L)));
+            when(cartItemRepository.findByUserAndProduct(any(), any()))
+                    .thenReturn(Optional.empty());
 
             // when
             assertThatCode(() -> cartService.createCartItem(email, cartItemCreateRequest))
@@ -89,7 +92,7 @@ class CartServiceMockitoTest {
             String email = "test@example.com";
             when(userRepository.findByEmail(new Email(email)))
                     .thenReturn(Optional.of(new User(1L, email, "1234")));
-            when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
+            when(productRepository.findById(cartItemCreateRequest.getProductId()))
                     .thenThrow(EntityNotFoundException.class);
 
             // when & then
@@ -97,7 +100,7 @@ class CartServiceMockitoTest {
                     .isInstanceOf(EntityNotFoundException.class);
         }
 
-        @DisplayName("이미 장바구니에 담긴 아이템일 경우 수량 하나 추가")
+        @DisplayName("이미 장바구니에 담긴 아이템일 예외 발생")
         @Test
         void alreadyInCartThenAddQuantity() {
             // given
@@ -105,15 +108,16 @@ class CartServiceMockitoTest {
             String email = "test@example.com";
             when(userRepository.findByEmail(new Email(email)))
                     .thenReturn(Optional.of(new User(1L, email, "1234")));
-            when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
-                    .thenReturn(new Product(1L, "chicken", "/chicken.jpg", 10_000L));
+            when(productRepository.findById(cartItemCreateRequest.getProductId()))
+                    .thenReturn(Optional.of(new Product(1L, "chicken", "/chicken.jpg", 10_000L)));
+            when(cartItemRepository.findByUserAndProduct(any(), any()))
+                    .thenReturn(Optional.of(new CartItem(1L, new User(1L, email, "1234"),
+                            new Product(1L, "chicken", "/chicken.jpg", 10_000L),
+                            1)));
 
-            // when
+            // when, then
             assertThatCode(() -> cartService.createCartItem(email, cartItemCreateRequest))
-                    .doesNotThrowAnyException();
-
-            // then
-            verify(cartItemRepository, times(1)).save(any());
+                    .isInstanceOf(ProductAlreadyInCartException.class);
         }
     }
 

@@ -14,7 +14,12 @@ const addCartItem = (productId) => {
     },
     body: JSON.stringify({"productId": productId})
   }).then((response) => {
-    alert('장바구니에 담았습니다.');
+    if (response.status === 201) {
+      alert('장바구니에 담았습니다.');
+    }
+    if (response.status === 409) {
+      alert('이미 장바구니에 있는 상품입니다.')
+    }
   }).catch((error) => {
     console.error(error);
   });

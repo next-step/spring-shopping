@@ -23,7 +23,7 @@ class CartIntegrationTest extends IntegrationTest {
 
     @DisplayName("장바구니에 상품 추가 성공시 201 Created")
     @Test
-    void addCartItem() {
+    void addCartItemSuccessThenCreated() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
         String accessToken = RestAssured
@@ -47,6 +47,43 @@ class CartIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    @DisplayName("장바구니에 이미 있는 상품 추가 시 409 Conflict")
+    @Test
+    void addCartItemProductInCartThenConflict() {
+        // given
+        CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
+        String accessToken = RestAssured
+                .given().log().all()
+                .body(new LoginRequest("admin@example.com", "123456789"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then().log().all()
+                .extract().jsonPath().getString("accessToken");
+
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(cartItemCreateRequest)
+                .when().post("/cart/items")
+                .then().log().all()
+                .extract();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(cartItemCreateRequest)
+                .when().post("/cart/items")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CONFLICT.value());
     }
 
     @DisplayName("장바구니 물건 조회 성공시 200 Ok")

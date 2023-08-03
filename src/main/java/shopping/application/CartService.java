@@ -1,7 +1,6 @@
 package shopping.application;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +12,8 @@ import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.exception.CartItemNotFoundException;
+import shopping.exception.ProductAlreadyInCartException;
+import shopping.exception.ProductNotFoundException;
 import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
@@ -38,17 +39,20 @@ public class CartService {
     public void createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
-        Product product = productRepository
-                .getReferenceById(cartItemCreateRequest.getProductId());
+        Product product = productRepository.findById(cartItemCreateRequest.getProductId())
+                .orElseThrow(() -> new ProductNotFoundException(
+                        String.valueOf(cartItemCreateRequest.getProductId())));
 
-        Optional<CartItem> originalCartItem = cartItemRepository
-                .findByUserAndProduct(user, product);
+        validateProductNotInCart(user, product);
 
-        CartItem cartItem = originalCartItem
-                .map(item -> item.addQuantity(1))
-                .orElseGet(() -> new CartItem(user, product));
+        cartItemRepository.save(new CartItem(user, product));
+    }
 
-        cartItemRepository.save(cartItem);
+    private void validateProductNotInCart(User user, Product product) {
+        cartItemRepository.findByUserAndProduct(user, product)
+                .ifPresent(item -> {
+                    throw new ProductAlreadyInCartException();
+                });
     }
 
     public List<CartItemResponse> findAllByEmail(String email) {
