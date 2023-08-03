@@ -12,7 +12,7 @@ public class LoginRequest {
     }
 
     @JsonCreator
-    public LoginRequest(String email, String password) {
+    public LoginRequest(final String email, final String password) {
         validateEmailNotNull(email);
         validatePasswordNotNull(password);
 
@@ -20,13 +20,13 @@ public class LoginRequest {
         this.password = password;
     }
 
-    private void validatePasswordNotNull(String password) {
+    private void validatePasswordNotNull(final String password) {
         if (password == null) {
             throw new ShoppingException(ErrorType.PASSWORD_NULL);
         }
     }
 
-    private void validateEmailNotNull(String email) {
+    private void validateEmailNotNull(final String email) {
         if (email == null) {
             throw new ShoppingException(ErrorType.EMAIL_NULL);
         }

@@ -12,12 +12,14 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(final ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     public List<ProductResponse> findAllProducts() {
-        return productRepository.findAll().stream().map(ProductResponse::of).collect(Collectors.toList());
+        return productRepository.findAll()
+                .stream()
+                .map(ProductResponse::of)
+                .collect(Collectors.toUnmodifiableList());
     }
-
 }

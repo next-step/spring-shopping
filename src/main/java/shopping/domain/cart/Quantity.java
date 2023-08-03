@@ -15,12 +15,12 @@ public class Quantity {
         this.quantity = 0;
     }
 
-    public Quantity(int quantity) {
+    public Quantity(final int quantity) {
         validatePositive(quantity);
         this.quantity = quantity;
     }
 
-    private void validatePositive(int quantity) {
+    private void validatePositive(final int quantity) {
         if (quantity <= 0) {
             throw new ShoppingException(ErrorType.QUANTITY_INVALID);
         }
@@ -30,7 +30,7 @@ public class Quantity {
         return new Quantity(quantity + 1);
     }
 
-    public Quantity update(int quantity) {
+    public Quantity update(final int quantity) {
         return new Quantity(quantity);
     }
 
@@ -39,7 +39,7 @@ public class Quantity {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quantity quantity1 = (Quantity) o;

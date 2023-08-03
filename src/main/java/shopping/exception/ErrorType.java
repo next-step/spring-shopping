@@ -23,11 +23,10 @@ public enum ErrorType {
     EMAIL_NULL(HttpStatus.BAD_REQUEST, "email은 필수 항목입니다."),
     DECODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "복호화 실패");
 
+    private final HttpStatus status;
+    private final String message;
 
-    private HttpStatus status;
-    private String message;
-
-    ErrorType(HttpStatus status, String message) {
+    ErrorType(final HttpStatus status, final String message) {
         this.status = status;
         this.message = message;
     }

@@ -12,7 +12,7 @@ public class CartResponse {
     private CartResponse() {
     }
 
-    public CartResponse(Long id, String name, String image, int price, int quantity) {
+    public CartResponse(final Long id, final String name, final String image, final int price, final int quantity) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -20,7 +20,7 @@ public class CartResponse {
         this.quantity = quantity;
     }
 
-    public static CartResponse from(CartItem cartItem) {
+    public static CartResponse from(final CartItem cartItem) {
         return new CartResponse(
                 cartItem.getId(),
                 cartItem.getProduct().getName(),

@@ -13,19 +13,19 @@ public class SHA256PasswordEncoder implements PasswordEncoder {
     private static final String SHA_256_ALGORITHM = "SHA-256";
 
     @Override
-    public String encode(String password) {
+    public String encode(final String password) {
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(SHA_256_ALGORITHM);
+            final MessageDigest messageDigest = MessageDigest.getInstance(SHA_256_ALGORITHM);
             messageDigest.update(password.getBytes());
 
             return bytesToHex(messageDigest.digest());
-        } catch (NoSuchAlgorithmException exception) {
+        } catch (final NoSuchAlgorithmException exception) {
             throw new ShoppingException(ErrorType.DECODING_FAIL, exception);
         }
     }
 
     private String bytesToHex(byte[] bytes) {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         for (byte b : bytes) {
             builder.append(String.format("%02x", b));
         }

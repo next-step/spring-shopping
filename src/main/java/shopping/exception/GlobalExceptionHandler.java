@@ -8,7 +8,7 @@ import shopping.dto.ErrorResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ShoppingException.class)
-    public ResponseEntity<ErrorResponse> handleShoppingException(ShoppingException e) {
+    public ResponseEntity<ErrorResponse> handleShoppingException(final ShoppingException e) {
         return new ResponseEntity<>(new ErrorResponse(e.getMessage()), e.getStatus());
     }
 }

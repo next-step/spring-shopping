@@ -11,7 +11,7 @@ public class ProductResponse {
     private final String image;
     private final int price;
 
-    public ProductResponse(Long id, String name, String image, int price) {
+    public ProductResponse(final Long id, final String name, final String image, final int price) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -39,7 +39,7 @@ public class ProductResponse {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductResponse that = (ProductResponse) o;

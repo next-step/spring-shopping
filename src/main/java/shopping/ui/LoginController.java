@@ -3,7 +3,6 @@ package shopping.ui;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +16,8 @@ public class LoginController {
 
     private final AuthService authService;
 
-    public LoginController(AuthService authService) {
+    public LoginController(final AuthService authService) {
         this.authService = authService;
-    }
-
-    @GetMapping
-    public String loginPage() {
-        return "login";
     }
 
     @PostMapping("/token")

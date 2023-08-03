@@ -28,7 +28,7 @@ public class Product {
     protected Product() {
     }
 
-    public Product(Long id, String name, String image, int price) {
+    public Product(final Long id, final String name, final String image, final int price) {
         this.id = id;
         this.name = new Name(name);
         this.image = new Image(image);
@@ -52,7 +52,7 @@ public class Product {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;

@@ -17,20 +17,20 @@ public class Email {
         this.email = null;
     }
 
-    public Email(String value) {
+    public Email(final String value) {
         validateLength(value);
         validateForm(value);
 
         this.email = value;
     }
 
-    private void validateLength(String value) {
+    private void validateLength(final String value) {
         if (value.length() > MAX_LENGTH) {
             throw new ShoppingException(ErrorType.EMAIL_TOO_LONG);
         }
     }
 
-    private void validateForm(String value) {
+    private void validateForm(final String value) {
         if (!value.matches(FORM_PATTERN)) {
             throw new ShoppingException(ErrorType.EMAIL_INVALID_FORM);
         }

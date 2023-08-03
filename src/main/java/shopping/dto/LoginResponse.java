@@ -6,7 +6,7 @@ public class LoginResponse {
     private LoginResponse() {
     }
 
-    public LoginResponse(String accessToken) {
+    public LoginResponse(final String accessToken) {
         this.accessToken = accessToken;
     }
 

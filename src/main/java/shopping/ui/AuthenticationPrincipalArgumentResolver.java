@@ -10,14 +10,19 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
+
     @Override
-    public boolean supportsParameter(MethodParameter parameter) {
+    public boolean supportsParameter(final MethodParameter parameter) {
         return parameter.hasParameterAnnotation(AuthenticationPrincipal.class);
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        return Long.parseLong(String.valueOf(webRequest.getAttribute("userId", RequestAttributes.SCOPE_REQUEST)));
-
+    public Object resolveArgument(final MethodParameter parameter,
+                                  final ModelAndViewContainer mavContainer,
+                                  final NativeWebRequest webRequest,
+                                  final WebDataBinderFactory binderFactory) throws Exception {
+        return Long.parseLong(String.valueOf(
+                webRequest.getAttribute("userId", RequestAttributes.SCOPE_REQUEST))
+        );
     }
 }

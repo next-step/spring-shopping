@@ -16,13 +16,13 @@ public class Name {
         this.name = null;
     }
 
-    public Name(String value) {
+    public Name(final String value) {
         validateLength(value);
 
         this.name = value;
     }
 
-    private void validateLength(String value) {
+    private void validateLength(final String value) {
         if (value.length() > MAX_LENGTH) {
             throw new ShoppingException(ErrorType.NAME_TOO_LONG);
         }

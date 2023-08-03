@@ -25,31 +25,32 @@ public class CartService {
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartService(UserRepository userRepository,
-                       ProductRepository productRepository,
-                       CartItemRepository cartItemRepository) {
+    public CartService(final UserRepository userRepository,
+                       final ProductRepository productRepository,
+                       final CartItemRepository cartItemRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
     }
 
     @Transactional
-    public void addProduct(CartCreateRequest request, Long userId) {
-        User user = findUserById(userId);
-        Product product = findProductById(request.getProductId());
-        CartItems items = new CartItems(cartItemRepository.findAllByUserId(userId));
-        CartItem item = new CartItem(user, product, 1);
+    public void addProduct(final CartCreateRequest request, final Long userId) {
+        final User user = findUserById(userId);
+        final Product product = findProductById(request.getProductId());
+        final CartItems items = findCartItemsByUserId(userId);
+        final CartItem item = new CartItem(user, product, 1);
 
         items.add(item);
 
-        CartItem persistenceItem = items.findSameProduct(item)
+        // TODO
+        final CartItem persistenceItem = items.findSameProduct(item)
                 .orElseThrow();
 
         cartItemRepository.save(persistenceItem);
     }
 
     @Transactional(readOnly = true)
-    public List<CartResponse> findAll(Long userId) {
+    public List<CartResponse> findAll(final Long userId) {
         return cartItemRepository.findAllByUserId(userId)
                 .stream()
                 .map(CartResponse::from)
@@ -57,9 +58,9 @@ public class CartService {
     }
 
     @Transactional
-    public void update(CartUpdateRequest request, Long cartItemId, Long userId) {
-        CartItems items = new CartItems(cartItemRepository.findAllByUserId(userId));
-        CartItem item = findCartItemById(cartItemId);
+    public void update(final CartUpdateRequest request, final Long cartItemId, final Long userId) {
+        final CartItems items = findCartItemsByUserId(userId);
+        final CartItem item = findCartItemById(cartItemId);
 
         validateUserContainsItem(items, item);
 
@@ -67,32 +68,36 @@ public class CartService {
     }
 
     @Transactional
-    public void delete(Long cartItemId, Long userId) {
-        CartItems items = new CartItems(cartItemRepository.findAllByUserId(userId));
-        CartItem item = findCartItemById(cartItemId);
+    public void delete(final Long cartItemId, final Long userId) {
+        final CartItems items = findCartItemsByUserId(userId);
+        final CartItem item = findCartItemById(cartItemId);
 
         validateUserContainsItem(items, item);
 
         cartItemRepository.delete(item);
     }
 
-    private void validateUserContainsItem(CartItems items, CartItem item) {
+    private CartItems findCartItemsByUserId(final Long userId) {
+        return new CartItems(cartItemRepository.findAllByUserId(userId));
+    }
+
+    private void validateUserContainsItem(final CartItems items, final CartItem item) {
         if (!items.contains(item)) {
             throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
         }
     }
 
-    private CartItem findCartItemById(Long id) {
+    private CartItem findCartItemById(final Long id) {
         return cartItemRepository.findById(id)
                 .orElseThrow(() -> new ShoppingException(ErrorType.CART_ITEM_NO_EXIST, id));
     }
 
-    private User findUserById(Long id) {
+    private User findUserById(final Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ShoppingException(ErrorType.USER_NO_EXIST, id));
     }
 
-    private Product findProductById(Long id) {
+    private Product findProductById(final Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ShoppingException(ErrorType.PRODUCT_NO_EXIST, id));
     }

@@ -14,13 +14,13 @@ public class Price {
         this.price = 0;
     }
 
-    public Price(int value) {
+    public Price(final int value) {
         validateIsPositive(value);
 
         this.price = value;
     }
 
-    private void validateIsPositive(int value) {
+    private void validateIsPositive(final int value) {
         if (value <= 0) {
             throw new ShoppingException(ErrorType.PRICE_INVALID);
         }

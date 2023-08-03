@@ -12,11 +12,11 @@ public class Password {
         this.password = null;
     }
 
-    public Password(String password) {
+    public Password(final String password) {
         this.password = password;
     }
 
-    public static Password createEncodedPassword(String password, PasswordEncoder encoder) {
+    public static Password createEncodedPassword(final String password, final PasswordEncoder encoder) {
         return new Password(encoder.encode(password));
     }
 

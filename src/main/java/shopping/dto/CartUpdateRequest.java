@@ -6,7 +6,7 @@ public class CartUpdateRequest {
     private CartUpdateRequest() {
     }
 
-    public CartUpdateRequest(int quantity) {
+    public CartUpdateRequest(final int quantity) {
         this.quantity = quantity;
     }
 

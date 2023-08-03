@@ -16,13 +16,13 @@ public class Image {
         this.image = null;
     }
 
-    public Image(String value) {
+    public Image(final String value) {
         validateLength(value);
 
         this.image = value;
     }
 
-    private void validateLength(String value) {
+    private void validateLength(final String value) {
         if (value.length() > MAX_LENGTH) {
             throw new ShoppingException(ErrorType.IMAGE_TOO_LONG);
         }

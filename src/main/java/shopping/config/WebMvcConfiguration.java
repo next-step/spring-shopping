@@ -16,24 +16,26 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
     private final AuthenticationPrincipalArgumentResolver resolver;
 
-    public WebMvcConfiguration(AuthInterceptor authInterceptor, AuthenticationPrincipalArgumentResolver resolver) {
+    public WebMvcConfiguration(final AuthInterceptor authInterceptor,
+                               final AuthenticationPrincipalArgumentResolver resolver) {
         this.authInterceptor = authInterceptor;
         this.resolver = resolver;
     }
 
     @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
+    public void addViewControllers(final ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
         registry.addViewController("/cart").setViewName("cart");
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/carts/**");
     }
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+    public void addArgumentResolvers(final List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(resolver);
     }
 }

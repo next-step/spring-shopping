@@ -31,14 +31,14 @@ public class CartItem {
     protected CartItem() {
     }
 
-    public CartItem(Long id, User user, Product product, int quantity) {
+    public CartItem(final Long id, final User user, final Product product, final int quantity) {
         this.id = id;
         this.user = user;
         this.product = product;
         this.quantity = new Quantity(quantity);
     }
 
-    public CartItem(User user, Product product, int quantity) {
+    public CartItem(final User user, final Product product, final int quantity) {
         this(null, user, product, quantity);
     }
 
@@ -46,7 +46,7 @@ public class CartItem {
         quantity = quantity.increase();
     }
 
-    public void updateQuantity(int quantity) {
+    public void updateQuantity(final int quantity) {
         this.quantity = this.quantity.update(quantity);
     }
 

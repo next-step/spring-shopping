@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JwtProvider {
+public class JwtProvider implements TokenProvider {
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
@@ -19,10 +19,10 @@ public class JwtProvider {
     @Value("${security.jwt.token.expire-length}")
     private long expireLength;
 
-    public String create(String payload) {
-        Claims claims = Jwts.claims().setSubject(payload);
-        Date now = new Date();
-        Date expire = new Date(now.getTime() + expireLength);
+    public String create(final String payload) {
+        final Claims claims = Jwts.claims().setSubject(payload);
+        final Date now = new Date();
+        final Date expire = new Date(now.getTime() + expireLength);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -32,22 +32,26 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getPayload(String token) {
+    public String getPayload(final String token) {
         return getClaims(token)
                 .getBody()
                 .getSubject();
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(final String token) {
         try {
             final Jws<Claims> claims = getClaims(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
+            return !claims.getBody()
+                    .getExpiration()
+                    .before(new Date());
+        } catch (final JwtException | IllegalArgumentException e) {
             return false;
         }
     }
 
-    private Jws<Claims> getClaims(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+    private Jws<Claims> getClaims(final String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token);
     }
 }

@@ -10,12 +10,12 @@ public class PageController {
 
     private final ProductService productService;
 
-    public PageController(ProductService productService) {
+    public PageController(final ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/")
-    public String mainPage(Model model) {
+    public String mainPage(final Model model) {
         model.addAttribute("products", productService.findAllProducts());
 
         return "index";

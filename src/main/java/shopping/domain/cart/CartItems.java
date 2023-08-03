@@ -22,7 +22,7 @@ public class CartItems {
                 .findAny();
     }
 
-    public boolean contains(CartItem cartItem) {
+    public boolean contains(final CartItem cartItem) {
         return items.contains(cartItem);
     }
 

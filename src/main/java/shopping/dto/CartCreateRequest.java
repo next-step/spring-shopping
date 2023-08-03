@@ -11,20 +11,20 @@ public class CartCreateRequest {
     }
 
     @JsonCreator
-    public CartCreateRequest(Long productId) {
+    public CartCreateRequest(final Long productId) {
         validateNotNull(productId);
         validatePositive(productId);
 
         this.productId = productId;
     }
 
-    private void validatePositive(Long productId) {
+    private void validatePositive(final Long productId) {
         if (productId <= 0) {
             throw new ShoppingException(ErrorType.PRODUCT_INVALID);
         }
     }
 
-    private void validateNotNull(Long productId) {
+    private void validateNotNull(final Long productId) {
         if (productId == null) {
             throw new ShoppingException(ErrorType.PRODUCT_NULL);
         }
