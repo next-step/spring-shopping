@@ -35,6 +35,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        return false;
+        throw new AuthException("로그인이 필요한 서비스입니다");
     }
 }

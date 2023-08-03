@@ -8,6 +8,9 @@ public class ErrorResponse {
         this.message = message;
     }
 
+    private ErrorResponse() {
+    }
+
     public String getMessage() {
         return message;
     }
