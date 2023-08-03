@@ -41,14 +41,14 @@ class UserServiceTest {
         final UserEntity userEntity = new UserEntity(1L, userEmail, userPassword);
 
         when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userEntity));
-        when(jwtProvider.generateToken(userId)).thenReturn(accessToken);
+        when(jwtProvider.generateToken(String.valueOf(userId))).thenReturn(accessToken);
 
         /* when */
         LoginResponse loginResponse = userService.login(loginRequest);
 
         /* then */
         verify(userRepository).findByEmail(userEmail);
-        verify(jwtProvider).generateToken(userId);
+        verify(jwtProvider).generateToken(String.valueOf(userId));
         assertThat(loginResponse.getAccessToken()).isEqualTo(accessToken);
     }
 
