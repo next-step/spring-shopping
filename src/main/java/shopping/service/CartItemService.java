@@ -9,6 +9,7 @@ import shopping.domain.cart.CartItem;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
 import shopping.exception.ErrorCode;
@@ -54,15 +55,36 @@ public class CartItemService {
         return CartItemResponse.from(cartItem);
     }
 
+    @Transactional
+    public CartItemResponse updateCartItem(
+            final Long memberId,
+            final Long cartItemId,
+            final CartItemUpdateRequest cartItemUpdateRequest
+    ) {
+        final Member member = getMemberById(memberId);
+        final CartItem cartItem = getCartItemById(cartItemId);
+        cartItem.validateMember(member);
+
+        cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
+
+        return CartItemResponse.from(cartItem);
+    }
+
     private Member getMemberById(final Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_MEMBER_ID));
     }
 
-    private Product getProductById(final Long cartItemAddRequest) {
-        return productRepository.findById(cartItemAddRequest)
+    private Product getProductById(final Long productId) {
+        return productRepository.findById(productId)
                 .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_PRODUCT_ID));
     }
+
+    private CartItem getCartItemById(final Long cartItemId) {
+        return cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new ShoppingApiException(ErrorCode.NOT_FOUND_CART_ITEM_ID));
+    }
+
 
     private boolean existsCartItem(final Member member, final Product product) {
         return cartItemRepository.existsByMemberAndProduct(member, product);

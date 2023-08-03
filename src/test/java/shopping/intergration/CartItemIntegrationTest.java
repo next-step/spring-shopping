@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.request.CartItemAddRequest;
+import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
 import shopping.dto.response.ProductResponse;
@@ -70,5 +71,28 @@ class CartItemIntegrationTest extends IntegrationTest {
                         tuple(1L, "Chicken", 2),
                         tuple(2L, "Pizza", 1)
                 );
+    }
+
+    @Test
+    @DisplayName("장바구니의 아이템의 수량을 변경한다.")
+    void updateCartItem() {
+        final String accessToken = login(EMAIL, PASSWORD).getToken();
+        addCartItem(accessToken, 1L);
+        addCartItem(accessToken, 1L);
+        final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
+        final int updateQuantity = 100;
+
+        final ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(new CartItemUpdateRequest(updateQuantity))
+                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
+                .then().log().all().extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        final CartItemResponse cartItemResponse = extractObject(response, CartItemResponse.class);
+        assertThat(cartItemResponse.getQuantity()).isEqualTo(updateQuantity);
     }
 }

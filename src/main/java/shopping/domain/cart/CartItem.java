@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
+import shopping.exception.ErrorCode;
+import shopping.exception.ShoppingApiException;
 
 @Entity
 public class CartItem {
@@ -45,6 +47,20 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public void updateQuantity(final int quantity) {
+        this.quantity = Quantity.from(quantity);
+    }
+
+    public void plusQuantity() {
+        this.quantity = Quantity.from(this.getQuantity() + 1);
+    }
+
+    public void validateMember(final Member member) {
+        if (!this.member.equals(member)) {
+            throw new ShoppingApiException(ErrorCode.FORBIDDEN_MODIFY_CART_ITEM);
+        }
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -61,7 +77,4 @@ public class CartItem {
         return this.quantity.getValue();
     }
 
-    public void plusQuantity() {
-        this.quantity = Quantity.from(this.getQuantity() + 1);
-    }
 }
