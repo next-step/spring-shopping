@@ -51,12 +51,19 @@ public class CartController {
         @RequestBody CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest
     ) {
         validNotNull(cartItemQuantityUpdateRequest.getQuantity());
-        cartService.updateProductQuantity(loggedInMember, cartItemId, cartItemQuantityUpdateRequest);
+        cartService.updateProductQuantity(
+            loggedInMember,
+            cartItemId,
+            cartItemQuantityUpdateRequest
+        );
     }
 
     @DeleteMapping("/{cartItemId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteCartItemQuantity(@AuthMember LoggedInMember loggedInMember, @PathVariable Long cartItemId) {
+    public void deleteCartItemQuantity(
+        @AuthMember LoggedInMember loggedInMember,
+        @PathVariable Long cartItemId
+    ) {
         cartService.deleteCartItem(loggedInMember, cartItemId);
     }
 }

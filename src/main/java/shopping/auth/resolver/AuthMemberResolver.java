@@ -17,10 +17,13 @@ public class AuthMemberResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        HttpServletRequest request
-            = (HttpServletRequest) webRequest.getNativeRequest();
+    public Object resolveArgument(
+        MethodParameter parameter,
+        ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest,
+        WebDataBinderFactory binderFactory
+    ) {
+        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         return request.getAttribute(LoginTokenInterceptor.MEMBER_KEY);
     }
 }

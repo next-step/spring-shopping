@@ -59,7 +59,10 @@ public class ProductController {
     @PutMapping("/products/{productId}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public void updateProduct(@RequestBody ProductUpdateRequest productUpdateRequest, @PathVariable Long productId) {
+    public void updateProduct(
+        @RequestBody ProductUpdateRequest productUpdateRequest,
+        @PathVariable Long productId
+    ) {
         validUpdateRequest(productUpdateRequest);
         productService.updateProduct(productUpdateRequest, productId);
     }

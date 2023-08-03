@@ -38,31 +38,48 @@ public class CartService {
     }
 
     @Transactional
-    public void addCartItem(LoggedInMember loggedInMember, CartItemCreationRequest cartItemCreationRequest) {
+    public void addCartItem(
+        LoggedInMember loggedInMember,
+        CartItemCreationRequest cartItemCreationRequest
+    ) {
         Member member = getMemberById(loggedInMember.getId());
         Product product = getProductById(cartItemCreationRequest.getProductId());
 
-        CartItem cartItem = new CartItem(member.getId(), product.getId(), product.getName(), product.getPrice(),
-            DEFAULT_QUANTITY);
+        CartItem cartItem = new CartItem(
+            member.getId(),
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            DEFAULT_QUANTITY
+        );
 
         cartItemRepository.save(cartItem);
     }
 
     public AllCartItemsResponse findAllCartItem(LoggedInMember loggedInMember) {
-        List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByMemberId(loggedInMember.getId());
-        List<CartItemResponse> changedCartItems = CartItemResponse.listOf(findChangedCartItem(productCartItemDtos));
+        List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByMemberId(
+            loggedInMember.getId());
+        List<CartItemResponse> changedCartItems = CartItemResponse.listOf(
+            findChangedCartItem(productCartItemDtos));
 
-        return new AllCartItemsResponse(!changedCartItems.isEmpty(), CartItemResponse.listOf(productCartItemDtos), changedCartItems);
+        return new AllCartItemsResponse(!changedCartItems.isEmpty(),
+            CartItemResponse.listOf(productCartItemDtos), changedCartItems);
     }
 
-    private List<ProductCartItemDto> findChangedCartItem(List<ProductCartItemDto> productCartItemDtos) {
+    private List<ProductCartItemDto> findChangedCartItem(
+        List<ProductCartItemDto> productCartItemDtos) {
         return productCartItemDtos.stream()
-            .filter(productCartItemDto -> productCartItemDto.getCartItem().isProductChanged(productCartItemDto.getProduct()))
+            .filter(productCartItemDto -> productCartItemDto.getCartItem()
+                .isProductChanged(productCartItemDto.getProduct()))
             .collect(Collectors.toUnmodifiableList());
     }
 
     @Transactional
-    public void updateProductQuantity(LoggedInMember loggedInMember, Long cartItemId, CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest) {
+    public void updateProductQuantity(
+        LoggedInMember loggedInMember,
+        Long cartItemId,
+        CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest
+    ) {
         getMemberById(loggedInMember.getId());
         CartItem cartItem = getCartItem(cartItemId);
         cartItem.validateMyCartItem(loggedInMember.getId());
@@ -92,7 +109,8 @@ public class CartService {
 
     private Product getProductById(Long productId) {
         return productRepository.findById(productId)
-            .orElseThrow(() -> new WooWaException("존재하지 않은 Product입니다 id: \'" + productId + "\'", BAD_REQUEST));
+            .orElseThrow(() -> new WooWaException("존재하지 않은 Product입니다 id: \'" + productId + "\'",
+                BAD_REQUEST));
     }
 
 }

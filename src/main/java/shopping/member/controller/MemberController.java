@@ -22,7 +22,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping ("/login")
+    @GetMapping("/login")
     public String loginForm() {
         return "login";
     }
@@ -36,8 +36,11 @@ public class MemberController {
     }
 
     private static void validateNonNull(LoginRequest loginRequest) {
-        if (!StringUtils.hasText(loginRequest.getEmail()) || !StringUtils.hasText(loginRequest.getPassword())) {
-            throw new WooWaException("로그인 입력값이 있어야합니다.", new IllegalArgumentException(), HttpStatus.BAD_REQUEST);
+        if (!StringUtils.hasText(loginRequest.getEmail()) ||
+            !StringUtils.hasText(loginRequest.getPassword())
+        ) {
+            throw new WooWaException("로그인 입력값이 있어야합니다.", new IllegalArgumentException(),
+                HttpStatus.BAD_REQUEST);
         }
     }
 }
