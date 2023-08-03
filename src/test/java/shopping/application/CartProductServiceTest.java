@@ -12,7 +12,6 @@ import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.FindCartProductResponse;
 import shopping.dto.UpdateCartProductRequest;
-import shopping.exception.CartException;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -50,7 +49,7 @@ public class CartProductServiceTest {
     class add_Method {
 
         @Test
-        @DisplayName("member와 product를 찾아서 장바구니에 추가한다")
+        @DisplayName("member 와 product 를 찾아서 장바구니에 추가한다")
         void add_Product() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
@@ -67,7 +66,7 @@ public class CartProductServiceTest {
         }
 
         @Test
-        @DisplayName("member가 존재하지 않는다면 MemberException을 던진다")
+        @DisplayName("member 가 존재하지 않는다면 MemberException 을 던진다")
         void throwMemberException_WhenInValidMemberId() {
             // given
             Product product = new Product(1L, "치킨", "image", 23000L);
@@ -83,7 +82,7 @@ public class CartProductServiceTest {
         }
 
         @Test
-        @DisplayName("product가 존재하지 않는다면 ProductException을 던진다")
+        @DisplayName("product 가 존재하지 않는다면 ProductException 을 던진다")
         void throwProductException_WhenInValidProductId() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
@@ -98,7 +97,7 @@ public class CartProductServiceTest {
         }
 
         @Test
-        @DisplayName("memberId와 productId쌍이 이미 존재 한다면, 수량을 1개 증가한다")
+        @DisplayName("memberId와 productId 쌍이 이미 존재 한다면, 수량을 1개 증가한다")
         void increaseProductQuantity_WhenCartAlreadyExists() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
@@ -188,19 +187,21 @@ public class CartProductServiceTest {
         }
 
         @Test
-        @DisplayName("갱신될 상품 수량이 1개 미만일 경우 CartException을 던진다")
-        void throwCartException_WhenQuantityIsNotPositive() {
+        @DisplayName("갱신될 상품 수량이 0개일 경우 장바구니의 상품을 제거한다")
+        void deleteCartProduct_WhenQuantityIsZero() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
-            CartProduct cartProduct = new CartProduct(member, product, 5);
+            CartProduct cartProduct = new CartProduct(1L, member, product, 5);
             UpdateCartProductRequest updateRequest = new UpdateCartProductRequest(0);
 
+            doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
+
             // when
-            Exception exception = catchException(() -> cartProductService.updateCartProduct(cartProduct.getId(), updateRequest));
+            cartProductService.updateCartProduct(product.getId(), updateRequest);
 
             // then
-            assertThat(exception).isInstanceOf(CartException.class);
+            verify(cartProductRepository).deleteById(cartProduct.getId());
         }
     }
 }
