@@ -11,6 +11,8 @@ import shopping.argumentresolver.annotation.UserId;
 
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
+    public static final String USER_ID = "userId";
+
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
         return parameter.hasParameterAnnotation(UserId.class) && Objects.equals(
@@ -20,9 +22,8 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Long resolveArgument(final MethodParameter parameter,
         final ModelAndViewContainer mavContainer,
-        final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory)
-        throws Exception {
+        final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        return (Long) request.getAttribute("userId");
+        return (Long) request.getAttribute(USER_ID);
     }
 }
