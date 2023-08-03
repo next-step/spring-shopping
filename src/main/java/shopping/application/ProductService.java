@@ -5,11 +5,13 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class ProductService {
 
     private static final int PRODUCT_PAGE_SIZE = 12;
