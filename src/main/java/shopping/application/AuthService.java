@@ -8,7 +8,7 @@ import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
-import shopping.domain.user.PasswordEncoder;
+import shopping.infrastructure.PasswordEncoder;
 import shopping.infrastructure.TokenProvider;
 import shopping.repository.UserRepository;
 

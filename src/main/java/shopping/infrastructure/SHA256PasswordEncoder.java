@@ -1,7 +1,6 @@
 package shopping.infrastructure;
 
 import org.springframework.stereotype.Component;
-import shopping.domain.user.PasswordEncoder;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 

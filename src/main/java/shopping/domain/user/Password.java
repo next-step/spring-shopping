@@ -1,5 +1,7 @@
 package shopping.domain.user;
 
+import shopping.infrastructure.PasswordEncoder;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
