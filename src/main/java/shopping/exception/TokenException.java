@@ -1,6 +1,6 @@
 package shopping.exception;
 
-public class TokenException extends AuthException {
+public class TokenException extends RuntimeException {
 
     public TokenException(String message) {
         super(message);

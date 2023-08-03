@@ -1,7 +1,7 @@
 package shopping.ui.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
-import shopping.exception.MemberException;
+import shopping.exception.AuthException;
 import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
 
@@ -29,7 +29,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             Long memberId = tokenManager.decodeToken(authorization.substring(BEARER_PREFIX.length()));
 
             memberRepository.findById(memberId)
-                    .orElseThrow(() -> new MemberException("memberId에 해당하는 회원이 존재하지 않습니다"));
+                    .orElseThrow(() -> new AuthException("memberId에 해당하는 회원이 존재하지 않습니다"));
 
             request.setAttribute("memberId", memberId);
             return true;
