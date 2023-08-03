@@ -23,6 +23,7 @@ public class CartService {
 
     public static final int ITEM_MIN_QUANTITY = 1;
     public static final int ITEM_MAX_QUANTITY = 1000;
+
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
@@ -37,12 +38,11 @@ public class CartService {
 
     @Transactional
     public void addCartItem(CartItemAddRequest cartItemAddRequest, Long userId) {
-        final UserEntity userProxy = userRepository.getReferenceById(userId);
         final Long productId = cartItemAddRequest.getProductId();
         final ProductEntity product = findProductBy(productId);
-
         validateDuplicateCartItem(userId, productId);
 
+        final UserEntity userProxy = userRepository.getReferenceById(userId);
         final CartItemEntity cartItemEntity = new CartItemEntity(userProxy, product);
         cartItemRepository.save(cartItemEntity);
     }
@@ -59,7 +59,6 @@ public class CartService {
         final CartItemEntity cartItem = findCartItemEntityBy(cartItemId);
 
         validateUserHasCartItem(userId, cartItem);
-
         validateCartItemQuantity(cartItemUpdateRequest);
 
         cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
@@ -94,11 +93,14 @@ public class CartService {
         }
     }
 
-    private static void validateCartItemQuantity(
+    private void validateCartItemQuantity(
         final CartItemUpdateRequest cartItemUpdateRequest) {
-        if (cartItemUpdateRequest.getQuantity() < ITEM_MIN_QUANTITY
-            || ITEM_MAX_QUANTITY < cartItemUpdateRequest.getQuantity()) {
+        if (isOutOfBound(cartItemUpdateRequest.getQuantity())) {
             throw new ShoppingException(ErrorCode.INVALID_CART_ITEM_QUANTITY);
         }
+    }
+
+    private boolean isOutOfBound(final int quantity) {
+        return quantity < ITEM_MIN_QUANTITY || ITEM_MAX_QUANTITY < quantity;
     }
 }

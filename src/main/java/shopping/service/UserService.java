@@ -2,6 +2,7 @@ package shopping.service;
 
 import java.util.Objects;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
@@ -11,6 +12,7 @@ import shopping.repository.UserRepository;
 import shopping.utils.JwtProvider;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -24,12 +26,14 @@ public class UserService {
     public LoginResponse login(final LoginRequest loginRequest) {
         UserEntity userEntity = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_EMAIL));
+        validatePassword(loginRequest, userEntity);
+
+        return LoginResponse.from(jwtProvider.generateToken(userEntity.getId()));
+    }
+
+    private void validatePassword(final LoginRequest loginRequest, final UserEntity userEntity) {
         if (!Objects.equals(loginRequest.getPassword(), userEntity.getPassword())) {
             throw new ShoppingException(ErrorCode.INVALID_PASSWORD);
         }
-
-        String accessToken = jwtProvider.generateToken(userEntity.getId());
-
-        return LoginResponse.from(accessToken);
     }
 }
