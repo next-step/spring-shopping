@@ -44,6 +44,7 @@ public class CartProductController {
     @ResponseBody
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCartProduct(@PathVariable Long id) {
-        return null;
+        cartProductService.deleteCartProduct(id);
+        return ResponseEntity.noContent().build();
     }
 }
