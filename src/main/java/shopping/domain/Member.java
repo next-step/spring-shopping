@@ -1,7 +1,8 @@
 package shopping.domain;
 
+import org.springframework.util.StringUtils;
 import shopping.exception.MemberException;
-import shopping.utils.StringUtils;
+import shopping.utils.EmailUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,16 +36,16 @@ public class Member {
     }
 
     private void validatePassword(String password) {
-        if (StringUtils.isBlank(password)) {
+        if (!StringUtils.hasText(password)) {
             throw new MemberException("사용자 비밀번호가 존재하지 않습니다");
         }
     }
 
     private void validateEmail(String email) {
-        if (StringUtils.isBlank(email)) {
+        if (!StringUtils.hasText(email)) {
             throw new MemberException("사용자 이메일이 존재하지 않습니다");
         }
-        if (!StringUtils.isValidEmail(email)) {
+        if (!EmailUtils.isValidEmail(email)) {
             throw new MemberException("올바른 이메일 형식이 아닙니다");
         }
     }

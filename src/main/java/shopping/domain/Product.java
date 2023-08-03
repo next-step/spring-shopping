@@ -1,14 +1,13 @@
 package shopping.domain;
 
-import shopping.exception.ProductException;
-import shopping.utils.StringUtils;
-
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
+import org.springframework.util.StringUtils;
+import shopping.exception.ProductException;
 
 @Entity
 public class Product {
@@ -45,7 +44,7 @@ public class Product {
     }
 
     private void validateName(String name) {
-        if (StringUtils.isBlank(name)) {
+        if (!StringUtils.hasText(name)) {
             throw new ProductException("상품 이름이 존재하지 않습니다");
         }
         if (name.length() > MAX_NAME_LENGTH) {
@@ -60,7 +59,7 @@ public class Product {
     }
 
     private void validateImageUrl(String imageUrl) {
-        if (StringUtils.isBlank(imageUrl)) {
+        if (!StringUtils.hasText(imageUrl)) {
             throw new ProductException("상품 이미지가 존재하지 않습니다");
         }
     }
