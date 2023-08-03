@@ -11,7 +11,9 @@ import shopping.domain.entity.CartItemEntity;
 public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> {
 
     @Query("SELECT c FROM CartItemEntity c "
-    + "JOIN FETCH c.product "
-    + "WHERE c.user.id = :userId")
+        + "JOIN FETCH c.product "
+        + "WHERE c.user.id = :userId")
     List<CartItemEntity> findByUserId(@Param("userId") Long userId);
+
+    boolean existsByUserIdAndProductId(Long userId, Long productId);
 }

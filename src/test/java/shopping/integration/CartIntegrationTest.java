@@ -17,6 +17,8 @@ import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.LoginResponse;
+import shopping.exception.ErrorCode;
+import shopping.exception.ErrorResponse;
 
 @DisplayName("CartIntegrationTest")
 class CartIntegrationTest extends IntegrationTest {
@@ -50,6 +52,34 @@ class CartIntegrationTest extends IntegrationTest {
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("실패 : 장바구니에 이미 존재하는 아이템을 추가한다")
+    void addDuplicateItem() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartItemAddRequest);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemAddRequest)
+            .when().post("/cart/items")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.DUPULICATE_CART_ITEM);
     }
 
     @Test
@@ -109,6 +139,72 @@ class CartIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(updatedCartItems.get(0).getQuantity()).isEqualTo(
             cartItemUpdateRequest.getQuantity());
+    }
+
+    @Test
+    @DisplayName("실패 : 아이템 수량을 1개 미만으로 수정할 수 없다.")
+    void updateCartItemQuantityUnder1() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(0);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemUpdateRequest)
+            .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
+            .then().log().all().extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM_QUANTITY);
+    }
+
+    @Test
+    @DisplayName("실패 : 아이템 수량을 1,000개 초과로 수정할 수 없다.")
+    void updateCartItemQuantityOver1000() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
+        TestFixture.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(1001);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemUpdateRequest)
+            .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
+            .then().log().all().extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM_QUANTITY);
     }
 
     @Test
