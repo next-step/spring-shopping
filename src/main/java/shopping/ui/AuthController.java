@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shopping.application.AuthService;
-import shopping.dto.LoginRequest;
-import shopping.dto.LoginResponse;
+import shopping.dto.request.LoginRequest;
+import shopping.dto.response.LoginResponse;
 
 @Controller
 public class AuthController {

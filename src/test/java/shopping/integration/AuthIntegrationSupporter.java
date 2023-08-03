@@ -4,7 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
-import shopping.dto.LoginRequest;
+import shopping.dto.request.LoginRequest;
 
 public class AuthIntegrationSupporter {
 

@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Member;
-import shopping.dto.LoginRequest;
+import shopping.dto.request.LoginRequest;
 import shopping.exception.AuthException;
 import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shopping.application.CartProductService;
-import shopping.dto.FindCartProductResponse;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.response.FindCartProductResponse;
+import shopping.dto.request.UpdateCartProductRequest;
 import shopping.ui.argumentresolver.Login;
 
 import java.util.List;

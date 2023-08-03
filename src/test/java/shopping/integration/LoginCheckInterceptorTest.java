@@ -7,12 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.ErrorResponse;
+import shopping.dto.response.ErrorResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("LoginCheckInterceptor 클래스")
-public class LoginCheckInterceptorTest extends IntegrationTest {
+class LoginCheckInterceptorTest extends IntegrationTest {
 
     @DisplayName("토큰이 존재하지 않을 경우 UNAUTHORIZED 상태코드를 반환한다")
     @Test

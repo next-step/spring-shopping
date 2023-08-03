@@ -4,12 +4,12 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
-import shopping.dto.LoginResponse;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.response.LoginResponse;
+import shopping.dto.request.UpdateCartProductRequest;
 
 public class CartProductIntegrationSupporter {
 
-    static ExtractableResponse<Response> addProduct(Long memberId, Long productId) {
+    static ExtractableResponse<Response> addProduct(Long productId) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 

@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.request.UpdateCartProductRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +20,8 @@ class CartProductIntegrationTest extends IntegrationTest {
         Long productId = 5L;
 
         // when
-        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(memberId, productId);
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(
+            productId);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -35,7 +36,8 @@ class CartProductIntegrationTest extends IntegrationTest {
         Long productId = 50L;
 
         // when
-        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(memberId, productId);
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.addProduct(
+            productId);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());

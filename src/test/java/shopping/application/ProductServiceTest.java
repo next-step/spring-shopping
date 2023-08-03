@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Product;
-import shopping.dto.FindProductResponse;
+import shopping.dto.response.FindProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
