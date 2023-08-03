@@ -3,6 +3,7 @@ package shopping.domain;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.persistence.Embeddable;
+import shopping.exception.ArgumentValidateFailException;
 
 @Embeddable
 public class Email {
@@ -20,12 +21,12 @@ public class Email {
 
     private void validate(String email) {
         if (email == null) {
-            throw new IllegalArgumentException("이메일은 null 일수 없습니다.");
+            throw new ArgumentValidateFailException("이메일은 null 일수 없습니다.");
         }
 
         if (!Pattern.compile(EMAIL_PATTERN).matcher(email)
                 .matches()) {
-            throw new IllegalArgumentException("이메일 형식이 올바르지 않습니다.");
+            throw new ArgumentValidateFailException("이메일 형식이 올바르지 않습니다.");
         }
     }
 
