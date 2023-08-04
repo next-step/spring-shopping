@@ -85,13 +85,13 @@ public class CartRepository {
 
         cart.getProductCounts().forEach((key, value) -> idIndexedCartProductEntities.get(key.getId()).setCount(value));
 
-        List<CartProductEntity> deleteCartProductEntities = getDeletedProducts(cart, cartProductEntities);
+        List<CartProductEntity> deleteCartProductEntities = findDeletedProducts(cart, cartProductEntities);
 
         cartProductJpaRepository.deleteAllInBatch(deleteCartProductEntities);
     }
 
-    private List<CartProductEntity> getDeletedProducts(Cart cart, List<CartProductEntity> cartProductEntities) {
-        List<CartProductEntity> deleteCartProductEntities = getZeroCountedProductEntities(
+    private List<CartProductEntity> findDeletedProducts(Cart cart, List<CartProductEntity> cartProductEntities) {
+        List<CartProductEntity> deleteCartProductEntities = findZeroCountedProductEntities(
                 cartProductEntities);
 
         addDeletedCartProductEntities(cart, cartProductEntities, deleteCartProductEntities);
@@ -99,7 +99,7 @@ public class CartRepository {
         return deleteCartProductEntities;
     }
 
-    private List<CartProductEntity> getZeroCountedProductEntities(List<CartProductEntity> cartProductEntities) {
+    private List<CartProductEntity> findZeroCountedProductEntities(List<CartProductEntity> cartProductEntities) {
         return cartProductEntities.stream()
                 .filter(cartProductEntity -> cartProductEntity.getCount() == 0)
                 .collect(Collectors.toList());

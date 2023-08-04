@@ -31,7 +31,7 @@ public class CartService {
     @Transactional
     public void addProduct(final long userId, final CartAddRequest request) {
         Cart cart = getCartByUserId(userId);
-        Product product = findProductById(request.getProductId());
+        Product product = getProductById(request.getProductId());
 
         cart.addProduct(product);
 
@@ -41,7 +41,7 @@ public class CartService {
     @Transactional
     public void updateProduct(final long userId, final CartUpdateRequest request) {
         Cart cart = getCartByUserId(userId);
-        Product product = findProductById(request.getProductId());
+        Product product = getProductById(request.getProductId());
 
         cart.updateProduct(product, request.getCount());
 
@@ -51,7 +51,7 @@ public class CartService {
     @Transactional
     public void deleteProduct(final long userId, final long productId) {
         Cart cart = getCartByUserId(userId);
-        Product product = findProductById(productId);
+        Product product = getProductById(productId);
 
         cart.deleteProduct(product);
 
@@ -59,7 +59,7 @@ public class CartService {
     }
 
     @Transactional
-    public CartResponse findCart(final long userId) {
+    public CartResponse getCart(final long userId) {
         Cart cart = getCartByUserId(userId);
 
         List<ProductResponse> products = cart.getProductCounts().entrySet().stream()
@@ -77,7 +77,7 @@ public class CartService {
         return cartRepository.getByUserId(userId);
     }
 
-    private Product findProductById(long productId) {
+    private Product getProductById(long productId) {
         return productRepository.findById(productId).orElseThrow(
                 () -> new StatusCodeException(
                         MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId),

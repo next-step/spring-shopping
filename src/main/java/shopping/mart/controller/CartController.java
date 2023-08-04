@@ -35,7 +35,7 @@ public class CartController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CartResponse findAllProducts(@RequestAttribute(name = "userId") Long userId) {
-        return cartService.findCart(userId);
+        return cartService.getCart(userId);
     }
 
     @PatchMapping
