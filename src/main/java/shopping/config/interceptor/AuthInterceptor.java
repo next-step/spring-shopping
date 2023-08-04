@@ -35,7 +35,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         request.setAttribute("userId", tokenProvider.getPayload(token));
 
-        return HandlerInterceptor.super.preHandle(request, response, handler);
+        return true;
     }
 
     private String extractToken(final String accessToken) {
