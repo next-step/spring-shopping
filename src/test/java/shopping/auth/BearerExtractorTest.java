@@ -45,7 +45,7 @@ class BearerExtractorTest {
         /* when & then */
         assertThatCode(() -> bearerExtractor.extract(request))
             .isInstanceOf(ShoppingAuthenticationException.class)
-            .hasMessage("토큰이 존재하지 않습니다.");
+            .hasMessage("토큰 헤더가 존재하지 않습니다.");
     }
 
     @ParameterizedTest
@@ -59,7 +59,7 @@ class BearerExtractorTest {
         /* when & then */
         assertThatCode(() -> bearerExtractor.extract(request))
             .isInstanceOf(ShoppingAuthenticationException.class)
-            .hasMessage("토큰이 존재하지 않습니다.");
+            .hasMessage("토큰 값이 존재하지 않습니다.");
     }
 
     @Test

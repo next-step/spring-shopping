@@ -49,6 +49,11 @@ public class CartProductService {
         final Long memberId,
         final CartProductQuantityUpdateRequest request
     ) {
+        if (request.getQuantity() == 0) {
+            deleteCartProduct(cartProductId, memberId);
+            return;
+        }
+
         final CartProduct cartProduct = cartProductRepository
             .findByIdAndMemberId(cartProductId, memberId)
             .orElseThrow(

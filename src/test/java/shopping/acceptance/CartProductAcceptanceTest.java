@@ -118,14 +118,16 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("장바구니 상품의 수량을 0 이하로 수정할 경우 Bad Request으로 응답한다.")
+    @DisplayName("장바구니 상품의 수량을 0 미만으로 수정할 경우 Bad Request으로 응답한다.")
     void updateFailWithCartProductQuantityZero() {
         /* given */
+        final int quantity = -1;
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
         CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
 
         final Long cartProductId = 1L;
-        final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(0);
+        final CartProductQuantityUpdateRequest request =
+            new CartProductQuantityUpdateRequest(quantity);
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
@@ -134,7 +136,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("장바구니 상품 개수는 0이하면 안됩니다. 입력값: 0");
+            .isEqualTo("장바구니 상품 개수는 0이하면 안됩니다. 입력값: " + quantity);
     }
 
 
@@ -155,4 +157,45 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    @DisplayName("장바구니 상품 개수가 0개인 경우 장바구니 상품이 제거된다.")
+    void updateCartProductQuantityWithZeroQuantity() {
+        /* given */
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
+        CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
+
+        final Long cartProductId = 1L;
+        final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(0);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestHelper
+            .patch("/api/cart/{cartProductId}", jwt, request, List.of(cartProductId));
+
+        /* then */
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(
+            RestHelper
+                .get("/api/cart", jwt).body().as(new TypeRef<List<CartResponse>>() {
+                })).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("장바구니 담긴 상품이 존재하지 않는 경우, \"존재하지 않는 장바구니 상품입니다.\", Bad Request로 응답한다.")
+    void updateCartProductQuantityWithNotFoundCartProduct() {
+        /* given */
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
+        CartProductHelper.createCartProduct(jwt, new CartProductRequest(3L));
+
+        final Long cartProductId = 1234L;
+        final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(2);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestHelper
+            .patch("/api/cart/{cartProductId}", jwt, request, List.of(cartProductId));
+
+        /* then */
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.body().as(ExceptionResponse.class).getMessage())
+            .isEqualTo("존재하지 않는 장바구니 상품입니다. 장바구니 상품 정보: " + cartProductId);
+    }
 }

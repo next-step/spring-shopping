@@ -1,9 +1,12 @@
 package shopping.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class LoginResponse {
 
     private final String accessToken;
 
+    @JsonCreator
     public LoginResponse(final String accessToken) {
         this.accessToken = accessToken;
     }

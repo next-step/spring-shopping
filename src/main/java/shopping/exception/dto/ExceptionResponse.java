@@ -7,8 +7,12 @@ public class ExceptionResponse {
     private final String message;
 
     @JsonCreator
+    public ExceptionResponse(final String message) {
+        this.message = message;
+    }
+
     public ExceptionResponse(final Exception exception) {
-        this.message = exception.getMessage();
+        this(exception.getMessage());
     }
 
     public String getMessage() {
