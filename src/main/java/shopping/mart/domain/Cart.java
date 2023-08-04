@@ -21,11 +21,11 @@ public final class Cart {
 
     public void addProduct(final Product product) {
         validateNullProduct(product);
-        validateExistProduct(product);
+        validateNotExistProduct(product);
         productCounts.put(product, productCounts.getOrDefault(product, 0) + 1);
     }
 
-    private void validateExistProduct(final Product product) {
+    private void validateNotExistProduct(final Product product) {
         if (productCounts.containsKey(product)) {
             throw new StatusCodeException(MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
                     CartExceptionStatus.ALREADY_EXIST_PRODUCT.getStatus());
@@ -35,13 +35,13 @@ public final class Cart {
     public void updateProduct(final Product product, final int count) {
         validateNullProduct(product);
         validateCount(count);
-        validateExistUpdatableProduct(product);
+        validateExistProduct(product);
         productCounts.put(product, count);
     }
 
     public void deleteProduct(Product product) {
         validateNullProduct(product);
-        validateExistDeletableProduct(product);
+        validateExistProduct(product);
         productCounts.remove(product);
     }
 
@@ -58,20 +58,12 @@ public final class Cart {
         }
     }
 
-    private void validateExistUpdatableProduct(final Product product) {
+    private void validateExistProduct(final Product product) {
         if (productCounts.containsKey(product)) {
             return;
         }
         throw new StatusCodeException(MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product),
-                CartExceptionStatus.NOT_EXIST_UPDATABLE_PRODUCT.getStatus());
-    }
-
-    private void validateExistDeletableProduct(Product product) {
-        if (productCounts.containsKey(product)) {
-            return;
-        }
-        throw new StatusCodeException(MessageFormat.format("delete할 prodcut\"{0}\"을 찾을 수 없습니다.", product),
-                CartExceptionStatus.NOT_EXIST_DELETABLE_PRODUCT.getStatus());
+                CartExceptionStatus.NOT_EXIST_PRODUCT.getStatus());
     }
 
     public Long getCartId() {

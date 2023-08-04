@@ -174,7 +174,7 @@ class CartTest {
             Exception exception = catchException(() -> cart.deleteProduct(product));
 
             // then
-            assertStatusCodeException(exception, "CART-401");
+            assertStatusCodeException(exception, "CART-402");
         }
     }
 }
