@@ -19,6 +19,8 @@ import javax.persistence.Table;
 @Table(name = "cart_item")
 public class CartItem {
 
+    private static final int ADD_COUNT = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -66,12 +68,16 @@ public class CartItem {
         return quantity.getQuantity();
     }
 
-    public CartItem addQuantity(Integer count) {
-        return new CartItem(this.id, this.user, this.product, this.getQuantity() + count);
+    public CartItem addQuantity() {
+        return new CartItem(this.id, this.user, this.product, this.getQuantity() + ADD_COUNT);
     }
 
     public CartItem updateQuantity(Integer quantity) {
         return new CartItem(this.id, this.user, this.product, quantity);
+    }
+
+    public boolean isNotUserMatch(User user) {
+        return !this.user.equals(user);
     }
 
     @Override

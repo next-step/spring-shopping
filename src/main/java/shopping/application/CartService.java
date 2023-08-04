@@ -41,11 +41,9 @@ public class CartService {
         Optional<CartItem> originalCartItem = cartItemRepository
                 .findByUserAndProduct(user, product);
 
-        CartItem cartItem = originalCartItem
-                .map(item -> item.addQuantity(1))
-                .orElseGet(() -> new CartItem(user, product));
-
-        cartItemRepository.save(cartItem);
+        originalCartItem.ifPresentOrElse(
+                cartItem -> cartItemRepository.save(cartItem.addQuantity()),
+                () -> cartItemRepository.save(new CartItem(user, product)));
     }
 
     public List<CartItemResponse> findAllByEmail(String email) {
@@ -55,10 +53,9 @@ public class CartService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateCartItemQuantity(String email, Long id, CartItemUpdateRequest cartItemUpdateRequest) {
+    public void updateCartItemQuantity(String email, Long cartId, CartItemUpdateRequest cartItemUpdateRequest) {
 
-        CartItem cartItem = findCartItem(email, id);
-
+        CartItem cartItem = findCartItem(email, cartId);
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
         cartItemRepository.save(updatedCartItem);
     }
@@ -69,18 +66,18 @@ public class CartService {
         cartItemRepository.deleteById(id);
     }
 
-    private CartItem findCartItem(String email, Long id) {
+    private CartItem findCartItem(String email, Long cartId) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
-        CartItem cartItem = cartItemRepository.findById(id)
-                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(id)));
+        CartItem cartItem = cartItemRepository.findById(cartId)
+                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(cartId)));
 
         validateUserMatch(user, cartItem);
         return cartItem;
     }
 
     private void validateUserMatch(User user, CartItem cartItem) {
-        if (!cartItem.getUser().equals(user)) {
+        if (cartItem.isNotUserMatch(user)) {
             throw new UserNotMatchException();
         }
     }
