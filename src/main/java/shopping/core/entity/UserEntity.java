@@ -22,7 +22,7 @@ public class UserEntity extends TimeBaseEntity {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    public UserEntity() {
+    protected UserEntity() {
     }
 
     public UserEntity(Long id, String email, String password) {

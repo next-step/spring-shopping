@@ -31,7 +31,7 @@ public class CartProductEntity extends TimeBaseEntity {
     @Column(name = "count", nullable = false)
     private Integer count;
 
-    public CartProductEntity() {
+    protected CartProductEntity() {
     }
 
     public CartProductEntity(Long id, CartEntity cartEntity, ProductEntity productEntity, Integer count) {

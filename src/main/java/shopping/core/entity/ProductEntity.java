@@ -25,7 +25,7 @@ public class ProductEntity extends TimeBaseEntity {
     @Column(name = "price", nullable = false)
     private String price;
 
-    public ProductEntity() {
+    protected ProductEntity() {
     }
 
     public ProductEntity(final Long id, final String name, final String imageUrl, final String price) {

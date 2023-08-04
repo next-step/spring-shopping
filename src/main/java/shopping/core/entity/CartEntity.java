@@ -20,7 +20,7 @@ public class CartEntity extends TimeBaseEntity {
     @JoinColumn(name = "user_id")
     private Long userId;
 
-    public CartEntity() {
+    protected CartEntity() {
     }
 
     public CartEntity(Long id, Long userId) {
