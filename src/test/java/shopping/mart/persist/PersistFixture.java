@@ -1,6 +1,6 @@
 package shopping.mart.persist;
 
-import shopping.core.entity.ProductEntity;
+import shopping.mart.persist.entity.ProductEntity;
 
 class PersistFixture {
 

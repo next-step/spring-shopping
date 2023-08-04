@@ -1,4 +1,4 @@
-package shopping.core.entity;
+package shopping.mart.persist.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

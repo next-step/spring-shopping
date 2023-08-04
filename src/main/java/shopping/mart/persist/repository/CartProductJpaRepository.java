@@ -4,8 +4,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import shopping.core.entity.CartEntity;
-import shopping.core.entity.CartProductEntity;
+import shopping.mart.persist.entity.CartEntity;
+import shopping.mart.persist.entity.CartProductEntity;
 
 public interface CartProductJpaRepository extends JpaRepository<CartProductEntity, Long> {
 

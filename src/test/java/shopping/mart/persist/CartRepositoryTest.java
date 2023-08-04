@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import shopping.core.entity.CartEntity;
-import shopping.core.entity.CartProductEntity;
-import shopping.core.entity.ProductEntity;
-import shopping.core.entity.UserEntity;
+import shopping.auth.persist.entity.UserEntity;
 import shopping.mart.domain.Cart;
 import shopping.mart.domain.Product;
+import shopping.mart.persist.entity.CartEntity;
+import shopping.mart.persist.entity.CartProductEntity;
+import shopping.mart.persist.entity.ProductEntity;
 import shopping.mart.persist.repository.CartProductJpaRepository;
 import shopping.mart.persist.repository.ProductJpaRepository;
 

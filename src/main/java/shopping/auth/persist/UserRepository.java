@@ -3,8 +3,8 @@ package shopping.auth.persist;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import shopping.auth.domain.User;
+import shopping.auth.persist.entity.UserEntity;
 import shopping.auth.persist.repository.UserJpaRepository;
-import shopping.core.entity.UserEntity;
 
 @Repository
 public class UserRepository {
