@@ -3,7 +3,6 @@ package shopping.mart.domain;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import shopping.core.exception.StatusCodeException;
 import shopping.mart.domain.status.CartExceptionStatus;
 
@@ -76,24 +75,6 @@ public final class Cart {
 
     public Map<Product, Integer> getProductCounts() {
         return productCounts;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Cart)) {
-            return false;
-        }
-        Cart cart = (Cart) o;
-        return userId == cart.userId && Objects.equals(cartId, cart.cartId) && Objects.equals(
-                productCounts, cart.productCounts);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cartId, userId, productCounts);
     }
 
     @Override

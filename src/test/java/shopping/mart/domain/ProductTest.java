@@ -22,10 +22,10 @@ class ProductTest {
             Product expected = new Product(1L, "product", "images/default-product.png", "5000");
 
             // when
-            Product product = new Product(1L, "product", null, "5000");
+            Product result = new Product(1L, "product", null, "5000");
 
             // then
-            assertThat(product).isEqualTo(expected);
+            assertThat(result).isEqualTo(expected);
         }
 
         @Test

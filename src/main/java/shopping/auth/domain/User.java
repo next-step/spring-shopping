@@ -1,7 +1,6 @@
 package shopping.auth.domain;
 
 import java.text.MessageFormat;
-import java.util.Objects;
 import shopping.auth.domain.status.UserExceptionStatus;
 import shopping.core.exception.StatusCodeException;
 
@@ -66,24 +65,6 @@ public final class User {
 
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof User)) {
-            return false;
-        }
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, password);
     }
 
     @Override

@@ -2,7 +2,10 @@ package shopping.mart.persist;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -47,8 +50,23 @@ class CartRepositoryTest extends JpaTest {
     }
 
     private void assertCart(Cart result, Map<Product, Integer> expected) {
-        assertThat(result.getCartId()).isNotNull();
-        assertThat(result.getProductCounts()).hasSize(expected.size()).isEqualTo(expected);
+        SoftAssertions.assertSoftly(softAssertions -> {
+            assertThat(result.getCartId()).isNotNull();
+            assertThat(result.getProductCounts()).hasSize(expected.size());
+            List<Product> resultProducts = new ArrayList<>(result.getProductCounts().keySet());
+            List<Product> expectedProducts = new ArrayList<>(expected.keySet());
+            for (int i = 0; i < resultProducts.size(); i++) {
+                assertExactlyProduct(resultProducts.get(i), expectedProducts.get(i));
+            }
+        });
+    }
+
+    private void assertExactlyProduct(Product result, Product expected) {
+        SoftAssertions.assertSoftly(softAssertions -> {
+            assertThat(result.getName()).isEqualTo(expected.getName());
+            assertThat(result.getPrice()).isEqualTo(expected.getPrice());
+            assertThat(result.getImageUrl()).isEqualTo(expected.getImageUrl());
+        });
     }
 
     private Product productEntityToDomain(ProductEntity productEntity) {

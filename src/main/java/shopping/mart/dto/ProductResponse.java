@@ -1,8 +1,6 @@
 package shopping.mart.dto;
 
 
-import java.util.Objects;
-
 public final class ProductResponse {
 
     private Long id;
@@ -34,24 +32,6 @@ public final class ProductResponse {
 
     public String getPrice() {
         return price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ProductResponse)) {
-            return false;
-        }
-        ProductResponse that = (ProductResponse) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name)
-                && Objects.equals(imageUrl, that.imageUrl) && Objects.equals(price, that.price);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, imageUrl, price);
     }
 
     @Override

@@ -25,23 +25,6 @@ public class CartResponse {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CartResponse)) {
-            return false;
-        }
-        CartResponse that = (CartResponse) o;
-        return cartId == that.cartId && Objects.equals(productResponses, that.productResponses);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cartId, productResponses);
-    }
-
-    @Override
     public String toString() {
         return "CartResponse{" +
                 "cartId=" + cartId +
@@ -90,8 +73,8 @@ public class CartResponse {
                 return false;
             }
             ProductResponse that = (ProductResponse) o;
-            return Objects.equals(id, that.id) && Objects.equals(count, that.count)
-                    && Objects.equals(imageUrl, that.imageUrl) && Objects.equals(name, that.name);
+            return id == that.id && count == that.count && Objects.equals(imageUrl, that.imageUrl)
+                    && Objects.equals(name, that.name);
         }
 
         @Override

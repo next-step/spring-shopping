@@ -1,7 +1,5 @@
 package shopping.mart.dto;
 
-import java.util.Objects;
-
 public final class ProductCreateRequest {
 
     private String name;
@@ -27,24 +25,6 @@ public final class ProductCreateRequest {
 
     public String getPrice() {
         return price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ProductCreateRequest)) {
-            return false;
-        }
-        ProductCreateRequest that = (ProductCreateRequest) o;
-        return Objects.equals(name, that.name) && Objects.equals(imageUrl, that.imageUrl)
-                && Objects.equals(price, that.price);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, imageUrl, price);
     }
 
     @Override
