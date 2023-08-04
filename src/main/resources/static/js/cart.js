@@ -17,7 +17,13 @@ const addCartItem = (productId) => {
       "productId": productId
     })
   }).then((response) => {
-    alert('장바구니에 담았습니다.');
+    if (!response.ok) {
+      response.json().then(body => {
+        alert(body.message)
+      })
+    } else {
+      alert('장바구니에 담았습니다.');
+    }
   }).catch((error) => {
     console.error(error);
   });

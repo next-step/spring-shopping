@@ -18,13 +18,20 @@ form.addEventListener('submit', (event) => {
     },
     body: JSON.stringify(loginRequest)
   }).then((response) => {
+    if (!response.ok) {
+      response.json().then(body => {
+        alert(body.message);
+      });
+    } else {
+      alert("로그인 성공");
+    }
     return response.json();
   }).then((data) => {
     const {accessToken} = data;
     sessionStorage.setItem('accessToken', accessToken);
     window.location.href = '/';
   }).catch((error) => {
-    alert(error);
+    console.error(error);
   });
 
 });
