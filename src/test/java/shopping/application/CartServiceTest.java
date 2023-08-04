@@ -1,12 +1,12 @@
 package shopping.application;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Product;
 import shopping.domain.user.Email;
@@ -21,27 +21,36 @@ import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@DisplayName("장바구니 서비스 테스트")
-@ExtendWith(MockitoExtension.class)
+@DisplayName("장바구니 서비스 통합 테스트")
+@SpringBootTest
 class CartServiceTest {
 
-    @InjectMocks
+    @Autowired
     private CartService cartService;
 
-    @Mock
+    @Autowired
     private CartItemRepository cartItemRepository;
 
-    @Mock
+    @Autowired
     private UserRepository userRepository;
 
-    @Mock
+    @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setUp() {
+        cartItemRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Nested
     @DisplayName("장바구니 물건 추가 테스트")
@@ -51,32 +60,55 @@ class CartServiceTest {
         @Test
         void createCartItem() {
             // given
-            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
             String email = "test@example.com";
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(new User(1L, email, "1234")));
-            when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
-                    .thenReturn(new Product(1L, "chicken", "/chicken.jpg", 10_000L));
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            Product savedProduct = productRepository.save(product);
+
+            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when
-            assertThatCode(() -> cartService.createCartItem(email, cartItemCreateRequest))
-                    .doesNotThrowAnyException();
+            cartService.createCartItem(email, cartItemCreateRequest);
 
             // then
-            verify(cartItemRepository, times(1)).save(any());
+            List<CartItem> cartItems = cartItemRepository.findAll();
+            assertThat(cartItems).hasSize(1);
+            CartItem cartItem = cartItems.get(0);
+            assertThat(cartItem.getProduct())
+                    .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
+                    .containsExactly(name, imageUrl, price);
+            assertThat(cartItem.getUser())
+                    .extracting(User::getEmail, User::getPassword)
+                    .containsExactly(email, digest);
+
         }
 
         @DisplayName("데이터베이스에 회원이 없어서 예외 발생")
         @Test
         void notUserFoundThenThrow() {
             // given
-            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
             String email = "test@example.com";
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.empty());
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            Product savedProduct = productRepository.save(product);
+
+            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when, then
-            assertThatCode(() -> cartService.createCartItem(email, cartItemCreateRequest))
+            assertThatThrownBy(() -> cartService.createCartItem(email, cartItemCreateRequest))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -84,15 +116,17 @@ class CartServiceTest {
         @Test
         void notProductFoundThenThrow() {
             // given
-            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
             String email = "test@example.com";
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(new User(1L, email, "1234")));
-            when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
-                    .thenThrow(EntityNotFoundException.class);
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
 
             // when & then
-            assertThatCode(() -> cartService.createCartItem(email, cartItemCreateRequest))
+            assertThatThrownBy(() -> cartService.createCartItem(email, cartItemCreateRequest))
                     .isInstanceOf(EntityNotFoundException.class);
         }
 
@@ -100,19 +134,40 @@ class CartServiceTest {
         @Test
         void alreadyInCartThenAddQuantity() {
             // given
-            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
             String email = "test@example.com";
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(new User(1L, email, "1234")));
-            when(productRepository.getReferenceById(cartItemCreateRequest.getProductId()))
-                    .thenReturn(new Product(1L, "chicken", "/chicken.jpg", 10_000L));
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            Product savedProduct = productRepository.save(product);
+
+            CartItem cartItem = new CartItem(user, product);
+            Integer quantity = cartItem.getQuantity();
+            cartItemRepository.save(cartItem);
+
+            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when
-            assertThatCode(() -> cartService.createCartItem(email, cartItemCreateRequest))
-                    .doesNotThrowAnyException();
+            cartService.createCartItem(email, cartItemCreateRequest);
 
             // then
-            verify(cartItemRepository, times(1)).save(any());
+            List<CartItem> cartItems = cartItemRepository.findAll();
+            assertThat(cartItems).hasSize(1);
+            CartItem updatedCartItem = cartItems.get(0);
+            assertThat(updatedCartItem.getQuantity()).isEqualTo(quantity + 1);
+            assertThat(updatedCartItem.getProduct())
+                    .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
+                    .containsExactly(name, imageUrl, price);
+            assertThat(updatedCartItem.getUser())
+                    .extracting(User::getEmail, User::getPassword)
+                    .containsExactly(email, digest);
         }
     }
 
@@ -124,78 +179,76 @@ class CartServiceTest {
         @Test
         void updateCartItemQuantity() {
             // given
-            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
             String email = "test@example.com";
-            User user = new User(1L, email, "1234");
-            Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(user));
-            when(cartItemRepository.findById(1L))
-                    .thenReturn(Optional.of(new CartItem(1L, user, product, 1)));
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            productRepository.save(product);
+
+            CartItem cartItem = new CartItem(user, product);
+            CartItem savedCartItem = cartItemRepository.save(cartItem);
+
+            Integer newQuantity = 5;
+            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when
-            assertThatCode(
-                    () -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
-                    .doesNotThrowAnyException();
+            cartService.updateCartItemQuantity(email, savedCartItem.getId(), cartItemUpdateRequest);
 
             // then
-            verify(cartItemRepository, times(1)).save(any());
-        }
-
-        @DisplayName("장바구니에 담긴 아이템 수량 변경시 유저 없으면 예외 발생")
-        @Test
-        void updateCartItemQuantityNotUserFound() {
-            // given
-            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
-            String email = "test@example.com";
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.empty());
-
-            // when, then
-            assertThatCode(
-                    () -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
-                    .isInstanceOf(UserNotFoundException.class);
-        }
-
-        @DisplayName("장바구니에 담긴 아이템 수량 변경시 장바구니 아이템 없으면 예외 발생")
-        @Test
-        void updateCartItemQuantityNotCartItemFound() {
-            // given
-            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
-            String email = "test@example.com";
-            User user = new User(1L, email, "1234");
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(user));
-            when(cartItemRepository.findById(1L))
-                    .thenReturn(Optional.empty());
-
-            // when, then
-            assertThatCode(
-                    () -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
-                    .isInstanceOf(CartItemNotFoundException.class);
+            Optional<CartItem> optionalCartItem = cartItemRepository.findById(savedCartItem.getId());
+            assertThat(optionalCartItem).isPresent();
+            CartItem updatedCartItem = optionalCartItem.get();
+            assertThat(updatedCartItem.getQuantity()).isEqualTo(newQuantity);
         }
 
         @DisplayName("장바구니에 담긴 아이템 수량 변경시 유저의 장바구니 아이템이 아닐 시 접근 제한 예외 발생")
         @Test
         void updateCartItemQuantityNotUsersItem() {
             // given
-            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(5);
             String email = "test@example.com";
-            User user1 = new User(1L, email, "1234");
-            User user2 = new User(2L, "aaa@bbb.ccc", "1234");
-            Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(user1));
-            when(cartItemRepository.findById(1L))
-                    .thenReturn(Optional.of(new CartItem(1L, user2, product, 1)));
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            String otherEmail = "other@example.com";
+            String otherPassword = "other";
+            String otherDigest = passwordEncoder.encode(otherPassword);
+
+            User other = new User(otherEmail, otherDigest);
+            userRepository.save(other);
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            productRepository.save(product);
+
+            CartItem cartItem = new CartItem(other, product);
+            CartItem savedCartItem = cartItemRepository.save(cartItem);
+            Long cartId = savedCartItem.getId();
+
+            Integer newQuantity = 5;
+            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when, then
-            assertThatCode(
-                    () -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+            assertThatThrownBy(
+                    () -> cartService.updateCartItemQuantity(email, cartId, cartItemUpdateRequest))
                     .isInstanceOf(UserNotMatchException.class);
         }
     }
 
+    // TODO: 장바구니 물건 삭제 테스트 수정
     @Nested
     @DisplayName("장바구니 물건 삭제 테스트")
     class WhenDeleteCartItem {
