@@ -2,13 +2,13 @@ package shopping.mart.domain;
 
 import java.util.Objects;
 
-final class Image {
+final class ImageUrl {
 
     private static final String DEFAULT_PRODUCT_IMAGE_URL = "images/default-product.png";
 
     private final String value;
 
-    Image(final String value) {
+    ImageUrl(final String value) {
         this.value = getDefaultValueIfIsNullUrl(value);
     }
 
@@ -25,11 +25,11 @@ final class Image {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Image)) {
+        if (!(o instanceof ImageUrl)) {
             return false;
         }
-        Image image = (Image) o;
-        return Objects.equals(value, image.value);
+        ImageUrl imageUrl = (ImageUrl) o;
+        return Objects.equals(value, imageUrl.value);
     }
 
     @Override

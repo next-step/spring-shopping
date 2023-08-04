@@ -6,7 +6,7 @@ public final class Product {
 
     private final Long id;
     private final Name name;
-    private final Image imageUrl;
+    private final ImageUrl imageUrl;
     private final Price price;
 
     public Product(final String name, final String imageUrl, final String price) {
@@ -16,7 +16,7 @@ public final class Product {
     public Product(final Long id, final String name, final String imageUrl, final String price) {
         this.id = id;
         this.name = new Name(name);
-        this.imageUrl = new Image(imageUrl);
+        this.imageUrl = new ImageUrl(imageUrl);
         this.price = new Price(price);
     }
 

@@ -8,29 +8,32 @@ import shopping.mart.domain.status.ProductExceptionStatus;
 
 final class Price {
 
+    private static final BigInteger NEGATIVE_NUMBER = BigInteger.valueOf(-1);
+
     private final BigInteger value;
 
     Price(final String price) {
-        validPrice(price);
-        this.value = new BigInteger(price);
+        BigInteger notValidatedPrice = getValidNumber(price);
+        validPrice(notValidatedPrice);
+        this.value = notValidatedPrice;
     }
 
-    private void validPrice(final String price) {
-        validNumber(price);
+    private void validPrice(final BigInteger price) {
         validNegativePrice(price);
     }
 
-    private void validNumber(final String price) {
-        if (price.matches("-?\\d+")) {
-            return;
+    private BigInteger getValidNumber(final String price) {
+        try {
+            return new BigInteger(price);
+        } catch (NumberFormatException numberFormatException) {
+            throw new StatusCodeException(MessageFormat.format("price \"{0}\"는 정수만 입력할 수 있습니다.", price),
+                    ProductExceptionStatus.NOT_NUMBER.getStatus());
         }
-        throw new StatusCodeException(MessageFormat.format("price \"{0}\"는 정수만 입력할 수 있습니다.", value),
-                ProductExceptionStatus.NOT_NUMBER.getStatus());
     }
 
-    private void validNegativePrice(final String price) {
-        if (Long.parseLong(price) < 0) {
-            throw new StatusCodeException(MessageFormat.format("price \"{0}\"는 0보다 작을 수 없습니다.", value),
+    private void validNegativePrice(final BigInteger price) {
+        if (price.compareTo(NEGATIVE_NUMBER) < 0) {
+            throw new StatusCodeException(MessageFormat.format("price \"{0}\"는 0보다 작을 수 없습니다.", price),
                     ProductExceptionStatus.NEGATIVE_PRICE.getStatus());
         }
     }
