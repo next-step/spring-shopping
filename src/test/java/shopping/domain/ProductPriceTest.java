@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import shopping.domain.product.ProductPrice;
 import shopping.exception.ShoppingException;
 
+@DisplayName("상품 가격 테스트")
 class ProductPriceTest {
 
     @Test

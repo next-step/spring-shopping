@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.domain.product.Product;
 
+@DisplayName("상품 테스트")
 class ProductTest {
 
     @Test

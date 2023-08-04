@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import shopping.domain.member.MemberEmail;
 import shopping.exception.ShoppingException;
 
+@DisplayName("회원 이메일 테스트")
 class MemberEmailTest {
 
     @Test

@@ -3,8 +3,8 @@ package shopping.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartProduct;
+import shopping.dto.request.CartProductCreateRequest;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
-import shopping.dto.request.CartProductRequest;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
@@ -27,9 +27,9 @@ public class CartProductService {
     @Transactional
     public CartProduct createCartProduct(
         final Long memberId,
-        final CartProductRequest cartProductRequest
+        final CartProductCreateRequest cartProductCreateRequest
     ) {
-        final Long productId = cartProductRequest.getProductId();
+        final Long productId = cartProductCreateRequest.getProductId();
 
         productRepository.findById(productId)
             .orElseThrow(() -> new ShoppingException("존재하지 않는 상품입니다. 입력값: " + productId));

@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.domain.member.Member;
 import shopping.domain.member.MemberEmail;
 
+@DisplayName("회원 Repository 테스트")
 @DataJpaTest
 class MemberRepositoryTest {
 

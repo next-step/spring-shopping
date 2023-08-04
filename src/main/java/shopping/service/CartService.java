@@ -3,6 +3,7 @@ package shopping.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.Cart;
 import shopping.domain.cart.CartProduct;
 import shopping.domain.product.Product;
@@ -10,7 +11,6 @@ import shopping.dto.response.CartResponse;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
 
-// TODO: 테스트
 @Service
 public class CartService {
 
@@ -25,6 +25,7 @@ public class CartService {
         this.productRepository = productRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<CartResponse> findAllCartProducts(final Long memberId) {
         final List<CartProduct> cartProducts = cartProductRepository.findByMemberId(memberId);
         final List<Long> cartProductIds = cartProducts.stream()

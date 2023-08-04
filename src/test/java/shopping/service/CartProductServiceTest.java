@@ -15,11 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.cart.CartProduct;
 import shopping.domain.product.Product;
-import shopping.dto.request.CartProductRequest;
+import shopping.dto.request.CartProductCreateRequest;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
 
+@DisplayName("장바구니 상품 Service 테스트")
 @ExtendWith(MockitoExtension.class)
 class CartProductServiceTest {
 
@@ -47,7 +48,7 @@ class CartProductServiceTest {
         );
 
         /* when */
-        cartProductService.createCartProduct(memberId, new CartProductRequest(productId));
+        cartProductService.createCartProduct(memberId, new CartProductCreateRequest(productId));
 
         /* then */
         verify(productRepository, atLeast(1)).findById(productId);
@@ -66,7 +67,8 @@ class CartProductServiceTest {
 
         /* when & then */
         assertThatCode(
-            () -> cartProductService.createCartProduct(memberId, new CartProductRequest(productId))
+            () -> cartProductService.createCartProduct(memberId,
+                new CartProductCreateRequest(productId))
         ).isInstanceOf(ShoppingException.class)
             .hasMessage("존재하지 않는 상품입니다. 입력값: " + productId);
 
@@ -91,7 +93,8 @@ class CartProductServiceTest {
 
         /* when & then */
         assertThatCode(
-            () -> cartProductService.createCartProduct(memberId, new CartProductRequest(productId))
+            () -> cartProductService.createCartProduct(memberId,
+                new CartProductCreateRequest(productId))
         ).isInstanceOf(ShoppingException.class)
             .hasMessage("이미 장바구니에 담긴 상품입니다. 입력값: " + productId);
 

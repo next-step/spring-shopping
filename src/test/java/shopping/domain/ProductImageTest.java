@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import shopping.domain.product.ProductImage;
 import shopping.exception.ShoppingException;
 
+@DisplayName("상품 이미지 테스트")
 class ProductImageTest {
 
     @Test

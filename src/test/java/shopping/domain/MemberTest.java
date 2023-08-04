@@ -8,6 +8,7 @@ import shopping.domain.member.Member;
 import shopping.domain.member.MemberEmail;
 import shopping.domain.member.MemberPassword;
 
+@DisplayName("회원 테스트")
 class MemberTest {
 
     @Test

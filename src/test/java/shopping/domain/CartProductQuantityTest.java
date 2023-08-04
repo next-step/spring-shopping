@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import shopping.domain.cart.CartProductQuantity;
 import shopping.exception.ShoppingException;
 
+@DisplayName("장바구니 상품 수량 테스트")
 class CartProductQuantityTest {
 
     @Test

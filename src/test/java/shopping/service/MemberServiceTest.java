@@ -16,6 +16,7 @@ import shopping.domain.member.MemberPassword;
 import shopping.dto.request.LoginRequest;
 import shopping.repository.MemberRepository;
 
+@DisplayName("회원 Service 테스트")
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 

@@ -1,6 +1,7 @@
 package shopping.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.member.Member;
 import shopping.domain.member.MemberEmail;
 import shopping.dto.request.LoginRequest;
@@ -16,6 +17,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional(readOnly = true)
     public Member matchMember(final LoginRequest loginRequest) {
         final String email = loginRequest.getEmail();
         final Member member = memberRepository.findByEmail(new MemberEmail(email))

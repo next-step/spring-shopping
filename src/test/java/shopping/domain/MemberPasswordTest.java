@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import shopping.domain.member.MemberPassword;
 import shopping.exception.ShoppingException;
 
+@DisplayName("회원 비밀번호 테스트")
 class MemberPasswordTest {
 
     @Test

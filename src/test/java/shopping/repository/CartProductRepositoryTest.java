@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.domain.cart.CartProduct;
 
+@DisplayName("장바구니 상품 Repository 테스트")
 @DataJpaTest
 class CartProductRepositoryTest {
 

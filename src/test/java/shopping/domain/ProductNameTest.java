@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import shopping.domain.product.ProductName;
 import shopping.exception.ShoppingException;
 
+@DisplayName("상품 이름 테스트")
 class ProductNameTest {
 
     @Test
