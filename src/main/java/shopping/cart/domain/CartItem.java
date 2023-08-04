@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import shopping.cart.domain.vo.Quantity;
 import shopping.exception.WooWaException;
+import shopping.member.domain.Member;
 import shopping.product.domain.Product;
 import shopping.product.domain.vo.Money;
 
@@ -47,6 +48,10 @@ public class CartItem {
         this.productName = productName;
         this.productPrice = productPrice;
         this.quantity = new Quantity(DEFAULT_QUANTITY);
+    }
+
+    public CartItem(Product product, Member member) {
+        this(member.getId(), product.getId(), product.getName(), product.getPrice());
     }
 
     public boolean isProductChanged(Product product) {
