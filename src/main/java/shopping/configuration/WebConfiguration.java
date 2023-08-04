@@ -9,16 +9,17 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import shopping.auth.AuthArgumentResolver;
 import shopping.auth.AuthInterceptor;
+import shopping.auth.TokenExtractor;
 import shopping.auth.TokenProvider;
 
 @Configuration
 @EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
 
-    private final TokenProvider tokenProvider;
+    private final TokenExtractor tokenExtractor;
 
-    public WebConfiguration(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public WebConfiguration(TokenExtractor tokenExtractor) {
+        this.tokenExtractor = tokenExtractor;
     }
 
     @Override
@@ -33,12 +34,12 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(tokenProvider))
+        registry.addInterceptor(new AuthInterceptor(tokenExtractor))
                 .addPathPatterns("/cart/items/**");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthArgumentResolver());
+        resolvers.add(new AuthArgumentResolver(tokenExtractor));
     }
 }

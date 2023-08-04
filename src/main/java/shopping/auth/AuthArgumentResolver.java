@@ -11,7 +11,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private static final String EMAIL = "email";
+    private final TokenExtractor tokenExtractor;
+
+    public AuthArgumentResolver(TokenExtractor tokenExtractor) {
+        this.tokenExtractor = tokenExtractor;
+    }
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -23,6 +27,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        return request.getAttribute(EMAIL);
+        return tokenExtractor.extractToken(request);
     }
 }
