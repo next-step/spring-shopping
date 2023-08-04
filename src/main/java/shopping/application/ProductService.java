@@ -1,6 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.dto.ProductResponse;
 import shopping.repository.ProductRepository;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -16,6 +18,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponse> findAllProducts() {
         return productRepository.findAll()
                 .stream()
