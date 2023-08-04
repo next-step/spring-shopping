@@ -1,5 +1,6 @@
 package shopping.application;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
@@ -19,7 +20,6 @@ import shopping.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -38,8 +38,7 @@ public class CartService {
 
     @Transactional
     public void createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
-        User user = userRepository.findByEmail(new Email(email))
-                .orElseThrow(() -> new UserNotFoundException(email));
+        User user = findUserOrThrow(email);
         Product product = productRepository
                 .findById(cartItemCreateRequest.getProductId())
                 .orElseThrow(ProductNotFoundException::new);
@@ -52,11 +51,11 @@ public class CartService {
                 () -> cartItemRepository.save(new CartItem(user, product)));
     }
 
-    public List<CartItemResponse> findAllByEmail(String email) {
-        List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
-        return cartItems.stream()
+    public List<CartItemResponse> findAllByEmail(String email, Pageable pageable) {
+        findUserOrThrow(email);
+        return cartItemRepository.findAllByUserEmail(new Email(email), pageable)
                 .map(CartItemResponse::of)
-                .collect(Collectors.toUnmodifiableList());
+                .getContent();
     }
 
     @Transactional
@@ -73,13 +72,17 @@ public class CartService {
     }
 
     private CartItem findCartItem(String email, Long cartId) {
-        User user = userRepository.findByEmail(new Email(email))
-                .orElseThrow(() -> new UserNotFoundException(email));
+        User user = findUserOrThrow(email);
         CartItem cartItem = cartItemRepository.findById(cartId)
                 .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(cartId)));
 
         validateUserMatch(user, cartItem);
         return cartItem;
+    }
+
+    private User findUserOrThrow(String email) {
+        return userRepository.findByEmail(new Email(email))
+                .orElseThrow(() -> new UserNotFoundException(email));
     }
 
     private void validateUserMatch(User user, CartItem cartItem) {

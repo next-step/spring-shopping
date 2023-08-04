@@ -4,12 +4,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
+import shopping.dto.response.CartItemResponse;
 import shopping.exception.CartItemNotFoundException;
 import shopping.exception.ProductNotFoundException;
 import shopping.exception.UserNotFoundException;
@@ -20,6 +22,7 @@ import shopping.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,6 +43,57 @@ class CartServiceTest extends ServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Nested
+    @DisplayName("장바구니 상품 조회")
+    class WhenGetCartItem {
+
+        @DisplayName("정상 조회")
+        @Test
+        void getCartItems() {
+            // given
+            String email = "test@example.com";
+            String digest = passwordEncoder.encode("1234");
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            Product chicken = new Product("치킨", "/chicken.jpg", 10_000L);
+            Product pizza = new Product("피자", "/pizza.jpg", 20_000L);
+            Product salad = new Product("샐러드", "/salad.jpg", 5_000L);
+            List<Product> productList = List.of(chicken, pizza, salad);
+            productRepository.saveAll(productList);
+
+            List<CartItem> cartItems = List.of(
+                    new CartItem(user, chicken),
+                    new CartItem(user, pizza),
+                    new CartItem(user, salad)
+            );
+            List<CartItem> savedItems = cartItemRepository.saveAll(cartItems);
+
+            // when
+            List<CartItemResponse> responses = cartService.findAllByEmail(email, PageRequest.of(0, 3));
+
+            // then
+            assertThat(responses).usingRecursiveComparison().isEqualTo(
+                    savedItems.stream()
+                            .map(CartItemResponse::of)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        @DisplayName("사용자가 존재하지 않으면 예외 발생")
+        @Test
+        void notUserFoundThenThrow() {
+            // given
+            String email = "test@example.com";
+
+            PageRequest pageRequest = PageRequest.of(0, 3);
+
+            // when, then
+            assertThatThrownBy(() -> cartService.findAllByEmail(email, pageRequest))
+                    .isInstanceOf(UserNotFoundException.class);
+        }
+    }
 
     @Nested
     @DisplayName("장바구니 상품 추가")
@@ -268,7 +322,6 @@ class CartServiceTest extends ServiceTest {
                     .isInstanceOf(UserNotMatchException.class);
         }
     }
-
 
     @Nested
     @DisplayName("장바구니 상품 삭제")

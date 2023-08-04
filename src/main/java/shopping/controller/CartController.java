@@ -1,5 +1,7 @@
 package shopping.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,8 +33,8 @@ public class CartController {
     }
 
     @GetMapping("/cart/items")
-    public ResponseEntity<List<CartItemResponse>> getCartItems(@EmailInToken String email) {
-        List<CartItemResponse> cartItems = cartService.findAllByEmail(email);
+    public ResponseEntity<List<CartItemResponse>> getCartItems(@EmailInToken String email, @PageableDefault Pageable pageable) {
+        List<CartItemResponse> cartItems = cartService.findAllByEmail(email, pageable);
         return ResponseEntity.ok().body(cartItems);
     }
 
