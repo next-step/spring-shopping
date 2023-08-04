@@ -41,6 +41,10 @@ public class CartProductEntity extends TimeBaseEntity {
         this.count = count;
     }
 
+    public boolean hasZeroCount() {
+        return count == 0;
+    }
+
     public Long getId() {
         return id;
     }

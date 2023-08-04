@@ -23,6 +23,7 @@ import shopping.mart.persist.repository.ProductJpaRepository;
 public class CartRepository {
 
     private static final Object LOCK = new Object();
+    private static final int INITIAL_COUNT = 1;
 
     private final CartJpaRepository cartJpaRepository;
     private final CartProductJpaRepository cartProductJpaRepository;
@@ -97,8 +98,7 @@ public class CartRepository {
     }
 
     private List<CartProductEntity> getDeletedProducts(Cart cart, List<CartProductEntity> cartProductEntities) {
-        List<CartProductEntity> deleteCartProductEntities = getZeroCountedProductEntities(
-                cartProductEntities);
+        List<CartProductEntity> deleteCartProductEntities = getZeroCountedProductEntities(cartProductEntities);
 
         addDeletedCartProductEntities(cart, cartProductEntities, deleteCartProductEntities);
 
@@ -107,7 +107,7 @@ public class CartRepository {
 
     private List<CartProductEntity> getZeroCountedProductEntities(List<CartProductEntity> cartProductEntities) {
         return cartProductEntities.stream()
-                .filter(cartProductEntity -> cartProductEntity.getCount() == 0)
+                .filter(CartProductEntity::hasZeroCount)
                 .collect(toList());
     }
 
@@ -138,7 +138,7 @@ public class CartRepository {
                 .orElseThrow(() -> new IllegalStateException(
                         MessageFormat.format("id \"{0}\" 에 해당하는 product를 찾을 수 없습니다", product.getId())));
 
-        CartProductEntity cartProductEntity = new CartProductEntity(null, cartEntity, productEntity, 1);
+        CartProductEntity cartProductEntity = new CartProductEntity(null, cartEntity, productEntity, INITIAL_COUNT);
 
         cartProductJpaRepository.save(cartProductEntity);
     }
