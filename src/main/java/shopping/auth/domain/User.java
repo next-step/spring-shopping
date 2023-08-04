@@ -2,16 +2,15 @@ package shopping.auth.domain;
 
 import java.text.MessageFormat;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import shopping.auth.domain.status.UserExceptionStatus;
 import shopping.core.exception.StatusCodeException;
 
 public final class User {
 
     private static final int MAXIMUM_EMAIL_LENGTH = 100;
-    private static final String EMAIL_REGEX =
-            "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    private static final String SPECIAL_CHARACTER_REGEX =
-            ".*[!@#$%^&*(),.?\":{}|<>].*";
+    private static final Pattern EMAIL_MATCHER = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    private static final Pattern SPECIAL_CHARACTER_MATCHER = Pattern.compile(".*[!@#$%^&*(),.?\":{}|<>].*");
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
     private static final int MAXIMUM_PASSWORD_LENGTH = 100;
 
@@ -24,9 +23,10 @@ public final class User {
     }
 
     public User(final Long id, final String email, final String password) {
-        this.id = id;
         validateEmail(email);
         validatePassword(password);
+
+        this.id = id;
         this.email = email;
         this.password = password;
     }
@@ -40,7 +40,7 @@ public final class User {
     }
 
     private boolean isValidEmail(String email) {
-        return email.length() <= MAXIMUM_EMAIL_LENGTH && email.matches(EMAIL_REGEX);
+        return email.length() <= MAXIMUM_EMAIL_LENGTH && EMAIL_MATCHER.matcher(email).matches();
     }
 
     private void validatePassword(final String password) {
@@ -53,7 +53,7 @@ public final class User {
 
     private boolean isValidPassword(String password) {
         return MINIMUM_PASSWORD_LENGTH <= password.length() && password.length() <= MAXIMUM_PASSWORD_LENGTH
-                && password.matches(SPECIAL_CHARACTER_REGEX);
+                && SPECIAL_CHARACTER_MATCHER.matcher(password).matches();
     }
 
 
