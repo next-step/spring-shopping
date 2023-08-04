@@ -20,5 +20,4 @@ class GlobalExceptionHandler {
         logger.error(exception.getMessage());
         return new ErrorTemplate("SERVER-501", "INTERNAL SERVER ERROR");
     }
-
 }

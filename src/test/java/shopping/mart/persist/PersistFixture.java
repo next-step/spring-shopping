@@ -11,7 +11,5 @@ class PersistFixture {
                     productEntity.getImageUrl(),
                     productEntity.getPrice());
         }
-
     }
-
 }

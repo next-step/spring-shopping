@@ -20,6 +20,7 @@ public class ProductRepository {
     public void saveProduct(final Product product) {
         ProductEntity productEntity = new ProductEntity(product.getId(), product.getName(), product.getImageUrl(),
                 product.getPrice());
+
         productJpaRepository.save(productEntity);
     }
 
@@ -27,14 +28,21 @@ public class ProductRepository {
         Optional<ProductEntity> optionalProductEntity = productJpaRepository.findByName(name);
         if (optionalProductEntity.isPresent()) {
             ProductEntity productEntity = optionalProductEntity.get();
-            return Optional.of(new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
-                    productEntity.getPrice()));
+            return Optional.of(
+                    new Product(
+                            productEntity.getId(),
+                            productEntity.getName(),
+                            productEntity.getImageUrl(),
+                            productEntity.getPrice())
+            );
         }
+
         return Optional.empty();
     }
 
     public List<Product> findAllProducts() {
         List<ProductEntity> productEntities = productJpaRepository.findAll();
+
         return productEntities.stream()
                 .map(productEntity -> new Product(productEntity.getId(), productEntity.getName(),
                         productEntity.getImageUrl(), productEntity.getPrice()))
@@ -48,6 +56,7 @@ public class ProductRepository {
             return Optional.of(new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
                     productEntity.getPrice()));
         }
+
         return Optional.empty();
     }
 }

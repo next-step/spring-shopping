@@ -25,7 +25,9 @@ public class ProductService {
     @Transactional
     public void saveProduct(final ProductCreateRequest request) {
         throwIfExistProduct(request);
+
         Product product = new Product(request.getName(), request.getImageUrl(), request.getPrice());
+
         productRepository.saveProduct(product);
     }
 

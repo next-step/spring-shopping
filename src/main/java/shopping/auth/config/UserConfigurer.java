@@ -21,5 +21,4 @@ final class UserConfigurer {
     void setDefaultUsers() {
         authService.joinUser(ADMIN);
     }
-
 }

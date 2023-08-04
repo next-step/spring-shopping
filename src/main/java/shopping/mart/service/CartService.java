@@ -74,6 +74,7 @@ public class CartService {
         if (!cartRepository.existCartByUserId(userId)) {
             cartRepository.newCart(userId);
         }
+
         return cartRepository.getByUserId(userId);
     }
 
@@ -83,5 +84,4 @@ public class CartService {
                         MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId),
                         PRODUCT_NOT_FOUND));
     }
-
 }

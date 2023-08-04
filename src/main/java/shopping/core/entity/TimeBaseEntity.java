@@ -26,6 +26,4 @@ abstract class TimeBaseEntity {
     void preUpdate() {
         updatedAt = updatedAt != null ? updatedAt : Instant.now();
     }
-
-
 }

@@ -170,5 +170,4 @@ class CartAcceptanceTest extends AcceptanceTest {
                         productResponse.getId(), 1, productResponse.getImageUrl(), productResponse.getName())
         ).collect(Collectors.toList()));
     }
-
 }

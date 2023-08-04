@@ -100,5 +100,4 @@ class UserTest {
             assertStatusCodeException(exception, "AUTH-401");
         }
     }
-
 }

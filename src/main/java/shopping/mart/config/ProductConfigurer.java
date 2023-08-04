@@ -31,5 +31,4 @@ final class ProductConfigurer {
         productService.saveProduct(BEER_PRODUCT_CREATE_REQUEST);
         productService.saveProduct(MAKGEOLLI_PRODUCT_CREATE_REQUEST);
     }
-
 }

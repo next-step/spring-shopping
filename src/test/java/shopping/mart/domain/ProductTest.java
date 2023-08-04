@@ -100,5 +100,4 @@ class ProductTest {
             assertThat(((StatusCodeException) exception).getStatus()).isEqualTo(expectedStatus);
         }
     }
-
 }

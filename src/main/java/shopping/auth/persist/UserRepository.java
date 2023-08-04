@@ -19,7 +19,12 @@ public class UserRepository {
         Optional<UserEntity> optionalUserEntity = userJpaRepository.findByEmail(email);
         if (optionalUserEntity.isPresent()) {
             UserEntity userEntity = optionalUserEntity.get();
-            return Optional.of(new User(userEntity.getId(), userEntity.getEmail(), userEntity.getPassword()));
+            return Optional.of(
+                    new User(
+                            userEntity.getId(),
+                            userEntity.getEmail(),
+                            userEntity.getPassword())
+            );
         }
         return Optional.empty();
     }

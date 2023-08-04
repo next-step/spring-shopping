@@ -53,6 +53,7 @@ public class CartRepository {
         CartEntity persistCart = cartProductEntities.get(0).getCartEntity();
         Cart cart = new Cart(persistCart.getId(), persistCart.getUserId());
         cartProductEntities.forEach(cartProductEntity -> addProductToCart(cart, cartProductEntity));
+
         return cart;
     }
 
@@ -60,6 +61,7 @@ public class CartRepository {
         CartEntity cartEntity = cartJpaRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalStateException(MessageFormat.format(
                         "userId\"{0}\"에 해당하는 Cart가 존재하지 않습니다.", userId)));
+
         return new Cart(cartEntity.getId(), cartEntity.getUserId());
     }
 
@@ -69,6 +71,7 @@ public class CartRepository {
 
         Product product = new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
                 productEntity.getPrice());
+
         cart.addProduct(product);
         cart.updateProduct(product, cartProductEntity.getCount());
     }

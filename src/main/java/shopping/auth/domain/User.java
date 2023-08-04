@@ -7,13 +7,14 @@ import shopping.core.exception.StatusCodeException;
 
 public final class User {
 
-    public static final int MAXIMUM_EMAIL_LENGTH = 100;
+    private static final int MAXIMUM_EMAIL_LENGTH = 100;
     private static final String EMAIL_REGEX =
             "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String SPECIAL_CHARACTER_REGEX =
             ".*[!@#$%^&*(),.?\":{}|<>].*";
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
     private static final int MAXIMUM_PASSWORD_LENGTH = 100;
+
     private final Long id;
     private final String email;
     private final String password;
