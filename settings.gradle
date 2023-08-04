@@ -1,1 +1,6 @@
 rootProject.name = 'spring-shopping'
+
+include 'app'
+include 'auth'
+include 'core'
+include 'mart'
