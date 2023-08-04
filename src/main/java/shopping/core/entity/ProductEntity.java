@@ -16,7 +16,7 @@ public class ProductEntity extends TimeBaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 20)
+    @Column(name = "name", nullable = false, length = 20)
     private String name;
 
     @Column(name = "image_url", nullable = false)

@@ -24,22 +24,6 @@ public class ProductRepository {
         productJpaRepository.save(productEntity);
     }
 
-    public Optional<Product> findByProductName(final String name) {
-        Optional<ProductEntity> optionalProductEntity = productJpaRepository.findByName(name);
-        if (optionalProductEntity.isPresent()) {
-            ProductEntity productEntity = optionalProductEntity.get();
-            return Optional.of(
-                    new Product(
-                            productEntity.getId(),
-                            productEntity.getName(),
-                            productEntity.getImageUrl(),
-                            productEntity.getPrice())
-            );
-        }
-
-        return Optional.empty();
-    }
-
     public List<Product> findAllProducts() {
         List<ProductEntity> productEntities = productJpaRepository.findAll();
 
