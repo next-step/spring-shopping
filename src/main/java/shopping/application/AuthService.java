@@ -1,6 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.Email;
@@ -11,6 +12,7 @@ import shopping.exception.PasswordNotMatchException;
 import shopping.exception.UserNotFoundException;
 import shopping.repository.UserRepository;
 
+@Transactional(readOnly = true)
 @Service
 public class AuthService {
 

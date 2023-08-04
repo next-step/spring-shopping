@@ -1,6 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Product;
 import shopping.domain.user.Email;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Transactional(readOnly = true)
 @Service
 public class CartService {
 
@@ -33,6 +35,7 @@ public class CartService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public void createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
@@ -54,16 +57,16 @@ public class CartService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional
     public void updateCartItemQuantity(String email, Long cartId, CartItemUpdateRequest cartItemUpdateRequest) {
-
         CartItem cartItem = findCartItem(email, cartId);
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
         cartItemRepository.save(updatedCartItem);
     }
 
+    @Transactional
     public void deleteCartItem(String email, Long id) {
         findCartItem(email, id);
-
         cartItemRepository.deleteById(id);
     }
 
