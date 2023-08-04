@@ -1,5 +1,7 @@
 package shopping.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +20,8 @@ public class ViewController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        List<ProductResponse> products = productService.findAll();
+    public String index(Model model, @PageableDefault Pageable pageable) {
+        List<ProductResponse> products = productService.findAll(pageable);
         model.addAttribute("products", products);
         return "index";
     }

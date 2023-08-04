@@ -3,11 +3,13 @@ package shopping.application;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import shopping.domain.cart.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,20 +26,21 @@ class ProductServiceTest extends ServiceTest {
     @Test
     void findAll() {
         // given
-        Product chicken = new Product("치킨", "/chicken.jpg", 10_000L);
-        Product pizza = new Product("피자", "/pizza.jpg", 20_000L);
-        Product salad = new Product("샐러드", "/salad.jpg", 5_000L);
-        List<Product> productList = List.of(chicken, pizza, salad);
-        productRepository.saveAll(productList);
+        List<Product> productList = List.of(
+                new Product("치킨", "/chicken.jpg", 10_000L),
+                new Product("피자", "/pizza.jpg", 20_000L),
+                new Product("샐러드", "/salad.jpg", 5_000L)
+        );
+        List<Product> savedProducts = productRepository.saveAll(productList);
 
         // when
-        List<ProductResponse> products = productService.findAll();
+        List<ProductResponse> products = productService.findAll(PageRequest.of(0, 3));
 
         // then
-        assertThat(products).containsExactly(
-                ProductResponse.of(chicken),
-                ProductResponse.of(pizza),
-                ProductResponse.of(salad)
+        assertThat(products).usingRecursiveComparison().isEqualTo(
+                savedProducts.stream()
+                        .map(ProductResponse::of)
+                        .collect(Collectors.toList())
         );
     }
 }
