@@ -2,18 +2,7 @@ package shopping.domain.cart;
 
 import shopping.domain.user.User;
 
-import java.util.Objects;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cart_item")
@@ -37,7 +26,7 @@ public class CartItem {
     @AttributeOverrides(@AttributeOverride(name = "quantity", column = @Column(name = "quantity", nullable = false)))
     private Quantity quantity;
 
-    public CartItem() {
+    protected CartItem() {
     }
 
     public CartItem(Long id, User user, Product product, Integer quantity) {
@@ -77,25 +66,6 @@ public class CartItem {
     }
 
     public boolean isNotUserMatch(User user) {
-        return !this.user.equals(user);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CartItem cartItem = (CartItem) o;
-        return Objects.equals(id, cartItem.id) && Objects.equals(user,
-                cartItem.user) && Objects.equals(product, cartItem.product)
-                && Objects.equals(quantity, cartItem.quantity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, product, quantity);
+        return !this.user.isSame(user);
     }
 }

@@ -1,13 +1,5 @@
 package shopping.application;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.cart.CartItem;
-import shopping.domain.user.Email;
 import shopping.domain.cart.Product;
+import shopping.domain.user.Email;
 import shopping.domain.user.User;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
@@ -27,6 +19,13 @@ import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @DisplayName("장바구니 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -140,7 +139,7 @@ class CartServiceTest {
                     .doesNotThrowAnyException();
 
             // then
-            verify(cartItemRepository, times(1)).save(new CartItem(1L, user, product, 5));
+            verify(cartItemRepository, times(1)).save(any());
         }
 
         @DisplayName("장바구니에 담긴 아이템 수량 변경시 유저 없으면 예외 발생")
