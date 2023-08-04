@@ -4,9 +4,9 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
-import shopping.domain.entity.ProductEntity;
-import shopping.dto.request.CartItemAddRequest;
-import shopping.dto.request.LoginRequest;
+import shopping.auth.dto.request.LoginRequest;
+import shopping.cart.domain.entity.ProductEntity;
+import shopping.cart.dto.request.CartItemAddRequest;
 
 public class TestFixture {
 

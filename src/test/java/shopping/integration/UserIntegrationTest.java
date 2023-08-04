@@ -10,10 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.LoginResponse;
-import shopping.exception.ErrorCode;
-import shopping.exception.ErrorResponse;
+import shopping.auth.dto.request.LoginRequest;
+import shopping.auth.dto.response.LoginResponse;
+import shopping.common.exception.ErrorCode;
+import shopping.common.exception.ErrorResponse;
 
 class UserIntegrationTest extends IntegrationTest {
 
