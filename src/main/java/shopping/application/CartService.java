@@ -10,6 +10,7 @@ import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.exception.CartItemNotFoundException;
+import shopping.exception.ProductNotFoundException;
 import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
@@ -40,7 +41,8 @@ public class CartService {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         Product product = productRepository
-                .getReferenceById(cartItemCreateRequest.getProductId());
+                .findById(cartItemCreateRequest.getProductId())
+                .orElseThrow(ProductNotFoundException::new);
 
         Optional<CartItem> originalCartItem = cartItemRepository
                 .findByUserAndProduct(user, product);
