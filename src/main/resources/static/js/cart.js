@@ -30,7 +30,7 @@ const updateCartItemQuantity = (id, quantity) => {
         return;
     }
 
-    fetch('/carts/' + id, {
+    fetch('/carts/' + id + '/quantity', {
         method: 'PATCH',
         headers: {
             'Authorization': `Bearer ${credentials}`,
