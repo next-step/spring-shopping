@@ -3,10 +3,12 @@ package shopping.cart.domain;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.Objects;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import shopping.cart.domain.vo.Quantity;
 import shopping.exception.WooWaException;
 import shopping.product.domain.Product;
 import shopping.product.domain.vo.Money;
@@ -14,14 +16,18 @@ import shopping.product.domain.vo.Money;
 @Entity
 public class CartItem {
 
+    private static final int DEFAULT_QUANTITY = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long memberId;
     private Long productId;
     private String productName;
+    @Embedded
     private Money productPrice;
-    private int quantity;
+    @Embedded
+    private Quantity quantity;
 
     protected CartItem() {
     }
@@ -32,7 +38,15 @@ public class CartItem {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
-        this.quantity = quantity;
+        this.quantity = new Quantity(quantity);
+    }
+
+    public CartItem(Long memberId, Long productId, String productName, Money productPrice) {
+        this.memberId = memberId;
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.quantity = new Quantity(DEFAULT_QUANTITY);
     }
 
     public boolean isProductChanged(Product product) {
@@ -41,11 +55,11 @@ public class CartItem {
     }
 
     public void updateQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantity = new Quantity(quantity);
     }
 
     public void increaseQuantity() {
-        this.quantity += 1;
+        this.quantity = this.quantity.increase();
     }
 
     public void validateMyCartItem(Long memberId) {
@@ -76,6 +90,6 @@ public class CartItem {
     }
 
     public int getQuantity() {
-        return quantity;
+        return quantity.getValue();
     }
 }

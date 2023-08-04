@@ -26,7 +26,6 @@ import shopping.product.repository.ProductRepository;
 @Transactional(readOnly = true)
 public class CartService {
 
-    public static final int DEFAULT_QUANTITY = 1;
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
@@ -60,8 +59,7 @@ public class CartService {
             member.getId(),
             product.getId(),
             product.getName(),
-            product.getPrice(),
-            DEFAULT_QUANTITY
+            product.getPrice()
         );
 
         cartItemRepository.save(cartItem);
