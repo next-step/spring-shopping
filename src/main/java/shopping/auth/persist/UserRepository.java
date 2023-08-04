@@ -26,11 +26,13 @@ public class UserRepository {
                             userEntity.getPassword())
             );
         }
+
         return Optional.empty();
     }
 
     public void saveUser(User user) {
         UserEntity userEntity = new UserEntity(user.getId(), user.getEmail(), user.getPassword());
+
         userJpaRepository.save(userEntity);
     }
 }

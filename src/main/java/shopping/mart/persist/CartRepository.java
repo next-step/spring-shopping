@@ -114,7 +114,7 @@ public class CartRepository {
     private void addDeletedCartProductEntities(Cart cart, List<CartProductEntity> cartProductEntities,
             List<CartProductEntity> deleteCartProductEntities) {
         Set<Long> persistedProductIds = cartProductEntities.stream()
-                .map(cartProductEntity -> cartProductEntity.getProductEntity().getId())
+                .map(CartProductEntity::getProductId)
                 .collect(toSet());
 
         Set<Long> domainProductIds = cart.getProductCounts().keySet().stream()
@@ -124,8 +124,7 @@ public class CartRepository {
         persistedProductIds.removeAll(domainProductIds);
 
         Map<Long, CartProductEntity> productIdIndexedCartProductEntities = cartProductEntities.stream()
-                .collect(toMap(cartProductEntity -> cartProductEntity.getProductEntity().getId(),
-                        cartProductEntity -> cartProductEntity));
+                .collect(toMap(CartProductEntity::getProductId, identity()));
 
         persistedProductIds.forEach(deleteTarget -> deleteCartProductEntities.add(
                 productIdIndexedCartProductEntities.get(deleteTarget)));

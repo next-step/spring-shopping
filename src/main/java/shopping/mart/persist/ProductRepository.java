@@ -37,8 +37,13 @@ public class ProductRepository {
         Optional<ProductEntity> optionalProductEntity = productJpaRepository.findById(id);
         if (optionalProductEntity.isPresent()) {
             ProductEntity productEntity = optionalProductEntity.get();
-            return Optional.of(new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
-                    productEntity.getPrice()));
+            return Optional.of(
+                    new Product(
+                            productEntity.getId(),
+                            productEntity.getName(),
+                            productEntity.getImageUrl(),
+                            productEntity.getPrice())
+            );
         }
 
         return Optional.empty();
