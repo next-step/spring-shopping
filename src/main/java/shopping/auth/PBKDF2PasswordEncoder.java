@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import org.springframework.stereotype.Component;
+import shopping.exception.PasswordNotHashException;
 
 @Component
 public class PBKDF2PasswordEncoder implements PasswordEncoder {
@@ -30,7 +31,7 @@ public class PBKDF2PasswordEncoder implements PasswordEncoder {
             String base64Salt = Base64.getEncoder().encodeToString(salt);
             return base64Salt + base64Hash;
         } catch (Exception e) {
-            throw new IllegalStateException("패스워드 해시 과정에서 에러가 발생하였습니다.");
+            throw new PasswordNotHashException();
         }
     }
 
