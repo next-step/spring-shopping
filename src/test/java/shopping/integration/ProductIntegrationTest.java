@@ -1,7 +1,5 @@
 package shopping.integration;
 
-import static org.hamcrest.Matchers.containsString;
-
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import shopping.domain.cart.Product;
 import shopping.repository.ProductRepository;
+
+import static org.hamcrest.Matchers.containsString;
 
 @DisplayName("상품 인수 테스트")
 class ProductIntegrationTest extends IntegrationTest {

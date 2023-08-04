@@ -1,12 +1,8 @@
 package shopping.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +13,11 @@ import shopping.auth.PasswordEncoder;
 import shopping.domain.user.User;
 import shopping.dto.request.LoginRequest;
 import shopping.repository.UserRepository;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("인증 인수 테스트")
 class AuthIntegrationTest extends IntegrationTest {

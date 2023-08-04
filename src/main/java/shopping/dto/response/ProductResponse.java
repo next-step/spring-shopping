@@ -1,7 +1,8 @@
 package shopping.dto.response;
 
-import java.util.Objects;
 import shopping.domain.cart.Product;
+
+import java.util.Objects;
 
 public class ProductResponse {
 

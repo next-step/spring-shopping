@@ -1,13 +1,14 @@
 package shopping.auth;
 
+import org.springframework.stereotype.Component;
+import shopping.exception.PasswordNotHashException;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Random;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import org.springframework.stereotype.Component;
-import shopping.exception.PasswordNotHashException;
 
 @Component
 public class PBKDF2PasswordEncoder implements PasswordEncoder {

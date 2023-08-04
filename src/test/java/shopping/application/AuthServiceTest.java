@@ -1,9 +1,5 @@
 package shopping.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +16,11 @@ import shopping.dto.response.LoginResponse;
 import shopping.exception.PasswordNotMatchException;
 import shopping.exception.UserNotFoundException;
 import shopping.repository.UserRepository;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 @DisplayName("인증 서비스 테스트")
 @ExtendWith(MockitoExtension.class)

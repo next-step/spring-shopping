@@ -1,10 +1,11 @@
 package shopping.application;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {

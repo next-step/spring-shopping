@@ -1,12 +1,9 @@
 package shopping.application;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import shopping.domain.cart.CartItem;
-import shopping.domain.user.Email;
 import shopping.domain.cart.Product;
+import shopping.domain.user.Email;
 import shopping.domain.user.User;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
@@ -17,6 +14,10 @@ import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
