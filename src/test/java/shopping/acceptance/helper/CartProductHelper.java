@@ -14,6 +14,6 @@ public class CartProductHelper {
         final String jwt,
         final CartProductRequest request
     ) {
-        return RestHelper.post("/api/cart", jwt, request);
+        return RestHelper.post("/api/cartProduct", jwt, request);
     }
 }

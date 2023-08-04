@@ -19,7 +19,7 @@ import shopping.service.CartService;
 
 
 @RestController
-@RequestMapping("/api/cart")
+@RequestMapping("/api/cartProduct")
 public class CartProductRestController {
 
     private final CartProductService cartProductService;
@@ -66,7 +66,7 @@ public class CartProductRestController {
         final @LoginUser Long memberId
     ) {
         cartProductService.deleteCartProduct(cartProductId, memberId);
-        
+
         return ResponseEntity.noContent().build();
     }
 }

@@ -7,7 +7,7 @@ const addCartItem = (productId) => {
     return;
   }
 
-  fetch('/api/cart', {
+  fetch('/api/cartProduct', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${credentials}`,
@@ -31,7 +31,7 @@ const updateCartItemQuantity = (cartProductId, quantity) => {
     return;
   }
 
-  fetch(`/api/cart/${cartProductId}`, {
+  fetch(`/api/cartProduct/${cartProductId}`, {
     method: 'PATCH',
     headers: {
       'Authorization': `Bearer ${credentials}`,
@@ -56,7 +56,7 @@ const removeCartItem = (cartProductId) => {
     return;
   }
 
-  fetch(`/api/cart/${cartProductId}`, {
+  fetch(`/api/cartProduct/${cartProductId}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${credentials}`,
