@@ -1,6 +1,6 @@
 package shopping.dto.response;
 
-import shopping.domain.CartItem;
+import shopping.domain.cart.CartItem;
 
 public class CartItemResponse {
 

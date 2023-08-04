@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.auth.PasswordEncoder;
-import shopping.domain.User;
+import shopping.domain.user.User;
 import shopping.dto.request.LoginRequest;
 import shopping.repository.UserRepository;
 

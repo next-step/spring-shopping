@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.Product;
+import shopping.domain.cart.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 

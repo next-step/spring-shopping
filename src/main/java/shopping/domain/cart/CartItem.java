@@ -1,4 +1,6 @@
-package shopping.domain;
+package shopping.domain.cart;
+
+import shopping.domain.user.User;
 
 import java.util.Objects;
 import javax.persistence.AttributeOverride;

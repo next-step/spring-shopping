@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import shopping.domain.Product;
+import shopping.domain.cart.Product;
 import shopping.repository.ProductRepository;
 
 @DisplayName("상품 인수 테스트")
