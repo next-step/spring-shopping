@@ -1,10 +1,14 @@
 package shopping.mart.persist;
 
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.CartEntity;
 import shopping.core.entity.CartProductEntity;
@@ -83,8 +87,7 @@ public class CartRepository {
         List<CartProductEntity> cartProductEntities = cartProductJpaRepository.findAllByCartEntity(cartEntity);
 
         Map<Long, CartProductEntity> idIndexedCartProductEntities = cartProductEntities.stream()
-                .collect(Collectors.toMap(cartProductEntity -> cartProductEntity.getProductEntity().getId(),
-                        cartProductEntity -> cartProductEntity));
+                .collect(toMap(CartProductEntity::getProductId, identity()));
 
         cart.getProductCounts().forEach((key, value) -> idIndexedCartProductEntities.get(key.getId()).setCount(value));
 
@@ -105,23 +108,23 @@ public class CartRepository {
     private List<CartProductEntity> getZeroCountedProductEntities(List<CartProductEntity> cartProductEntities) {
         return cartProductEntities.stream()
                 .filter(cartProductEntity -> cartProductEntity.getCount() == 0)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private void addDeletedCartProductEntities(Cart cart, List<CartProductEntity> cartProductEntities,
             List<CartProductEntity> deleteCartProductEntities) {
         Set<Long> persistedProductIds = cartProductEntities.stream()
                 .map(cartProductEntity -> cartProductEntity.getProductEntity().getId())
-                .collect(Collectors.toSet());
+                .collect(toSet());
 
         Set<Long> domainProductIds = cart.getProductCounts().keySet().stream()
                 .map(Product::getId)
-                .collect(Collectors.toSet());
+                .collect(toSet());
 
         persistedProductIds.removeAll(domainProductIds);
 
         Map<Long, CartProductEntity> productIdIndexedCartProductEntities = cartProductEntities.stream()
-                .collect(Collectors.toMap(cartProductEntity -> cartProductEntity.getProductEntity().getId(),
+                .collect(toMap(cartProductEntity -> cartProductEntity.getProductEntity().getId(),
                         cartProductEntity -> cartProductEntity));
 
         persistedProductIds.forEach(deleteTarget -> deleteCartProductEntities.add(

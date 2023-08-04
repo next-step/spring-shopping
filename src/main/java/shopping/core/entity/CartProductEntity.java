@@ -53,6 +53,10 @@ public class CartProductEntity extends TimeBaseEntity {
         return productEntity;
     }
 
+    public Long getProductId() {
+        return productEntity.getId();
+    }
+
     public Integer getCount() {
         return count;
     }
