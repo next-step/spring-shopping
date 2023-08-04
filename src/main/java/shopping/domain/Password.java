@@ -1,0 +1,28 @@
+package shopping.domain;
+
+import javax.persistence.Embeddable;
+import shopping.exception.ArgumentValidateFailException;
+
+@Embeddable
+public class Password {
+
+    private String password;
+
+    protected Password() {
+    }
+
+    public Password(String password) {
+        validate(password);
+        this.password = password;
+    }
+
+    private void validate(String password) {
+        if (password == null) {
+            throw new ArgumentValidateFailException("비밀번호는 null일 수 없습니다.");
+        }
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
