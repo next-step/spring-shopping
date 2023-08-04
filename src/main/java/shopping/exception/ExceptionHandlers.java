@@ -1,4 +1,4 @@
-package shopping.controller;
+package shopping.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -10,8 +10,6 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import shopping.dto.response.ErrorResponse;
-import shopping.exception.AuthException;
-import shopping.exception.ShoppingBaseException;
 
 @ControllerAdvice
 public class ExceptionHandlers {
@@ -22,13 +20,6 @@ public class ExceptionHandlers {
     public String handleAuthException(Exception e) {
         log.error(e.getMessage());
         return "redirect:/login";
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
-            Exception e) {
-        log.error(e.getMessage());
-        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(HttpMessageConversionException.class)

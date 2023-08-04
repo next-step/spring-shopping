@@ -2,6 +2,7 @@ package shopping.domain.cart;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.exception.InvalidRequestException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -19,6 +20,6 @@ class PriceTest {
     @Test
     void notPositivePrice() {
         assertThatThrownBy(() -> new Price(0L))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InvalidRequestException.class);
     }
 }

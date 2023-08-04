@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import shopping.exception.InvalidRequestException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,6 +22,6 @@ class EmailTest {
     @ValueSource(strings = {"   ", "a@a.a", "aasdf.asdf", "asdfasdf@asdfasd"})
     void invalidEmail(String email) {
         assertThatThrownBy(() -> new Email(email))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InvalidRequestException.class);
     }
 }

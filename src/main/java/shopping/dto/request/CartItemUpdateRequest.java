@@ -2,6 +2,7 @@ package shopping.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import shopping.exception.InvalidRequestException;
 
 public class CartItemUpdateRequest {
 
@@ -16,7 +17,7 @@ public class CartItemUpdateRequest {
 
     private void validate(Integer quantity) {
         if (quantity < MIN_QUANTITY) {
-            throw new IllegalArgumentException("수량은 1이상이어야 합니다.");
+            throw new InvalidRequestException("수량은 1이상이어야 합니다.");
         }
     }
 

@@ -1,5 +1,7 @@
 package shopping.domain.cart;
 
+import shopping.exception.InvalidRequestException;
+
 import java.util.Objects;
 import javax.persistence.Embeddable;
 
@@ -20,10 +22,10 @@ public class Quantity {
 
     private void validate(Integer quantity) {
         if (quantity == null) {
-            throw new IllegalArgumentException("수량은 Null 일수 없습니다.");
+            throw new InvalidRequestException("수량은 Null 일수 없습니다.");
         }
         if (quantity < MIN_QUANTITY) {
-            throw new IllegalArgumentException("수량은 " + MIN_QUANTITY + "이상이어야 합니다.");
+            throw new InvalidRequestException("수량은 " + MIN_QUANTITY + "이상이어야 합니다.");
         }
     }
 

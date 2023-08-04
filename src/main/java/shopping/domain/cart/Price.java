@@ -1,5 +1,7 @@
 package shopping.domain.cart;
 
+import shopping.exception.InvalidRequestException;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -18,10 +20,10 @@ public class Price {
 
     private void validate(Long price) {
         if (price == null) {
-            throw new IllegalArgumentException("가격은 null일 수 없습니다.");
+            throw new InvalidRequestException("가격은 null일 수 없습니다.");
         }
         if (price <= MIN_PRICE) {
-            throw new IllegalArgumentException("가격은 0원 이하일 수 없습니다.");
+            throw new InvalidRequestException("가격은 0원 이하일 수 없습니다.");
         }
     }
 

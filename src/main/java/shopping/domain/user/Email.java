@@ -1,5 +1,7 @@
 package shopping.domain.user;
 
+import shopping.exception.InvalidRequestException;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.persistence.Embeddable;
@@ -7,7 +9,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Email {
 
-    private static final String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+    private static final String EMAIL_PATTERN = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
     private String email;
 
     protected Email() {
@@ -20,10 +22,10 @@ public class Email {
 
     private void validate(String email) {
         if (email == null) {
-            throw new IllegalArgumentException("이메일은 null 일수 없습니다.");
+            throw new InvalidRequestException("이메일은 null 일수 없습니다.");
         }
         if (!Pattern.compile(EMAIL_PATTERN).matcher(email).matches()) {
-            throw new IllegalArgumentException("이메일 형식이 올바르지 않습니다.");
+            throw new InvalidRequestException("이메일 형식이 올바르지 않습니다.");
         }
     }
 
