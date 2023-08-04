@@ -2,7 +2,6 @@ package shopping.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import shopping.application.AuthService;
@@ -16,11 +15,6 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
-    }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
     }
 
     @PostMapping("/login/token")

@@ -25,11 +25,6 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping("/cart")
-    public String getCartPage() {
-        return "cart";
-    }
-
     @PostMapping("/cart/items")
     public ResponseEntity<Void> createCartItem(
             @EmailInToken String email,
