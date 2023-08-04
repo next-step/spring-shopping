@@ -17,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.core.exception.StatusCodeException;
 import shopping.mart.domain.Product;
 import shopping.mart.dto.ProductCreateRequest;
-import shopping.mart.persist.ProductRepository;
+import shopping.mart.persist.ProductPersistService;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("ProductService 클래스")
@@ -28,7 +28,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @MockBean
-    private ProductRepository productRepository;
+    private ProductPersistService productRepository;
 
     @Nested
     @DisplayName("saveProduct 메서드는")

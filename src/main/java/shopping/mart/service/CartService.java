@@ -12,20 +12,21 @@ import shopping.mart.dto.CartAddRequest;
 import shopping.mart.dto.CartResponse;
 import shopping.mart.dto.CartResponse.ProductResponse;
 import shopping.mart.dto.CartUpdateRequest;
-import shopping.mart.persist.CartRepository;
-import shopping.mart.persist.ProductRepository;
+import shopping.mart.persist.CartPersistService;
+import shopping.mart.persist.ProductPersistService;
 
 @Service
 public class CartService {
 
     private static final String PRODUCT_NOT_FOUND = "CART-SERVICE-401";
 
-    private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
+    private final ProductPersistService productRepository;
+    private final CartPersistService cartPersistService;
 
-    public CartService(final CartRepository cartRepository, final ProductRepository productRepository) {
-        this.cartRepository = cartRepository;
+    public CartService(final ProductPersistService productRepository,
+        final CartPersistService cartPersistService) {
         this.productRepository = productRepository;
+        this.cartPersistService = cartPersistService;
     }
 
     @Transactional
@@ -35,7 +36,7 @@ public class CartService {
 
         cart.addProduct(product);
 
-        cartRepository.addProduct(cart, product);
+        cartPersistService.persistCart(cart);
     }
 
     @Transactional
@@ -45,7 +46,7 @@ public class CartService {
 
         cart.updateProduct(product, request.getCount());
 
-        cartRepository.updateCart(cart);
+        cartPersistService.persistCart(cart);
     }
 
     @Transactional
@@ -55,7 +56,7 @@ public class CartService {
 
         cart.deleteProduct(product);
 
-        cartRepository.updateCart(cart);
+        cartPersistService.persistCart(cart);
     }
 
     @Transactional
@@ -63,25 +64,25 @@ public class CartService {
         Cart cart = getCartByUserId(userId);
 
         List<ProductResponse> products = cart.getProductCounts().entrySet().stream()
-                .map(entry -> new ProductResponse(entry.getKey().getId(), entry.getValue(),
-                        entry.getKey().getImageUrl(), entry.getKey().getName()))
-                .collect(Collectors.toList());
+            .map(entry -> new ProductResponse(entry.getKey().getId(), entry.getValue(),
+                entry.getKey().getImageUrl(), entry.getKey().getName()))
+            .collect(Collectors.toList());
 
         return new CartResponse(cart.getCartId(), products);
     }
 
     private Cart getCartByUserId(long userId) {
-        if (!cartRepository.existCartByUserId(userId)) {
-            cartRepository.newCart(userId);
+        if (!cartPersistService.existCartByUserId(userId)) {
+            cartPersistService.newCart(userId);
         }
-        return cartRepository.getByUserId(userId);
+        return cartPersistService.getByUserId(userId);
     }
 
     private Product getProductById(long productId) {
         return productRepository.findById(productId).orElseThrow(
-                () -> new StatusCodeException(
-                        MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId),
-                        PRODUCT_NOT_FOUND));
+            () -> new StatusCodeException(
+                MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId),
+                PRODUCT_NOT_FOUND));
     }
 
 }

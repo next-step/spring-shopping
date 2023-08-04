@@ -9,11 +9,11 @@ import shopping.mart.persist.entity.ProductEntity;
 import shopping.mart.persist.repository.ProductJpaRepository;
 
 @Repository
-public class ProductRepository {
+public class ProductPersistService {
 
     private final ProductJpaRepository productJpaRepository;
 
-    ProductRepository(ProductJpaRepository productJpaRepository) {
+    ProductPersistService(ProductJpaRepository productJpaRepository) {
         this.productJpaRepository = productJpaRepository;
     }
 

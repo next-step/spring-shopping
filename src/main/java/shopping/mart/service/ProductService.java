@@ -9,28 +9,28 @@ import shopping.core.exception.StatusCodeException;
 import shopping.mart.domain.Product;
 import shopping.mart.dto.ProductCreateRequest;
 import shopping.mart.dto.ProductResponse;
-import shopping.mart.persist.ProductRepository;
+import shopping.mart.persist.ProductPersistService;
 
 @Service
 public class ProductService {
 
     private static final String ALREADY_EXIST_PRODUCT = "PRODUCT-SERVICE-401";
 
-    private final ProductRepository productRepository;
+    private final ProductPersistService productPersistService;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductService(ProductPersistService productPersistService) {
+        this.productPersistService = productPersistService;
     }
 
     @Transactional
     public void saveProduct(final ProductCreateRequest request) {
         throwIfExistProduct(request);
         Product product = new Product(request.getName(), request.getImageUrl(), request.getPrice());
-        productRepository.saveProduct(product);
+        productPersistService.saveProduct(product);
     }
 
     private void throwIfExistProduct(final ProductCreateRequest request) {
-        productRepository.findByProductName(request.getName())
+        productPersistService.findByProductName(request.getName())
                 .ifPresent(product -> {
                     throw new StatusCodeException(MessageFormat.format("이미 존재하는 product\"{0}\" 입니다.", request),
                             ALREADY_EXIST_PRODUCT);
@@ -39,7 +39,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductResponse> findAllProducts() {
-        List<Product> products = productRepository.findAllProducts();
+        List<Product> products = productPersistService.findAllProducts();
         return products.stream()
                 .map(product -> new ProductResponse(product.getId(), product.getName(), product.getImageUrl(),
                         product.getPrice()))

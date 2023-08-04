@@ -26,8 +26,9 @@ public final class Cart {
 
     private void validateNotExistProduct(final Product product) {
         if (productCounts.containsKey(product)) {
-            throw new StatusCodeException(MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
-                    CartExceptionStatus.ALREADY_EXIST_PRODUCT.getStatus());
+            throw new StatusCodeException(
+                MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
+                CartExceptionStatus.ALREADY_EXIST_PRODUCT.getStatus());
         }
     }
 
@@ -52,8 +53,9 @@ public final class Cart {
 
     private void validateCount(final int count) {
         if (count <= 0) {
-            throw new StatusCodeException(MessageFormat.format("count\"{0}\"는 0 이하가 될 수 없습니다.", count),
-                    CartExceptionStatus.UPDATE_COUNT_NOT_POSITIVE.getStatus());
+            throw new StatusCodeException(
+                MessageFormat.format("count\"{0}\"는 0 이하가 될 수 없습니다.", count),
+                CartExceptionStatus.UPDATE_COUNT_NOT_POSITIVE.getStatus());
         }
     }
 
@@ -61,8 +63,9 @@ public final class Cart {
         if (productCounts.containsKey(product)) {
             return;
         }
-        throw new StatusCodeException(MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product),
-                CartExceptionStatus.NOT_EXIST_PRODUCT.getStatus());
+        throw new StatusCodeException(
+            MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product),
+            CartExceptionStatus.NOT_EXIST_PRODUCT.getStatus());
     }
 
     public Long getCartId() {
@@ -75,14 +78,5 @@ public final class Cart {
 
     public Map<Product, Integer> getProductCounts() {
         return productCounts;
-    }
-
-    @Override
-    public String toString() {
-        return "Cart{" +
-                "cartId=" + cartId +
-                ", userId=" + userId +
-                ", productCounts=" + productCounts +
-                '}';
     }
 }

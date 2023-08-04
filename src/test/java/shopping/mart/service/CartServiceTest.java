@@ -18,8 +18,8 @@ import shopping.core.exception.StatusCodeException;
 import shopping.mart.domain.Cart;
 import shopping.mart.dto.CartAddRequest;
 import shopping.mart.dto.CartUpdateRequest;
-import shopping.mart.persist.CartRepository;
-import shopping.mart.persist.ProductRepository;
+import shopping.mart.persist.CartPersistService;
+import shopping.mart.persist.ProductPersistService;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("CartService 테스트")
@@ -30,10 +30,10 @@ class CartServiceTest {
     private CartService cartService;
 
     @MockBean
-    private CartRepository cartRepository;
+    private CartPersistService cartPersistService;
 
     @MockBean
-    private ProductRepository productRepository;
+    private ProductPersistService productRepository;
 
     private void assertStatusCodeException(final Exception exception, final String expectedStatus) {
         assertThat(exception.getClass()).isEqualTo(StatusCodeException.class);
@@ -51,7 +51,7 @@ class CartServiceTest {
             CartAddRequest request = new CartAddRequest(9999999999L);
             Cart cart = new Cart(1L, 1L);
 
-            when(cartRepository.getByUserId(anyLong())).thenReturn(cart);
+            when(cartPersistService.getByUserId(anyLong())).thenReturn(cart);
             when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
             // when
@@ -65,6 +65,7 @@ class CartServiceTest {
     @Nested
     @DisplayName("updateProduct 메소드는")
     class updateProduct_method {
+
         @Test
         @DisplayName("product를 찾을 수 없으면, StatusCodeException을 던진다.")
         void throw_StatusCodeException_when_product_not_found() {
@@ -72,7 +73,7 @@ class CartServiceTest {
             CartUpdateRequest request = new CartUpdateRequest(9999999999L, 100);
             Cart cart = new Cart(1L, 1L);
 
-            when(cartRepository.getByUserId(anyLong())).thenReturn(cart);
+            when(cartPersistService.getByUserId(anyLong())).thenReturn(cart);
             when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
             // when
@@ -95,11 +96,12 @@ class CartServiceTest {
             long productId = 99999999L;
             Cart cart = new Cart(1L, 1L);
 
-            when(cartRepository.getByUserId(anyLong())).thenReturn(cart);
+            when(cartPersistService.getByUserId(anyLong())).thenReturn(cart);
             when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> cartService.deleteProduct(userId, productId));
+            Exception exception = catchException(
+                () -> cartService.deleteProduct(userId, productId));
 
             // then
             assertStatusCodeException(exception, "CART-SERVICE-401");

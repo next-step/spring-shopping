@@ -1,63 +1,75 @@
 package shopping.mart.persist.entity;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "cart_product")
+@IdClass(CartProductIdEntity.class)
 public class CartProductEntity extends TimeBaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "cart_id")
     private CartEntity cartEntity;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Id
     @JoinColumn(name = "product_id")
-    private ProductEntity productEntity;
+    private Long productId;
 
     @Column(name = "count", nullable = false)
     private Integer count;
 
-    public CartProductEntity() {
+    private CartProductEntity() {
     }
 
-    public CartProductEntity(Long id, CartEntity cartEntity, ProductEntity productEntity, Integer count) {
-        this.id = id;
+    public CartProductEntity(CartEntity cartEntity, Long productId, Integer count) {
         this.cartEntity = cartEntity;
-        this.productEntity = productEntity;
+        this.productId = productId;
         this.count = count;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public CartEntity getCartEntity() {
         return cartEntity;
     }
 
-    public ProductEntity getProductEntity() {
-        return productEntity;
+    public Long getProductId() {
+        return productId;
     }
 
     public Integer getCount() {
         return count;
     }
 
+    public void increaseCount() {
+        this.count++;
+    }
+
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CartProductEntity)) {
+            return false;
+        }
+        CartProductEntity that = (CartProductEntity) o;
+        return Objects.equals(cartEntity.getId(), that.cartEntity.getId()) && Objects.equals(
+            productId, that.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cartEntity.getId(), productId);
     }
 }

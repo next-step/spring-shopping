@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.mart.domain.Product;
 
-@DisplayName("ProductRepository 클래스")
-@ContextConfiguration(classes = {ProductRepository.class})
-class ProductRepositoryTest extends JpaTest {
+@DisplayName("ProductPersistService 클래스")
+@ContextConfiguration(classes = {ProductPersistService.class})
+class ProductPersistServiceTest extends JpaTest {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductPersistService productRepository;
 
     private void assertProduct(final Optional<Product> result, Product product) {
         assertThat(result).isPresent();
