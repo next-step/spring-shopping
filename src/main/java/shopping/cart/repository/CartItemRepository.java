@@ -1,6 +1,7 @@
 package shopping.cart.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import shopping.cart.domain.CartItem;
@@ -10,4 +11,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     @Query("select new shopping.cart.dto.ProductCartItemDto(p, c) from CartItem c join Product p on p.id = c.productId")
     List<ProductCartItemDto> findAllDtoByMemberId(Long memberId);
+
+    Optional<CartItem> findCartItemByProductIdAndMemberId(Long productId, Long memberId);
 }

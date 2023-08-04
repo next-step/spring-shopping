@@ -44,6 +44,10 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public void increaseQuantity() {
+        this.quantity += 1;
+    }
+
     public void validateMyCartItem(Long memberId) {
         if (!Objects.equals(this.memberId, memberId)) {
             throw new WooWaException("본인의 장바구니가 아닙니다. memberId: '" + memberId + "' cartItemId: '"

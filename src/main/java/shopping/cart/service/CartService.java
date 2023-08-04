@@ -3,6 +3,7 @@ package shopping.cart.service;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,16 @@ public class CartService {
         LoggedInMember loggedInMember,
         CartItemCreationRequest cartItemCreationRequest
     ) {
+        Optional<CartItem> cartItemOptional = cartItemRepository.findCartItemByProductIdAndMemberId(
+            cartItemCreationRequest.getProductId(),
+            loggedInMember.getId()
+        );
+
+        if (cartItemOptional.isPresent()) {
+            cartItemOptional.get().increaseQuantity();
+            return;
+        }
+
         Member member = getMemberById(loggedInMember.getId());
         Product product = getProductById(cartItemCreationRequest.getProductId());
 

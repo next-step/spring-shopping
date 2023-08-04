@@ -43,7 +43,23 @@ class CartServiceTest {
         cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
         CartItem cartItem = cartItemRepository.findAll().get(0);
-        assertCartItem(1L, memberId, productId, "피자", new Money("10000"), cartItem);
+        assertCartItem(1L, memberId, productId, "피자", new Money("10000"), cartItem, 1);
+    }
+
+    @Test
+    @DisplayName("장바구니에 물품이 이미 있다면 수량 증가시킨다")
+    void increaseQuantityIfProductAlreadyExists() {
+        Long memberId = memberRepository.save(new Member("email", "password")).getId();
+        Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
+        CartItemCreationRequest cartItemCreationRequest = new CartItemCreationRequest(productId);
+        LoggedInMember loggedInMember = new LoggedInMember(memberId);
+        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
+
+        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
+
+        CartItem cartItem = cartItemRepository.findAll().get(0);
+        int expectedQuantity = 2;
+        assertCartItem(1L, memberId, productId, "피자", new Money("10000"), cartItem, expectedQuantity);
     }
 
     @Test
@@ -91,14 +107,12 @@ class CartServiceTest {
             .isEqualTo(1);
     }
 
-
-
-    private static void assertCartItem(Long id, Long memberId, Long productId, String productName, Money price, CartItem cartItem) {
+    private static void assertCartItem(Long id, Long memberId, Long productId, String productName, Money price, CartItem cartItem, int quantity) {
         assertThat(cartItem).extracting("id").isEqualTo(id);
         assertThat(cartItem).extracting("memberId").isEqualTo(memberId);
         assertThat(cartItem).extracting("productId").isEqualTo(productId);
         assertThat(cartItem).extracting("productName").isEqualTo(productName);
         assertThat(cartItem).extracting("productPrice").isEqualTo(price);
-        assertThat(cartItem).extracting("quantity").isEqualTo(1);
+        assertThat(cartItem).extracting("quantity").isEqualTo(quantity);
     }
 }
