@@ -1,8 +1,7 @@
 package shopping.auth;
 
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -20,7 +19,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameterType().equals(String.class) &&
-                parameter.hasParameterAnnotation(RequestToken.class);
+                parameter.hasParameterAnnotation(EmailInToken.class);
     }
 
     @Override
