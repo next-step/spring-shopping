@@ -1,10 +1,8 @@
 package shopping.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
@@ -18,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("인증 서비스 통합 테스트")
-@SpringBootTest
-class AuthServiceTest {
+class AuthServiceTest extends ServiceTest {
 
     @Autowired
     private AuthService authService;
@@ -33,12 +30,7 @@ class AuthServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @BeforeEach
-    void setUp() {
-        userRepository.deleteAll();
-    }
-
-    @DisplayName("정상 로그인 요청시 액세스 토큰을 반환한다.")
+    @DisplayName("정상 로그인 요청시 액세스 토큰 반환")
     @Test
     void login() {
         // given
@@ -58,7 +50,7 @@ class AuthServiceTest {
         assertThat(tokenProvider.getEmail(loginResponse.getAccessToken())).isEqualTo(email);
     }
 
-    @DisplayName("로그인 시 유저가 데이터베이스에 없을 떄 예외 발생")
+    @DisplayName("존재하지 않는 유저로 로그인하면 예외 발생")
     @Test
     void loginFailWhenUserNotInDB() {
         // given
@@ -72,7 +64,7 @@ class AuthServiceTest {
                 .isInstanceOf(UserNotFoundException.class);
     }
 
-    @DisplayName("로그인 시 비밀번호 틀렸을 시 예외 발생")
+    @DisplayName("비밀번호가 틀리면 예외 발생")
     @Test
     void loginFailWhenPasswordMisMatch() {
         // given

@@ -1,35 +1,30 @@
 package shopping.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Product;
-import shopping.domain.user.Email;
 import shopping.domain.user.User;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.exception.CartItemNotFoundException;
+import shopping.exception.ProductNotFoundException;
 import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @DisplayName("장바구니 서비스 통합 테스트")
-@SpringBootTest
-class CartServiceTest {
+class CartServiceTest extends ServiceTest {
 
     @Autowired
     private CartService cartService;
@@ -46,17 +41,11 @@ class CartServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @BeforeEach
-    void setUp() {
-        cartItemRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
     @Nested
-    @DisplayName("장바구니 물건 추가 테스트")
+    @DisplayName("장바구니 상품 추가")
     class WhenCreateCartItem {
 
-        @DisplayName("장바구니에 상품 추가")
+        @DisplayName("정상 추가")
         @Test
         void createCartItem() {
             // given
@@ -92,7 +81,7 @@ class CartServiceTest {
 
         }
 
-        @DisplayName("데이터베이스에 회원이 없어서 예외 발생")
+        @DisplayName("사용자가 존재하지 않으면 예외 발생")
         @Test
         void notUserFoundThenThrow() {
             // given
@@ -112,7 +101,7 @@ class CartServiceTest {
                     .isInstanceOf(UserNotFoundException.class);
         }
 
-        @DisplayName("데이터베이스에 상품이 없어서 예외 발생")
+        @DisplayName("상품이 존재하지 않으면 예외 발생")
         @Test
         void notProductFoundThenThrow() {
             // given
@@ -127,10 +116,10 @@ class CartServiceTest {
 
             // when & then
             assertThatThrownBy(() -> cartService.createCartItem(email, cartItemCreateRequest))
-                    .isInstanceOf(EntityNotFoundException.class);
+                    .isInstanceOf(ProductNotFoundException.class);
         }
 
-        @DisplayName("이미 장바구니에 담긴 아이템일 경우 수량 하나 추가")
+        @DisplayName("이미 장바구니에 담긴 아이템이면 수량 하나 추가")
         @Test
         void alreadyInCartThenAddQuantity() {
             // given
@@ -172,10 +161,10 @@ class CartServiceTest {
     }
 
     @Nested
-    @DisplayName("장바구니 물건 수량 변경 테스트")
+    @DisplayName("장바구니 상품 수량 변경")
     class WhenUpdateCartItemQuantity {
 
-        @DisplayName("장바구니에 담긴 아이템 수량 변경")
+        @DisplayName("정상 수량 변경")
         @Test
         void updateCartItemQuantity() {
             // given
@@ -209,7 +198,39 @@ class CartServiceTest {
             assertThat(updatedCartItem.getQuantity()).isEqualTo(newQuantity);
         }
 
-        @DisplayName("장바구니에 담긴 아이템 수량 변경시 유저의 장바구니 아이템이 아닐 시 접근 제한 예외 발생")
+        @DisplayName("사용자가 존재하지 않으면 예외 발생")
+        @Test
+        void updateCartItemNotUserFound() {
+            // given
+            String email = "test@example.com";
+            Integer newQuantity = 5;
+            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
+
+            // when, then
+            assertThatThrownBy(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+                    .isInstanceOf(UserNotFoundException.class);
+        }
+
+        @DisplayName("상품이 존재하지 않으면 예외 발생")
+        @Test
+        void deleteCartItemNotCartItemFound() {
+            // given
+            String email = "test@example.com";
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            Integer newQuantity = 5;
+            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
+
+            // when, then
+            assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+                    .isInstanceOf(CartItemNotFoundException.class);
+        }
+
+        @DisplayName("사용자의 장바구니 아이템이 아니면 예외 발생")
         @Test
         void updateCartItemQuantityNotUsersItem() {
             // given
@@ -248,75 +269,99 @@ class CartServiceTest {
         }
     }
 
-    // TODO: 장바구니 물건 삭제 테스트 수정
+
     @Nested
-    @DisplayName("장바구니 물건 삭제 테스트")
+    @DisplayName("장바구니 상품 삭제")
     class WhenDeleteCartItem {
 
-        @DisplayName("장바구니에 담긴 아이템 삭제")
+        @DisplayName("정상 삭제")
         @Test
         void deleteCartItem() {
             // given
             String email = "test@example.com";
-            User user = new User(1L, email, "1234");
-            Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(user));
-            when(cartItemRepository.findById(1L))
-                    .thenReturn(Optional.of(new CartItem(1L, user, product, 1)));
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            productRepository.save(product);
+
+            CartItem cartItem = new CartItem(user, product);
+            CartItem savedCartItem = cartItemRepository.save(cartItem);
+            Long cartId = savedCartItem.getId();
 
             // when
-            assertThatCode(() -> cartService.deleteCartItem(email, 1L))
-                    .doesNotThrowAnyException();
+            cartService.deleteCartItem(email, cartId);
 
             // then
-            verify(cartItemRepository, times(1)).deleteById(1L);
+            Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartId);
+            assertThat(optionalCartItem).isEmpty();
         }
 
-        @DisplayName("장바구니에 담긴 아이템 삭제시 유저 없으면 예외 발생")
+        @DisplayName("사용자가 존재하지 않으면 예외 발생")
         @Test
         void deleteCartItemNotUserFound() {
             // given
             String email = "test@example.com";
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.empty());
 
             // when, then
-            assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+            assertThatThrownBy(() -> cartService.deleteCartItem(email, 1L))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
-        @DisplayName("장바구니에 담긴 아이템 삭제시 장바구니 아이템 없으면 예외 발생")
+        @DisplayName("상품이 존재하지 않으면 예외 발생")
         @Test
         void deleteCartItemNotCartItemFound() {
             // given
             String email = "test@example.com";
-            User user = new User(1L, email, "1234");
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(user));
-            when(cartItemRepository.findById(1L))
-                    .thenReturn(Optional.empty());
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
 
             // when, then
             assertThatCode(() -> cartService.deleteCartItem(email, 1L))
                     .isInstanceOf(CartItemNotFoundException.class);
         }
 
-        @DisplayName("장바구니에 담긴 아이템 삭제시 유저의 장바구니 아이템이 아닐 시 접근 제한 예외 발생")
+        @DisplayName("사용자의 장바구니 아이템이 아니면 예외 발생")
         @Test
         void deleteCartItemNotUsersItem() {
             // given
             String email = "test@example.com";
-            User user1 = new User(1L, email, "1234");
-            User user2 = new User(2L, "aaa@bbb.ccc", "1234");
-            Product product = new Product(1L, "chicken", "/chicken.jpg", 10_000L);
-            when(userRepository.findByEmail(new Email(email)))
-                    .thenReturn(Optional.of(user1));
-            when(cartItemRepository.findById(1L))
-                    .thenReturn(Optional.of(new CartItem(1L, user2, product, 1)));
+            String password = "1234";
+            String digest = passwordEncoder.encode(password);
+
+            User user = new User(email, digest);
+            userRepository.save(user);
+
+            String otherEmail = "other@example.com";
+            String otherPassword = "other";
+            String otherDigest = passwordEncoder.encode(otherPassword);
+
+            User other = new User(otherEmail, otherDigest);
+            userRepository.save(other);
+
+            String name = "치킨";
+            String imageUrl = "/chicken.jpg";
+            Long price = 10_000L;
+
+            Product product = new Product(name, imageUrl, price);
+            productRepository.save(product);
+
+            CartItem cartItem = new CartItem(other, product);
+            CartItem savedCartItem = cartItemRepository.save(cartItem);
+            Long cartId = savedCartItem.getId();
 
             // when, then
-            assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+            assertThatCode(() -> cartService.deleteCartItem(email, cartId))
                     .isInstanceOf(UserNotMatchException.class);
         }
     }

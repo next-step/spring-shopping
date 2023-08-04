@@ -1,10 +1,8 @@
 package shopping.application;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import shopping.domain.cart.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
@@ -14,8 +12,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("상품 서비스 통합 테스트")
-@SpringBootTest
-class ProductServiceTest {
+class ProductServiceTest extends ServiceTest {
 
     @Autowired
     private ProductService productService;
@@ -23,12 +20,7 @@ class ProductServiceTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @BeforeEach
-    void setUp() {
-        productRepository.deleteAll();
-    }
-
-    @DisplayName("전체 상품 목록을 반환한다.")
+    @DisplayName("전체 상품 목록 조회")
     @Test
     void findAll() {
         // given
