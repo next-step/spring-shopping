@@ -1,7 +1,7 @@
-package shopping.domain.cart;
+package shopping.entity.cart;
 
-import shopping.domain.product.Product;
-import shopping.domain.user.User;
+import shopping.entity.product.Product;
+import shopping.entity.user.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

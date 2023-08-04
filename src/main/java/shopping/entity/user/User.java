@@ -1,4 +1,4 @@
-package shopping.domain.user;
+package shopping.entity.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

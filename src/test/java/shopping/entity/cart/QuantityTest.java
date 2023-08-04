@@ -1,4 +1,4 @@
-package shopping.domain.cart;
+package shopping.entity.cart;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

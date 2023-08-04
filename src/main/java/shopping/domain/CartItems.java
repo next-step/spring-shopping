@@ -1,4 +1,6 @@
-package shopping.domain.cart;
+package shopping.domain;
+
+import shopping.entity.cart.CartItem;
 
 import java.util.Collections;
 import java.util.List;

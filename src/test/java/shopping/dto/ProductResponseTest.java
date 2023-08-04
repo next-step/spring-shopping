@@ -2,10 +2,10 @@ package shopping.dto;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.domain.product.Image;
-import shopping.domain.product.Name;
-import shopping.domain.product.Price;
-import shopping.domain.product.Product;
+import shopping.entity.product.Image;
+import shopping.entity.product.Name;
+import shopping.entity.product.Price;
+import shopping.entity.product.Product;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

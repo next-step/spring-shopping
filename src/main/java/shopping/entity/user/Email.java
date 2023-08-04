@@ -1,4 +1,4 @@
-package shopping.domain.user;
+package shopping.entity.user;
 
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;

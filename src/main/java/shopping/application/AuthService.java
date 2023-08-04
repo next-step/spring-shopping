@@ -2,9 +2,9 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.domain.user.Email;
-import shopping.domain.user.Password;
-import shopping.domain.user.User;
+import shopping.entity.user.Email;
+import shopping.entity.user.Password;
+import shopping.entity.user.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.ErrorType;
