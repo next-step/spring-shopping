@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.request.CartItemCreationRequest;
+import shopping.cart.dto.request.CartItemQuantityUpdateRequest;
 import shopping.cart.dto.response.AllCartItemsResponse;
 import shopping.cart.repository.CartItemRepository;
 import shopping.member.domain.Member;
@@ -40,10 +41,10 @@ class CartServiceTest {
         CartItemCreationRequest cartItemCreationRequest = new CartItemCreationRequest(productId);
         LoggedInMember loggedInMember = new LoggedInMember(memberId);
 
-        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
+        Long cartItemId = cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
         CartItem cartItem = cartItemRepository.findAll().get(0);
-        assertCartItem(1L, memberId, productId, "피자", new Money("10000"), cartItem, 1);
+        assertCartItem(cartItemId, memberId, productId, "피자", new Money("10000"), cartItem, 1);
     }
 
     @Test
@@ -55,11 +56,11 @@ class CartServiceTest {
         LoggedInMember loggedInMember = new LoggedInMember(memberId);
         cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
-        cartService.addCartItem(loggedInMember, cartItemCreationRequest);
+        Long cartItemId = cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
         CartItem cartItem = cartItemRepository.findAll().get(0);
         int expectedQuantity = 2;
-        assertCartItem(1L, memberId, productId, "피자", new Money("10000"), cartItem, expectedQuantity);
+        assertCartItem(cartItemId , memberId, productId, "피자", new Money("10000"), cartItem, expectedQuantity);
     }
 
     @Test
@@ -105,6 +106,21 @@ class CartServiceTest {
         assertThat(allCartItem).extracting(AllCartItemsResponse::getChangedCartItemResponses)
             .extracting(List::size)
             .isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("장바구니 물품 수량 업데이트 시 수량이 0이면 장바구니에서 삭제시킨다")
+    void deleteCartItemIfQuantityIsZero() {
+        Long memberId = memberRepository.save(new Member("email", "password")).getId();
+        Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
+        CartItemCreationRequest cartItemCreationRequest = new CartItemCreationRequest(productId);
+        LoggedInMember loggedInMember = new LoggedInMember(memberId);
+        Long cartItemId = cartService.addCartItem(loggedInMember, cartItemCreationRequest);
+
+        cartService.updateProductQuantity(loggedInMember, cartItemId, new CartItemQuantityUpdateRequest(0));
+
+        List<CartItem> allCartItem = cartItemRepository.findAll();
+        assertThat(allCartItem).isEmpty();
     }
 
     private static void assertCartItem(Long id, Long memberId, Long productId, String productName, Money price, CartItem cartItem, int quantity) {

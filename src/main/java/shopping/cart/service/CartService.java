@@ -39,7 +39,7 @@ public class CartService {
     }
 
     @Transactional
-    public void addCartItem(
+    public Long addCartItem(
         LoggedInMember loggedInMember,
         CartItemCreationRequest cartItemCreationRequest
     ) {
@@ -50,7 +50,7 @@ public class CartService {
 
         if (cartItemOptional.isPresent()) {
             cartItemOptional.get().increaseQuantity();
-            return;
+            return cartItemOptional.get().getId();
         }
 
         Member member = getMemberById(loggedInMember.getId());
@@ -65,6 +65,7 @@ public class CartService {
         );
 
         cartItemRepository.save(cartItem);
+        return cartItem.getId();
     }
 
     public AllCartItemsResponse findAllCartItem(LoggedInMember loggedInMember) {
@@ -86,7 +87,7 @@ public class CartService {
     }
 
     @Transactional
-    public void updateProductQuantity(
+    public Long updateProductQuantity(
         LoggedInMember loggedInMember,
         Long cartItemId,
         CartItemQuantityUpdateRequest cartItemQuantityUpdateRequest
@@ -95,7 +96,13 @@ public class CartService {
         CartItem cartItem = getCartItem(cartItemId);
         cartItem.validateMyCartItem(loggedInMember.getId());
 
+        if (cartItemQuantityUpdateRequest.getQuantity() == 0) {
+            cartItemRepository.delete(cartItem);
+            return cartItemId;
+        }
+
         cartItem.updateQuantity(cartItemQuantityUpdateRequest.getQuantity());
+        return cartItemId;
     }
 
     @Transactional
