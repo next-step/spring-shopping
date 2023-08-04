@@ -7,11 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import shopping.auth.domain.entity.UserEntity;
+import shopping.auth.domain.entity.User;
 
 @Entity
 @Table(name = "cart_item")
-public class CartItemEntity {
+public class CartItem {
 
     @Id
     @GeneratedValue
@@ -19,18 +19,18 @@ public class CartItemEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private ProductEntity product;
+    private Product product;
 
     private int quantity;
 
-    public CartItemEntity() {
+    public CartItem() {
     }
 
-    public CartItemEntity(final Long id, final UserEntity user, final ProductEntity product,
+    public CartItem(final Long id, final User user, final Product product,
         final int quantity) {
         this.id = id;
         this.user = user;
@@ -38,7 +38,7 @@ public class CartItemEntity {
         this.quantity = quantity;
     }
 
-    public CartItemEntity(final UserEntity user, final ProductEntity product) {
+    public CartItem(final User user, final Product product) {
         this(null, user, product, 1);
     }
 
@@ -50,11 +50,11 @@ public class CartItemEntity {
         return id;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public ProductEntity getProduct() {
+    public Product getProduct() {
         return product;
     }
 

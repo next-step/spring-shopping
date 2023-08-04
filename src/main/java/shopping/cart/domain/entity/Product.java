@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "product")
-public class ProductEntity {
+public class Product {
 
     @Id
     @GeneratedValue
@@ -16,10 +16,10 @@ public class ProductEntity {
     private String imageUuidFileName;
     private int price;
 
-    public ProductEntity() {
+    public Product() {
     }
 
-    public ProductEntity(final Long id, final String name, final String imageUuidFileName,
+    public Product(final Long id, final String name, final String imageUuidFileName,
         final int price) {
         this.id = id;
         this.name = name;
@@ -27,7 +27,7 @@ public class ProductEntity {
         this.price = price;
     }
 
-    public ProductEntity(final String name, final String imageUuidFileName, final int price) {
+    public Product(final String name, final String imageUuidFileName, final int price) {
         this(null, name, imageUuidFileName, price);
     }
 

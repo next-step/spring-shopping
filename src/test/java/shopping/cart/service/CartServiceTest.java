@@ -13,10 +13,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.auth.domain.entity.UserEntity;
+import shopping.auth.domain.entity.User;
 import shopping.auth.repository.UserRepository;
-import shopping.cart.domain.entity.CartItemEntity;
-import shopping.cart.domain.entity.ProductEntity;
+import shopping.cart.domain.entity.CartItem;
+import shopping.cart.domain.entity.Product;
 import shopping.cart.dto.request.CartItemAddRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
@@ -42,8 +42,8 @@ class CartServiceTest {
         /* given */
         Long productId = 1L;
         Long userId = 1L;
-        UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
-        ProductEntity product = new ProductEntity(productId, "치킨", "fried_chicken.png", 20000);
+        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
+        Product product = new Product(productId, "치킨", "fried_chicken.png", 20000);
         CartItemAddRequest cartRequest = new CartItemAddRequest(productId);
         when(userRepository.getReferenceById(userId)).thenReturn(user);
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
@@ -62,12 +62,12 @@ class CartServiceTest {
     void successReadCartItems() {
         /* given */
         Long userId = 1L;
-        UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
-        ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
-        ProductEntity pizza = new ProductEntity(2L, "피자", "pizza.png", 25000);
-        CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
-        CartItemEntity cartItemPizza = new CartItemEntity(2L, user, pizza, 1);
-        List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
+        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
+        Product chicken = new Product(1L, "치킨", "fried_chicken.png", 20000);
+        Product pizza = new Product(2L, "피자", "pizza.png", 25000);
+        CartItem cartItemChicken = new CartItem(1L, user, chicken, 1);
+        CartItem cartItemPizza = new CartItem(2L, user, pizza, 1);
+        List<CartItem> cartItems = List.of(cartItemChicken, cartItemPizza);
         when(cartItemRepository.findByUserId(userId)).thenReturn(cartItems);
 
         /* when */
@@ -83,9 +83,9 @@ class CartServiceTest {
     void successUpdateCartItem() {
         /* given */
         Long userId = 1L;
-        UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
-        ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
-        CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
+        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
+        Product chicken = new Product(1L, "치킨", "fried_chicken.png", 20000);
+        CartItem cartItemChicken = new CartItem(1L, user, chicken, 1);
 
         Long cartItemId = cartItemChicken.getId();
         int updateQuantity = 3;
@@ -105,9 +105,9 @@ class CartServiceTest {
     void successDeleteCartItem() {
         /* given */
         Long userId = 1L;
-        UserEntity user = new UserEntity(userId, "test_email@woowafriends.com", "test_password!");
-        ProductEntity chicken = new ProductEntity(1L, "치킨", "fried_chicken.png", 20000);
-        CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
+        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
+        Product chicken = new Product(1L, "치킨", "fried_chicken.png", 20000);
+        CartItem cartItemChicken = new CartItem(1L, user, chicken, 1);
 
         Long cartItemId = cartItemChicken.getId();
         when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));

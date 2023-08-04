@@ -1,6 +1,6 @@
 package shopping.cart.dto.response;
 
-import shopping.cart.domain.entity.CartItemEntity;
+import shopping.cart.domain.entity.CartItem;
 
 public class CartItemResponse {
 
@@ -23,7 +23,7 @@ public class CartItemResponse {
         this.quantity = quantity;
     }
 
-    public static CartItemResponse from(CartItemEntity cartItem) {
+    public static CartItemResponse from(CartItem cartItem) {
         return new CartItemResponse(
             cartItem.getId(),
             cartItem.getProduct().getName(),

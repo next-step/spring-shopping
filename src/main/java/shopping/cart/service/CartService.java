@@ -5,10 +5,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.auth.domain.entity.UserEntity;
+import shopping.auth.domain.entity.User;
 import shopping.auth.repository.UserRepository;
-import shopping.cart.domain.entity.CartItemEntity;
-import shopping.cart.domain.entity.ProductEntity;
+import shopping.cart.domain.entity.CartItem;
+import shopping.cart.domain.entity.Product;
 import shopping.cart.dto.request.CartItemAddRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
@@ -40,12 +40,12 @@ public class CartService {
     @Transactional
     public void addCartItem(CartItemAddRequest cartItemAddRequest, Long userId) {
         final Long productId = cartItemAddRequest.getProductId();
-        final ProductEntity product = findProductBy(productId);
+        final Product product = findProductBy(productId);
         validateDuplicateCartItem(userId, productId);
 
-        final UserEntity userProxy = userRepository.getReferenceById(userId);
-        final CartItemEntity cartItemEntity = new CartItemEntity(userProxy, product);
-        cartItemRepository.save(cartItemEntity);
+        final User userProxy = userRepository.getReferenceById(userId);
+        final CartItem cartItem = new CartItem(userProxy, product);
+        cartItemRepository.save(cartItem);
     }
 
     public List<CartItemResponse> getCartItems(final Long userId) {
@@ -57,7 +57,7 @@ public class CartService {
     @Transactional
     public void updateCartItemQuantity(final Long cartItemId,
         final CartItemUpdateRequest cartItemUpdateRequest, final Long userId) {
-        final CartItemEntity cartItem = findCartItemEntityBy(cartItemId);
+        final CartItem cartItem = findCartItemEntityBy(cartItemId);
         validateUserHasCartItem(userId, cartItem);
 
         final int updateQuantity = cartItemUpdateRequest.getQuantity();
@@ -73,23 +73,23 @@ public class CartService {
 
     @Transactional
     public void removeCartItem(final Long cartItemId, final Long userId) {
-        final CartItemEntity cartItem = findCartItemEntityBy(cartItemId);
+        final CartItem cartItem = findCartItemEntityBy(cartItemId);
         validateUserHasCartItem(userId, cartItem);
         cartItemRepository.delete(cartItem);
     }
 
-    private void validateUserHasCartItem(final Long userId, final CartItemEntity cartItem) {
+    private void validateUserHasCartItem(final Long userId, final CartItem cartItem) {
         if (!Objects.equals(cartItem.getUser().getId(), userId)) {
             throw new ShoppingException(ErrorCode.INVALID_CART_ITEM);
         }
     }
 
-    private CartItemEntity findCartItemEntityBy(final Long cartItemId) {
+    private CartItem findCartItemEntityBy(final Long cartItemId) {
         return cartItemRepository.findById(cartItemId)
             .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_CART_ITEM));
     }
 
-    private ProductEntity findProductBy(final Long productId) {
+    private Product findProductBy(final Long productId) {
         return productRepository.findById(productId)
             .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_PRODUCT));
     }

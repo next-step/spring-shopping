@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue
@@ -17,16 +17,16 @@ public class UserEntity {
     private String email;
     private String password;
 
-    public UserEntity() {
+    public User() {
     }
 
-    public UserEntity(final Long id, final String email, final String password) {
+    public User(final Long id, final String email, final String password) {
         this.id = id;
         this.email = email;
         this.password = password;
     }
 
-    public UserEntity(final String email, final String password) {
+    public User(final String email, final String password) {
         this(null, email, password);
     }
 

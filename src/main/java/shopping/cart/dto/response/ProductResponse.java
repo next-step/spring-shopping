@@ -1,6 +1,6 @@
 package shopping.cart.dto.response;
 
-import shopping.cart.domain.entity.ProductEntity;
+import shopping.cart.domain.entity.Product;
 
 public class ProductResponse {
 
@@ -17,12 +17,12 @@ public class ProductResponse {
         this.price = price;
     }
 
-    public static ProductResponse from(ProductEntity productEntity) {
+    public static ProductResponse from(Product product) {
         return new ProductResponse(
-            productEntity.getId(),
-            productEntity.getName(),
-            productEntity.getImageUuidFileName(),
-            productEntity.getPrice()
+            product.getId(),
+            product.getName(),
+            product.getImageUuidFileName(),
+            product.getPrice()
         );
     }
 

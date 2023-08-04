@@ -5,15 +5,15 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 import shopping.auth.dto.request.LoginRequest;
-import shopping.cart.domain.entity.ProductEntity;
+import shopping.cart.domain.entity.Product;
 import shopping.cart.dto.request.CartItemAddRequest;
 
 public class TestFixture {
 
     private static Long sequence = 1L;
 
-    public static ProductEntity createProductEntity(String name, int price) {
-        return new ProductEntity(sequence, name, "uuid" + sequence++, price);
+    public static Product createProductEntity(String name, int price) {
+        return new Product(sequence, name, "uuid" + sequence++, price);
     }
 
     public static ExtractableResponse<Response> login(final LoginRequest loginRequest) {

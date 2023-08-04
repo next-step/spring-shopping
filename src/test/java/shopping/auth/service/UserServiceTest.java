@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.auth.domain.entity.UserEntity;
+import shopping.auth.domain.entity.User;
 import shopping.auth.dto.request.LoginRequest;
 import shopping.auth.dto.response.LoginResponse;
 import shopping.auth.repository.UserRepository;
@@ -38,9 +38,9 @@ class UserServiceTest {
         final String accessToken = "test_access_token";
 
         final LoginRequest loginRequest = new LoginRequest(userEmail, userPassword);
-        final UserEntity userEntity = new UserEntity(userId, userEmail, userPassword);
+        final User user = new User(userId, userEmail, userPassword);
 
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userEntity));
+        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
         when(jwtProvider.generateToken(String.valueOf(userId))).thenReturn(accessToken);
 
         /* when */
