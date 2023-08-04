@@ -53,6 +53,38 @@ public class CartIntegrationTest {
     }
 
     @Test
+    @DisplayName("장바구니에 상품을 한 번 더 추가하면 수량이 증가한다.")
+    void addCartDuplicateItem() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+        CartUtil.createCartItem(accessToken, 1L);
+
+        // when, then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(new CartCreateRequest(1L))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
+
+        CartResponse[] cartResponses = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/carts")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CartResponse[].class);
+
+        // then
+        assertThat(Stream.of(cartResponses).map(CartResponse::getId)).containsExactlyInAnyOrder(1L);
+        assertThat(cartResponses[0].getQuantity()).isEqualTo(2);
+    }
+
+    @Test
     @DisplayName("장바구니 상품 추가 시 productId는 null일 수 없다.")
     void addCartNullProductId() {
         // given
