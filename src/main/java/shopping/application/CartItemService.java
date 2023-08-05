@@ -44,7 +44,7 @@ public class CartItemService {
                                 .orElse(new CartItem(userId, product))));
     }
 
-    public List<CartItemResponse> findAllByEmail(Long userId, Pageable pageable) {
+    public List<CartItemResponse> findAllByUserId(Long userId, Pageable pageable) {
         return cartItemRepository.findAllByUserId(userId, pageable)
                 .map(CartItemResponse::of)
                 .getContent();

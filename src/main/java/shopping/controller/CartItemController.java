@@ -31,7 +31,7 @@ public class CartItemController {
 
     @GetMapping("/cart/items")
     public ResponseEntity<List<CartItemResponse>> getCartItems(@UserIdPrincipal Long userId, @PageableDefault Pageable pageable) {
-        List<CartItemResponse> cartItems = cartItemService.findAllByEmail(userId, pageable);
+        List<CartItemResponse> cartItems = cartItemService.findAllByUserId(userId, pageable);
         return ResponseEntity.ok().body(cartItems);
     }
 

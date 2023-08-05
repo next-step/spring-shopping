@@ -14,7 +14,6 @@ import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.exception.CartItemNotFoundException;
 import shopping.exception.ProductNotFoundException;
-import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
@@ -72,7 +71,7 @@ class CartItemServiceTest extends ServiceTest {
             List<CartItem> savedItems = cartItemRepository.saveAll(cartItems);
 
             // when
-            List<CartItemResponse> responses = cartItemService.findAllByEmail(savedUser.getId(), PageRequest.of(0, 3));
+            List<CartItemResponse> responses = cartItemService.findAllByUserId(savedUser.getId(), PageRequest.of(0, 3));
 
             // then
             assertThat(responses).usingRecursiveComparison().isEqualTo(
