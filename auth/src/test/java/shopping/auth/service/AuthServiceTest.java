@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.core.exception.StatusCodeException;
+import shopping.auth.domain.exception.AlreadyExistUserException;
+import shopping.auth.domain.exception.DoesNotExistUserException;
 import shopping.auth.domain.User;
 import shopping.auth.dto.LoginRequest;
 import shopping.auth.dto.TokenResponse;
@@ -33,18 +34,13 @@ class AuthServiceTest {
     @MockBean
     private UserRepository userRepository;
 
-    private void assertStatusCodeException(final Exception exception, final String expectedStatus) {
-        assertThat(exception.getClass()).isEqualTo(StatusCodeException.class);
-        assertThat(((StatusCodeException) exception).getStatus()).isEqualTo(expectedStatus);
-    }
-
     @Nested
     @DisplayName("joinUser 메소드는")
     class joinUser_method {
 
         @Test
-        @DisplayName("email이 중복되면, StatusCodeException을 던진다.")
-        void throw_StatusCodeException_when_duplicated_email() {
+        @DisplayName("email이 중복되면, AlreadyExistUserException을 던진다.")
+        void throw_AlreadyExistUserException_when_duplicated_email() {
             // given
             UserJoinRequest request = new UserJoinRequest("hello@hello.world", "hello!123");
             User user = new User(request.getEmail(), request.getPassword());
@@ -54,7 +50,7 @@ class AuthServiceTest {
             Exception exception = catchException(() -> authService.joinUser(request));
 
             // then
-            assertStatusCodeException(exception, "AUTH-SERVICE-401");
+            assertThat(exception).isInstanceOf(AlreadyExistUserException.class);
         }
     }
 
@@ -79,8 +75,8 @@ class AuthServiceTest {
         }
 
         @Test
-        @DisplayName("email에 해당하는 유저를 찾을 수 없으면, StatusCodeException을 반환한다.")
-        void it_throw_StatusCodeException_when_not_matched_email() {
+        @DisplayName("email에 해당하는 유저를 찾을 수 없으면, DoesNotExistUserException을 던진다.")
+        void it_throw_DoesNotExistUserException_when_not_matched_email() {
             // given
             LoginRequest request = new LoginRequest("hello@hello.world", "hello!123");
 
@@ -90,7 +86,7 @@ class AuthServiceTest {
             Exception exception = catchException(() -> authService.authenticate(request));
 
             // then
-            assertStatusCodeException(exception, "AUTH-SERVICE-402");
+            assertThat(exception).isInstanceOf(DoesNotExistUserException.class);
         }
     }
 }

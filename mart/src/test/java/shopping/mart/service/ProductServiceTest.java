@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.core.exception.StatusCodeException;
 import shopping.mart.domain.Product;
+import shopping.mart.domain.exception.AlreadyExistProductException;
 import shopping.mart.dto.ProductCreateRequest;
 import shopping.mart.persist.ProductPersistService;
 
@@ -35,27 +35,22 @@ class ProductServiceTest {
     class saveProduct_method {
 
         @Test
-        @DisplayName("이미 저장되어 있는 데이터라면 StatusCodeException을 던진다.")
-        void throw_StatusCodeException_when_exist_data() {
+        @DisplayName("이미 저장되어 있는 데이터라면 AlreadyExistProductException을 던진다.")
+        void throw_AlreadyExistProductException_when_exist_data() {
             // given
-            String expectedStatus = "PRODUCT-SERVICE-401";
-
             ProductCreateRequest productCreateRequest = new ProductCreateRequest(
-                    "치킨", "/default-product.png", "30000");
+                "치킨", "/default-product.png", "30000");
 
             Product existProduct = new Product(1L, "치킨", "/default-product.png", "30000");
-            when(productRepository.findByProductName(anyString())).thenReturn(Optional.of(existProduct));
+            when(productRepository.findByProductName(anyString())).thenReturn(
+                Optional.of(existProduct));
 
             // when
-            Exception exception = catchException(() -> productService.saveProduct(productCreateRequest));
+            Exception exception = catchException(
+                () -> productService.saveProduct(productCreateRequest));
 
             // then
-            assertStatusCodeException(exception, expectedStatus);
-        }
-
-        private void assertStatusCodeException(final Exception exception, final String expectedStatus) {
-            assertThat(exception.getClass()).isEqualTo(StatusCodeException.class);
-            assertThat(((StatusCodeException) exception).getStatus()).isEqualTo(expectedStatus);
+            assertThat(exception).isInstanceOf(AlreadyExistProductException.class);
         }
     }
 }

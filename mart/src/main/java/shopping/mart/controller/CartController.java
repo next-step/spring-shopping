@@ -2,6 +2,7 @@ package shopping.mart.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.interceptor.TokenPerRequest;
+import shopping.core.util.ErrorTemplate;
+import shopping.mart.domain.exception.AlreadyExistProductException;
+import shopping.mart.domain.exception.DoesNotExistProductException;
+import shopping.mart.domain.exception.NegativeProductCountException;
 import shopping.mart.dto.CartAddRequest;
 import shopping.mart.dto.CartResponse;
 import shopping.mart.dto.CartUpdateRequest;
@@ -51,4 +56,13 @@ public class CartController {
     public void deleteCart(@RequestParam(name = "product-id") Long productId) {
         cartService.deleteProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), productId);
     }
+
+    @ExceptionHandler({AlreadyExistProductException.class,
+        DoesNotExistProductException.class,
+        NegativeProductCountException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ErrorTemplate handleBadRequest(RuntimeException runtimeException) {
+        return new ErrorTemplate(runtimeException.getMessage());
+    }
+
 }

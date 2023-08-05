@@ -3,8 +3,9 @@ package shopping.mart.domain;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import shopping.core.exception.StatusCodeException;
-import shopping.mart.domain.status.CartExceptionStatus;
+import shopping.mart.domain.exception.AlreadyExistProductException;
+import shopping.mart.domain.exception.DoesNotExistProductException;
+import shopping.mart.domain.exception.NegativeProductCountException;
 
 public final class Cart {
 
@@ -26,9 +27,8 @@ public final class Cart {
 
     private void validateNotExistProduct(final Product product) {
         if (productCounts.containsKey(product)) {
-            throw new StatusCodeException(
-                MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
-                CartExceptionStatus.ALREADY_EXIST_PRODUCT.getStatus());
+            throw new AlreadyExistProductException(
+                MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product));
         }
     }
 
@@ -53,9 +53,8 @@ public final class Cart {
 
     private void validateCount(final int count) {
         if (count <= 0) {
-            throw new StatusCodeException(
-                MessageFormat.format("count\"{0}\"는 0 이하가 될 수 없습니다.", count),
-                CartExceptionStatus.UPDATE_COUNT_NOT_POSITIVE.getStatus());
+            throw new NegativeProductCountException(
+                MessageFormat.format("count\"{0}\"는 0 이하가 될 수 없습니다.", count));
         }
     }
 
@@ -63,9 +62,8 @@ public final class Cart {
         if (productCounts.containsKey(product)) {
             return;
         }
-        throw new StatusCodeException(
-            MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product),
-            CartExceptionStatus.NOT_EXIST_PRODUCT.getStatus());
+        throw new DoesNotExistProductException(
+            MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product));
     }
 
     public Long getCartId() {

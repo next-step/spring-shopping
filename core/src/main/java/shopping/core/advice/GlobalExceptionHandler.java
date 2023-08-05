@@ -7,18 +7,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import shopping.core.util.ErrorTemplate;
 
 @Order
 @RestControllerAdvice
 class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class.getSimpleName());
+    private static final Logger logger = LoggerFactory.getLogger(
+        GlobalExceptionHandler.class.getSimpleName());
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     ErrorTemplate handleStatusCodeException(Exception exception) {
         logger.error(exception.getMessage());
-        return new ErrorTemplate("SERVER-501", "INTERNAL SERVER ERROR");
+        return new ErrorTemplate("INTERNAL-SERVER-ERROR");
     }
 
 }

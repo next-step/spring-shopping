@@ -2,8 +2,7 @@ package shopping.mart.domain;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import shopping.core.exception.StatusCodeException;
-import shopping.mart.domain.status.ProductExceptionStatus;
+import shopping.mart.domain.exception.InvalidProductNameException;
 
 final class Name {
 
@@ -22,21 +21,21 @@ final class Name {
 
     private void validNullName(final String name) {
         if (name == null) {
-            throw new StatusCodeException("name은 null이 될 수 없습니다.", ProductExceptionStatus.NULL_NAME.getStatus());
+            throw new InvalidProductNameException("name은 null이 될 수 없습니다.");
         }
     }
 
     private void validExceedName(final String name) {
         if (name.length() > 20) {
-            throw new StatusCodeException(MessageFormat.format("name \"{0}\"은 20자보다 길어질 수 없습니다.", name),
-                    ProductExceptionStatus.EXCEED_NAME.getStatus());
+            throw new InvalidProductNameException(
+                MessageFormat.format("name \"{0}\"은 20자보다 길어질 수 없습니다.", name));
         }
     }
 
     private void validBlankName(final String name) {
         if (name.isBlank()) {
-            throw new StatusCodeException(MessageFormat.format("name \"{0}\"은 공백이 될 수 없습니다.", name),
-                    ProductExceptionStatus.BLANK_NAME.getStatus());
+            throw new InvalidProductNameException(
+                MessageFormat.format("name \"{0}\"은 공백이 될 수 없습니다.", name));
         }
     }
 
@@ -64,7 +63,7 @@ final class Name {
     @Override
     public String toString() {
         return "Name{" +
-                "value='" + value + '\'' +
-                '}';
+            "value='" + value + '\'' +
+            '}';
     }
 }

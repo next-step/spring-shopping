@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.core.exception.StatusCodeException;
 import shopping.mart.domain.Cart;
 import shopping.mart.domain.Product;
+import shopping.mart.domain.exception.DoesNotExistProductException;
 import shopping.mart.dto.CartAddRequest;
 import shopping.mart.dto.CartResponse;
 import shopping.mart.dto.CartUpdateRequest;
@@ -16,8 +16,6 @@ import shopping.mart.persist.ProductPersistService;
 
 @Service
 public class CartService {
-
-    private static final String PRODUCT_NOT_FOUND = "CART-SERVICE-401";
 
     private final ProductPersistService productRepository;
     private final CartPersistService cartPersistService;
@@ -79,9 +77,8 @@ public class CartService {
 
     private Product getProductById(long productId) {
         return productRepository.findById(productId).orElseThrow(
-            () -> new StatusCodeException(
-                MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId),
-                PRODUCT_NOT_FOUND));
+            () -> new DoesNotExistProductException(
+                MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId)));
     }
 
 }

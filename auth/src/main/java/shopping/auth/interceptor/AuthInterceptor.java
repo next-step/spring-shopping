@@ -5,12 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
+import shopping.auth.domain.exception.InvalidTokenException;
 import shopping.auth.infra.JwtUtils;
-import shopping.core.exception.StatusCodeException;
 
 public class AuthInterceptor implements HandlerInterceptor {
-
-    private static final String INVALID_TOKEN = "AUTH-INTERCEPTOR-401";
 
     private final JwtUtils jwtUtils;
     private final TokenPerRequest tokenPerRequest;
@@ -27,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             String id = jwtUtils.payload(token);
             tokenPerRequest.setDecryptedToken(id);
         } catch (Exception exception) {
-            throw new StatusCodeException(MessageFormat.format("인증할 수 없는 토큰 \"{0}\" 입니다.", token), INVALID_TOKEN);
+            throw new InvalidTokenException(MessageFormat.format("인증할 수 없는 토큰 \"{0}\" 입니다.", token));
         }
         return true;
     }

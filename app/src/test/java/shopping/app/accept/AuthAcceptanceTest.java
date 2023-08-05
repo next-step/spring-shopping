@@ -16,22 +16,22 @@ class AuthAcceptanceTest extends AcceptanceTest {
     @DisplayName("POST /login/token API는 로그인에 성공하면, 토큰을 반환한다")
     void it_return_jwt_when_login_success() {
         // when
-        ExtractableResponse<Response> jwt = Auth.login(ADMIN_REQUEST);
+        ExtractableResponse<Response> result = Auth.login(ADMIN_REQUEST);
 
         // then
-        AssertHelper.Auth.assertJwt(jwt);
+        AssertHelper.Auth.assertJwt(result);
     }
 
     @Test
-    @DisplayName("POST /login/token API는 로그인에 실패하면, AUTH-401 예외를 던진다")
-    void it_throw_auth_401_when_login_failed() {
+    @DisplayName("POST /login/token API는 로그인에 실패하면, Bad Request 예외를 던진다")
+    void it_throw_Bad_Request_when_login_failed() {
         // given
         LoginRequest loginRequest = new LoginRequest(ADMIN_REQUEST.getEmail(), "incorrect");
 
         // when
-        ExtractableResponse<Response> jwt = Auth.login(loginRequest);
+        ExtractableResponse<Response> result = Auth.login(loginRequest);
 
         // then
-        AssertHelper.Auth.assertLoginFailed(jwt);
+        AssertHelper.Http.assertIsBadRequest(result);
     }
 }

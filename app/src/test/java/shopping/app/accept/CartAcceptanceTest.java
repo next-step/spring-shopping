@@ -25,7 +25,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     void setUpAdmin() {
         LoginRequest adminRequest = new LoginRequest("admin@hello.world", "admin!123");
         this.accessToken = UrlHelper.Auth.login(adminRequest).as(TokenResponse.class)
-                .getAccessToken();
+            .getAccessToken();
     }
 
     @Test
@@ -39,12 +39,12 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.addProduct(request, accessToken);
 
         // then
-        Http.assertIsCreated(result);
+        AssertHelper.Http.assertIsCreated(result);
     }
 
     @Test
-    @DisplayName("POST /carts API는 인증에 실패하면, AUTH-INTERCEPTOR-401을 던진다.")
-    void throw_auth_interceptor_401() {
+    @DisplayName("POST /carts API는 인증에 실패하면, UnAuthorization 을 던진다.")
+    void throw_UnAuthorization_when_auth_failed() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
         CartAddRequest request = new CartAddRequest(productResponse.getId());
@@ -55,12 +55,12 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = UrlHelper.Cart.addProduct(request, invalidToken);
 
         // then
-        AssertHelper.Auth.assertTokenDeprecateFailed(result);
+        AssertHelper.Http.assertIsUnAuthorization(result);
     }
 
     @Test
-    @DisplayName("POST /carts API는 product를 찾을 수 없으면, CART-SERVICE-401을 던진다.")
-    void throw_cart_service_401() {
+    @DisplayName("POST /carts API는 product를 찾을 수 없으면, Bad Request 을 던진다.")
+    void throw_Bad_Request_when_cart_does_not_exist() {
         // given
         CartAddRequest request = new CartAddRequest(9999999L);
 
@@ -68,7 +68,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = UrlHelper.Cart.addProduct(request, accessToken);
 
         // then
-        AssertHelper.Cart.assertProductNotFound(result);
+        AssertHelper.Http.assertIsBadRequest(result);
     }
 
     @Test
@@ -76,7 +76,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     void find_all_products_in_cart() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
+        allProducts.forEach(
+            product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         CartResponse exactlyExpected = getExpectedCartResponse(allProducts);
 
         // when
@@ -91,7 +92,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     void update_product_count() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
+        allProducts.forEach(
+            product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         ProductResponse updateTarget = allProducts.get(0);
         int updateCount = 100_000;
 
@@ -106,8 +108,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, CART-SERVICE-401를 던진다.")
-    void throw_cart_402_when_no_updatable_product() {
+    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, Bad Request 를 던진다.")
+    void throw_Bad_Request_when_does_not_exist_product() {
         // given
         CartUpdateRequest request = new CartUpdateRequest(999999999L, 100_000);
 
@@ -115,15 +117,16 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.updateCart(request, accessToken);
 
         // then
-        AssertHelper.Cart.assertUpdatableProductNotFound(result);
+        AssertHelper.Http.assertIsBadRequest(result);
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 count가 0이하일경우, CART-403을 던진다.")
-    void throw_cart_403_when_not_positive() {
+    @DisplayName("PATCH /carts API는 count가 0이하일경우, Bad Request 를 던진다.")
+    void throw_Bad_Request_when_product_count_zero() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
+        allProducts.forEach(
+            product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         ProductResponse updateTarget = allProducts.get(0);
         int updateCount = 0;
 
@@ -133,7 +136,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.updateCart(request, accessToken);
 
         // then
-        AssertHelper.Cart.assertUpdateCountNotPositive(result);
+        AssertHelper.Http.assertIsBadRequest(result);
     }
 
     @Test
@@ -141,7 +144,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     void delete_product() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
-        allProducts.forEach(product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
+        allProducts.forEach(
+            product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         long deleteTargetId = allProducts.get(0).getId();
 
         // when
@@ -152,8 +156,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-SERVICE-401을 던진다.")
-    void throw_cart_401_when_no_product_id() {
+    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, Bad Request 을 던진다.")
+    void throw_Bad_Request_when_does_not_exist_product_on_delete() {
         // given
         long deleteTargetId = 999999999L;
 
@@ -161,13 +165,14 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, accessToken);
 
         // then
-        AssertHelper.Cart.assertDeleteFailed(result);
+        AssertHelper.Http.assertIsBadRequest(result);
     }
 
     private CartResponse getExpectedCartResponse(List<ProductResponse> productResponses) {
         return new CartResponse(1L, productResponses.stream().map(
-                productResponse -> new CartResponse.ProductResponse(
-                        productResponse.getId(), 1, productResponse.getImageUrl(), productResponse.getName())
+            productResponse -> new CartResponse.ProductResponse(
+                productResponse.getId(), 1, productResponse.getImageUrl(),
+                productResponse.getName())
         ).collect(Collectors.toList()));
     }
 
