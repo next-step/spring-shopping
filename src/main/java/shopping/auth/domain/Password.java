@@ -1,7 +1,9 @@
 package shopping.auth.domain;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import shopping.common.exception.ErrorCode;
 import shopping.common.exception.ShoppingException;
@@ -9,9 +11,10 @@ import shopping.common.exception.ShoppingException;
 @Embeddable
 public class Password {
 
-    private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z]).{4,10}$";
+    private static final String PASSWORD_REGEX = "^(?=.*[a-z]).{4,20}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
+    @Column(name = "password")
     private String value;
 
     protected Password() {
@@ -21,6 +24,10 @@ public class Password {
         validatePattern(value);
 
         this.value = value;
+    }
+
+    public boolean hasValue(final String value) {
+        return Objects.equals(this.value, value);
     }
 
     private static void validatePattern(final String value) {

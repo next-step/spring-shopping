@@ -14,8 +14,8 @@ import shopping.common.exception.ShoppingException;
 class PasswordTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"asd123", "Q1w2", "0032pi9!!0"})
-    @DisplayName("올바른 비밀번호 형식(영어 소문자, 숫자를 포함한 4~10자 문자열)으로 생성할 수 있다.")
+    @ValueSource(strings = {"asdf", "Q1w2", "0032pi9!!0"})
+    @DisplayName("올바른 비밀번호 형식(영어 소문자를 포함한 4~20자 문자열)으로 생성할 수 있다.")
     void createSuccess(final String value) {
         /* given */
 
@@ -24,7 +24,7 @@ class PasswordTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"as1", "12345", "qwerty", "0032pi90000"})
+    @ValueSource(strings = {"asd", "123!!", "qwerty_qwerty_qwerty_"})
     @DisplayName("올바른 비밀번호 형식이 아닌 경우 생성할 수 없다.")
     void createFailure(final String value) {
         /* given */
