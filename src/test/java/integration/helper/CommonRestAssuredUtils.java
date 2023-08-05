@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 
 public class CommonRestAssuredUtils {
 
+    // 2400년이 만료 기한이고 PK가 1L인 유저 정보를 담고있는 테스트 용 토큰 정보
     public static final String DEFAULT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkxMDUxMTUyLCJleHAiOjkxNjkxMDUxMTUyfQ.AEu-Z9ndgW24b5M45dj6uSY3ZgY1JpSmB3S05wJZhwo";
 
     public static ExtractableResponse<Response> get(String url) {
