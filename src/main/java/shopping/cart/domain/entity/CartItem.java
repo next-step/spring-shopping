@@ -46,6 +46,10 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public boolean hasUser(final User user) {
+        return this.user == user;
+    }
+
     public Long getId() {
         return id;
     }

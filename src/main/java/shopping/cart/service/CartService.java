@@ -1,7 +1,6 @@
 package shopping.cart.service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +20,9 @@ import shopping.common.exception.ShoppingException;
 @Transactional(readOnly = true)
 public class CartService {
 
-    public static final int ITEM_MIN_QUANTITY = 1;
-    public static final int ITEM_MAX_QUANTITY = 1000;
-    public static final int QUANTITY_ZERO = 0;
+    private static final int ITEM_MIN_QUANTITY = 1;
+    private static final int ITEM_MAX_QUANTITY = 1000;
+    private static final int QUANTITY_ZERO = 0;
 
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
@@ -41,7 +40,7 @@ public class CartService {
     public void insertCartItem(CartItemInsertRequest cartItemInsertRequest, Long userId) {
         final Long productId = cartItemInsertRequest.getProductId();
         final Product product = findProductBy(productId);
-        validateDuplicateCartItem(userId, productId);
+        validateProductNotInCart(userId, productId);
 
         final User user = userRepository.getReferenceById(userId);
         final CartItem cartItem = new CartItem(user, product);
@@ -57,8 +56,7 @@ public class CartService {
     @Transactional
     public void updateCartItemQuantity(final Long cartItemId,
         final CartItemUpdateRequest cartItemUpdateRequest, final Long userId) {
-        final CartItem cartItem = findCartItemEntityBy(cartItemId);
-        validateUserHasCartItem(userId, cartItem);
+        final CartItem cartItem = findCartItemBy(cartItemId, userId);
 
         final int updateQuantity = cartItemUpdateRequest.getQuantity();
 
@@ -73,20 +71,23 @@ public class CartService {
 
     @Transactional
     public void removeCartItem(final Long cartItemId, final Long userId) {
-        final CartItem cartItem = findCartItemEntityBy(cartItemId);
-        validateUserHasCartItem(userId, cartItem);
+        final CartItem cartItem = findCartItemBy(cartItemId, userId);
         cartItemRepository.delete(cartItem);
     }
 
-    private void validateUserHasCartItem(final Long userId, final CartItem cartItem) {
-        if (!Objects.equals(cartItem.getUser().getId(), userId)) {
-            throw new ShoppingException(ErrorCode.INVALID_CART_ITEM);
-        }
+    private CartItem findCartItemBy(final Long cartItemId, final Long userId) {
+        final CartItem cartItem = cartItemRepository.findById(cartItemId)
+            .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_CART_ITEM));
+        final User user = userRepository.getReferenceById(userId);
+
+        validateUserHasCartItem(user, cartItem);
+        return cartItem;
     }
 
-    private CartItem findCartItemEntityBy(final Long cartItemId) {
-        return cartItemRepository.findById(cartItemId)
-            .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_CART_ITEM));
+    private void validateUserHasCartItem(final User user, final CartItem cartItem) {
+        if (!cartItem.hasUser(user)) {
+            throw new ShoppingException(ErrorCode.INVALID_CART_ITEM);
+        }
     }
 
     private Product findProductBy(final Long productId) {
@@ -94,7 +95,7 @@ public class CartService {
             .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_PRODUCT));
     }
 
-    private void validateDuplicateCartItem(final Long userId, final Long productId) {
+    private void validateProductNotInCart(final Long userId, final Long productId) {
         if (cartItemRepository.existsByUserIdAndProductId(userId, productId)) {
             throw new ShoppingException(ErrorCode.DUPLICATE_CART_ITEM);
         }
