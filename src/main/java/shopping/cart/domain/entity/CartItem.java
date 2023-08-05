@@ -15,6 +15,8 @@ import shopping.cart.domain.vo.Quantity;
 @Table(name = "cart_item")
 public class CartItem {
 
+    private static final int DEFAULT_QUANTITY = 1;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -42,7 +44,7 @@ public class CartItem {
     }
 
     public CartItem(final User user, final Product product) {
-        this(null, user, product, 1);
+        this(null, user, product, DEFAULT_QUANTITY);
     }
 
     public void updateQuantity(final Quantity quantity) {
