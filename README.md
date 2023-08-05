@@ -47,3 +47,68 @@
     - 장바구니에 상품 추가 시, 이미 존재할 경우
     - 장바구니 상품이 0개 미만이거나 1000개 초과일 경우
     - 내가 추가한 장바구니 상품이 아닐 경우
+
+### API 목록
+
+* `GET /` (상품 목록 페이지 요청)
+    * 응답
+        * 상품 목록 페이지 (HTML)
+
+* `GET /login` (로그인 페이지 요청)
+    * 응답
+        * 로그인 페이지 (HTML)
+
+* `POST /login/token` (로그인 요청)
+    * 요청
+        * 본문 (JSON)
+            * email: String, password: String
+    * 응답
+        * 본문 (JSON)
+            * accessToken: String
+
+* `GET /cart` (장바구니 페이지 요청)
+    * 응답
+        * 장바구니 페이지 (HTML)
+
+* `POST /cart/items` (장바구니 상품 추가 요청)
+    * 요청
+        * 헤더
+            * Authorization: Bearer ${ACCESS_TOKEN}
+        * 본문 (JSON)
+            * productId: Long
+    * 응답
+        * 없음 (성공 시 200)
+
+* `GET /cart/items` (장바구니 조회 요청)
+    * 요청
+        * 헤더
+            * Authorization: Bearer ${ACCESS_TOKEN}
+    * 응답
+        * 본문 (JSON)
+            * CartItemResponse의 리스트
+                * CartItemResponse
+                    * cartItemId: Long
+                    * name: String
+                    * imageFileName: String
+                    * price: int
+                    * quantity: int
+
+* `PUT /cart/items/{cartItemId}/quantity` (장바구니 상품 수량 수정 요청)
+    * 요청
+        * 헤더
+            * Authorization: Bearer ${ACCESS_TOKEN}
+        * 파라미터
+            * cartItemId: Long
+        * 본문 (JSON)
+            * quantity: int
+    * 응답
+        * 없음 (성공 시 200)
+
+* `DELETE /cart/items/{cartItemId}`
+    * 요청
+        * 헤더
+            * Authorization: Bearer ${ACCESS_TOKEN}
+        * 파라미터
+            * cartItemId: Long
+    * 응답
+        * 없음 (성공 시 204)
