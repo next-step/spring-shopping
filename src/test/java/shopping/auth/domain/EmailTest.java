@@ -13,7 +13,7 @@ import shopping.common.exception.ShoppingException;
 class EmailTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"validemail99@woowafriends.com", "Qwerty@gmail.com"})
+    @ValueSource(strings = {"valid_email99@woowafriends.com", "Qwerty@gmail.com"})
     @DisplayName("올바른 이메일 형식으로 생성할 수 있다.")
     void createSuccess(final String value) {
         /* given */
