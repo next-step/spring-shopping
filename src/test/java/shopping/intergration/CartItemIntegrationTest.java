@@ -1,6 +1,5 @@
 package shopping.intergration;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
@@ -8,9 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import shopping.dto.request.CartItemAddRequest;
-import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
 import shopping.dto.response.ProductResponse;
@@ -19,7 +15,9 @@ import shopping.repository.CartItemRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static shopping.intergration.helper.RestAssuredHelper.*;
+import static shopping.intergration.helper.CartItemHelper.*;
+import static shopping.intergration.helper.LogInHelper.login;
+import static shopping.intergration.helper.RestAssuredHelper.extractObject;
 
 class CartItemIntegrationTest extends IntegrationTest {
 
@@ -41,14 +39,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final String accessToken = login(EMAIL, PASSWORD).getToken();
         final Long productId = 1L;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .body(new CartItemAddRequest(productId))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = addCartItemRequest(accessToken, productId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         final CartItemResponse cartItemResponse = extractObject(response, CartItemResponse.class);
@@ -67,12 +58,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         addCartItem(accessToken, 1L);
         addCartItem(accessToken, 2L);
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart-items")
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = getCartItemsRequest(accessToken);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         final CartItemResponses cartItemResponses = extractObject(response, CartItemResponses.class);
@@ -93,14 +79,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
         final int updateQuantity = 100;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CartItemUpdateRequest(updateQuantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, updateQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
@@ -113,12 +92,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         addCartItem(accessToken, 1L);
         final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/cart-items/{cartItemId}", targetCartItemId)
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = deleteCartItemRequest(accessToken, targetCartItemId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
@@ -128,14 +102,7 @@ class CartItemIntegrationTest extends IntegrationTest {
     void emptyTokenThenThrow() {
         final Long productId = 1L;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().none()
-                .body(new CartItemAddRequest(productId))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = addCartItemRequestWithoutAccessToken(productId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.TOKEN_IS_EMPTY.getMessage());
@@ -147,14 +114,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final String invalidAccessToken = "invalid";
         final Long productId = 1L;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(invalidAccessToken)
-                .body(new CartItemAddRequest(productId))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = addCartItemRequest(invalidAccessToken, productId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.TOKEN_INVALID.getMessage());
@@ -169,14 +129,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
         final int moreThanMaxQuantity = 1001;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CartItemUpdateRequest(moreThanMaxQuantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, moreThanMaxQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
@@ -191,14 +144,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
         final int lessThanMinQuantity = 0;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CartItemUpdateRequest(lessThanMinQuantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, lessThanMinQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
@@ -212,14 +158,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
         final int quantity = 3;
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(differentMemberAccessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .body(new CartItemUpdateRequest(quantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = updateCartItemRequest(differentMemberAccessToken, targetCartItemId, quantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(
@@ -233,12 +172,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final String differentMemberAccessToken = login(DIFFERENT_MEMBER_EMAIL, PASSWORD).getToken();
         final Long targetCartItemId = addCartItem(accessToken, 2L).getCartItemId();
 
-        final ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(differentMemberAccessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/cart-items/{cartItemId}", targetCartItemId)
-                .then().log().all().extract();
+        final ExtractableResponse<Response> response = deleteCartItemRequest(differentMemberAccessToken, targetCartItemId);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(
