@@ -1,13 +1,14 @@
 package shopping.auth;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
+import shopping.exception.AuthException;
 import shopping.exception.ErrorCode;
-import shopping.exception.ShoppingException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
@@ -28,7 +29,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     ) {
         final String token = getToken(request);
         if (!jwtTokenProvider.validateToken(token)) {
-            throw new ShoppingException(ErrorCode.TOKEN_INVALID);
+            throw new AuthException(ErrorCode.TOKEN_INVALID);
         }
         request.setAttribute("loginMemberId", jwtTokenProvider.getPayload(token));
         return true;
@@ -37,7 +38,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private String getToken(final HttpServletRequest request) {
         final String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (!StringUtils.hasText(bearerToken)) {
-            throw new ShoppingException(ErrorCode.TOKEN_IS_EMPTY);
+            throw new AuthException(ErrorCode.TOKEN_IS_EMPTY);
         }
         return StringUtils.delete(bearerToken, BEARER_HEADER_NAME);
     }

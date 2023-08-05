@@ -14,20 +14,10 @@ public class ShoppingExceptionHandler {
                 .body(ApiExceptionResponse.from(e.getMessage()));
     }
 
-    static class ApiExceptionResponse {
-
-        private final String message;
-
-        private ApiExceptionResponse(final String message) {
-            this.message = message;
-        }
-
-        public static ApiExceptionResponse from(final String message) {
-            return new ApiExceptionResponse(message);
-        }
-
-        public String getMessage() {
-            return this.message;
-        }
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<ApiExceptionResponse> exceptionHandleWithAuthException(final AuthException e) {
+        return ResponseEntity
+                .status(e.getHttpStatus())
+                .body(ApiExceptionResponse.from(e.getMessage()));
     }
 }

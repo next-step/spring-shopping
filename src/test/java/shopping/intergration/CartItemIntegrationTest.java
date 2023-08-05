@@ -1,11 +1,5 @@
 package shopping.intergration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static shopping.intergration.helper.RestAssuredHelper.addCartItem;
-import static shopping.intergration.helper.RestAssuredHelper.extractObject;
-import static shopping.intergration.helper.RestAssuredHelper.login;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -22,6 +16,10 @@ import shopping.dto.response.CartItemResponses;
 import shopping.dto.response.ProductResponse;
 import shopping.exception.ErrorCode;
 import shopping.repository.CartItemRepository;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static shopping.intergration.helper.RestAssuredHelper.*;
 
 class CartItemIntegrationTest extends IntegrationTest {
 
