@@ -2,8 +2,8 @@ package shopping.auth.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.auth.domain.Email;
 import shopping.auth.domain.entity.User;
+import shopping.auth.domain.vo.Email;
 import shopping.auth.dto.request.LoginRequest;
 import shopping.auth.dto.response.LoginResponse;
 import shopping.auth.repository.UserRepository;

@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import shopping.auth.domain.Email;
-import shopping.auth.domain.Password;
+import shopping.auth.domain.vo.Email;
+import shopping.auth.domain.vo.Password;
 
 @Entity
 @Table(name = "users")

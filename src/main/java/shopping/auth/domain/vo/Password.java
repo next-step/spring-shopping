@@ -1,4 +1,4 @@
-package shopping.auth.domain;
+package shopping.auth.domain.vo;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -36,5 +36,22 @@ public class Password {
         if (!matcher.matches()) {
             throw new ShoppingException(ErrorCode.INVALID_PASSWORD);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Password password = (Password) o;
+        return Objects.equals(value, password.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

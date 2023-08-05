@@ -1,4 +1,4 @@
-package shopping.auth.domain;
+package shopping.auth.domain.vo;
 
 import java.util.Objects;
 import java.util.regex.Matcher;

@@ -1,4 +1,4 @@
-package shopping.auth.domain;
+package shopping.auth.domain.vo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;

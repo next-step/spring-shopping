@@ -1,10 +1,11 @@
-package shopping.cart.domain;
+package shopping.cart.domain.vo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import shopping.common.exception.ErrorCode;
@@ -34,5 +35,15 @@ class QuantityTest {
         final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> new Quantity(value));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_QUANTITY);
+    }
+
+    @Test
+    @DisplayName("값이 0이다.")
+    void isZero() {
+        /* given */
+        final Quantity zero = new Quantity(0);
+
+        /* when & then */
+        assertThat(zero.isZero()).isTrue();
     }
 }

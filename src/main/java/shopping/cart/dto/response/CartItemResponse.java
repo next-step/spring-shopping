@@ -29,7 +29,7 @@ public final class CartItemResponse {
             cartItem.getProduct().getName(),
             cartItem.getProduct().getImageUuidFileName(),
             cartItem.getProduct().getPrice(),
-            cartItem.getQuantity()
+            cartItem.getQuantity().getValue()
         );
     }
 

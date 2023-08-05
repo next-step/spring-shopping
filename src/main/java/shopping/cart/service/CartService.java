@@ -8,6 +8,7 @@ import shopping.auth.domain.entity.User;
 import shopping.auth.repository.UserRepository;
 import shopping.cart.domain.entity.CartItem;
 import shopping.cart.domain.entity.Product;
+import shopping.cart.domain.vo.Quantity;
 import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
@@ -19,10 +20,6 @@ import shopping.common.exception.ShoppingException;
 @Service
 @Transactional(readOnly = true)
 public class CartService {
-
-    private static final int ITEM_MIN_QUANTITY = 1;
-    private static final int ITEM_MAX_QUANTITY = 1000;
-    private static final int QUANTITY_ZERO = 0;
 
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
@@ -58,14 +55,13 @@ public class CartService {
         final CartItemUpdateRequest cartItemUpdateRequest, final Long userId) {
         final CartItem cartItem = findCartItemBy(cartItemId, userId);
 
-        final int updateQuantity = cartItemUpdateRequest.getQuantity();
+        final Quantity updateQuantity = new Quantity(cartItemUpdateRequest.getQuantity());
 
-        if (updateQuantity == QUANTITY_ZERO) {
+        if (updateQuantity.isZero()) {
             cartItemRepository.delete(cartItem);
             return;
         }
-
-        validateCartItemQuantity(updateQuantity);
+        
         cartItem.updateQuantity(updateQuantity);
     }
 
@@ -99,16 +95,5 @@ public class CartService {
         if (cartItemRepository.existsByUserIdAndProductId(userId, productId)) {
             throw new ShoppingException(ErrorCode.DUPLICATE_CART_ITEM);
         }
-    }
-
-    private void validateCartItemQuantity(
-        final int quantity) {
-        if (isOutOfBound(quantity)) {
-            throw new ShoppingException(ErrorCode.INVALID_QUANTITY);
-        }
-    }
-
-    private boolean isOutOfBound(final int quantity) {
-        return quantity < ITEM_MIN_QUANTITY || ITEM_MAX_QUANTITY < quantity;
     }
 }

@@ -18,6 +18,7 @@ import shopping.auth.domain.entity.User;
 import shopping.auth.repository.UserRepository;
 import shopping.cart.domain.entity.CartItem;
 import shopping.cart.domain.entity.Product;
+import shopping.cart.domain.vo.Quantity;
 import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
@@ -102,7 +103,7 @@ class CartServiceTest {
             userId);
 
         /* then */
-        assertThat(cartItemChicken.getQuantity()).isEqualTo(updateQuantity);
+        assertThat(cartItemChicken.getQuantity()).isEqualTo(new Quantity(updateQuantity));
     }
 
     @Test

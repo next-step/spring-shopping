@@ -1,5 +1,6 @@
 package shopping.cart.domain.entity;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import shopping.auth.domain.entity.User;
+import shopping.cart.domain.vo.Quantity;
 
 @Entity
 @Table(name = "cart_item")
@@ -25,7 +27,8 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private int quantity;
+    @Embedded
+    private Quantity quantity;
 
     protected CartItem() {
     }
@@ -35,14 +38,14 @@ public class CartItem {
         this.id = id;
         this.user = user;
         this.product = product;
-        this.quantity = quantity;
+        this.quantity = new Quantity(quantity);
     }
 
     public CartItem(final User user, final Product product) {
         this(null, user, product, 1);
     }
 
-    public void updateQuantity(final int quantity) {
+    public void updateQuantity(final Quantity quantity) {
         this.quantity = quantity;
     }
 
@@ -62,7 +65,7 @@ public class CartItem {
         return product;
     }
 
-    public int getQuantity() {
+    public Quantity getQuantity() {
         return quantity;
     }
 }
