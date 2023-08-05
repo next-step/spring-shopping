@@ -17,6 +17,14 @@ public class TokenExtractor {
         this.tokenProvider = tokenProvider;
     }
 
+    public void validateToken(HttpServletRequest request) {
+        String accessToken = request.getHeader(AUTHORIZATION);
+        validateHeaderExist(accessToken);
+        if (!tokenProvider.isSignedToekn(accessToken)) {
+            throw new AuthException();
+        }
+    }
+
     public String extractToken(HttpServletRequest request) {
         String accessToken = request.getHeader(AUTHORIZATION);
         validateHeaderExist(accessToken);

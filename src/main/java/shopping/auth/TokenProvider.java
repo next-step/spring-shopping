@@ -34,6 +34,12 @@ public class TokenProvider {
                 .compact();
     }
 
+    public boolean isSignedToekn(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey.getBytes())
+                .isSigned(token);
+    }
+
     public String getEmail(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey.getBytes())
