@@ -2,8 +2,11 @@ package shopping.cart.controller;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.argumentresolver.annotation.UserId;
+import shopping.cart.controller.validator.CartItemInsertRequestValidator;
+import shopping.cart.controller.validator.CartItemUpdateRequestValidator;
 import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
@@ -22,14 +27,30 @@ import shopping.cart.service.CartService;
 public class CartItemController {
 
     private final CartService cartService;
+    private final CartItemInsertRequestValidator cartItemInsertRequestValidator;
+    private final CartItemUpdateRequestValidator cartItemUpdateRequestValidator;
 
-    public CartItemController(final CartService cartService) {
+    @InitBinder("cartItemInsertRequest")
+    public void initCartItemInsertRequest(WebDataBinder dataBinder) {
+        dataBinder.addValidators(cartItemInsertRequestValidator);
+    }
+
+    @InitBinder("cartItemUpdateRequest")
+    public void initCartItemUpdateRequest(WebDataBinder dataBinder) {
+        dataBinder.addValidators(cartItemUpdateRequestValidator);
+    }
+
+    public CartItemController(final CartService cartService,
+        final CartItemInsertRequestValidator cartItemInsertRequestValidator,
+        final CartItemUpdateRequestValidator cartItemUpdateRequestValidator) {
         this.cartService = cartService;
+        this.cartItemInsertRequestValidator = cartItemInsertRequestValidator;
+        this.cartItemUpdateRequestValidator = cartItemUpdateRequestValidator;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void insertCartItem(@RequestBody CartItemInsertRequest cartItemInsertRequest,
+    public void insertCartItem(@RequestBody @Validated CartItemInsertRequest cartItemInsertRequest,
         @UserId Long userId) {
         cartService.insertCartItem(cartItemInsertRequest, userId);
     }
@@ -43,7 +64,7 @@ public class CartItemController {
     @PutMapping("/{cartItemId}/quantity")
     @ResponseStatus(HttpStatus.OK)
     public void updateCartItemQuantity(@PathVariable Long cartItemId,
-        @RequestBody CartItemUpdateRequest cartItemUpdateRequest, @UserId Long userId) {
+        @RequestBody @Validated CartItemUpdateRequest cartItemUpdateRequest, @UserId Long userId) {
         cartService.updateCartItemQuantity(cartItemId, cartItemUpdateRequest, userId);
     }
 

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생헀습니다."),
+    REQUIRED_FIELD_MISSING(HttpStatus.BAD_REQUEST, "필수 항목이 누락되었습니다."),
     EMAIL_NOT_REGISTERED(HttpStatus.UNAUTHORIZED, "등록되지 않은 이메일입니다."),
     PASSWORD_NOT_CORRECT(HttpStatus.UNAUTHORIZED, "틀린 비밀번호 입니다."),
     INVALID_EMAIL_PATTERN(HttpStatus.BAD_REQUEST, "유효하지 않은 이메일 형식입니다."),

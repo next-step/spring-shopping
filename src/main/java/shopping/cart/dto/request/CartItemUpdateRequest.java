@@ -2,17 +2,17 @@ package shopping.cart.dto.request;
 
 public final class CartItemUpdateRequest {
 
-    private int quantity;
+    private Integer quantity;
 
     private CartItemUpdateRequest() {
     }
 
-    public CartItemUpdateRequest(final int quantity) {
+    public CartItemUpdateRequest(final Integer quantity) {
         this.quantity = quantity;
     }
 
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 }

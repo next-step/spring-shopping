@@ -8,13 +8,17 @@ public class ErrorResponse {
     private ErrorResponse() {
     }
 
-    private ErrorResponse(final ErrorCode errorCode) {
+    private ErrorResponse(final ErrorCode errorCode, final String message) {
         this.errorCode = errorCode;
-        this.message = errorCode.getMessage();
+        this.message = message;
     }
 
     public static ErrorResponse from(final ErrorCode errorCode) {
-        return new ErrorResponse(errorCode);
+        return new ErrorResponse(errorCode, errorCode.getMessage());
+    }
+
+    public static ErrorResponse from(final ErrorCode errorCode, final String message) {
+        return new ErrorResponse(errorCode, message);
     }
 
     public ErrorCode getErrorCode() {
