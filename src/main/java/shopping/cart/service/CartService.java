@@ -104,7 +104,7 @@ public class CartService {
     private void validateCartItemQuantity(
         final int quantity) {
         if (isOutOfBound(quantity)) {
-            throw new ShoppingException(ErrorCode.INVALID_CART_ITEM_QUANTITY);
+            throw new ShoppingException(ErrorCode.INVALID_QUANTITY);
         }
     }
 

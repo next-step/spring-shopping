@@ -255,7 +255,7 @@ class CartIntegrationTest extends IntegrationTest {
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM_QUANTITY);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_QUANTITY);
     }
 
     @Test
@@ -289,7 +289,7 @@ class CartIntegrationTest extends IntegrationTest {
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM_QUANTITY);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_QUANTITY);
     }
 
     @Test
