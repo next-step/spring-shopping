@@ -90,6 +90,7 @@ class CartServiceTest {
         Long cartItemId = cartItemChicken.getId();
         int updateQuantity = 3;
         when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));
+        when(userRepository.getReferenceById(userId)).thenReturn(user);
 
         /* when */
         cartService.updateCartItemQuantity(cartItemId, new CartItemUpdateRequest(updateQuantity),
@@ -111,6 +112,7 @@ class CartServiceTest {
 
         Long cartItemId = cartItemChicken.getId();
         when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));
+        when(userRepository.getReferenceById(userId)).thenReturn(user);
 
         /* when */
         cartService.removeCartItem(cartItemId, userId);
