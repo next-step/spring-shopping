@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import shopping.common.exception.ErrorCode;
@@ -33,5 +34,16 @@ class PasswordTest {
         final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> new Password(value));
         assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_PASSWORD);
+    }
+
+    @Test
+    @DisplayName("해당 비밀번호 값을 가진다.")
+    void hasValue() {
+        /* given */
+        final Password password = new Password("test_password");
+
+        /* when & then*/
+        assertThat(password.hasValue("test_password")).isTrue();
+        assertThat(password.hasValue("invalid_password")).isFalse();
     }
 }
