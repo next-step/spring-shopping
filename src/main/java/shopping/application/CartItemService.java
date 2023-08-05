@@ -23,14 +23,14 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Service
-public class CartService {
+public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public CartService(CartItemRepository cartItemRepository, UserRepository userRepository,
-            ProductRepository productRepository) {
+    public CartItemService(CartItemRepository cartItemRepository, UserRepository userRepository,
+                           ProductRepository productRepository) {
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
@@ -63,22 +63,22 @@ public class CartService {
     }
 
     @Transactional
-    public CartItemResponse updateCartItemQuantity(String email, Long cartId, CartItemUpdateRequest cartItemUpdateRequest) {
-        CartItem cartItem = findCartItem(email, cartId);
+    public CartItemResponse updateCartItemQuantity(String email, Long cartItemId, CartItemUpdateRequest cartItemUpdateRequest) {
+        CartItem cartItem = findCartItem(email, cartItemId);
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
         return CartItemResponse.of(cartItemRepository.save(updatedCartItem));
     }
 
     @Transactional
-    public void deleteCartItem(String email, Long id) {
-        findCartItem(email, id);
-        cartItemRepository.deleteById(id);
+    public void deleteCartItem(String email, Long cartItemId) {
+        findCartItem(email, cartItemId);
+        cartItemRepository.deleteById(cartItemId);
     }
 
-    private CartItem findCartItem(String email, Long cartId) {
+    private CartItem findCartItem(String email, Long cartItemId) {
         User user = findUserOrThrow(email);
-        CartItem cartItem = cartItemRepository.findById(cartId)
-                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(cartId)));
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new CartItemNotFoundException(String.valueOf(cartItemId)));
 
         validateUserMatch(user, cartItem);
         return cartItem;

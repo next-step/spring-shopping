@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.*;
 
 @DisplayName("장바구니 서비스 통합 테스트")
-class CartServiceTest extends ServiceTest {
+class CartItemServiceTest extends ServiceTest {
 
     @Autowired
-    private CartService cartService;
+    private CartItemService cartItemService;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -71,7 +71,7 @@ class CartServiceTest extends ServiceTest {
             List<CartItem> savedItems = cartItemRepository.saveAll(cartItems);
 
             // when
-            List<CartItemResponse> responses = cartService.findAllByEmail(email, PageRequest.of(0, 3));
+            List<CartItemResponse> responses = cartItemService.findAllByEmail(email, PageRequest.of(0, 3));
 
             // then
             assertThat(responses).usingRecursiveComparison().isEqualTo(
@@ -90,7 +90,7 @@ class CartServiceTest extends ServiceTest {
             PageRequest pageRequest = PageRequest.of(0, 3);
 
             // when, then
-            assertThatThrownBy(() -> cartService.findAllByEmail(email, pageRequest))
+            assertThatThrownBy(() -> cartItemService.findAllByEmail(email, pageRequest))
                     .isInstanceOf(UserNotFoundException.class);
         }
     }
@@ -120,7 +120,7 @@ class CartServiceTest extends ServiceTest {
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when
-            cartService.createCartItem(email, cartItemCreateRequest);
+            cartItemService.createCartItem(email, cartItemCreateRequest);
 
             // then
             List<CartItem> cartItems = cartItemRepository.findAll();
@@ -151,7 +151,7 @@ class CartServiceTest extends ServiceTest {
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when, then
-            assertThatThrownBy(() -> cartService.createCartItem(email, cartItemCreateRequest))
+            assertThatThrownBy(() -> cartItemService.createCartItem(email, cartItemCreateRequest))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -169,7 +169,7 @@ class CartServiceTest extends ServiceTest {
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
 
             // when & then
-            assertThatThrownBy(() -> cartService.createCartItem(email, cartItemCreateRequest))
+            assertThatThrownBy(() -> cartItemService.createCartItem(email, cartItemCreateRequest))
                     .isInstanceOf(ProductNotFoundException.class);
         }
 
@@ -198,7 +198,7 @@ class CartServiceTest extends ServiceTest {
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when
-            cartService.createCartItem(email, cartItemCreateRequest);
+            cartItemService.createCartItem(email, cartItemCreateRequest);
 
             // then
             List<CartItem> cartItems = cartItemRepository.findAll();
@@ -243,7 +243,7 @@ class CartServiceTest extends ServiceTest {
             CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when
-            cartService.updateCartItemQuantity(email, savedCartItem.getId(), cartItemUpdateRequest);
+            cartItemService.updateCartItemQuantity(email, savedCartItem.getId(), cartItemUpdateRequest);
 
             // then
             Optional<CartItem> optionalCartItem = cartItemRepository.findById(savedCartItem.getId());
@@ -261,7 +261,7 @@ class CartServiceTest extends ServiceTest {
             CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when, then
-            assertThatThrownBy(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+            assertThatThrownBy(() -> cartItemService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -280,7 +280,7 @@ class CartServiceTest extends ServiceTest {
             CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when, then
-            assertThatCode(() -> cartService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+            assertThatCode(() -> cartItemService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
                     .isInstanceOf(CartItemNotFoundException.class);
         }
 
@@ -311,14 +311,14 @@ class CartServiceTest extends ServiceTest {
 
             CartItem cartItem = new CartItem(other, product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
-            Long cartId = savedCartItem.getId();
+            Long cartItemId = savedCartItem.getId();
 
             Integer newQuantity = 5;
             CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when, then
             assertThatThrownBy(
-                    () -> cartService.updateCartItemQuantity(email, cartId, cartItemUpdateRequest))
+                    () -> cartItemService.updateCartItemQuantity(email, cartItemId, cartItemUpdateRequest))
                     .isInstanceOf(UserNotMatchException.class);
         }
     }
@@ -347,13 +347,13 @@ class CartServiceTest extends ServiceTest {
 
             CartItem cartItem = new CartItem(user, product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
-            Long cartId = savedCartItem.getId();
+            Long cartItemId = savedCartItem.getId();
 
             // when
-            cartService.deleteCartItem(email, cartId);
+            cartItemService.deleteCartItem(email, cartItemId);
 
             // then
-            Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartId);
+            Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartItemId);
             assertThat(optionalCartItem).isEmpty();
         }
 
@@ -364,7 +364,7 @@ class CartServiceTest extends ServiceTest {
             String email = "test@example.com";
 
             // when, then
-            assertThatThrownBy(() -> cartService.deleteCartItem(email, 1L))
+            assertThatThrownBy(() -> cartItemService.deleteCartItem(email, 1L))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -380,7 +380,7 @@ class CartServiceTest extends ServiceTest {
             userRepository.save(user);
 
             // when, then
-            assertThatCode(() -> cartService.deleteCartItem(email, 1L))
+            assertThatCode(() -> cartItemService.deleteCartItem(email, 1L))
                     .isInstanceOf(CartItemNotFoundException.class);
         }
 
@@ -411,10 +411,10 @@ class CartServiceTest extends ServiceTest {
 
             CartItem cartItem = new CartItem(other, product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
-            Long cartId = savedCartItem.getId();
+            Long cartItemId = savedCartItem.getId();
 
             // when, then
-            assertThatCode(() -> cartService.deleteCartItem(email, cartId))
+            assertThatCode(() -> cartItemService.deleteCartItem(email, cartItemId))
                     .isInstanceOf(UserNotMatchException.class);
         }
     }
