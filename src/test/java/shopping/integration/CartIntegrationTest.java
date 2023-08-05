@@ -375,7 +375,7 @@ class CartIntegrationTest extends IntegrationTest {
         final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
         assertThat(updatedCartItems).isEmpty();
     }
 }
