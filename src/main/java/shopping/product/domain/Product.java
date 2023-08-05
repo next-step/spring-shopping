@@ -67,7 +67,7 @@ public class Product {
         return price;
     }
 
-    public void updateValues(String name, String price, String imageUrl) {
+    public void update(String name, String price, String imageUrl) {
         this.name = name;
         this.price = new Money(price);
         this.image = new Image(ImageStoreType.NONE, imageUrl);

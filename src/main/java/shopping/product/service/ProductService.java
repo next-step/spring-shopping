@@ -38,7 +38,7 @@ public class ProductService {
 
     public void updateProduct(ProductUpdateRequest productUpdateRequest, Long productId) {
         Product product = getProductById(productId);
-        product.updateValues(
+        product.update(
             productUpdateRequest.getName(),
             productUpdateRequest.getPrice(),
             productUpdateRequest.getImageUrl()

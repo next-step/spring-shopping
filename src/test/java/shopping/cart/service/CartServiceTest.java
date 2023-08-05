@@ -94,7 +94,7 @@ class CartServiceTest {
         LoggedInMember loggedInMember = new LoggedInMember(memberId);
 
         cartService.addCartItem(loggedInMember, cartItemCreationRequest);
-        product.updateValues("특가 피자", "5000", "changedImage");
+        product.update("특가 피자", "5000", "changedImage");
 
         AllCartItemsResponse allCartItem = cartService.findAllCartItem(loggedInMember);
 
