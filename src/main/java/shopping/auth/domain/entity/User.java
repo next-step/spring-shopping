@@ -1,10 +1,12 @@
 package shopping.auth.domain.entity;
 
-import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import shopping.auth.domain.Email;
+import shopping.auth.domain.Password;
 
 @Entity
 @Table(name = "users")
@@ -13,17 +15,18 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(unique = true)
-    private String email;
-    private String password;
+    @Embedded
+    private Email email;
+    @Embedded
+    private Password password;
 
     protected User() {
     }
 
     public User(final Long id, final String email, final String password) {
         this.id = id;
-        this.email = email;
-        this.password = password;
+        this.email = new Email(email);
+        this.password = new Password(password);
     }
 
     public User(final String email, final String password) {
@@ -34,11 +37,11 @@ public class User {
         return id;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 }

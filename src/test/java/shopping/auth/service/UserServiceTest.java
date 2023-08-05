@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.auth.domain.Email;
 import shopping.auth.domain.entity.User;
 import shopping.auth.dto.request.LoginRequest;
 import shopping.auth.dto.response.LoginResponse;
@@ -34,20 +35,20 @@ class UserServiceTest {
         /* given */
         final Long userId = 1L;
         final String userEmail = "test_email@woowafriends.com";
-        final String userPassword = "test_password!";
+        final String userPassword = "test_password1!";
         final String accessToken = "test_access_token";
 
         final LoginRequest loginRequest = new LoginRequest(userEmail, userPassword);
         final User user = new User(userId, userEmail, userPassword);
 
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(new Email(userEmail))).thenReturn(Optional.of(user));
         when(jwtProvider.generateToken(String.valueOf(userId))).thenReturn(accessToken);
 
         /* when */
         LoginResponse loginResponse = userService.login(loginRequest);
 
         /* then */
-        verify(userRepository).findByEmail(userEmail);
+        verify(userRepository).findByEmail(new Email(userEmail));
         verify(jwtProvider).generateToken(String.valueOf(userId));
         assertThat(loginResponse.getAccessToken()).isEqualTo(accessToken);
     }
