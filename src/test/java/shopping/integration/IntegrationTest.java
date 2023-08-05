@@ -13,7 +13,7 @@ public class IntegrationTest {
     int port;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         RestAssured.port = port;
     }
 }
