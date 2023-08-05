@@ -1,6 +1,6 @@
 package shopping.auth.dto.request;
 
-public class LoginRequest {
+public final class LoginRequest {
 
     private String email;
     private String password;

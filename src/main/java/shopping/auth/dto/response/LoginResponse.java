@@ -1,6 +1,6 @@
 package shopping.auth.dto.response;
 
-public class LoginResponse {
+public final class LoginResponse {
 
     private String accessToken;
 

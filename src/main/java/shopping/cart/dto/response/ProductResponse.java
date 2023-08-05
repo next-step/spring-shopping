@@ -2,7 +2,7 @@ package shopping.cart.dto.response;
 
 import shopping.cart.domain.entity.Product;
 
-public class ProductResponse {
+public final class ProductResponse {
 
     private Long id;
     private String name;

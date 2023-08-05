@@ -1,6 +1,6 @@
 package shopping.cart.dto.request;
 
-public class CartItemUpdateRequest {
+public final class CartItemUpdateRequest {
 
     private int quantity;
 

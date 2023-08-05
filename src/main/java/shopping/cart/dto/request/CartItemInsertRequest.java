@@ -1,6 +1,6 @@
 package shopping.cart.dto.request;
 
-public class CartItemInsertRequest {
+public final class CartItemInsertRequest {
 
     private Long productId;
 
