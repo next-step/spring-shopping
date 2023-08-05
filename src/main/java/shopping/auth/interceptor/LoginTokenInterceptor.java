@@ -38,7 +38,7 @@ public class LoginTokenInterceptor implements HandlerInterceptor {
             throw new WooWaException("권한이 없습니다", HttpStatus.UNAUTHORIZED);
         }
 
-        request.setAttribute(MEMBER_KEY, new LoggedInMember(tokenProvider.getPayload(accessToken)));
+        request.setAttribute(MEMBER_KEY, new LoggedInMember(tokenProvider.getSubject(accessToken)));
         return true;
     }
 }

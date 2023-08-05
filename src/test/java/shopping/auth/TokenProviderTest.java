@@ -2,7 +2,6 @@ package shopping.auth;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ class TokenProviderTest {
     void parse() {
         String token
             = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b293YSIsIm5hbWUiOiJKb2huIERvZSIsImlhdCI6OTk5OTk5OTk5OX0.-5yUrTOn4Zg0uqy_iWrToXqpE1-WhYp2K3YYxAssSoA";
-        String payload = tokenProvider.getPayload(token);
+        String payload = tokenProvider.getSubject(token);
 
         assertThat(payload).isEqualTo("woowa");
     }
