@@ -6,7 +6,7 @@ public final class CartItemResponse {
 
     private Long cartItemId;
     private String name;
-    private String imageUuidFileName;
+    private String imageFileName;
     private int price;
     private int quantity;
 
@@ -14,11 +14,11 @@ public final class CartItemResponse {
     }
 
     private CartItemResponse(final Long cartItemId, final String name,
-        final String imageUuidFileName, final int price,
+        final String imageFileName, final int price,
         final int quantity) {
         this.cartItemId = cartItemId;
         this.name = name;
-        this.imageUuidFileName = imageUuidFileName;
+        this.imageFileName = imageFileName;
         this.price = price;
         this.quantity = quantity;
     }
@@ -41,8 +41,8 @@ public final class CartItemResponse {
         return name;
     }
 
-    public String getImageUuidFileName() {
-        return imageUuidFileName;
+    public String getImageFileName() {
+        return imageFileName;
     }
 
     public int getPrice() {

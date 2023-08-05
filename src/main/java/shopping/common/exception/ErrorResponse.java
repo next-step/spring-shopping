@@ -1,6 +1,6 @@
 package shopping.common.exception;
 
-public class ErrorResponse {
+public final class ErrorResponse {
 
     private ErrorCode errorCode;
     private String message;
