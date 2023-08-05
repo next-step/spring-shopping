@@ -73,4 +73,8 @@ public class CartItem {
         }
         return !this.user.equals(user);
     }
+
+    public Long totalPrice() {
+        return quantity.getQuantity() * product.getPrice();
+    }
 }

@@ -57,4 +57,22 @@ class CartItemTest {
         // then
         assertThat(isDifferentUser).isFalse();
     }
+
+    @DisplayName("장바구니 아이템 총 가격 계산 성공")
+    @Test
+    void whenTotalPriceThenReturnSuccess() {
+        // given
+        Long price = 1000L;
+        Integer quantity = 3;
+
+        User user = new User(1L, "hello@hello.hel", "123456789");
+        Product product = new Product(1L, "name", "/image.jpg", price);
+        CartItem cartItem = new CartItem(1L, user, product, quantity);
+
+        // when
+        Long totalPrice = cartItem.totalPrice();
+
+        // then
+        assertThat(totalPrice).isEqualTo(quantity * price);
+    }
 }
