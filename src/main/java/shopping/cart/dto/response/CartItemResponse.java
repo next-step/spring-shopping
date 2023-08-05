@@ -14,9 +14,6 @@ public class CartItemResponse {
     private String imageUrl;
     private int quantity;
 
-    private CartItemResponse() {
-    }
-
     public CartItemResponse(Long id, Long productId, String name, String imageUrl, int quantity) {
         this.id = id;
         this.productId = productId;

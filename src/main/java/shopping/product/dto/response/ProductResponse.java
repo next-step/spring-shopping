@@ -10,9 +10,6 @@ public class ProductResponse {
     private String imageUrl;
     private String price;
 
-    private ProductResponse() {
-    }
-
     public ProductResponse(Long id, String name, String imageUrl, String price) {
         this.id = id;
         this.name = name;

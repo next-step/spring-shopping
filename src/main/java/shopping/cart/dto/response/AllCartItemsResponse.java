@@ -8,9 +8,6 @@ public class AllCartItemsResponse {
     private List<CartItemResponse> cartItemResponses;
     private List<CartItemResponse> changedCartItemResponses;
 
-    private AllCartItemsResponse() {
-    }
-
     public AllCartItemsResponse(boolean changed, List<CartItemResponse> cartItemResponses,
         List<CartItemResponse> changedCartItemResponses) {
         this.changed = changed;
