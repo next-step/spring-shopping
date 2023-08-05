@@ -1,27 +1,21 @@
 package shopping.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.service.LoginService;
 
-@Controller
+@RestController
 public class LoginController {
 
     private final LoginService loginService;
 
     public LoginController(final LoginService loginService) {
         this.loginService = loginService;
-    }
-
-    @GetMapping("/login")
-    public String renderLoginPage() {
-        return "/login";
     }
 
     @PostMapping("/login")
