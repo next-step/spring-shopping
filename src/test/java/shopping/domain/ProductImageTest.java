@@ -34,7 +34,7 @@ class ProductImageTest {
         /* when & then */
         assertThatCode(() -> new ProductImage(value))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("상품 이미지는 비어있거나 공백이면 안됩니다. 입력값: " + value);
+            .hasMessage("이미지 경로는 비어있거나 공백이면 안됩니다.");
     }
 
     @Test

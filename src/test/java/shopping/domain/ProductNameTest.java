@@ -34,7 +34,7 @@ class ProductNameTest {
         /* when & then */
         assertThatCode(() -> new ProductName(value))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("상품 이름은 비어있거나 공백이면 안됩니다. 입력값: " + value);
+            .hasMessage("이름은 비어있거나 공백이면 안됩니다.");
     }
 
     @Test

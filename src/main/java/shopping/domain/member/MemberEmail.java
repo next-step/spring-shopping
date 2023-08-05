@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
+import shopping.exception.ExceptionType;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -26,13 +27,13 @@ public class MemberEmail {
 
     private void validateIsNotNullOrEmpty(final String email) {
         if (!StringUtils.hasText(email)) {
-            throw new ShoppingException("회원 이메일은 비어있거나 공백이면 안됩니다. 입력값: " + email);
+            throw new ShoppingException(ExceptionType.NO_CONTENT_EMAIL, email);
         }
     }
 
     private void validateEmailFormat(final String email) {
         if (!emailPattern.matcher(email).matches()) {
-            throw new ShoppingException("회원 이메일이 형식에 맞지 않습니다. 입력값: " + email);
+            throw new ShoppingException(ExceptionType.WRONG_EMAIL_FORMAT, email);
         }
     }
 

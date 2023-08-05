@@ -70,7 +70,7 @@ class CartProductServiceTest {
             () -> cartProductService.createCartProduct(memberId,
                 new CartProductCreateRequest(productId))
         ).isInstanceOf(ShoppingException.class)
-            .hasMessage("존재하지 않는 상품입니다. 입력값: " + productId);
+            .hasMessage("존재하지 않는 상품입니다.");
 
         verify(productRepository, times(1)).findById(productId);
         verify(cartProductRepository, times(0))
@@ -96,7 +96,7 @@ class CartProductServiceTest {
             () -> cartProductService.createCartProduct(memberId,
                 new CartProductCreateRequest(productId))
         ).isInstanceOf(ShoppingException.class)
-            .hasMessage("이미 장바구니에 담긴 상품입니다. 입력값: " + productId);
+            .hasMessage("이미 장바구니에 담긴 상품입니다.");
 
         verify(productRepository, times(1)).findById(productId);
         verify(cartProductRepository, times(1))

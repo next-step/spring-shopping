@@ -11,6 +11,10 @@ public class ExceptionResponse {
         this.message = message;
     }
 
+    public static ExceptionResponse of(final Exception exception) {
+        return new ExceptionResponse(exception.getMessage());
+    }
+
     public ExceptionResponse(final Exception exception) {
         this(exception.getMessage());
     }

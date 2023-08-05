@@ -62,9 +62,9 @@ class CartProductAcceptanceTest extends AcceptanceTest {
             request);
 
         /* then */
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         assertThat(response.body().jsonPath().getString("message")).isEqualTo(
-            "존재하지 않는 상품입니다. 입력값: 123");
+            "존재하지 않는 상품입니다.");
     }
 
     @Test
@@ -82,7 +82,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().jsonPath().getString("message"))
-            .isEqualTo("이미 장바구니에 담긴 상품입니다. 입력값: 3");
+            .isEqualTo("이미 장바구니에 담긴 상품입니다.");
     }
 
 
@@ -139,7 +139,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("장바구니 상품 개수는 0이하면 안됩니다. 입력값: " + quantity);
+            .isEqualTo("장바구니 상품 개수는 0 이하일 수 없습니다.");
     }
 
 
@@ -197,8 +197,8 @@ class CartProductAcceptanceTest extends AcceptanceTest {
             .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("존재하지 않는 장바구니 상품입니다. 장바구니 상품 정보: " + cartProductId);
+            .isEqualTo("존재하지 않는 장바구니 상품입니다.");
     }
 }

@@ -33,7 +33,7 @@ class MemberPasswordTest {
         /* when & then */
         assertThatCode(() -> new MemberPassword(password))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("회원 비밀번호는 비어있거나 공백이면 안됩니다. 입력값: " + password);
+            .hasMessage("비밀번호는 비어있거나 공백이면 안됩니다.");
     }
 
     @Test
@@ -45,7 +45,7 @@ class MemberPasswordTest {
         /* when & then */
         assertThatCode(() -> new MemberPassword(wrongPassword))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("회원 비밀번호는 30자 이하여야 합니다. 입력값: " + wrongPassword);
+            .hasMessage("비밀번호는 30자보다 길 수 없습니다.");
     }
 
     @Test

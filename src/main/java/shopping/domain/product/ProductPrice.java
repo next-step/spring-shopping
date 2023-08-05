@@ -2,6 +2,7 @@ package shopping.domain.product;
 
 import java.util.Objects;
 import javax.persistence.Embeddable;
+import shopping.exception.ExceptionType;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -20,7 +21,7 @@ public class ProductPrice {
 
     private void validatePriceLessThanEqualZero(final int value) {
         if (value <= 0) {
-            throw new ShoppingException("상품 가격은 0이하면 안됩니다. 입력값: " + value);
+            throw new ShoppingException(ExceptionType.INVALID_PRICE_SIZE, value);
         }
     }
 

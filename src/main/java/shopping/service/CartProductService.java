@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartProduct;
 import shopping.dto.request.CartProductCreateRequest;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
+import shopping.exception.ExceptionType;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
@@ -32,12 +33,15 @@ public class CartProductService {
         final Long productId = cartProductCreateRequest.getProductId();
 
         productRepository.findById(productId)
-            .orElseThrow(() -> new ShoppingException("존재하지 않는 상품입니다. 입력값: " + productId));
+            .orElseThrow(
+                () -> new ShoppingException(ExceptionType.NOT_FOUND_PRODUCT, productId)
+            );
 
         cartProductRepository.findByMemberIdAndProductId(memberId, productId)
             .ifPresent(cartProduct -> {
                 throw new ShoppingException(
-                    "이미 장바구니에 담긴 상품입니다. 입력값: " + cartProduct.getProductId());
+                    ExceptionType.DUPLICATED_CART_PRODUCT, cartProduct.getProductId()
+                );
             });
 
         return cartProductRepository.save(new CartProduct(memberId, productId));
@@ -57,7 +61,9 @@ public class CartProductService {
         final CartProduct cartProduct = cartProductRepository
             .findByIdAndMemberId(cartProductId, memberId)
             .orElseThrow(
-                () -> new ShoppingException("존재하지 않는 장바구니 상품입니다. 장바구니 상품 정보: " + cartProductId)
+                () -> new ShoppingException(
+                    ExceptionType.NOT_FOUND_CART_PRODUCT, cartProductId
+                )
             );
 
         cartProduct.updateQuantity(request.getQuantity());

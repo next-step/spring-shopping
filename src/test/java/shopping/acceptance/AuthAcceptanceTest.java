@@ -47,9 +47,9 @@ class AuthAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestHelper.post("/api/login", request);
 
         /* then */
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("존재하지 않는 이메일입니다. 입력값: " + email);
+            .isEqualTo("존재하지 않는 이메일입니다.");
     }
 
     @Test
@@ -66,7 +66,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("회원 이메일이 형식에 맞지 않습니다. 입력값: " + email);
+            .isEqualTo("이메일이 형식에 맞지 않습니다.");
     }
 
     @Test
@@ -83,7 +83,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("비밀번호가 일치하지 않습니다. 입력값: " + password);
+            .isEqualTo("비밀번호가 일치하지 않습니다.");
     }
 
     @Test
@@ -101,7 +101,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("토큰 헤더가 존재하지 않습니다.");
+            .isEqualTo("Authorization 헤더가 존재하지 않습니다.");
     }
 
     @ParameterizedTest

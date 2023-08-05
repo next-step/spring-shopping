@@ -30,7 +30,7 @@ class ProductPriceTest {
     void createProductPriceFailWithLessThanEqualZero(final int value) {
         assertThatCode(() -> new ProductPrice(value))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("상품 가격은 0이하면 안됩니다. 입력값: " + value);
+            .hasMessage("가격은 0 이하일 수 없습니다.");
     }
 
     @Test

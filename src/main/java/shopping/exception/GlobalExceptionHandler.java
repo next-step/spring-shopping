@@ -17,16 +17,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleShoppingException(
         final ShoppingException exception
     ) {
+        logger.info("{}", exception.getMessageWithCauseValue());
 
-        return ResponseEntity.badRequest().body(new ExceptionResponse(exception));
-    }
-
-    @ExceptionHandler(ShoppingAuthenticationException.class)
-    public ResponseEntity<ExceptionResponse> handleShoppingAuthenticationException(
-        final ShoppingAuthenticationException exception
-    ) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-            .body(new ExceptionResponse(exception));
+        return ResponseEntity.status(exception.getHttpStatus())
+            .body(ExceptionResponse.of(exception));
     }
 
     @ExceptionHandler(Exception.class)

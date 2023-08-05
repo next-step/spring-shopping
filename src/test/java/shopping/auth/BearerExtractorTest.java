@@ -10,7 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
-import shopping.exception.ShoppingAuthenticationException;
+import shopping.exception.ShoppingException;
 
 @DisplayName("Bearer 토큰 관련 기능 테스트")
 class BearerExtractorTest {
@@ -38,20 +38,20 @@ class BearerExtractorTest {
 
 
     @Test
-    @DisplayName("토큰 헤더가 존재하지 않으면 ShoppingAuthenticationException을 던진다.")
+    @DisplayName("Authorization 헤더가 존재하지 않으면 ShoppingException을 던진다.")
     void extractFailWithDoesNotExistHeader() {
         /* given */
         final MockHttpServletRequest request = new MockHttpServletRequest();
 
         /* when & then */
         assertThatCode(() -> bearerExtractor.extract(request))
-            .isInstanceOf(ShoppingAuthenticationException.class)
-            .hasMessage("토큰 헤더가 존재하지 않습니다.");
+            .isInstanceOf(ShoppingException.class)
+            .hasMessage("Authorization 헤더가 존재하지 않습니다.");
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"", "   "})
-    @DisplayName("토큰 값이 존재하지 않으면 ShoppingAuthenticationException을 던진다.")
+    @DisplayName("토큰 값이 존재하지 않으면 ShoppingException을 던진다.")
     void extractFailWithDoesNotExistValue(final String value) {
         /* given */
         final MockHttpServletRequest request = new MockHttpServletRequest();
@@ -59,12 +59,12 @@ class BearerExtractorTest {
 
         /* when & then */
         assertThatCode(() -> bearerExtractor.extract(request))
-            .isInstanceOf(ShoppingAuthenticationException.class)
+            .isInstanceOf(ShoppingException.class)
             .hasMessage("토큰 값이 존재하지 않습니다.");
     }
 
     @Test
-    @DisplayName("토큰 값이 Bearer로 시작하지 않으면 ShoppingAuthenticationException을 던진다.")
+    @DisplayName("토큰 값이 Bearer로 시작하지 않으면 ShoppingException을 던진다.")
     void extractFailWithDoesNotStartWithBearer() {
         /* given */
         final MockHttpServletRequest request = new MockHttpServletRequest();
@@ -72,7 +72,7 @@ class BearerExtractorTest {
 
         /* when & then */
         assertThatCode(() -> bearerExtractor.extract(request))
-            .isInstanceOf(ShoppingAuthenticationException.class)
+            .isInstanceOf(ShoppingException.class)
             .hasMessage("토큰이 Bearer로 시작하지 않습니다.");
     }
 }

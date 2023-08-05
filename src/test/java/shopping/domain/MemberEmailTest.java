@@ -35,7 +35,7 @@ class MemberEmailTest {
         /* when & then */
         assertThatCode(() -> new MemberEmail(email))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("회원 이메일은 비어있거나 공백이면 안됩니다. 입력값: " + email);
+            .hasMessage("이메일은 비어있거나 공백이면 안됩니다.");
     }
 
     @ParameterizedTest
@@ -47,7 +47,7 @@ class MemberEmailTest {
         /* when & then */
         assertThatCode(() -> new MemberEmail(wrong))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("회원 이메일이 형식에 맞지 않습니다. 입력값: " + wrong);
+            .hasMessage("이메일이 형식에 맞지 않습니다.");
     }
 
 

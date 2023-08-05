@@ -3,12 +3,13 @@ package shopping.domain.member;
 import java.util.Objects;
 import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
+import shopping.exception.ExceptionType;
 import shopping.exception.ShoppingException;
 
 @Embeddable
 public class MemberPassword {
 
-    public static final int MAX_LENGTH = 30;
+    private static final int MAX_LENGTH = 30;
 
     private String value;
 
@@ -24,13 +25,13 @@ public class MemberPassword {
 
     private void validateGreaterThanMaxLength(final String password) {
         if (password.length() > MAX_LENGTH) {
-            throw new ShoppingException("회원 비밀번호는 30자 이하여야 합니다. 입력값: " + password);
+            throw new ShoppingException(ExceptionType.INVALID_PASSWORD_LENGTH, password);
         }
     }
 
     private void validateIsNotNullOrEmpty(final String password) {
         if (!StringUtils.hasText(password)) {
-            throw new ShoppingException("회원 비밀번호는 비어있거나 공백이면 안됩니다. 입력값: " + password);
+            throw new ShoppingException(ExceptionType.NO_CONTENT_PASSWORD, password);
         }
     }
 
