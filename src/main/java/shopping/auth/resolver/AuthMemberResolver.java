@@ -7,13 +7,15 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import shopping.auth.annotation.AuthMember;
+import shopping.auth.domain.LoggedInMember;
 import shopping.auth.interceptor.LoginTokenInterceptor;
 
 public class AuthMemberResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        return methodParameter.getParameterAnnotation(AuthMember.class) != null;
+        return methodParameter.getParameterAnnotation(AuthMember.class) != null &&
+            methodParameter.getParameterType().equals(LoggedInMember.class);
     }
 
     @Override
