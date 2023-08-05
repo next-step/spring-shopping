@@ -1,8 +1,5 @@
 package shopping.service;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
@@ -17,6 +14,10 @@ import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class CartItemService {
@@ -59,7 +60,7 @@ public class CartItemService {
     }
 
     @Transactional
-    public CartItemResponse updateCartItem(
+    public void updateCartItem(
             final Long memberId,
             final Long cartItemId,
             final CartItemUpdateRequest cartItemUpdateRequest
@@ -69,8 +70,6 @@ public class CartItemService {
         cartItem.validateMember(member);
 
         cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
-
-        return CartItemResponse.from(cartItem);
     }
 
     @Transactional

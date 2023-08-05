@@ -1,14 +1,7 @@
 package shopping.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
@@ -47,13 +40,9 @@ public class CartItemController {
             @PathVariable final Long cartItemId,
             @RequestBody final CartItemUpdateRequest cartItemUpdateRequest
     ) {
-        final CartItemResponse cartItemResponse = cartItemService.updateCartItem(
-                loginMemberId,
-                cartItemId,
-                cartItemUpdateRequest
-        );
+        cartItemService.updateCartItem(loginMemberId, cartItemId, cartItemUpdateRequest);
 
-        return ResponseEntity.ok(cartItemResponse);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/cart-items/{cartItemId}")
@@ -63,6 +52,6 @@ public class CartItemController {
     ) {
         cartItemService.deleteCartItem(loginMemberId, cartItemId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

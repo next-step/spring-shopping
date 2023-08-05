@@ -102,9 +102,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .when().patch("/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        final CartItemResponse cartItemResponse = extractObject(response, CartItemResponse.class);
-        assertThat(cartItemResponse.getQuantity()).isEqualTo(updateQuantity);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
@@ -122,7 +120,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .when().delete("/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     @Test
