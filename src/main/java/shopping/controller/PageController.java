@@ -11,6 +11,9 @@ import shopping.dto.response.ProductResponse;
 @Controller
 public class PageController {
 
+    private static final String DEFAULT_PAGE = "1";
+    private static final String DEFAULT_PAGE_SIZE = "12";
+
     private final ProductService productService;
 
     public PageController(ProductService productService) {
@@ -18,8 +21,11 @@ public class PageController {
     }
 
     @GetMapping("/")
-    public String index(@RequestParam(defaultValue = "1") Integer page, Model model) {
-        Page<ProductResponse> products = productService.findAllByPage(page);
+    public String index(Model model,
+            @RequestParam(defaultValue = DEFAULT_PAGE) Integer page,
+            @RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize) {
+
+        Page<ProductResponse> products = productService.findAllByPage(page, pageSize);
         model.addAttribute("products", products);
         return "index";
     }

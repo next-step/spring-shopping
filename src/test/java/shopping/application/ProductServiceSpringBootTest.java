@@ -37,7 +37,7 @@ class ProductServiceSpringBootTest {
         Product salad2Result = productRepository.save(salad2);
 
         // when
-        Page<ProductResponse> products = productService.findAllByPage(1);
+        Page<ProductResponse> products = productService.findAllByPage(1, 12);
 
         // then
         assertThat(products.toList()).containsExactly(
@@ -60,7 +60,7 @@ class ProductServiceSpringBootTest {
         Product saladResult = productRepository.save(salad);
 
         // when
-        Page<ProductResponse> products = productService.findAllByPage(-1);
+        Page<ProductResponse> products = productService.findAllByPage(-1, 12);
 
         // then
         assertThat(products.toList()).containsExactly(
