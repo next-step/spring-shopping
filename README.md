@@ -33,13 +33,31 @@
 - [ ] 장바구니에 담긴 아이템 전체 주문
     - [ ] 장바구니 목록 페이지(/cart)에서 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문할 수 있습니다.
     - [ ] 주문 요청이 성공하면 주문 상세 페이지로 이동합니다.
+    - [ ] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+    - [ ] 사용자의 장바구니 속의 아이템을 구매합니다.
+    ```
+    POST /orders HTTP/1.1
+    content-type: application/json
+    host: localhost:8080  
+    ```
 - [ ] 주문 상세 정보
     - [ ] order-detail.html 파일을 이용하여 특정 주문의 상세 정보를 확인할 수 있게 만듭니다.
     - [ ] 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가해야 빠르게 연동할 수 있습니다.
+    - [ ] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+    - [ ] 사용자의 주문이 아닐시 403 Forbidden을 반환합니다.
+    ```
+    GET /orders/{orderId} HTTP/1.1
+    host: localhost:8080
+    ```
 - [ ] 사용자 별 주문 목록 확인
-    - [ ] order-history.html 파일을 이용하여 사용자 별 주문 목록을 확인할 수 있게 만듭니다.
     - [ ] /order-history url로 접근할 경우 주문 목록 페이지를 조회할 수 있어야 합니다.
+    - [ ] order-history.html 파일을 이용하여 사용자 별 주문 목록을 확인할 수 있게 만듭니다.
     - [ ] 상세보기 버튼을 클릭해 주문 상세 정보 페이지로 이동할 수 있습니다.
+    - [ ] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+    ```
+    GET /order-history HTTP/1.1
+    host: localhost:8080
+    ```
 
 ## Step3 장바구니
 
