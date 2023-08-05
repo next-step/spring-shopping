@@ -27,25 +27,25 @@ import shopping.cart.service.CartService;
 public class CartItemController {
 
     private final CartService cartService;
-    private final CartItemInsertRequestValidator cartItemInsertRequestValidator;
-    private final CartItemUpdateRequestValidator cartItemUpdateRequestValidator;
+    private final CartItemInsertRequestValidator insertRequestValidator;
+    private final CartItemUpdateRequestValidator updateRequestValidator;
 
     @InitBinder("cartItemInsertRequest")
     public void initCartItemInsertRequest(WebDataBinder dataBinder) {
-        dataBinder.addValidators(cartItemInsertRequestValidator);
+        dataBinder.addValidators(insertRequestValidator);
     }
 
     @InitBinder("cartItemUpdateRequest")
     public void initCartItemUpdateRequest(WebDataBinder dataBinder) {
-        dataBinder.addValidators(cartItemUpdateRequestValidator);
+        dataBinder.addValidators(updateRequestValidator);
     }
 
     public CartItemController(final CartService cartService,
-        final CartItemInsertRequestValidator cartItemInsertRequestValidator,
-        final CartItemUpdateRequestValidator cartItemUpdateRequestValidator) {
+        final CartItemInsertRequestValidator insertRequestValidator,
+        final CartItemUpdateRequestValidator updateRequestValidator) {
         this.cartService = cartService;
-        this.cartItemInsertRequestValidator = cartItemInsertRequestValidator;
-        this.cartItemUpdateRequestValidator = cartItemUpdateRequestValidator;
+        this.insertRequestValidator = insertRequestValidator;
+        this.updateRequestValidator = updateRequestValidator;
     }
 
     @PostMapping
