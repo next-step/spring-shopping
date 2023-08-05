@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Table(name = "cart_item")
 public class CartItem {
 
-    private static final int ADD_COUNT = 1;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,16 +27,19 @@ public class CartItem {
     protected CartItem() {
     }
 
-    public CartItem(Long id, User user, Product product, Integer quantity) {
-        this(user, product);
-        this.id = id;
-        this.quantity = new Quantity(quantity);
+    public CartItem(User user, Product product) {
+        this(null, user, product, new Quantity());
     }
 
-    public CartItem(User user, Product product) {
+    private CartItem(Long id, User user, Product product, Integer quantity) {
+        this(id, user, product, new Quantity(quantity));
+    }
+
+    private CartItem(Long id, User user, Product product, Quantity quantity) {
+        this.id = id;
         this.user = user;
         this.product = product;
-        this.quantity = new Quantity();
+        this.quantity = quantity;
     }
 
     public Long getId() {
@@ -58,7 +59,7 @@ public class CartItem {
     }
 
     public CartItem addQuantity() {
-        return new CartItem(this.id, this.user, this.product, this.getQuantity() + ADD_COUNT);
+        return new CartItem(this.id, this.user, this.product, this.quantity.addQuantity());
     }
 
     public CartItem updateQuantity(Integer quantity) {

@@ -8,27 +8,29 @@ import javax.persistence.Embeddable;
 public class Quantity {
 
     private static final int MIN_QUANTITY = 1;
-    private Integer quantity;
+    private static final int ADD_COUNT = 1;
+    private final int quantity;
 
     protected Quantity() {
         this.quantity = MIN_QUANTITY;
     }
 
-    public Quantity(Integer quantity) {
+    public Quantity(int quantity) {
         validate(quantity);
         this.quantity = quantity;
     }
 
-    private void validate(Integer quantity) {
-        if (quantity == null) {
-            throw new InvalidRequestException("수량은 Null 일수 없습니다.");
-        }
+    private void validate(int quantity) {
         if (quantity < MIN_QUANTITY) {
             throw new InvalidRequestException("수량은 " + MIN_QUANTITY + "이상이어야 합니다.");
         }
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
+    }
+
+    public Quantity addQuantity() {
+        return new Quantity(this.quantity + ADD_COUNT);
     }
 }
