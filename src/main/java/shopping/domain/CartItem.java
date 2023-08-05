@@ -1,6 +1,5 @@
 package shopping.domain;
 
-import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -73,24 +72,5 @@ public class CartItem {
             return true;
         }
         return !this.user.equals(user);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        CartItem cartItem = (CartItem) o;
-        return Objects.equals(id, cartItem.id) && Objects.equals(user,
-                cartItem.user) && Objects.equals(product, cartItem.product)
-                && Objects.equals(quantity, cartItem.quantity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, user, product, quantity);
     }
 }
