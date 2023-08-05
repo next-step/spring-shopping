@@ -21,11 +21,4 @@ public class ProductCartItemDto {
         return cartItem;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public void setCartItem(CartItem cartItem) {
-        this.cartItem = cartItem;
-    }
 }
