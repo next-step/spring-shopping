@@ -22,7 +22,10 @@ public class BearerExtractor {
         if (!value.startsWith(BEARER_TYPE)) {
             throw new ShoppingAuthenticationException("토큰이 Bearer로 시작하지 않습니다.");
         }
-
-        return value.split(" ")[1];
+        try {
+            return value.split(" ")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ShoppingAuthenticationException("토큰을 파싱하는데 실패하였습니다.");
+        }
     }
 }

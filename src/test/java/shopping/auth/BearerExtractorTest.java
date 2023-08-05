@@ -36,6 +36,18 @@ class BearerExtractorTest {
         assertThat(extract).isEqualTo("123");
     }
 
+    @Test
+    @DisplayName("토큰을 파싱하는데 실패하면 ShoopingAuthenticationException을 던진다. ")
+    void extractFailWithDoesNotParse() {
+        /* given */
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader(HttpHeaders.AUTHORIZATION, "Bearerd123");
+        /* when & then */
+        assertThatCode(() -> bearerExtractor.extract(request))
+            .isInstanceOf(ShoppingAuthenticationException.class)
+            .hasMessage("토큰을 파싱하는데 실패하였습니다.");
+    }
+
 
     @Test
     @DisplayName("토큰 헤더가 존재하지 않으면 ShoppingAuthenticationException을 던진다.")
