@@ -37,7 +37,7 @@ public class CartService {
     }
 
     @Transactional
-    public void createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
+    public CartItemResponse createCartItem(String email, CartItemCreateRequest cartItemCreateRequest) {
         User user = findUserOrThrow(email);
         Product product = productRepository
                 .findById(cartItemCreateRequest.getProductId())
@@ -46,9 +46,13 @@ public class CartService {
         Optional<CartItem> originalCartItem = cartItemRepository
                 .findByUserAndProduct(user, product);
 
-        originalCartItem.ifPresentOrElse(
-                cartItem -> cartItemRepository.save(cartItem.addQuantity()),
-                () -> cartItemRepository.save(new CartItem(user, product)));
+        if (originalCartItem.isPresent()) {
+            return CartItemResponse.of(
+                    cartItemRepository.save(originalCartItem.get().addQuantity())
+            );
+        }
+
+        return CartItemResponse.of(cartItemRepository.save(new CartItem(user, product)));
     }
 
     public List<CartItemResponse> findAllByEmail(String email, Pageable pageable) {
@@ -59,10 +63,10 @@ public class CartService {
     }
 
     @Transactional
-    public void updateCartItemQuantity(String email, Long cartId, CartItemUpdateRequest cartItemUpdateRequest) {
+    public CartItemResponse updateCartItemQuantity(String email, Long cartId, CartItemUpdateRequest cartItemUpdateRequest) {
         CartItem cartItem = findCartItem(email, cartId);
         CartItem updatedCartItem = cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
-        cartItemRepository.save(updatedCartItem);
+        return CartItemResponse.of(cartItemRepository.save(updatedCartItem));
     }
 
     @Transactional

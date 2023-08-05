@@ -11,6 +11,7 @@ import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -23,12 +24,10 @@ public class CartController {
     }
 
     @PostMapping("/cart/items")
-    public ResponseEntity<Void> createCartItem(
-            @EmailPrincipal String email,
+    public ResponseEntity<CartItemResponse> createCartItem(@EmailPrincipal String email,
             @RequestBody CartItemCreateRequest cartItemCreateRequest) {
-
-        cartService.createCartItem(email, cartItemCreateRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        CartItemResponse cartItemResponse = cartService.createCartItem(email, cartItemCreateRequest);
+        return ResponseEntity.created(URI.create("/cart/items/" + cartItemResponse.getId())).body(cartItemResponse);
     }
 
     @GetMapping("/cart/items")
@@ -38,12 +37,12 @@ public class CartController {
     }
 
     @PatchMapping("/cart/items/{id}")
-    public ResponseEntity<Void> updateCartItemQuantity(
+    public ResponseEntity<CartItemResponse> updateCartItemQuantity(
             @EmailPrincipal String email,
             @PathVariable Long id,
             @RequestBody CartItemUpdateRequest cartItemUpdateRequest) {
-        cartService.updateCartItemQuantity(email, id, cartItemUpdateRequest);
-        return ResponseEntity.ok().build();
+        CartItemResponse cartItemResponse = cartService.updateCartItemQuantity(email, id, cartItemUpdateRequest);
+        return ResponseEntity.ok().body(cartItemResponse);
     }
 
     @DeleteMapping("/cart/items/{id}")
