@@ -16,7 +16,7 @@ public class Product {
     private String imageUuidFileName;
     private int price;
 
-    public Product() {
+    protected Product() {
     }
 
     public Product(final Long id, final String name, final String imageUuidFileName,

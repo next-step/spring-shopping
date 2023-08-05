@@ -4,7 +4,7 @@ public class LoginResponse {
 
     private String accessToken;
 
-    public LoginResponse() {
+    private LoginResponse() {
     }
 
     private LoginResponse(final String accessToken) {

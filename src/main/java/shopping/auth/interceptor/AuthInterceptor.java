@@ -10,9 +10,9 @@ import shopping.common.exception.ShoppingException;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
-    public static final String BEARER_TOKEN_TYPE = "Bearer ";
-    public static final String AUTHORIZATION = "Authorization";
-    public static final String USER_ID = "userId";
+    private static final String BEARER_TOKEN_TYPE = "Bearer ";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String USER_ID = "userId";
     private final JwtProvider jwtProvider;
 
     public AuthInterceptor(final JwtProvider jwtProvider) {
