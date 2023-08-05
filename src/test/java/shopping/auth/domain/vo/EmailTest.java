@@ -32,6 +32,6 @@ class EmailTest {
         /* when & then */
         final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> new Email(value));
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_EMAIL);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_EMAIL_PATTERN);
     }
 }

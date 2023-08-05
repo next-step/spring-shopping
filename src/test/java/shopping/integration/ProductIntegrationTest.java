@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-@DisplayName("상품 인수 테스트")
+@DisplayName("상품 기능 통합 테스트")
 class ProductIntegrationTest extends IntegrationTest {
 
     @BeforeEach
@@ -21,7 +21,7 @@ class ProductIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 상품 목록 전체 조회")
+    @DisplayName("성공 : 상품 전체 목록을 조회한다.")
     void findAllProducts() {
         /* given */
 

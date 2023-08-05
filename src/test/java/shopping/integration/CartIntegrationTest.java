@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.TestFixture;
+import shopping.TestUtils;
 import shopping.auth.dto.request.LoginRequest;
 import shopping.auth.dto.response.LoginResponse;
 import shopping.cart.dto.request.CartItemInsertRequest;
@@ -24,7 +24,7 @@ import shopping.cart.repository.CartItemRepository;
 import shopping.common.exception.ErrorCode;
 import shopping.common.exception.ErrorResponse;
 
-@DisplayName("CartIntegrationTest")
+@DisplayName("장바구니 기능 통합 테스트")
 class CartIntegrationTest extends IntegrationTest {
 
     @Autowired
@@ -43,11 +43,12 @@ class CartIntegrationTest extends IntegrationTest {
 
     @Test
     @DisplayName("성공 : 장바구니에 상품을 추가한다")
-    void successInsertItem() {
+    void insertCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
@@ -67,16 +68,17 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 장바구니에 이미 존재하는 상품을 추가한다")
-    void insertDuplicateItem() {
+    @DisplayName("실패 : 장바구니에 이미 들어 있는 상품을 추가한다")
+    void insertDuplicateCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartItemInsertRequest);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -95,12 +97,13 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 장바구니에 존재하지 않는 상품을 추가한다")
-    void insertInvalidProduct() {
+    @DisplayName("실패 : 존재하지 않는 상품을 장바구니에 추가한다")
+    void insertCartItemOfInvalidProduct() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
         final Long invalidProductId = Long.MAX_VALUE;
@@ -124,18 +127,19 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니에 있는 상품 목록을 조회한다")
-    void successReadItem() {
+    @DisplayName("성공 : 장바구니 상품 목록을 조회한다")
+    void readCartItems() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        final CartItemInsertRequest cartPizza = new CartItemInsertRequest(2L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        TestFixture.insertCartItem(accessToken, cartPizza);
+        final CartItemInsertRequest cartItemInsertRequest1 = new CartItemInsertRequest(1L);
+        final CartItemInsertRequest cartItemInsertRequest2 = new CartItemInsertRequest(2L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest1);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest2);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -146,32 +150,34 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        List<CartItemResponse> cartItems = response.jsonPath().getList(".", CartItemResponse.class);
-        final List<String> names = cartItems.stream()
+        List<CartItemResponse> cartItemResponses = response.jsonPath()
+            .getList(".", CartItemResponse.class);
+        final List<String> names = cartItemResponses.stream()
             .map(CartItemResponse::getName)
             .collect(Collectors.toList());
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(names).containsExactly("치킨", "피자");
-        assertThat(cartItems).hasSize(2);
+        assertThat(cartItemResponses).hasSize(2);
     }
 
     @Test
     @DisplayName("성공 : 장바구니에 있는 하나의 상품 수량을 수정한다")
-    void successUpdateQuantityOfCartItem() {
+    void updateQuantityOfCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
-        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(3);
 
         /* when */
@@ -185,30 +191,31 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+        final List<CartItemResponse> updatedCartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(updatedCartItems.get(0).getQuantity()).isEqualTo(
+        assertThat(updatedCartItemResponses.get(0).getQuantity()).isEqualTo(
             cartItemUpdateRequest.getQuantity());
     }
 
     @Test
     @DisplayName("성공 : 장바구니에 있는 하나의 상품 수량을 0으로 수정하면 삭제된다.")
-    void successUpdateQuantityOfCartItemToZero() {
+    void updateQuantityOfCartItemToZero() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
-        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(0);
 
         /* when */
@@ -222,11 +229,11 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+        final List<CartItemResponse> updatedCartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(updatedCartItems).isEmpty();
+        assertThat(updatedCartItemResponses).isEmpty();
     }
 
     @Test
@@ -235,16 +242,17 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
-        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(-1);
 
         /* when */
@@ -269,16 +277,17 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
-        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(1001);
 
         /* when */
@@ -298,26 +307,28 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 다른 사람의 장바구니 상품의 갯수를 수정할 수 없다")
+    @DisplayName("실패 : 다른 사람의 장바구니 상품 수량을 수정할 수 없다")
     void updateOtherUserCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
-        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(3);
 
         final LoginRequest otherLoginRequest = new LoginRequest("other_test_email@woowafriends.com",
             "test_password!");
-        String otherAccessToken = TestFixture.login(otherLoginRequest).as(LoginResponse.class)
+        String otherAccessToken = TestUtils.login(otherLoginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
         /* when */
@@ -337,12 +348,13 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 장바구니에 없는 상품의 갯수를 수정할 수 없다.")
+    @DisplayName("실패 : 장바구니에 없는 상품의 수량을 수정할 수 없다.")
     void updateWithInvalidCartItemId() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
         final Long invalidCartItemId = Long.MAX_VALUE;
@@ -365,21 +377,22 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니에 있는 하나의 상품을 삭제한다")
+    @DisplayName("성공 : 장바구니에서 하나의 상품을 삭제한다")
     void successRemoveCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
             .getAccessToken();
 
-        final CartItemInsertRequest cartChicken = new CartItemInsertRequest(1L);
-        TestFixture.insertCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
-        final Long cartItemId = cartItems.get(0).getCartItemId();
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -390,10 +403,10 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+        final List<CartItemResponse> updatedCartItemResponses = TestUtils.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-        assertThat(updatedCartItems).isEmpty();
+        assertThat(updatedCartItemResponses).isEmpty();
     }
 }

@@ -15,7 +15,8 @@ import shopping.auth.dto.response.LoginResponse;
 import shopping.common.exception.ErrorCode;
 import shopping.common.exception.ErrorResponse;
 
-class UserIntegrationTest extends IntegrationTest {
+@DisplayName("로그인 기능 통합 테스트")
+class LoginIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     @Override
@@ -46,10 +47,10 @@ class UserIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("로그인에 실패한다. - 이메일이 존재하지 않는다.")
-    void loginFailEmailNotRegistered() {
+    @DisplayName("존재하지 않는 이메일로 로그인을 시도한다.")
+    void loginWithNotRegisteredEmail() {
         /* given */
-        final LoginRequest loginRequest = new LoginRequest("invalid_email",
+        final LoginRequest loginRequest = new LoginRequest("unregistered_email@gmail.com",
             "test_password!");
 
         /* when */
@@ -64,12 +65,12 @@ class UserIntegrationTest extends IntegrationTest {
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_EMAIL);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.EMAIL_NOT_REGISTERED);
     }
 
     @Test
-    @DisplayName("로그인에 실패한다. - 비밀번호가 일치하지 않는다.")
-    void loginFailPasswordNotValid() {
+    @DisplayName("틀린 비밀번호로 로그인을 시도한다.")
+    void loginWithIncorrectPassword() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "invalid_password");
@@ -86,7 +87,7 @@ class UserIntegrationTest extends IntegrationTest {
         /* then */
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_PASSWORD);
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.PASSWORD_NOT_CORRECT);
 
     }
 }

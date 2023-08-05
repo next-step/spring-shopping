@@ -34,7 +34,7 @@ public class Password {
         final Matcher matcher = PASSWORD_PATTERN.matcher(value);
 
         if (!matcher.matches()) {
-            throw new ShoppingException(ErrorCode.INVALID_PASSWORD);
+            throw new ShoppingException(ErrorCode.INVALID_PASSWORD_PATTERN);
         }
     }
 

@@ -25,7 +25,7 @@ public class UserService {
 
     public LoginResponse login(final LoginRequest loginRequest) {
         User user = userRepository.findByEmail(new Email(loginRequest.getEmail()))
-            .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_EMAIL));
+            .orElseThrow(() -> new ShoppingException(ErrorCode.EMAIL_NOT_REGISTERED));
         validatePassword(loginRequest, user);
 
         final String accessToken = jwtProvider.generateToken(String.valueOf(user.getId()));
@@ -34,7 +34,7 @@ public class UserService {
 
     private void validatePassword(final LoginRequest loginRequest, final User user) {
         if (!user.getPassword().hasValue(loginRequest.getPassword())) {
-            throw new ShoppingException(ErrorCode.INVALID_PASSWORD);
+            throw new ShoppingException(ErrorCode.PASSWORD_NOT_CORRECT);
         }
     }
 }

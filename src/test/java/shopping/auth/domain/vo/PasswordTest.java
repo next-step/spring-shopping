@@ -33,7 +33,7 @@ class PasswordTest {
         /* when & then */
         final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> new Password(value));
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_PASSWORD);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_PASSWORD_PATTERN);
     }
 
     @Test

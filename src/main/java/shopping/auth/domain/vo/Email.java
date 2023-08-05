@@ -29,7 +29,7 @@ public class Email {
     private static void validatePattern(final String value) {
         final Matcher matcher = EMAIL_PATTERN.matcher(value);
         if (!matcher.matches()) {
-            throw new ShoppingException(ErrorCode.INVALID_EMAIL);
+            throw new ShoppingException(ErrorCode.INVALID_EMAIL_PATTERN);
         }
     }
 
