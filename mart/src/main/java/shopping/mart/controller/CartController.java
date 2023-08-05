@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import shopping.auth.interceptor.TokenPerRequest;
 import shopping.mart.dto.CartAddRequest;
 import shopping.mart.dto.CartResponse;
 import shopping.mart.dto.CartUpdateRequest;
@@ -21,34 +21,34 @@ import shopping.mart.service.CartService;
 public class CartController {
 
     private final CartService cartService;
+    private final TokenPerRequest tokenPerRequest;
 
-    CartController(CartService cartService) {
+    CartController(CartService cartService, TokenPerRequest tokenPerRequest) {
         this.cartService = cartService;
+        this.tokenPerRequest = tokenPerRequest;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addProduct(@RequestAttribute(name = "userId") Long userId, @RequestBody CartAddRequest request) {
-        cartService.addProduct(userId, request);
+    public void addProduct(@RequestBody CartAddRequest request) {
+        cartService.addProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CartResponse findAllProducts(@RequestAttribute(name = "userId") Long userId) {
-        return cartService.getCart(userId);
+    public CartResponse findAllProducts() {
+        return cartService.getCart(Long.parseLong(tokenPerRequest.getDecryptedToken()));
     }
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void updateProductCount(@RequestAttribute(name = "userId") Long userId,
-            @RequestBody CartUpdateRequest request) {
-        cartService.updateProduct(userId, request);
+    public void updateProductCount(@RequestBody CartUpdateRequest request) {
+        cartService.updateProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCart(@RequestAttribute(name = "userId") Long userId,
-            @RequestParam(name = "product-id") Long productId) {
-        cartService.deleteProduct(userId, productId);
+    public void deleteCart(@RequestParam(name = "product-id") Long productId) {
+        cartService.deleteProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), productId);
     }
 }

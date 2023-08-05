@@ -13,9 +13,11 @@ public class AuthInterceptor implements HandlerInterceptor {
     private static final String INVALID_TOKEN = "AUTH-INTERCEPTOR-401";
 
     private final JwtUtils jwtUtils;
+    private final TokenPerRequest tokenPerRequest;
 
-    public AuthInterceptor(JwtUtils jwtUtils) {
+    public AuthInterceptor(JwtUtils jwtUtils, TokenPerRequest tokenPerRequest) {
         this.jwtUtils = jwtUtils;
+        this.tokenPerRequest = tokenPerRequest;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         try {
             String id = jwtUtils.payload(token);
-            request.setAttribute("userId", Long.valueOf(id));
+            tokenPerRequest.setDecryptedToken(id);
         } catch (Exception exception) {
             throw new StatusCodeException(MessageFormat.format("인증할 수 없는 토큰 \"{0}\" 입니다.", token), INVALID_TOKEN);
         }
