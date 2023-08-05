@@ -60,7 +60,7 @@ public class SpringWebExceptionHandler {
                 .body(ApiExceptionResponse.from("처리할 수 없는 예외가 발생했습니다."));
     }
 
-    private int mappingSpringWebExceptionToStatusCode(Exception ex) {
+    private int mappingSpringWebExceptionToStatusCode(final Exception ex) {
         if (ex instanceof HttpRequestMethodNotSupportedException) {
             return HttpServletResponse.SC_METHOD_NOT_ALLOWED;
         }

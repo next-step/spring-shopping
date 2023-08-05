@@ -9,7 +9,7 @@ import shopping.dto.response.LoginResponse;
 
 public class LogInHelper {
 
-    public static ExtractableResponse<Response> loginRequest(String email, String password) {
+    public static ExtractableResponse<Response> loginRequest(final String email, final String password) {
         return RestAssured
                 .given().log().all()
                 .body(new LoginRequest(email, password))
@@ -19,7 +19,7 @@ public class LogInHelper {
                 .then().log().all().extract();
     }
 
-    public static LoginResponse login(String email, String password) {
+    public static LoginResponse login(final String email, final String password) {
         return RestAssuredHelper.extractObject(RestAssured
                 .given().log().all()
                 .body(new LoginRequest(email, password))

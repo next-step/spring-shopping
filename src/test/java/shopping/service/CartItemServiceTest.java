@@ -18,7 +18,6 @@ import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -94,7 +93,7 @@ class CartItemServiceTest {
     void updateCartItem() {
         final Member anyMember = getAnyMember();
         final Product anyProduct = getAnyProduct();
-        saveCartItems(anyMember, anyProduct);
+        saveCartItem(anyMember, anyProduct);
         final CartItem anyCartItemByMember = getAnyCartItemByMember(anyMember);
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(9);
 
@@ -112,7 +111,7 @@ class CartItemServiceTest {
         final Member anyMember = getAnyMember();
         final Member OtherMember = getOtherMember(anyMember);
         final Product anyProduct = getAnyProduct();
-        saveCartItems(anyMember, anyProduct);
+        saveCartItem(anyMember, anyProduct);
         final CartItem anyCartItemByMember = getAnyCartItemByMember(anyMember);
         final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(9);
 
@@ -127,7 +126,7 @@ class CartItemServiceTest {
     void deleteCartItem() {
         final Member anyMember = getAnyMember();
         final Product anyProduct = getAnyProduct();
-        saveCartItems(anyMember, anyProduct);
+        saveCartItem(anyMember, anyProduct);
         final CartItem anyCartItemByMember = getAnyCartItemByMember(anyMember);
 
         cartItemService.deleteCartItem(anyMember.getId(), anyCartItemByMember.getId());
@@ -141,7 +140,7 @@ class CartItemServiceTest {
         final Member anyMember = getAnyMember();
         final Member OtherMember = getOtherMember(anyMember);
         final Product anyProduct = getAnyProduct();
-        saveCartItems(anyMember, anyProduct);
+        saveCartItem(anyMember, anyProduct);
         final CartItem anyCartItemByMember = getAnyCartItemByMember(anyMember);
 
         assertThatCode(() -> cartItemService.deleteCartItem(OtherMember.getId(), anyCartItemByMember.getId()))
@@ -150,14 +149,14 @@ class CartItemServiceTest {
     }
 
 
-    private void saveCartItems(final Member anyMember, final Product... products) {
-        saveCartItems(anyMember, Arrays.stream(products).collect(toList()));
+    private void saveCartItem(final Member anyMember, final Product product) {
+        final CartItem cartItem = new CartItem(anyMember, product);
+        cartItemRepository.save(cartItem);
     }
 
     private void saveCartItems(final Member anyMember, final List<Product> products) {
         for (Product product : products) {
-            final CartItem cartItem = new CartItem(anyMember, product);
-            cartItemRepository.save(cartItem);
+            saveCartItem(anyMember, product);
         }
     }
 
@@ -167,7 +166,7 @@ class CartItemServiceTest {
                 .orElseThrow(IllegalStateException::new);
     }
 
-    private Member getOtherMember(Member anyMember) {
+    private Member getOtherMember(final Member anyMember) {
         return memberRepository.findAll().stream()
                 .filter(member -> !member.equals(anyMember))
                 .findAny()
@@ -180,7 +179,7 @@ class CartItemServiceTest {
                 .orElseThrow(IllegalStateException::new);
     }
 
-    private CartItem getAnyCartItemByMember(Member member) {
+    private CartItem getAnyCartItemByMember(final Member member) {
         return cartItemRepository.findAllByMemberId(member.getId()).stream()
                 .findAny()
                 .orElseThrow(IllegalStateException::new);

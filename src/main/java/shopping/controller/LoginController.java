@@ -3,7 +3,6 @@ package shopping.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
@@ -19,7 +18,6 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest loginRequest) {
         final LoginResponse loginResponse = loginService.login(loginRequest);
 
