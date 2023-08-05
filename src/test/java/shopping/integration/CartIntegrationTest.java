@@ -97,6 +97,34 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("실패 : productId 정보 없이 장바구니에 상품을 추가한다.")
+    void insertCartItemWithoutProductId() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(null);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemInsertRequest)
+            .when().post("/cart/items")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.REQUIRED_FIELD_MISSING);
+    }
+
+    @Test
     @DisplayName("실패 : 존재하지 않는 상품을 장바구니에 추가한다")
     void insertCartItemOfInvalidProduct() {
         /* given */
@@ -237,7 +265,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 상품 수량을 0개 미만으로 수정할 수 없다.")
+    @DisplayName("실패 : 상품 수량을 0개 미만으로 수정한다.")
     void updateCartItemQuantityUnder0() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -272,7 +300,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 상품 수량을 1,000개 초과로 수정할 수 없다.")
+    @DisplayName("실패 : 상품 수량을 1,000개 초과로 수정한다.")
     void updateCartItemQuantityOver1000() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -307,7 +335,7 @@ class CartIntegrationTest extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("실패 : 다른 사람의 장바구니 상품 수량을 수정할 수 없다")
+    @DisplayName("실패 : 다른 사용자의 장바구니 상품 수량을 수정한다.")
     void updateOtherUserCartItem() {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
@@ -345,6 +373,41 @@ class CartIntegrationTest extends IntegrationTest {
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_CART_ITEM);
+    }
+
+    @Test
+    @DisplayName("실패 : 수량 정보 없이 장바구니 상품 수량을 수정한다.")
+    void updateQuantityWithoutQuantity() {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestUtils.login(loginRequest)
+            .as(LoginResponse.class)
+            .getAccessToken();
+
+        final CartItemInsertRequest cartItemInsertRequest = new CartItemInsertRequest(1L);
+        TestUtils.insertCartItem(accessToken, cartItemInsertRequest);
+        final List<CartItemResponse> cartItemResponses = TestUtils.readCartItems(accessToken)
+            .jsonPath()
+            .getList(".", CartItemResponse.class);
+
+        final Long cartItemId = cartItemResponses.get(0).getCartItemId();
+        final CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(null);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(cartItemUpdateRequest)
+            .when().put("/cart/items/{cartItemId}/quantity", cartItemId)
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.REQUIRED_FIELD_MISSING);
     }
 
     @Test

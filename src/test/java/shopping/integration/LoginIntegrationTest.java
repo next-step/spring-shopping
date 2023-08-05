@@ -8,6 +8,8 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.auth.dto.request.LoginRequest;
@@ -88,6 +90,49 @@ class LoginIntegrationTest extends IntegrationTest {
         final ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.PASSWORD_NOT_CORRECT);
+    }
 
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("이메일 정보 없이 로그인을 시도한다.")
+    void loginWithoutEmail(final String email) {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest(email, "test_password!");
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(loginRequest)
+            .when().post("/login/token")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.REQUIRED_FIELD_MISSING);
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("비밀번호 정보 없이 로그인을 시도한다.")
+    void loginWithoutPassword(final String password) {
+        /* given */
+        final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com", password);
+
+        /* when */
+        final ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(loginRequest)
+            .when().post("/login/token")
+            .then().log().all()
+            .extract();
+
+        /* then */
+        final ErrorResponse errorResponse = response.as(ErrorResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.REQUIRED_FIELD_MISSING);
     }
 }
