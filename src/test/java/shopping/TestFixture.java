@@ -21,7 +21,7 @@ public class TestFixture {
             .given().log().all()
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(loginRequest)
-            .when().post("/user/login/token")
+            .when().post("/login/token")
             .then().log().all()
             .extract();
     }
