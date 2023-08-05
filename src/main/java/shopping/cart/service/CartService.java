@@ -43,8 +43,8 @@ public class CartService {
         final Product product = findProductBy(productId);
         validateDuplicateCartItem(userId, productId);
 
-        final User userProxy = userRepository.getReferenceById(userId);
-        final CartItem cartItem = new CartItem(userProxy, product);
+        final User user = userRepository.getReferenceById(userId);
+        final CartItem cartItem = new CartItem(user, product);
         cartItemRepository.save(cartItem);
     }
 
