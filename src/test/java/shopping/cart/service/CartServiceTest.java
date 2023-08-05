@@ -26,7 +26,7 @@ import shopping.cart.repository.CartItemRepository;
 import shopping.cart.repository.ProductRepository;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("CartServiceTest")
+@DisplayName("CartService 단위 테스트")
 class CartServiceTest {
 
     @Mock
@@ -39,41 +39,36 @@ class CartServiceTest {
     private CartService cartService;
 
     @Test
-    @DisplayName("성공 : 장바구니에 상품을 추가한다.")
-    void successInsertCartItem() {
+    @DisplayName("장바구니에 상품을 추가한다.")
+    void insertCartItem() {
         /* given */
-        Long productId = 1L;
-        Long userId = 1L;
-        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
-        Product product = new Product(productId, "치킨", "fried_chicken.png", 20000);
-        CartItemInsertRequest cartRequest = new CartItemInsertRequest(productId);
-        when(userRepository.getReferenceById(userId)).thenReturn(user);
-        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        User user = new User(1L, "test_email@woowafriends.com", "test_password!");
+        Product product = new Product(1L, "치킨", "fried_chicken.png", 20000);
+        CartItemInsertRequest cartRequest = new CartItemInsertRequest(product.getId());
+        when(userRepository.getReferenceById(user.getId())).thenReturn(user);
+        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
 
         /* when */
-        cartService.insertCartItem(cartRequest, userId);
+        cartService.insertCartItem(cartRequest, user.getId());
 
         /* then */
-        verify(userRepository).getReferenceById(userId);
-        verify(productRepository).findById(productId);
         verify(cartItemRepository).save(any());
     }
 
     @Test
-    @DisplayName("성공 : 장바구니 상품을 조회한다.")
-    void successReadCartItems() {
+    @DisplayName("장바구니 상품을 조회한다.")
+    void readCartItems() {
         /* given */
-        Long userId = 1L;
-        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
+        User user = new User(1L, "test_email@woowafriends.com", "test_password!");
         Product chicken = new Product(1L, "치킨", "fried_chicken.png", 20000);
         Product pizza = new Product(2L, "피자", "pizza.png", 25000);
         CartItem cartItemChicken = new CartItem(1L, user, chicken, 1);
         CartItem cartItemPizza = new CartItem(2L, user, pizza, 1);
         List<CartItem> cartItems = List.of(cartItemChicken, cartItemPizza);
-        when(cartItemRepository.findByUserId(userId)).thenReturn(cartItems);
+        when(cartItemRepository.findByUserId(user.getId())).thenReturn(cartItems);
 
         /* when */
-        List<CartItemResponse> cartItemResponses = cartService.getCartItems(userId);
+        List<CartItemResponse> cartItemResponses = cartService.getCartItems(user.getId());
 
         /* then */
         final List<String> productNames = cartItemResponses.stream()
@@ -85,45 +80,40 @@ class CartServiceTest {
     }
 
     @Test
-    @DisplayName("성공 : 장바구니 상품 갯수를 수정한다.")
-    void successUpdateCartItem() {
+    @DisplayName("장바구니 상품 수량을 수정한다.")
+    void updateCartItem() {
         /* given */
-        Long userId = 1L;
-        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
-        Product chicken = new Product(1L, "치킨", "fried_chicken.png", 20000);
-        CartItem cartItemChicken = new CartItem(1L, user, chicken, 1);
+        User user = new User(1L, "test_email@woowafriends.com", "test_password!");
+        Product product = new Product(1L, "치킨", "fried_chicken.png", 20000);
+        CartItem cartItem = new CartItem(1L, user, product, 1);
 
-        Long cartItemId = cartItemChicken.getId();
         int updateQuantity = 3;
-        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));
-        when(userRepository.getReferenceById(userId)).thenReturn(user);
+        when(cartItemRepository.findById(cartItem.getId())).thenReturn(Optional.of(cartItem));
+        when(userRepository.getReferenceById(user.getId())).thenReturn(user);
 
         /* when */
-        cartService.updateCartItemQuantity(cartItemId, new CartItemUpdateRequest(updateQuantity),
-            userId);
+        cartService.updateCartItemQuantity(cartItem.getId(),
+            new CartItemUpdateRequest(updateQuantity), user.getId());
 
         /* then */
-        assertThat(cartItemChicken.getQuantity()).isEqualTo(new Quantity(updateQuantity));
+        assertThat(cartItem.getQuantity()).isEqualTo(new Quantity(updateQuantity));
     }
 
     @Test
-    @DisplayName("성공 : 장바구니 상품을 삭제한다.")
-    void successDeleteCartItem() {
+    @DisplayName("장바구니 상품을 삭제한다.")
+    void deleteCartItem() {
         /* given */
-        Long userId = 1L;
-        User user = new User(userId, "test_email@woowafriends.com", "test_password!");
-        Product chicken = new Product(1L, "치킨", "fried_chicken.png", 20000);
-        CartItem cartItemChicken = new CartItem(1L, user, chicken, 1);
+        User user = new User(1L, "test_email@woowafriends.com", "test_password!");
+        Product product = new Product(1L, "치킨", "fried_chicken.png", 20000);
+        CartItem cartItem = new CartItem(1L, user, product, 1);
 
-        Long cartItemId = cartItemChicken.getId();
-        when(cartItemRepository.findById(cartItemId)).thenReturn(Optional.of(cartItemChicken));
-        when(userRepository.getReferenceById(userId)).thenReturn(user);
+        when(cartItemRepository.findById(cartItem.getId())).thenReturn(Optional.of(cartItem));
+        when(userRepository.getReferenceById(user.getId())).thenReturn(user);
 
         /* when */
-        cartService.removeCartItem(cartItemId, userId);
+        cartService.removeCartItem(cartItem.getId(), user.getId());
 
         /* then */
-        verify(cartItemRepository).findById(cartItemId);
-        verify(cartItemRepository).delete(cartItemChicken);
+        verify(cartItemRepository).delete(cartItem);
     }
 }

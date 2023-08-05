@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.TestFixture;
+import shopping.TestUtils;
 import shopping.cart.domain.entity.Product;
 import shopping.cart.dto.response.ProductResponse;
 import shopping.cart.repository.ProductRepository;
@@ -26,12 +26,12 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Test
-    @DisplayName("성공 : 전체 상품 목록 불러오기")
-    void findAll() {
+    @DisplayName("전체 상품 목록을 조회한다.")
+    void findAllProducts() {
         /* given */
-        final Product chicken = TestFixture.createProduct("치킨", 20000);
-        final Product pizza = TestFixture.createProduct("피자", 25000);
-        final Product sake = TestFixture.createProduct("사케", 30000);
+        final Product chicken = TestUtils.createProduct("치킨", 20000);
+        final Product pizza = TestUtils.createProduct("피자", 25000);
+        final Product sake = TestUtils.createProduct("사케", 30000);
 
         List<Product> products = List.of(chicken, pizza, sake);
         when(productRepository.findAll()).thenReturn(products);

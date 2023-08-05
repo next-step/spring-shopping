@@ -1,7 +1,6 @@
 package shopping.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -30,8 +29,8 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    @DisplayName("성공 : 로그인에 성공한다.")
-    void successLogin() {
+    @DisplayName("로그인에 성공한다.")
+    void login() {
         /* given */
         final Long userId = 1L;
         final String userEmail = "test_email@woowafriends.com";
@@ -48,8 +47,6 @@ class UserServiceTest {
         LoginResponse loginResponse = userService.login(loginRequest);
 
         /* then */
-        verify(userRepository).findByEmail(new Email(userEmail));
-        verify(jwtProvider).generateToken(String.valueOf(userId));
         assertThat(loginResponse.getAccessToken()).isEqualTo(accessToken);
     }
 

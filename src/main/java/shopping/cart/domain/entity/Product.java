@@ -13,22 +13,22 @@ public class Product {
     @GeneratedValue
     private Long id;
     private String name;
-    private String imageUuidFileName;
+    private String imageFileName;
     private int price;
 
     protected Product() {
     }
 
-    public Product(final Long id, final String name, final String imageUuidFileName,
+    public Product(final Long id, final String name, final String imageFileName,
         final int price) {
         this.id = id;
         this.name = name;
-        this.imageUuidFileName = imageUuidFileName;
+        this.imageFileName = imageFileName;
         this.price = price;
     }
 
-    public Product(final String name, final String imageUuidFileName, final int price) {
-        this(null, name, imageUuidFileName, price);
+    public Product(final String name, final String imageFileName, final int price) {
+        this(null, name, imageFileName, price);
     }
 
     public Long getId() {
@@ -39,8 +39,8 @@ public class Product {
         return name;
     }
 
-    public String getImageUuidFileName() {
-        return imageUuidFileName;
+    public String getImageFileName() {
+        return imageFileName;
     }
 
     public int getPrice() {

@@ -27,7 +27,7 @@ public final class CartItemResponse {
         return new CartItemResponse(
             cartItem.getId(),
             cartItem.getProduct().getName(),
-            cartItem.getProduct().getImageUuidFileName(),
+            cartItem.getProduct().getImageFileName(),
             cartItem.getProduct().getPrice(),
             cartItem.getQuantity().getValue()
         );

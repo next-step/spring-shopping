@@ -8,12 +8,13 @@ import shopping.auth.dto.request.LoginRequest;
 import shopping.cart.domain.entity.Product;
 import shopping.cart.dto.request.CartItemInsertRequest;
 
-public class TestFixture {
+public class TestUtils {
 
-    private static Long sequence = 1L;
+    private static Long sequence = 0L;
 
     public static Product createProduct(String name, int price) {
-        return new Product(sequence, name, "uuid" + sequence++, price);
+        sequence++;
+        return new Product(sequence, name, "image_file_name_" + sequence, price);
     }
 
     public static ExtractableResponse<Response> login(final LoginRequest loginRequest) {

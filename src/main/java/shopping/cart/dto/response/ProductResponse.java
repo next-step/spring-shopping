@@ -21,7 +21,7 @@ public final class ProductResponse {
         return new ProductResponse(
             product.getId(),
             product.getName(),
-            product.getImageUuidFileName(),
+            product.getImageFileName(),
             product.getPrice()
         );
     }

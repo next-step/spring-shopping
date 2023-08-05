@@ -20,7 +20,7 @@ import shopping.common.exception.ErrorCode;
 import shopping.common.exception.ShoppingException;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("AuthInterceptorTest")
+@DisplayName("AuthInterceptor 단위 테스트")
 class AuthInterceptorTest {
 
     @Mock
@@ -57,7 +57,7 @@ class AuthInterceptorTest {
         /* when & then */
         final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> authInterceptor.preHandle(request, null, null));
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NO_AUTHENTICATION_HEADER);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NO_AUTHORIZATION_HEADER);
     }
 
     @Test
