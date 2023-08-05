@@ -13,11 +13,11 @@ import shopping.mart.dto.ProductResponse;
 import shopping.mart.service.ProductService;
 
 @Controller
-public class ProductController {
+public class ProductViewController {
 
     private final ProductService productService;
 
-    ProductController(final ProductService productService) {
+    ProductViewController(final ProductService productService) {
         this.productService = productService;
     }
 
