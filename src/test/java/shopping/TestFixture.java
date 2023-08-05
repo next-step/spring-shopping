@@ -12,7 +12,7 @@ public class TestFixture {
 
     private static Long sequence = 1L;
 
-    public static Product createProductEntity(String name, int price) {
+    public static Product createProduct(String name, int price) {
         return new Product(sequence, name, "uuid" + sequence++, price);
     }
 

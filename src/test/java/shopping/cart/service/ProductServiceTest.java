@@ -28,9 +28,9 @@ class ProductServiceTest {
     @DisplayName("성공 : 전체 상품 목록 불러오기")
     void findAll() {
         /* given */
-        final Product chicken = TestFixture.createProductEntity("치킨", 20000);
-        final Product pizza = TestFixture.createProductEntity("피자", 25000);
-        final Product sake = TestFixture.createProductEntity("사케", 30000);
+        final Product chicken = TestFixture.createProduct("치킨", 20000);
+        final Product pizza = TestFixture.createProduct("피자", 25000);
+        final Product sake = TestFixture.createProduct("사케", 30000);
 
         List<Product> products = List.of(chicken, pizza, sake);
         when(productRepository.findAll()).thenReturn(products);
