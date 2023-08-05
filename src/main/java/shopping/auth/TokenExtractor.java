@@ -20,15 +20,15 @@ public class TokenExtractor {
     public void validateToken(HttpServletRequest request) {
         String accessToken = request.getHeader(AUTHORIZATION);
         validateHeaderExist(accessToken);
-        if (!tokenProvider.isSignedToekn(accessToken)) {
+        if (!tokenProvider.isSignedToken(accessToken)) {
             throw new AuthException();
         }
     }
 
-    public String extractToken(HttpServletRequest request) {
+    public Long extractUserId(HttpServletRequest request) {
         String accessToken = request.getHeader(AUTHORIZATION);
         validateHeaderExist(accessToken);
-        return tokenProvider.getEmail(accessToken.substring(BEARER.length()));
+        return tokenProvider.getId(accessToken.substring(BEARER.length()));
     }
 
     private void validateHeaderExist(String accessToken) {

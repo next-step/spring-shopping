@@ -6,27 +6,28 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import shopping.auth.AuthArgumentResolver;
 import shopping.auth.AuthInterceptor;
-import shopping.auth.TokenExtractor;
 
 import java.util.List;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-    private final TokenExtractor tokenExtractor;
+    private final AuthInterceptor authInterceptor;
+    private final AuthArgumentResolver authArgumentResolver;
 
-    public WebConfiguration(TokenExtractor tokenExtractor) {
-        this.tokenExtractor = tokenExtractor;
+    public WebConfiguration(AuthInterceptor authInterceptor, AuthArgumentResolver authArgumentResolver) {
+        this.authInterceptor = authInterceptor;
+        this.authArgumentResolver = authArgumentResolver;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(tokenExtractor))
+        registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/cart/items/**");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthArgumentResolver(tokenExtractor));
+        resolvers.add(authArgumentResolver);
     }
 }

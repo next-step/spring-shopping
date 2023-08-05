@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 public class TokenProvider {
 
-    private static final String EMAIL = "email";
+    private static final String USERID = "userId";
 
     @Value("${security.jwt.secret-key}")
     private String secretKey;
@@ -22,7 +22,7 @@ public class TokenProvider {
 
     public String issueToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(EMAIL, user.getEmail());
+        claims.put(USERID, user.getId());
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + this.expiration);
 
@@ -34,18 +34,17 @@ public class TokenProvider {
                 .compact();
     }
 
-    public boolean isSignedToekn(String token) {
+    public boolean isSignedToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey.getBytes())
                 .isSigned(token);
     }
 
-    public String getEmail(String token) {
+    public Long getId(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey.getBytes())
                 .parseClaimsJws(token)
                 .getBody()
-                .get(EMAIL, String.class);
+                .get(USERID, Long.class);
     }
-
 }

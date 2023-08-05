@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.auth.PasswordEncoder;
+import shopping.auth.TokenExtractor;
+import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
 import shopping.dto.request.LoginRequest;
 import shopping.repository.UserRepository;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 @DisplayName("인증 인수 테스트")
 class AuthIntegrationTest extends IntegrationTest {
@@ -27,6 +30,12 @@ class AuthIntegrationTest extends IntegrationTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenProvider tokenProvider;
+
+    @Autowired
+    private TokenExtractor tokenExtractor;
 
     @Override
     @BeforeEach
@@ -228,6 +237,42 @@ class AuthIntegrationTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
                 .when().post("/login/token")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @DisplayName("액세스 토큰이 없으면 로그인 페이지로 리다이렉트")
+    @Test
+    void redirectIfNoAccessToken() {
+        RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/cart/items")
+                .then().log().all()
+                .body(
+                        containsString("login")
+                );
+    }
+
+    @DisplayName("비정상 액세스 토큰으로 접근시 400 BadRequest 반환")
+    @Test
+    void invalidAccessToken() {
+        // given
+        Long invalidId = 100L;
+        String email = "notexist@example.com";
+        String digest = passwordEncoder.encode("1234");
+        User user = new User(invalidId, email, digest);
+        String accessToken = tokenProvider.issueToken(user);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/cart/items")
                 .then().log().all()
                 .extract();
 

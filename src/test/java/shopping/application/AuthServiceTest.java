@@ -39,7 +39,8 @@ class AuthServiceTest extends ServiceTest {
         String digest = passwordEncoder.encode(password);
 
         User user = new User(email, digest);
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        Long userId = savedUser.getId();
 
         LoginRequest loginRequest = new LoginRequest(email, password);
 
@@ -47,7 +48,7 @@ class AuthServiceTest extends ServiceTest {
         LoginResponse loginResponse = authService.login(loginRequest);
 
         // then
-        assertThat(tokenProvider.getEmail(loginResponse.getAccessToken())).isEqualTo(email);
+        assertThat(tokenProvider.getId(loginResponse.getAccessToken())).isEqualTo(userId);
     }
 
     @DisplayName("존재하지 않는 유저로 로그인하면 예외 발생")

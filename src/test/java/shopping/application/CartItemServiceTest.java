@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("장바구니 서비스 통합 테스트")
 class CartItemServiceTest extends ServiceTest {
@@ -55,7 +56,7 @@ class CartItemServiceTest extends ServiceTest {
             String email = "test@example.com";
             String digest = passwordEncoder.encode("1234");
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
 
             Product chicken = new Product("치킨", "/chicken.jpg", 10_000L);
             Product pizza = new Product("피자", "/pizza.jpg", 20_000L);
@@ -64,14 +65,14 @@ class CartItemServiceTest extends ServiceTest {
             productRepository.saveAll(productList);
 
             List<CartItem> cartItems = List.of(
-                    new CartItem(user, chicken),
-                    new CartItem(user, pizza),
-                    new CartItem(user, salad)
+                    new CartItem(savedUser.getId(), chicken),
+                    new CartItem(savedUser.getId(), pizza),
+                    new CartItem(savedUser.getId(), salad)
             );
             List<CartItem> savedItems = cartItemRepository.saveAll(cartItems);
 
             // when
-            List<CartItemResponse> responses = cartItemService.findAllByEmail(email, PageRequest.of(0, 3));
+            List<CartItemResponse> responses = cartItemService.findAllByEmail(savedUser.getId(), PageRequest.of(0, 3));
 
             // then
             assertThat(responses).usingRecursiveComparison().isEqualTo(
@@ -79,19 +80,6 @@ class CartItemServiceTest extends ServiceTest {
                             .map(CartItemResponse::of)
                             .collect(Collectors.toList())
             );
-        }
-
-        @DisplayName("사용자가 존재하지 않으면 예외 발생")
-        @Test
-        void notUserFoundThenThrow() {
-            // given
-            String email = "test@example.com";
-
-            PageRequest pageRequest = PageRequest.of(0, 3);
-
-            // when, then
-            assertThatThrownBy(() -> cartItemService.findAllByEmail(email, pageRequest))
-                    .isInstanceOf(UserNotFoundException.class);
         }
     }
 
@@ -108,7 +96,7 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
@@ -120,7 +108,7 @@ class CartItemServiceTest extends ServiceTest {
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when
-            cartItemService.createCartItem(email, cartItemCreateRequest);
+            cartItemService.createCartItem(savedUser.getId(), cartItemCreateRequest);
 
             // then
             List<CartItem> cartItems = cartItemRepository.findAll();
@@ -129,30 +117,8 @@ class CartItemServiceTest extends ServiceTest {
             assertThat(cartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
                     .containsExactly(name, imageUrl, price);
-            assertThat(cartItem.getUser())
-                    .extracting(User::getEmail, User::getPassword)
-                    .containsExactly(email, digest);
+            assertThat(cartItem.getUserId()).isEqualTo(savedUser.getId());
 
-        }
-
-        @DisplayName("사용자가 존재하지 않으면 예외 발생")
-        @Test
-        void notUserFoundThenThrow() {
-            // given
-            String email = "test@example.com";
-
-            String name = "치킨";
-            String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
-
-            Product product = new Product(name, imageUrl, price);
-            Product savedProduct = productRepository.save(product);
-
-            CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
-
-            // when, then
-            assertThatThrownBy(() -> cartItemService.createCartItem(email, cartItemCreateRequest))
-                    .isInstanceOf(UserNotFoundException.class);
         }
 
         @DisplayName("상품이 존재하지 않으면 예외 발생")
@@ -164,12 +130,13 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            Long userId = savedUser.getId();
 
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
 
             // when & then
-            assertThatThrownBy(() -> cartItemService.createCartItem(email, cartItemCreateRequest))
+            assertThatThrownBy(() -> cartItemService.createCartItem(userId, cartItemCreateRequest))
                     .isInstanceOf(ProductNotFoundException.class);
         }
 
@@ -182,7 +149,7 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
@@ -191,14 +158,14 @@ class CartItemServiceTest extends ServiceTest {
             Product product = new Product(name, imageUrl, price);
             Product savedProduct = productRepository.save(product);
 
-            CartItem cartItem = new CartItem(user, product);
+            CartItem cartItem = new CartItem(savedUser.getId(), product);
             Integer quantity = cartItem.getQuantity();
             cartItemRepository.save(cartItem);
 
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
 
             // when
-            cartItemService.createCartItem(email, cartItemCreateRequest);
+            cartItemService.createCartItem(savedUser.getId(), cartItemCreateRequest);
 
             // then
             List<CartItem> cartItems = cartItemRepository.findAll();
@@ -208,9 +175,7 @@ class CartItemServiceTest extends ServiceTest {
             assertThat(updatedCartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
                     .containsExactly(name, imageUrl, price);
-            assertThat(updatedCartItem.getUser())
-                    .extracting(User::getEmail, User::getPassword)
-                    .containsExactly(email, digest);
+            assertThat(updatedCartItem.getUserId()).isEqualTo(savedUser.getId());
         }
     }
 
@@ -227,7 +192,7 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
@@ -236,33 +201,20 @@ class CartItemServiceTest extends ServiceTest {
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
 
-            CartItem cartItem = new CartItem(user, product);
+            CartItem cartItem = new CartItem(savedUser.getId(), product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
 
             Integer newQuantity = 5;
             CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when
-            cartItemService.updateCartItemQuantity(email, savedCartItem.getId(), cartItemUpdateRequest);
+            cartItemService.updateCartItemQuantity(savedUser.getId(), savedCartItem.getId(), cartItemUpdateRequest);
 
             // then
             Optional<CartItem> optionalCartItem = cartItemRepository.findById(savedCartItem.getId());
             assertThat(optionalCartItem).isPresent();
             CartItem updatedCartItem = optionalCartItem.get();
             assertThat(updatedCartItem.getQuantity()).isEqualTo(newQuantity);
-        }
-
-        @DisplayName("사용자가 존재하지 않으면 예외 발생")
-        @Test
-        void updateCartItemNotUserFound() {
-            // given
-            String email = "test@example.com";
-            Integer newQuantity = 5;
-            CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
-
-            // when, then
-            assertThatThrownBy(() -> cartItemService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
-                    .isInstanceOf(UserNotFoundException.class);
         }
 
         @DisplayName("상품이 존재하지 않으면 예외 발생")
@@ -274,13 +226,15 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            Long userId = savedUser.getId();
 
             Integer newQuantity = 5;
             CartItemUpdateRequest cartItemUpdateRequest = new CartItemUpdateRequest(newQuantity);
 
             // when, then
-            assertThatCode(() -> cartItemService.updateCartItemQuantity(email, 1L, cartItemUpdateRequest))
+            assertThatThrownBy(
+                    () -> cartItemService.updateCartItemQuantity(userId, 1L, cartItemUpdateRequest))
                     .isInstanceOf(CartItemNotFoundException.class);
         }
 
@@ -293,14 +247,15 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            Long userId = savedUser.getId();
 
             String otherEmail = "other@example.com";
             String otherPassword = "other";
             String otherDigest = passwordEncoder.encode(otherPassword);
 
             User other = new User(otherEmail, otherDigest);
-            userRepository.save(other);
+            User savedOther = userRepository.save(other);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
@@ -309,7 +264,7 @@ class CartItemServiceTest extends ServiceTest {
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
 
-            CartItem cartItem = new CartItem(other, product);
+            CartItem cartItem = new CartItem(savedOther.getId(), product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
             Long cartItemId = savedCartItem.getId();
 
@@ -318,7 +273,7 @@ class CartItemServiceTest extends ServiceTest {
 
             // when, then
             assertThatThrownBy(
-                    () -> cartItemService.updateCartItemQuantity(email, cartItemId, cartItemUpdateRequest))
+                    () -> cartItemService.updateCartItemQuantity(userId, cartItemId, cartItemUpdateRequest))
                     .isInstanceOf(UserNotMatchException.class);
         }
     }
@@ -336,7 +291,7 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
@@ -345,27 +300,16 @@ class CartItemServiceTest extends ServiceTest {
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
 
-            CartItem cartItem = new CartItem(user, product);
+            CartItem cartItem = new CartItem(savedUser.getId(), product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
             Long cartItemId = savedCartItem.getId();
 
             // when
-            cartItemService.deleteCartItem(email, cartItemId);
+            cartItemService.deleteCartItem(savedUser.getId(), cartItemId);
 
             // then
             Optional<CartItem> optionalCartItem = cartItemRepository.findById(cartItemId);
             assertThat(optionalCartItem).isEmpty();
-        }
-
-        @DisplayName("사용자가 존재하지 않으면 예외 발생")
-        @Test
-        void deleteCartItemNotUserFound() {
-            // given
-            String email = "test@example.com";
-
-            // when, then
-            assertThatThrownBy(() -> cartItemService.deleteCartItem(email, 1L))
-                    .isInstanceOf(UserNotFoundException.class);
         }
 
         @DisplayName("상품이 존재하지 않으면 예외 발생")
@@ -377,10 +321,11 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            Long userId = savedUser.getId();
 
             // when, then
-            assertThatCode(() -> cartItemService.deleteCartItem(email, 1L))
+            assertThatThrownBy(() -> cartItemService.deleteCartItem(userId, 1L))
                     .isInstanceOf(CartItemNotFoundException.class);
         }
 
@@ -393,14 +338,15 @@ class CartItemServiceTest extends ServiceTest {
             String digest = passwordEncoder.encode(password);
 
             User user = new User(email, digest);
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            Long userId = savedUser.getId();
 
             String otherEmail = "other@example.com";
             String otherPassword = "other";
             String otherDigest = passwordEncoder.encode(otherPassword);
 
             User other = new User(otherEmail, otherDigest);
-            userRepository.save(other);
+            User savedOther = userRepository.save(other);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
@@ -409,12 +355,12 @@ class CartItemServiceTest extends ServiceTest {
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
 
-            CartItem cartItem = new CartItem(other, product);
+            CartItem cartItem = new CartItem(savedOther.getId(), product);
             CartItem savedCartItem = cartItemRepository.save(cartItem);
             Long cartItemId = savedCartItem.getId();
 
             // when, then
-            assertThatCode(() -> cartItemService.deleteCartItem(email, cartItemId))
+            assertThatThrownBy(() -> cartItemService.deleteCartItem(userId, cartItemId))
                     .isInstanceOf(UserNotMatchException.class);
         }
     }

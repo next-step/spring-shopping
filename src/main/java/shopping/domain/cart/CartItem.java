@@ -1,7 +1,5 @@
 package shopping.domain.cart;
 
-import shopping.domain.user.User;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,9 +10,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -27,17 +23,17 @@ public class CartItem {
     protected CartItem() {
     }
 
-    public CartItem(User user, Product product) {
-        this(null, user, product, new Quantity());
+    public CartItem(Long userId, Product product) {
+        this(null, userId, product, new Quantity());
     }
 
-    private CartItem(Long id, User user, Product product, Integer quantity) {
-        this(id, user, product, new Quantity(quantity));
+    private CartItem(Long id, Long userId, Product product, Integer quantity) {
+        this(id, userId, product, new Quantity(quantity));
     }
 
-    private CartItem(Long id, User user, Product product, Quantity quantity) {
+    private CartItem(Long id, Long userId, Product product, Quantity quantity) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.product = product;
         this.quantity = quantity;
     }
@@ -46,8 +42,8 @@ public class CartItem {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
     public Product getProduct() {
@@ -59,14 +55,14 @@ public class CartItem {
     }
 
     public CartItem addQuantity() {
-        return new CartItem(this.id, this.user, this.product, this.quantity.addQuantity());
+        return new CartItem(this.id, this.userId, this.product, this.quantity.addQuantity());
     }
 
     public CartItem updateQuantity(Integer quantity) {
-        return new CartItem(this.id, this.user, this.product, quantity);
+        return new CartItem(this.id, this.userId, this.product, quantity);
     }
 
-    public boolean isNotUserMatch(User user) {
-        return !this.user.isSame(user);
+    public boolean isNotUserMatch(Long userId) {
+        return !this.userId.equals(userId);
     }
 }
