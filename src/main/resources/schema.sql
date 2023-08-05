@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `cart_item`
     FOREIGN KEY (product_id) REFERENCES product (id)
 );
 
-CREATE TABLE IF NOT EXISTS `order`
+CREATE TABLE IF NOT EXISTS `orders`
 (
     id          BIGINT AUTO_INCREMENT NOT NULL,
     user_id     BIGINT                NOT NULL,
@@ -45,6 +45,6 @@ CREATE TABLE IF NOT EXISTS `order_item`
     price               BIGINT                NOT NULL,
     quantity            INT                   NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (order_id) REFERENCES order (id),
+    FOREIGN KEY (order_id) REFERENCES orders (id),
     FOREIGN KEY (original_product_id) REFERENCES product (id)
 );
