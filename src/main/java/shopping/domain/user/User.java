@@ -35,12 +35,12 @@ public class User {
         return id;
     }
 
-    public String getPassword() {
-        return password.getPassword();
+    public Password getPassword() {
+        return password;
     }
 
-    public String getEmail() {
-        return email.getEmail();
+    public Email getEmail() {
+        return email;
     }
 
     public boolean isSame(User other) {

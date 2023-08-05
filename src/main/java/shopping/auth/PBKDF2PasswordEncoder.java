@@ -1,6 +1,7 @@
 package shopping.auth;
 
 import org.springframework.stereotype.Component;
+import shopping.domain.user.Password;
 import shopping.exception.PasswordNotHashException;
 
 import javax.crypto.SecretKeyFactory;
@@ -14,11 +15,12 @@ import java.util.Random;
 public class PBKDF2PasswordEncoder implements PasswordEncoder {
 
     @Override
-    public boolean match(String planePassword, String digest) {
-        byte[] salt = getSalt(digest);
+    public boolean match(String planePassword, Password digest) {
+        String code = digest.getPassword();
+        byte[] salt = getSalt(code);
         String hashedPassword = encode(planePassword, salt);
 
-        return digest.equals(hashedPassword);
+        return code.equals(hashedPassword);
     }
 
     private String encode(String password, byte[] salt) {

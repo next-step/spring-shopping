@@ -21,7 +21,7 @@ public class CartItemResponse {
                 cartItem.getId(),
                 cartItem.getProduct().getName(),
                 cartItem.getProduct().getImageUrl(),
-                cartItem.getQuantity()
+                cartItem.getQuantity().getQuantity()
         );
     }
 

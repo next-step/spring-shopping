@@ -47,7 +47,7 @@ public class Product {
         return imageUrl;
     }
 
-    public Long getPrice() {
-        return price.getPrice();
+    public Price getPrice() {
+        return price;
     }
 }

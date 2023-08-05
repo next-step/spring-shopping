@@ -50,8 +50,8 @@ public class CartItem {
         return product;
     }
 
-    public Integer getQuantity() {
-        return quantity.getQuantity();
+    public Quantity getQuantity() {
+        return quantity;
     }
 
     public CartItem addQuantity() {

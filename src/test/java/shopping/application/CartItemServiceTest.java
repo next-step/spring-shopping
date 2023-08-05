@@ -158,7 +158,7 @@ class CartItemServiceTest extends ServiceTest {
             Product savedProduct = productRepository.save(product);
 
             CartItem cartItem = new CartItem(savedUser.getId(), product);
-            Integer quantity = cartItem.getQuantity();
+            int quantity = cartItem.getQuantity().getQuantity();
             cartItemRepository.save(cartItem);
 
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(savedProduct.getId());
@@ -170,7 +170,7 @@ class CartItemServiceTest extends ServiceTest {
             List<CartItem> cartItems = cartItemRepository.findAll();
             assertThat(cartItems).hasSize(1);
             CartItem updatedCartItem = cartItems.get(0);
-            assertThat(updatedCartItem.getQuantity()).isEqualTo(quantity + 1);
+            assertThat(updatedCartItem.getQuantity().getQuantity()).isEqualTo(quantity + 1);
             assertThat(updatedCartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
                     .containsExactly(name, imageUrl, price);
