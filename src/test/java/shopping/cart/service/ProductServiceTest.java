@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +40,11 @@ class ProductServiceTest {
         List<ProductResponse> productResponses = productService.findAllProducts();
 
         /* then */
-        assertThat(productResponses).hasSize(products.size());
+        final List<String> names = productResponses.stream()
+            .map(ProductResponse::getName)
+            .collect(Collectors.toList());
+
+        assertThat(names).containsExactly("치킨", "피자", "사케");
+        assertThat(productResponses).hasSize(3);
     }
 }

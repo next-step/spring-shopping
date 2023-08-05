@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -74,8 +75,12 @@ class CartServiceTest {
         List<CartItemResponse> cartItemResponses = cartService.getCartItems(userId);
 
         /* then */
-        verify(cartItemRepository).findByUserId(userId);
-        assertThat(cartItemResponses).hasSize(cartItems.size());
+        final List<String> productNames = cartItemResponses.stream()
+            .map(CartItemResponse::getName)
+            .collect(Collectors.toList());
+
+        assertThat(productNames).containsExactly("치킨", "피자");
+        assertThat(cartItemResponses).hasSize(2);
     }
 
     @Test
@@ -98,7 +103,6 @@ class CartServiceTest {
 
         /* then */
         assertThat(cartItemChicken.getQuantity()).isEqualTo(updateQuantity);
-
     }
 
     @Test

@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -141,7 +142,12 @@ class CartIntegrationTest extends IntegrationTest {
 
         /* then */
         List<CartItemResponse> cartItems = response.jsonPath().getList(".", CartItemResponse.class);
+        final List<String> names = cartItems.stream()
+            .map(CartItemResponse::getName)
+            .collect(Collectors.toList());
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(names).containsExactly("치킨", "피자");
         assertThat(cartItems).hasSize(2);
     }
 
