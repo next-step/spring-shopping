@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.argumentresolver.annotation.UserId;
-import shopping.cart.dto.request.CartItemAddRequest;
+import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
 import shopping.cart.service.CartService;
@@ -29,9 +29,9 @@ public class CartItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void addCartItem(@RequestBody CartItemAddRequest cartItemAddRequest,
+    public void insertCartItem(@RequestBody CartItemInsertRequest cartItemInsertRequest,
         @UserId Long userId) {
-        cartService.addCartItem(cartItemAddRequest, userId);
+        cartService.insertCartItem(cartItemInsertRequest, userId);
     }
 
     @GetMapping

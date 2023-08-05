@@ -1,13 +1,13 @@
 package shopping.cart.dto.request;
 
-public class CartItemAddRequest {
+public class CartItemInsertRequest {
 
     private Long productId;
 
-    private CartItemAddRequest() {
+    private CartItemInsertRequest() {
     }
 
-    public CartItemAddRequest(final Long productId) {
+    public CartItemInsertRequest(final Long productId) {
         this.productId = productId;
     }
 

@@ -9,7 +9,7 @@ import shopping.auth.domain.entity.User;
 import shopping.auth.repository.UserRepository;
 import shopping.cart.domain.entity.CartItem;
 import shopping.cart.domain.entity.Product;
-import shopping.cart.dto.request.CartItemAddRequest;
+import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
 import shopping.cart.repository.CartItemRepository;
@@ -38,8 +38,8 @@ public class CartService {
     }
 
     @Transactional
-    public void addCartItem(CartItemAddRequest cartItemAddRequest, Long userId) {
-        final Long productId = cartItemAddRequest.getProductId();
+    public void insertCartItem(CartItemInsertRequest cartItemInsertRequest, Long userId) {
+        final Long productId = cartItemInsertRequest.getProductId();
         final Product product = findProductBy(productId);
         validateDuplicateCartItem(userId, productId);
 

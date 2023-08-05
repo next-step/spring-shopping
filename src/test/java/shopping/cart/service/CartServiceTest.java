@@ -17,7 +17,7 @@ import shopping.auth.domain.entity.User;
 import shopping.auth.repository.UserRepository;
 import shopping.cart.domain.entity.CartItem;
 import shopping.cart.domain.entity.Product;
-import shopping.cart.dto.request.CartItemAddRequest;
+import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
 import shopping.cart.repository.CartItemRepository;
@@ -38,18 +38,18 @@ class CartServiceTest {
 
     @Test
     @DisplayName("성공 : 장바구니에 상품을 추가한다.")
-    void successAddCartItem() {
+    void successInsertCartItem() {
         /* given */
         Long productId = 1L;
         Long userId = 1L;
         User user = new User(userId, "test_email@woowafriends.com", "test_password!");
         Product product = new Product(productId, "치킨", "fried_chicken.png", 20000);
-        CartItemAddRequest cartRequest = new CartItemAddRequest(productId);
+        CartItemInsertRequest cartRequest = new CartItemInsertRequest(productId);
         when(userRepository.getReferenceById(userId)).thenReturn(user);
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
         /* when */
-        cartService.addCartItem(cartRequest, userId);
+        cartService.insertCartItem(cartRequest, userId);
 
         /* then */
         verify(userRepository).getReferenceById(userId);

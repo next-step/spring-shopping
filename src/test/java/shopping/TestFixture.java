@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 import shopping.auth.dto.request.LoginRequest;
 import shopping.cart.domain.entity.Product;
-import shopping.cart.dto.request.CartItemAddRequest;
+import shopping.cart.dto.request.CartItemInsertRequest;
 
 public class TestFixture {
 
@@ -26,13 +26,13 @@ public class TestFixture {
             .extract();
     }
 
-    public static ExtractableResponse<Response> addCartItem(String accessToken,
-        CartItemAddRequest cartItemAddRequest) {
+    public static ExtractableResponse<Response> insertCartItem(String accessToken,
+        CartItemInsertRequest cartItemInsertRequest) {
         return RestAssured
             .given().log().all()
             .auth().oauth2(accessToken)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(cartItemAddRequest)
+            .body(cartItemInsertRequest)
             .when().post("/cart/items")
             .then().log().all()
             .extract();
