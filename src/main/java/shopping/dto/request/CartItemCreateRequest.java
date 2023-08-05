@@ -1,8 +1,9 @@
 package shopping.dto.request;
 
+import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberArgument;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.util.Assert;
 
 public class CartItemCreateRequest {
 
@@ -15,7 +16,7 @@ public class CartItemCreateRequest {
     }
 
     private void validate(Long productId) {
-        Assert.notNull(productId, "상품 아이디는 null일수 없습니다.");
+        validateNumberArgument(productId, "상품 아이디");
     }
 
     public Long getProductId() {

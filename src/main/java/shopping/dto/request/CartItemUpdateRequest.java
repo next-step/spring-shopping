@@ -1,12 +1,12 @@
 package shopping.dto.request;
 
+import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberArgument;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.util.Assert;
 
 public class CartItemUpdateRequest {
 
-    private static final int MIN_QUANTITY = 1;
     private final Integer quantity;
 
     @JsonCreator
@@ -16,8 +16,7 @@ public class CartItemUpdateRequest {
     }
 
     private void validate(Integer quantity) {
-        Assert.notNull(quantity, "수량은 null일수 없습니다.");
-        Assert.isTrue(quantity >= MIN_QUANTITY, "수량은 1이상이어야 합니다.");
+        validateNumberArgument(quantity, "수량");
     }
 
     public Integer getQuantity() {
