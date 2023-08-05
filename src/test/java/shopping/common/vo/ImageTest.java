@@ -12,7 +12,7 @@ class ImageTest {
     void getUrl() {
         Image image = createLocalImage();
 
-        String url = image.toUrl();
+        String url = image.getImagePath();
 
         Assertions.assertThat(url).isEqualTo("http://localhost:8080/image/name");
     }

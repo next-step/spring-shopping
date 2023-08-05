@@ -1,33 +1,22 @@
 package shopping.common.vo;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 @Embeddable
 public class Image {
 
-    @Enumerated(value = EnumType.STRING)
-    private ImageStoreType imageStoreType;
-    private String fileName;
+    @Column
+    private String imagePath;
 
     protected Image() {
     }
 
-    public Image(ImageStoreType imageStoreType, String fileName) {
-        this.imageStoreType = imageStoreType;
-        this.fileName = fileName;
+    public Image(ImageStoreType imageStoreType, String imageName) {
+        this.imagePath = imageStoreType.getPath() + imageName;
     }
 
-    public String toUrl() {
-        return imageStoreType.getPath() + fileName;
-    }
-
-    public ImageStoreType getImageStoreType() {
-        return imageStoreType;
-    }
-
-    public String getFileName() {
-        return fileName;
+    public String getImagePath() {
+        return imagePath;
     }
 }
