@@ -104,7 +104,7 @@
     * 응답
         * 없음 (성공 시 200)
 
-* `DELETE /cart/items/{cartItemId}`
+* `DELETE /cart/items/{cartItemId}` (장바구니 상품 삭제 요청)
     * 요청
         * 헤더
             * Authorization: Bearer ${ACCESS_TOKEN}
