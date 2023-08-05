@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.TestFixture;
@@ -17,16 +18,21 @@ import shopping.auth.dto.response.LoginResponse;
 import shopping.cart.dto.request.CartItemInsertRequest;
 import shopping.cart.dto.request.CartItemUpdateRequest;
 import shopping.cart.dto.response.CartItemResponse;
+import shopping.cart.repository.CartItemRepository;
 import shopping.common.exception.ErrorCode;
 import shopping.common.exception.ErrorResponse;
 
 @DisplayName("CartIntegrationTest")
 class CartIntegrationTest extends IntegrationTest {
 
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
     @BeforeEach
     @Override
     public void setUp() {
         super.setUp();
+        cartItemRepository.deleteAll();
     }
 
     @Test
