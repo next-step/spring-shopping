@@ -20,12 +20,4 @@ public final class CartUpdateRequest {
     public int getCount() {
         return count;
     }
-
-    @Override
-    public String toString() {
-        return "CartUpdateRequest{" +
-                "productId=" + productId +
-                ", count=" + count +
-                '}';
-    }
 }

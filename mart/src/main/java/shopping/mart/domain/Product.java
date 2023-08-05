@@ -46,21 +46,11 @@ public final class Product {
         }
         Product product = (Product) o;
         return Objects.equals(id, product.id) && Objects.equals(name, product.name)
-                && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(price, product.price);
+            && Objects.equals(imageUrl, product.imageUrl) && Objects.equals(price, product.price);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, imageUrl, price);
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", price=" + price +
-                '}';
     }
 }

@@ -14,11 +14,4 @@ public final class CartAddRequest {
     public Long getProductId() {
         return productId;
     }
-
-    @Override
-    public String toString() {
-        return "CartAddRequest{" +
-                "productId=" + productId +
-                '}';
-    }
 }

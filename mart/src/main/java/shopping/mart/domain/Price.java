@@ -57,11 +57,4 @@ final class Price {
     public int hashCode() {
         return Objects.hash(value);
     }
-
-    @Override
-    public String toString() {
-        return "Price{" +
-            "value=" + value +
-            '}';
-    }
 }

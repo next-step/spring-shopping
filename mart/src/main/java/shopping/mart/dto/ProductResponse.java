@@ -32,14 +32,4 @@ public final class ProductResponse {
     public String getPrice() {
         return price;
     }
-
-    @Override
-    public String toString() {
-        return "ProductResponse{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", price='" + price + '\'' +
-                '}';
-    }
 }

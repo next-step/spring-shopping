@@ -59,11 +59,4 @@ final class Name {
     public int hashCode() {
         return Objects.hash(value);
     }
-
-    @Override
-    public String toString() {
-        return "Name{" +
-            "value='" + value + '\'' +
-            '}';
-    }
 }

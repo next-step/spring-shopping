@@ -68,15 +68,6 @@ public final class User {
         return password;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            '}';
-    }
-
     public void assertPassword(final String password) {
         if (this.password.equals(password)) {
             return;

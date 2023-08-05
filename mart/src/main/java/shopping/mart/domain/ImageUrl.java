@@ -36,11 +36,4 @@ final class ImageUrl {
     public int hashCode() {
         return Objects.hash(value);
     }
-
-    @Override
-    public String toString() {
-        return "Image{" +
-                "value='" + value + '\'' +
-                '}';
-    }
 }

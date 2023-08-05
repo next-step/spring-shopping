@@ -24,14 +24,6 @@ public class CartResponse {
         return productResponses;
     }
 
-    @Override
-    public String toString() {
-        return "CartResponse{" +
-                "cartId=" + cartId +
-                ", productResponses=" + productResponses +
-                '}';
-    }
-
     public static final class ProductResponse {
         private long id;
         private int count;
@@ -80,16 +72,6 @@ public class CartResponse {
         @Override
         public int hashCode() {
             return Objects.hash(id, count, imageUrl, name);
-        }
-
-        @Override
-        public String toString() {
-            return "ProductResponse{" +
-                    "id='" + id + '\'' +
-                    ", count='" + count + '\'' +
-                    ", imageUrl='" + imageUrl + '\'' +
-                    ", name='" + name + '\'' +
-                    '}';
         }
     }
 }

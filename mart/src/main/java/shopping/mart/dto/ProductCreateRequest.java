@@ -26,13 +26,4 @@ public final class ProductCreateRequest {
     public String getPrice() {
         return price;
     }
-
-    @Override
-    public String toString() {
-        return "ProductCreateRequest{" +
-                "name='" + name + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", price='" + price + '\'' +
-                '}';
-    }
 }
