@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.CartProductRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -54,7 +54,7 @@ public class CartProductIntegrationTest extends IntegrationTest {
     void updateCartProduct() {
         // given
         Long cartProductId = 1L;
-        UpdateCartProductRequest request = new UpdateCartProductRequest(15);
+        CartProductRequest request = new CartProductRequest(15);
 
         // when
         ExtractableResponse<Response> response = CartProductIntegrationSupporter.updateCartProduct(cartProductId, request);

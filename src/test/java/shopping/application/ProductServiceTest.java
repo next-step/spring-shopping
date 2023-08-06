@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Product;
-import shopping.dto.FindProductResponse;
+import shopping.dto.ProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
@@ -32,7 +32,7 @@ class ProductServiceTest {
     class FindAll_Method {
 
         @Test
-        @DisplayName("저장된 모든 Product를 가져온다")
+        @DisplayName("저장된 모든 Product 를 가져온다")
         void find_all_products() {
             // given
             Product product1 = new Product("치킨", "url", 18000L);
@@ -41,12 +41,12 @@ class ProductServiceTest {
             given(productRepository.findAll()).willReturn(List.of(product1, product2));
 
             // when
-            List<FindProductResponse> result = productService.findAll();
+            List<ProductResponse> result = productService.findAll();
 
             // then
             List<String> expectedProductIds = List.of(product1.getName(), product2.getName());
             List<String> actualProductIds = result.stream()
-                    .map(FindProductResponse::getName)
+                    .map(ProductResponse::getName)
                     .collect(Collectors.toList());
 
             assertThat(expectedProductIds).containsAll(actualProductIds);

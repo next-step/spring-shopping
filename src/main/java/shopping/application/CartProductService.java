@@ -1,13 +1,12 @@
 package shopping.application;
 
-import org.aspectj.bridge.Message;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
-import shopping.dto.FindCartProductResponse;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.CartProductResponse;
+import shopping.dto.CartProductRequest;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -53,14 +52,14 @@ public class CartProductService {
         cartProductRepository.save(cart);
     }
 
-    public List<FindCartProductResponse> findCartProducts(Long memberId) {
+    public List<CartProductResponse> findCartProducts(Long memberId) {
         return cartProductRepository.findAllByMemberId(memberId)
                 .stream()
-                .map(FindCartProductResponse::from)
+                .map(CartProductResponse::from)
                 .collect(Collectors.toList());
     }
 
-    public void updateCartProduct(Long id, UpdateCartProductRequest request) {
+    public void updateCartProduct(Long id, CartProductRequest request) {
         if (request.getQuantity() < MIN_CART_PRODUCT_QUANTITY) {
             cartProductRepository.deleteById(id);
             return;

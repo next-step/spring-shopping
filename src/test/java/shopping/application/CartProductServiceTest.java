@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
-import shopping.dto.FindCartProductResponse;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.CartProductResponse;
+import shopping.dto.CartProductRequest;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -79,6 +79,7 @@ public class CartProductServiceTest {
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
+            assertThat(exception.getMessage()).contains("회원Id에 해당하는 회원이 존재하지 않습니다");
         }
 
         @Test
@@ -94,6 +95,7 @@ public class CartProductServiceTest {
 
             // then
             assertThat(exception).isInstanceOf(ProductException.class);
+            assertThat(exception.getMessage()).contains("상품Id에 해당하는 상품 존재하지 않습니다");
         }
 
         @Test
@@ -133,7 +135,7 @@ public class CartProductServiceTest {
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(List.of(cartProduct));
 
             // when
-            List<FindCartProductResponse> result = cartProductService.findCartProducts(member.getId());
+            List<CartProductResponse> result = cartProductService.findCartProducts(member.getId());
 
             // then
             assertThat(result).hasSize(1);
@@ -175,7 +177,7 @@ public class CartProductServiceTest {
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
             CartProduct cartProduct = new CartProduct(member, product, 5);
-            UpdateCartProductRequest updateRequest = new UpdateCartProductRequest(6);
+            CartProductRequest updateRequest = new CartProductRequest(6);
 
             doNothing().when(cartProductRepository).updateById(cartProduct.getId(), updateRequest.getQuantity());
 
@@ -193,7 +195,7 @@ public class CartProductServiceTest {
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
             CartProduct cartProduct = new CartProduct(1L, member, product, 5);
-            UpdateCartProductRequest updateRequest = new UpdateCartProductRequest(0);
+            CartProductRequest updateRequest = new CartProductRequest(0);
 
             doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
 

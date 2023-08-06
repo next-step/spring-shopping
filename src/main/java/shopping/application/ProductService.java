@@ -1,7 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
-import shopping.dto.FindProductResponse;
+import shopping.dto.ProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
@@ -16,10 +16,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<FindProductResponse> findAll() {
+    public List<ProductResponse> findAll() {
 
         return productRepository.findAll().stream()
-                .map(FindProductResponse::of)
+                .map(ProductResponse::of)
                 .collect(Collectors.toList());
     }
 }

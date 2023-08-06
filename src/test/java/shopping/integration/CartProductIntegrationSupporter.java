@@ -5,7 +5,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 import shopping.dto.LoginResponse;
-import shopping.dto.UpdateCartProductRequest;
+import shopping.dto.CartProductRequest;
 
 public class CartProductIntegrationSupporter {
 
@@ -60,7 +60,7 @@ public class CartProductIntegrationSupporter {
                 .then().log().all().extract();
     }
 
-    static ExtractableResponse<Response> updateCartProduct(Long id, UpdateCartProductRequest request) {
+    static ExtractableResponse<Response> updateCartProduct(Long id, CartProductRequest request) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 
