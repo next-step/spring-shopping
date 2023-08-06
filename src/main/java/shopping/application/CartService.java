@@ -8,8 +8,6 @@ import shopping.domain.cart.CartItems;
 import shopping.domain.cart.Quantity;
 import shopping.domain.product.Product;
 import shopping.domain.product.ProductRepository;
-import shopping.domain.user.User;
-import shopping.domain.user.UserRepository;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
@@ -22,24 +20,20 @@ import java.util.stream.Collectors;
 @Service
 public class CartService {
 
-    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartService(final UserRepository userRepository,
-                       final ProductRepository productRepository,
+    public CartService(final ProductRepository productRepository,
                        final CartItemRepository cartItemRepository) {
-        this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
     }
 
     @Transactional
     public void addProduct(final CartCreateRequest request, final Long userId) {
-        final User user = findUserById(userId);
         final Product product = findProductById(request.getProductId());
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = new CartItem(user, product, Quantity.ONE);
+        final CartItem item = new CartItem(userId, product, Quantity.ONE);
 
         items.add(item);
 
@@ -89,11 +83,6 @@ public class CartService {
     private CartItem findCartItemById(final Long id) {
         return cartItemRepository.findById(id)
                 .orElseThrow(() -> new ShoppingException(ErrorType.CART_ITEM_NO_EXIST, id));
-    }
-
-    private User findUserById(final Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new ShoppingException(ErrorType.USER_NO_EXIST, id));
     }
 
     private Product findProductById(final Long id) {

@@ -1,7 +1,6 @@
 package shopping.domain.cart;
 
 import shopping.domain.product.Product;
-import shopping.domain.user.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +18,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
@@ -31,15 +29,15 @@ public class CartItem {
     protected CartItem() {
     }
 
-    public CartItem(final Long id, final User user, final Product product, final Quantity quantity) {
+    public CartItem(final Long id, final Long userId, final Product product, final Quantity quantity) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.product = product;
         this.quantity = quantity;
     }
 
-    public CartItem(final User user, final Product product, final Quantity quantity) {
-        this(null, user, product, quantity);
+    public CartItem(final Long userId, final Product product, final Quantity quantity) {
+        this(null, userId, product, quantity);
     }
 
     public void increaseQuantity() {
@@ -58,8 +56,8 @@ public class CartItem {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
     public Product getProduct() {
