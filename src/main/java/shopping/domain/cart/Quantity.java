@@ -9,9 +9,7 @@ import java.util.Objects;
 
 @Embeddable
 public class Quantity {
-
-    public final static Quantity ONE = new Quantity(1);
-
+    
     private final int quantity;
 
     protected Quantity() {

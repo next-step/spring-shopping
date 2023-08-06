@@ -14,6 +14,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "cart_items")
 public class CartItem {
+
+    private static final Quantity INITIAL_QUANTITY = new Quantity(1);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +41,10 @@ public class CartItem {
 
     public CartItem(final Long userId, final Product product, final Quantity quantity) {
         this(null, userId, product, quantity);
+    }
+
+    public CartItem(final Long userId, final Product product) {
+        this(null, userId, product, INITIAL_QUANTITY);
     }
 
     public void increaseQuantity() {

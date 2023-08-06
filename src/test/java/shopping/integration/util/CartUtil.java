@@ -7,8 +7,8 @@ import shopping.dto.CartCreateRequest;
 
 public class CartUtil {
 
-    public static void createCartItem(String accessToken, long productId) {
-        RestAssured
+    public static Long createCartItem(String accessToken, long productId) {
+        String location = RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .body(new CartCreateRequest(productId))
@@ -17,6 +17,8 @@ public class CartUtil {
                 .when().post("/carts")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .extract();
+                .extract().header("Location");
+
+        return Long.parseLong(location.split("/")[2]);
     }
 }

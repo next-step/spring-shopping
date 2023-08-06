@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
@@ -35,21 +34,50 @@ public class CartIntegrationTest {
     }
 
     @Test
-    @DisplayName("장바구니에 상품을 추가할 수 있다.")
+    @DisplayName("장바구니에 상품을 수량 1개로 추가할 수 있다.")
     void addCart() {
         // given
         String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
 
-        // when, then
-        RestAssured
+        // when
+        Long cartItemId = CartUtil.createCartItem(accessToken, 1L);
+
+        // then
+        CartResponse cartResponse = RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .body(new CartCreateRequest(1L))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
+                .when().get("/carts/" + cartItemId)
                 .then().log().all()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CartResponse.class);
+
+        assertThat(cartResponse.getId()).isEqualTo(cartItemId);
+        assertThat(cartResponse.getQuantity()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("장바구니에 이미 존재하는 상품을 추가하면 수량을 1 증가시켜 업데이트한다.")
+    void addCartDuplicate() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+
+        // when
+        CartUtil.createCartItem(accessToken, 1L);
+        Long cartItemId = CartUtil.createCartItem(accessToken, 1L);
+
+        // then
+        CartResponse cartResponse = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/carts/" + cartItemId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CartResponse.class);
+
+        assertThat(cartResponse.getId()).isEqualTo(cartItemId);
+        assertThat(cartResponse.getQuantity()).isEqualTo(2);
     }
 
     @Test
@@ -122,6 +150,28 @@ public class CartIntegrationTest {
 
         // then
         assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다.");
+    }
+
+    @Test
+    @DisplayName("장바구니 아이템을 조회한다.")
+    void findCartItem() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+
+        Long cartItemId = CartUtil.createCartItem(accessToken, 1L);
+
+        // when
+        CartResponse cartResponse = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/carts/" + cartItemId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CartResponse.class);
+
+        // then
+        assertThat(cartResponse.getId()).isEqualTo(cartItemId);
     }
 
     @Test

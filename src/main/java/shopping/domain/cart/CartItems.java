@@ -12,8 +12,17 @@ public class CartItems {
         this.items = items;
     }
 
-    public void add(final CartItem item) {
-        findSameProduct(item).ifPresentOrElse(CartItem::increaseQuantity, () -> items.add(item));
+    public CartItem add(final CartItem item) {
+        Optional<CartItem> itemOptional = findSameProduct(item);
+
+        if (itemOptional.isPresent()) {
+            CartItem oldItem = itemOptional.get();
+            oldItem.increaseQuantity();
+            return oldItem;
+        }
+
+        items.add(item);
+        return item;
     }
 
     public Optional<CartItem> findSameProduct(final CartItem item) {

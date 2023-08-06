@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.CartItemRepository;
 import shopping.domain.cart.CartItems;
-import shopping.domain.cart.Quantity;
 import shopping.domain.product.Product;
 import shopping.domain.product.ProductRepository;
 import shopping.dto.CartCreateRequest;
@@ -30,16 +29,20 @@ public class CartService {
     }
 
     @Transactional
-    public void addProduct(final CartCreateRequest request, final Long userId) {
+    public Long addProduct(final CartCreateRequest request, final Long userId) {
         final Product product = findProductById(request.getProductId());
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = new CartItem(userId, product, Quantity.ONE);
+        final CartItem item = new CartItem(userId, product);
 
-        items.add(item);
+        CartItem affectedItem = items.add(item);
 
-        if (items.contains(item)) {
-            cartItemRepository.save(item);
-        }
+        return cartItemRepository.save(affectedItem).getId();
+    }
+
+    @Transactional(readOnly = true)
+    public CartResponse findById(final Long id) {
+        return CartResponse.from(cartItemRepository.findById(id)
+                .orElseThrow(() -> new ShoppingException(ErrorType.CART_ITEM_NO_EXIST, id)));
     }
 
     @Transactional(readOnly = true)

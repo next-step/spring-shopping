@@ -14,7 +14,7 @@ class CartItemTest {
     void increaseQuantity() {
         // given
         Product product = DomainFixture.createProduct();
-        CartItem cartItem = new CartItem(1L, product, Quantity.ONE);
+        CartItem cartItem = new CartItem(1L, product);
 
         // when
         cartItem.increaseQuantity();
@@ -28,7 +28,7 @@ class CartItemTest {
     void updateQuantity() {
         // given
         Product product = DomainFixture.createProduct();
-        CartItem cartItem = new CartItem(1L, product, Quantity.ONE);
+        CartItem cartItem = new CartItem(1L, product);
 
         // when
         cartItem.updateQuantity(4);

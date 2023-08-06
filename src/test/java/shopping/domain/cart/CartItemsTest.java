@@ -17,7 +17,7 @@ class CartItemsTest {
     void addCartItem() {
         // given
         Product product = DomainFixture.createProduct();
-        CartItem item = new CartItem(1L, product, Quantity.ONE);
+        CartItem item = new CartItem(1L, product);
         CartItems items = new CartItems(new ArrayList<>());
         // when
         items.add(item);
@@ -31,7 +31,7 @@ class CartItemsTest {
     void addCartItemDuplicate() {
         // given
         Product product = DomainFixture.createProduct();
-        CartItem item = new CartItem(1L, product, Quantity.ONE);
+        CartItem item = new CartItem(1L, product);
         CartItems items = new CartItems(new ArrayList<>());
 
         // when
@@ -48,7 +48,7 @@ class CartItemsTest {
     void contains() {
         // given
         Product product = DomainFixture.createProduct();
-        CartItem item = new CartItem(1L, 1L, product, Quantity.ONE);
+        CartItem item = new CartItem(1L, 1L, product, new Quantity(1));
         CartItems items = new CartItems(new ArrayList<>(List.of(item)));
 
 
@@ -61,7 +61,7 @@ class CartItemsTest {
     void notContains() {
         // given
         Product product = DomainFixture.createProduct();
-        CartItem item = new CartItem(1L, 1L, product, Quantity.ONE);
+        CartItem item = new CartItem(1L, 1L, product, new Quantity(1));
         CartItems items = new CartItems(new ArrayList<>());
 
 

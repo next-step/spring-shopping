@@ -1,6 +1,5 @@
 package shopping.ui;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,7 @@ import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +30,13 @@ public class CartController {
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody final CartCreateRequest request,
                                            @AuthenticationPrincipal final Long userId) {
-        cartService.addProduct(request, userId);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Long id = cartService.addProduct(request, userId);
+        return ResponseEntity.created(URI.create("/carts/" + id)).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CartResponse> find(@PathVariable final Long id) {
+        return ResponseEntity.ok(cartService.findById(id));
     }
 
     @GetMapping
