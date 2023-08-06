@@ -3,6 +3,7 @@ package shopping.mart.repository.entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
@@ -37,6 +38,13 @@ public class CartEntity extends TimeBaseEntity {
     private CartEntity() {
     }
 
+    public CartEntity(Long id, Long userId, List<CartProductEntity> cartProductEntities) {
+        this.id = id;
+        this.userId = userId;
+        this.cartProductEntities =
+            cartProductEntities == null ? new ArrayList<>() : cartProductEntities;
+    }
+
     public void persist(Cart cart) {
         setNewCartProductEntities(cart.getProductCounts());
         updateCartProductEntities(cart.getProductCounts());
@@ -44,44 +52,48 @@ public class CartEntity extends TimeBaseEntity {
     }
 
     private void setNewCartProductEntities(Map<Product, Integer> productCounts) {
-        Map<Long, CartProductEntity> existCartProductEntityFinder = getCartProductEntityFinder();
+        for (Entry<Product, Integer> entry : productCounts.entrySet()) {
+            if (existProduct(entry.getKey().getId())) {
+                continue;
+            }
+            cartProductEntities.add(
+                new CartProductEntity(this, entry.getKey().getId(), entry.getValue()));
+        }
+    }
 
-        productCounts.entrySet().stream()
-            .filter(entry -> !existCartProductEntityFinder.containsKey(entry.getKey().getId()))
-            .forEach(entry -> this.cartProductEntities.add(
-                new CartProductEntity(this, entry.getKey().getId(), entry.getValue())));
+    private boolean existProduct(long productId) {
+        return cartProductEntities.stream()
+            .anyMatch(cartProductEntity -> cartProductEntity.getProductId().equals(productId));
     }
 
     private void updateCartProductEntities(Map<Product, Integer> productCounts) {
-        Map<Long, CartProductEntity> existCartProductEntityFinder = getCartProductEntityFinder();
-
-        productCounts.forEach((key, value) -> existCartProductEntityFinder.get(key.getId())
-            .setCount(value));
-    }
-
-    private Map<Long, CartProductEntity> getCartProductEntityFinder() {
-        return this.cartProductEntities.stream()
-            .collect(Collectors.toMap(CartProductEntity::getProductId,
-                cartProductEntity -> cartProductEntity));
+        for (Entry<Product, Integer> entry : productCounts.entrySet()) {
+            cartProductEntities.stream()
+                .filter(cartProductEntity -> cartProductEntity.getProductId()
+                    .equals(entry.getKey().getId()))
+                .findAny()
+                .ifPresent(cartProductEntity -> cartProductEntity.setCount(entry.getValue()));
+        }
     }
 
     private void deleteCartProductEntities(Map<Product, Integer> productCounts) {
-        Set<Long> productIds = productCounts.keySet().stream()
-            .map(Product::getId)
-            .collect(Collectors.toSet());
+        Set<Long> productIds = productsToIds(productCounts);
 
-        List<CartProductEntity> removeTargets = cartProductEntities.stream()
-            .filter(cartProductEntity -> !productIds.contains(cartProductEntity.getProductId()))
-            .collect(Collectors.toList());
+        List<CartProductEntity> removeTargets = new ArrayList<>();
+        for (CartProductEntity cartProductEntity : cartProductEntities) {
+            if (productIds.contains(cartProductEntity.getProductId())) {
+                continue;
+            }
+            removeTargets.add(cartProductEntity);
+        }
 
         removeTargets.forEach(cartProductEntities::remove);
     }
 
-    public CartEntity(Long id, Long userId, List<CartProductEntity> cartProductEntities) {
-        this.id = id;
-        this.userId = userId;
-        this.cartProductEntities =
-            cartProductEntities == null ? new ArrayList<>() : cartProductEntities;
+    private Set<Long> productsToIds(Map<Product, Integer> productCounts) {
+        return productCounts.keySet().stream()
+            .map(Product::getId)
+            .collect(Collectors.toSet());
     }
 
     public Long getId() {
