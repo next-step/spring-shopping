@@ -11,6 +11,7 @@ import shopping.exception.ShoppingException;
 public class BearerExtractor {
 
     private static final String BEARER_TYPE = "Bearer";
+    private static final int TOKEN_VALUE_BEGIN_INDEX = 7;
 
     public String extract(final HttpServletRequest request) {
         final String value = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -24,6 +25,6 @@ public class BearerExtractor {
             throw new ShoppingException(ExceptionType.NOT_BEARER_TOKEN);
         }
 
-        return value.split(" ")[1];
+        return value.substring(TOKEN_VALUE_BEGIN_INDEX);
     }
 }
