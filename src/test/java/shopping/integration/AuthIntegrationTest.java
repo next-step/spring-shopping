@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import shopping.dto.response.LoginResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +23,9 @@ class AuthIntegrationTest extends IntegrationTest {
         ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email, password);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        LoginResponse loginResponse = response.body().as(LoginResponse.class);
+        assertThat(loginResponse.getAccessToken()).isNotBlank();
     }
 
     @DisplayName("비밀번호가 일치하지 않으면 UNAUTHORIZED 상태를 반환한다.")
@@ -33,7 +36,8 @@ class AuthIntegrationTest extends IntegrationTest {
         String invalidPassword = "invalid";
 
         // when
-        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email, invalidPassword);
+        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email,
+            invalidPassword);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -47,7 +51,8 @@ class AuthIntegrationTest extends IntegrationTest {
         String invalidPassword = "1234";
 
         // when
-        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email, invalidPassword);
+        ExtractableResponse<Response> response = AuthIntegrationSupporter.login(email,
+            invalidPassword);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());

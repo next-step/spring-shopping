@@ -24,7 +24,8 @@ class CartProductIntegrationTest extends IntegrationTest {
             productId);
 
         // then
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.header("Location")).isNotBlank();
 
     }
 

@@ -33,18 +33,19 @@ public class CartProductService {
         this.cartProductRepository = cartRepository;
     }
 
-    public void addProduct(Long memberId, Long productId) {
+    public CartProduct addProduct(Long memberId, Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductException("상품Id에 해당하는 상품 존재하지 않습니다"));
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException("회원Id에 해당하는 회원이 존재하지 않습니다"));
 
-        CartProduct cart = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
+        CartProduct cartProduct = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
                 .map(CartProduct::increaseQuantity)
                 .orElseGet(() -> new CartProduct(member, product, DEFAULT_PRODUCT_QUANTITY));
 
-        cartProductRepository.save(cart);
+        cartProductRepository.save(cartProduct);
+        return cartProduct;
     }
 
     public List<FindCartProductResponse> findCartProducts(Long memberId) {

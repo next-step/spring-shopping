@@ -1,5 +1,6 @@
 package shopping.ui;
 
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shopping.application.CartProductService;
+import shopping.domain.CartProduct;
 import shopping.dto.response.FindCartProductResponse;
 import shopping.dto.request.UpdateCartProductRequest;
 import shopping.ui.argumentresolver.Login;
@@ -40,8 +42,9 @@ public class CartProductController {
 
     @ResponseBody
     @PostMapping("/products/{productId}")
-    public void addCartProduct(@PathVariable Long productId, @Login Long memberId) {
-        cartProductService.addProduct(memberId, productId);
+    public ResponseEntity<Void> addCartProduct(@PathVariable Long productId, @Login Long memberId) {
+        CartProduct cartProduct = cartProductService.addProduct(memberId, productId);
+        return ResponseEntity.created(URI.create("/products/" + cartProduct.getId())).build();
     }
 
     @ResponseBody
