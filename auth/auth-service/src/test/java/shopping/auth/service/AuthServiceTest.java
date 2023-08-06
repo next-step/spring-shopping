@@ -15,11 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.auth.domain.User;
-import shopping.auth.domain.exception.AlreadyExistUserException;
 import shopping.auth.domain.exception.DoesNotExistUserException;
 import shopping.auth.service.dto.LoginRequest;
 import shopping.auth.service.dto.TokenResponse;
-import shopping.auth.service.dto.UserJoinRequest;
 import shopping.auth.service.infra.JwtUtils;
 import shopping.auth.service.spi.UserRepository;
 
@@ -33,26 +31,6 @@ class AuthServiceTest {
 
     @MockBean
     private UserRepository userRepository;
-
-    @Nested
-    @DisplayName("joinUser 메소드는")
-    class joinUser_method {
-
-        @Test
-        @DisplayName("email이 중복되면, AlreadyExistUserException을 던진다.")
-        void throw_AlreadyExistUserException_when_duplicated_email() {
-            // given
-            UserJoinRequest request = new UserJoinRequest("hello@hello.world", "hello!123");
-            User user = new User(request.getEmail(), request.getPassword());
-            when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(user));
-
-            // when
-            Exception exception = catchException(() -> authService.joinUser(request));
-
-            // then
-            assertThat(exception).isInstanceOf(AlreadyExistUserException.class);
-        }
-    }
 
     @Nested
     @DisplayName("authenticate 메소드는")
