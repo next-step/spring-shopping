@@ -1,5 +1,6 @@
 package shopping.mart.repository.entity;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,28 @@ public class CartEntity extends TimeBaseEntity {
         this.userId = userId;
         this.cartProductEntities =
             cartProductEntities == null ? new ArrayList<>() : cartProductEntities;
+    }
+
+    public Cart toDomain(List<Product> products) {
+        Cart cart = new Cart(id, userId);
+        products.forEach(cart::addProduct);
+        products.forEach(product -> cart.updateProduct(product, getProductCount(product)));
+        return cart;
+    }
+
+    private int getProductCount(Product product) {
+        return cartProductEntities.stream()
+            .filter(cartProductEntity -> cartProductEntity.isMatchedProduct(product))
+            .findAny()
+            .orElseThrow(() -> new IllegalStateException(MessageFormat.format(
+                "product id\"{0}\"에 해당하는 product가 cart에 저장되어 있지 않음", product.getId())))
+            .getCount();
+    }
+
+    public List<Long> getRegisteredProductIds() {
+        return cartProductEntities.stream()
+            .map(CartProductEntity::getProductId)
+            .collect(Collectors.toList());
     }
 
     public void persist(Cart cart) {
@@ -98,17 +121,5 @@ public class CartEntity extends TimeBaseEntity {
 
     public Long getId() {
         return id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public List<CartProductEntity> getCartProductEntities() {
-        return cartProductEntities;
-    }
-
-    public boolean isEmptyCart() {
-        return cartProductEntities.isEmpty();
     }
 }

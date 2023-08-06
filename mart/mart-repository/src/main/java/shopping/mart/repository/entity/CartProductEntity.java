@@ -1,5 +1,6 @@
 package shopping.mart.repository.entity;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +8,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import shopping.mart.domain.Product;
 
 @Entity
 @Table(name = "cart_product")
@@ -44,5 +46,9 @@ public class CartProductEntity extends TimeBaseEntity {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public boolean isMatchedProduct(Product product) {
+        return Objects.equals(product.getId(), productId);
     }
 }

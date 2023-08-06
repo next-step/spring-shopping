@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import shopping.mart.domain.Product;
 
 @Entity
 @Table(name = "product")
@@ -36,19 +37,11 @@ public class ProductEntity extends TimeBaseEntity {
         this.price = price;
     }
 
+    public Product toDomain() {
+        return new Product(id, name, imageUrl, price);
+    }
+
     public Long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getPrice() {
-        return price;
     }
 }

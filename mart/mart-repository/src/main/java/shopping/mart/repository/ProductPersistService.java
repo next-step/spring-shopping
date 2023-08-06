@@ -28,28 +28,20 @@ public class ProductPersistService implements ProductRepository {
     @Override
     public Optional<Product> findByProductName(final String name) {
         Optional<ProductEntity> optionalProductEntity = productJpaRepository.findByName(name);
-        return toProduct(optionalProductEntity);
+        return optionalProductEntity.map(ProductEntity::toDomain);
     }
 
     @Override
     public Optional<Product> findById(long id) {
         Optional<ProductEntity> optionalProductEntity = productJpaRepository.findById(id);
-        return toProduct(optionalProductEntity);
-    }
-
-    private Optional<Product> toProduct(Optional<ProductEntity> optionalProductEntity) {
-        return optionalProductEntity.map(
-            productEntity -> new Product(productEntity.getId(), productEntity.getName(),
-                productEntity.getImageUrl(),
-                productEntity.getPrice()));
+        return optionalProductEntity.map(ProductEntity::toDomain);
     }
 
     @Override
     public List<Product> findAllProducts() {
         List<ProductEntity> productEntities = productJpaRepository.findAll();
         return productEntities.stream()
-            .map(productEntity -> new Product(productEntity.getId(), productEntity.getName(),
-                productEntity.getImageUrl(), productEntity.getPrice()))
+            .map(ProductEntity::toDomain)
             .collect(Collectors.toList());
     }
 }
