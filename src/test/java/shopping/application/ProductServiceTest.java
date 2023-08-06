@@ -1,5 +1,10 @@
 package shopping.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,13 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Product;
 import shopping.dto.ProductResponse;
 import shopping.repository.ProductRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @DisplayName("ProductService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -45,12 +43,7 @@ class ProductServiceTest {
             List<ProductResponse> result = productService.findAll();
 
             // then
-            List<String> expectedProductIds = List.of(product1.getName(), product2.getName());
-            List<String> actualProductIds = result.stream()
-                    .map(ProductResponse::getName)
-                    .collect(Collectors.toList());
-
-            assertThat(expectedProductIds).containsAll(actualProductIds);
+            assertThat(result).extracting("name").containsExactlyInAnyOrder("치킨", "피자");
 
             verify(productRepository).findAll();
 
