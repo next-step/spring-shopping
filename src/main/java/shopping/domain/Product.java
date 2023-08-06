@@ -29,6 +29,9 @@ public class Product {
     @Column(nullable = false)
     private long price;
 
+    protected Product() {
+    }
+
     public Product(Long id, String name, String imageUrl, long price) {
         validateName(name);
         validateImageUrl(imageUrl);
@@ -63,10 +66,6 @@ public class Product {
         if (StringUtils.isBlank(imageUrl)) {
             throw new ProductException("상품 이미지가 존재하지 않습니다");
         }
-    }
-
-    protected Product() {
-
     }
 
     public Long getId() {

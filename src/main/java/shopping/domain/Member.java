@@ -23,6 +23,9 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    protected Member() {
+    }
+
     public Member(Long id, String email, String password) {
         validateEmail(email);
         validatePassword(password);
@@ -50,9 +53,6 @@ public class Member {
                     MessageFormat.format("올바른 이메일 형식이 아닙니다 email : {0}", email)
             );
         }
-    }
-
-    protected Member() {
     }
 
     public Long getId() {

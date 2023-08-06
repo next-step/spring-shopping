@@ -35,7 +35,6 @@ public class CartProduct {
     private int quantity;
 
     protected CartProduct() {
-
     }
 
     public CartProduct(Long id, Member member, Product product, int quantity) {
