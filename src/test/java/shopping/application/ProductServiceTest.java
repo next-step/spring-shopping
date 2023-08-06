@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("ProductService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -50,6 +51,9 @@ class ProductServiceTest {
                     .collect(Collectors.toList());
 
             assertThat(expectedProductIds).containsAll(actualProductIds);
+
+            verify(productRepository).findAll();
+
         }
     }
 }

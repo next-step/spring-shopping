@@ -18,6 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("AuthService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +46,7 @@ public class AuthServiceTest {
 
             LoginRequest loginRequest = new LoginRequest(email, password);
 
-            Member member = new Member(email, password);
+            Member member = new Member(1L, email, password);
 
             given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
             given(tokenProvider.createToken(member.getId())).willReturn("token");
@@ -55,6 +56,9 @@ public class AuthServiceTest {
 
             // then
             assertThat(exception).isNull();
+
+            verify(memberRepository).findByEmail(loginRequest.getEmail());
+            verify(tokenProvider).createToken(member.getId());
         }
 
         @Test
@@ -74,6 +78,8 @@ public class AuthServiceTest {
             // then
             assertThat(exception).isInstanceOf(AuthException.class);
             assertThat(exception.getMessage()).contains("존재하지 않는 사용자입니다");
+
+            verify(memberRepository).findByEmail(email);
         }
 
         @Test
@@ -95,6 +101,8 @@ public class AuthServiceTest {
             // then
             assertThat(exception).isInstanceOf(AuthException.class);
             assertThat(exception.getMessage()).contains("비밀번호가 일치하지 않습니다");
+
+            verify(memberRepository).findByEmail(email);
         }
     }
 

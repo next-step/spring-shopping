@@ -63,6 +63,9 @@ public class CartProductServiceTest {
 
             // then
             assertThat(exception).isNull();
+
+            verify(memberRepository).findById(member.getId());
+            verify(productRepository).findById(product.getId());
         }
 
         @Test
@@ -80,6 +83,9 @@ public class CartProductServiceTest {
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
             assertThat(exception.getMessage()).contains("회원Id에 해당하는 회원이 존재하지 않습니다");
+
+            verify(productRepository).findById(product.getId());
+            verify(memberRepository).findById(anyLong());
         }
 
         @Test
@@ -96,6 +102,8 @@ public class CartProductServiceTest {
             // then
             assertThat(exception).isInstanceOf(ProductException.class);
             assertThat(exception.getMessage()).contains("상품Id에 해당하는 상품 존재하지 않습니다");
+
+            verify(productRepository).findById(anyLong());
         }
 
         @Test
@@ -109,13 +117,17 @@ public class CartProductServiceTest {
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
-            given(cartProductRepository.findOneByMemberIdAndProductId(product.getId(), member.getId())).willReturn(Optional.of(cart));
+            given(cartProductRepository.findOneByMemberIdAndProductId(member.getId(), product.getId())).willReturn(Optional.of(cart));
 
             // when
             cartProductService.addProduct(product.getId(), member.getId());
 
             // then
             assertThat(cart.getQuantity()).isEqualTo(initialQuantity + 1);
+
+            verify(memberRepository).findById(member.getId());
+            verify(productRepository).findById(product.getId());
+            verify(cartProductRepository).findOneByMemberIdAndProductId(member.getId(), product.getId());
         }
     }
 
@@ -140,6 +152,8 @@ public class CartProductServiceTest {
             // then
             assertThat(result).hasSize(1);
             assertThat(result.get(0).getProductId()).isEqualTo(product.getId());
+
+            verify(cartProductRepository).findAllByMemberId(member.getId());
         }
     }
 
