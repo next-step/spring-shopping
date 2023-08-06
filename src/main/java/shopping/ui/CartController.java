@@ -43,7 +43,7 @@ public class CartController {
     public ResponseEntity<Void> updateQuantity(@RequestBody final QuantityUpdateRequest request,
                                                @PathVariable final Long id,
                                                @AuthenticationPrincipal final Long userId) {
-        cartService.update(request, id, userId);
+        cartService.updateQuantity(request, id, userId);
         return ResponseEntity.noContent().build();
     }
 

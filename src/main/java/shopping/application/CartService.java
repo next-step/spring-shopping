@@ -57,7 +57,7 @@ public class CartService {
     }
 
     @Transactional
-    public void update(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
+    public void updateQuantity(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
         final CartItem item = findCartItemById(cartItemId);
 
