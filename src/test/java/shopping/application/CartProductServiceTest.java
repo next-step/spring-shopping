@@ -21,6 +21,7 @@ import shopping.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -58,12 +59,38 @@ public class CartProductServiceTest {
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
+            given(cartProductRepository.findOneByMemberIdAndProductId(member.getId(), product.getId()))
+                .willReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> cartProductService.addProduct(product.getId(), member.getId()));
+            CartProduct result =  cartProductService.addProduct(product.getId(), member.getId());
 
             // then
-            assertThat(exception).isNull();
+            assertThat(result.getMember()).isEqualTo(member);
+            assertThat(result.getProduct()).isEqualTo(product);
+            assertThat(result.getQuantity()).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("memberId와 productId쌍이 이미 존재 한다면, 수량을 1개 증가한다")
+        void increaseProductQuantity_WhenCartAlreadyExists() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Product product = new Product(1L, "치킨", "image", 23000L);
+            int initialQuantity = 5;
+            CartProduct cartProduct = new CartProduct(member, product, initialQuantity);
+
+            given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+            given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
+            given(cartProductRepository.findOneByMemberIdAndProductId(product.getId(), member.getId()))
+                .willReturn(Optional.of(cartProduct));
+
+            // when
+            CartProduct result = cartProductService.addProduct(product.getId(), member.getId());
+
+            // then
+            assertThat(result).isEqualTo(cartProduct);
+            assertThat(result.getQuantity()).isEqualTo(initialQuantity + 1);
         }
 
         @Test
@@ -95,26 +122,6 @@ public class CartProductServiceTest {
 
             // then
             assertThat(exception).isInstanceOf(ProductException.class);
-        }
-
-        @Test
-        @DisplayName("memberId와 productId쌍이 이미 존재 한다면, 수량을 1개 증가한다")
-        void increaseProductQuantity_WhenCartAlreadyExists() {
-            // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
-            Product product = new Product(1L, "치킨", "image", 23000L);
-            int initialQuantity = 5;
-            CartProduct cart = new CartProduct(member, product, initialQuantity);
-
-            given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-            given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
-            given(cartProductRepository.findOneByMemberIdAndProductId(product.getId(), member.getId())).willReturn(Optional.of(cart));
-
-            // when
-            cartProductService.addProduct(product.getId(), member.getId());
-
-            // then
-            assertThat(cart.getQuantity()).isEqualTo(initialQuantity + 1);
         }
     }
 

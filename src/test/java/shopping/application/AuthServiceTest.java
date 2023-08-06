@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Member;
 import shopping.dto.request.LoginRequest;
+import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
 import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
@@ -37,7 +38,7 @@ public class AuthServiceTest {
     class login_Method {
 
         @Test
-        @DisplayName("유효한 회원일 경우, 토큰을 담은 LoginResponse를 반환한다")
+        @DisplayName("유효한 회원일 경우, 토큰을 담은 LoginResponse 를 반환한다")
         void returnLoginResponse_WhenValidMember() {
             // given
             String email = "woowa1@woowa.com";
@@ -45,16 +46,16 @@ public class AuthServiceTest {
 
             LoginRequest loginRequest = new LoginRequest(email, password);
 
-            Member member = new Member(email, password);
+            Member member = new Member(1L, email, password);
 
             given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
             given(tokenProvider.createToken(member.getId())).willReturn("token");
 
             // when
-            Exception exception = catchException(() -> authService.login(loginRequest));
+            LoginResponse loginResponse = authService.login(loginRequest);
 
             // then
-            assertThat(exception).isNull();
+            assertThat(loginResponse.getAccessToken()).isNotBlank();
         }
 
         @Test
