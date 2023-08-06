@@ -1,5 +1,6 @@
 package shopping.config.interceptor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.exception.ErrorType;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthInterceptor implements HandlerInterceptor {
 
     private static final String TOKEN_TYPE = "Bearer";
-    private static final String AUTHENTICATION_HEADER = "Authorization";
     private static final String TOKEN_DELIMITER = " ";
 
     private final TokenProvider tokenProvider;
@@ -26,7 +26,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(final HttpServletRequest request,
                              final HttpServletResponse response,
                              final Object handler) throws Exception {
-        final String accessToken = request.getHeader(AUTHENTICATION_HEADER);
+        final String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         validateNotNull(accessToken);
         validateTokenType(accessToken);
 
