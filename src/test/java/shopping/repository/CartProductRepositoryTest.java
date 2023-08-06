@@ -1,22 +1,23 @@
 package shopping.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import shopping.domain.CartProduct;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 @DisplayName("CartRepository 클래스")
-@SpringBootTest
+@DataJpaTest
+@Import(CartProductRepository.class)
 public class CartProductRepositoryTest {
 
     @Autowired
-    private CartProductRepository cartRepository;
+    private CartProductRepository cartProductRepository;
 
     @Nested
     @DisplayName("findByMemberIdAndProductId 메소드는")
@@ -30,7 +31,8 @@ public class CartProductRepositoryTest {
             Long productId = 1L;
 
             // when
-            Optional<CartProduct> cartOptional = cartRepository.findOneByMemberIdAndProductId(memberId, productId);
+            Optional<CartProduct> cartOptional = cartProductRepository.findOneByMemberIdAndProductId(
+                memberId, productId);
 
             // then
             assertThat(cartOptional).isPresent();
