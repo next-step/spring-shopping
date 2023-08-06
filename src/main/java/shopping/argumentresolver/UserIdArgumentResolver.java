@@ -11,7 +11,7 @@ import shopping.argumentresolver.annotation.UserId;
 
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
-    public static final String USER_ID = "userId";
+    private static final String USER_ID = "userId";
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
