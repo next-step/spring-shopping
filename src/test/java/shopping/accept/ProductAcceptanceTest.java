@@ -1,9 +1,9 @@
-package shopping.app.accept;
+package shopping.accept;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.app.accept.UrlHelper.Product;
+import shopping.accept.UrlHelper.Product;
 
 @DisplayName("Product 인수테스트")
 class ProductAcceptanceTest extends AcceptanceTest {

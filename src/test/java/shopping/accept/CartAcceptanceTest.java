@@ -1,4 +1,4 @@
-package shopping.app.accept;
+package shopping.accept;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.app.accept.AssertHelper.Http;
-import shopping.app.accept.UrlHelper.Cart;
+import shopping.accept.UrlHelper.Cart;
+import shopping.accept.AssertHelper.Http;
 import shopping.auth.dto.LoginRequest;
 import shopping.auth.dto.TokenResponse;
 import shopping.mart.dto.CartAddRequest;
@@ -39,7 +39,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.addProduct(request, accessToken);
 
         // then
-        AssertHelper.Http.assertIsCreated(result);
+        Http.assertIsCreated(result);
     }
 
     @Test
@@ -52,10 +52,10 @@ class CartAcceptanceTest extends AcceptanceTest {
         String invalidToken = "123";
 
         // when
-        ExtractableResponse<Response> result = UrlHelper.Cart.addProduct(request, invalidToken);
+        ExtractableResponse<Response> result = Cart.addProduct(request, invalidToken);
 
         // then
-        AssertHelper.Http.assertIsUnAuthorization(result);
+        Http.assertIsUnAuthorization(result);
     }
 
     @Test
@@ -65,10 +65,10 @@ class CartAcceptanceTest extends AcceptanceTest {
         CartAddRequest request = new CartAddRequest(9999999L);
 
         // when
-        ExtractableResponse<Response> result = UrlHelper.Cart.addProduct(request, accessToken);
+        ExtractableResponse<Response> result = Cart.addProduct(request, accessToken);
 
         // then
-        AssertHelper.Http.assertIsBadRequest(result);
+        Http.assertIsBadRequest(result);
     }
 
     @Test
@@ -77,11 +77,11 @@ class CartAcceptanceTest extends AcceptanceTest {
         // given
         List<ProductResponse> allProducts = findAllProducts();
         allProducts.forEach(
-            product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
+            product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         CartResponse exactlyExpected = getExpectedCartResponse(allProducts);
 
         // when
-        ExtractableResponse<Response> result = UrlHelper.Cart.findCart(accessToken);
+        ExtractableResponse<Response> result = Cart.findCart(accessToken);
 
         // then
         AssertHelper.Cart.assertCart(result, exactlyExpected);
@@ -117,7 +117,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.updateCart(request, accessToken);
 
         // then
-        AssertHelper.Http.assertIsBadRequest(result);
+        Http.assertIsBadRequest(result);
     }
 
     @Test
@@ -136,7 +136,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.updateCart(request, accessToken);
 
         // then
-        AssertHelper.Http.assertIsBadRequest(result);
+        Http.assertIsBadRequest(result);
     }
 
     @Test
@@ -145,14 +145,14 @@ class CartAcceptanceTest extends AcceptanceTest {
         // given
         List<ProductResponse> allProducts = findAllProducts();
         allProducts.forEach(
-            product -> UrlHelper.Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
+            product -> Cart.addProduct(new CartAddRequest(product.getId()), accessToken));
         long deleteTargetId = allProducts.get(0).getId();
 
         // when
         ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, accessToken);
 
         // then
-        AssertHelper.Http.assertIsNoContent(result);
+        Http.assertIsNoContent(result);
     }
 
     @Test
@@ -165,7 +165,7 @@ class CartAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> result = Cart.deleteCart(deleteTargetId, accessToken);
 
         // then
-        AssertHelper.Http.assertIsBadRequest(result);
+        Http.assertIsBadRequest(result);
     }
 
     private CartResponse getExpectedCartResponse(List<ProductResponse> productResponses) {

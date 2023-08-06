@@ -1,10 +1,10 @@
-package shopping.app.accept;
+package shopping.accept;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.app.accept.UrlHelper.Auth;
+import shopping.accept.UrlHelper.Auth;
 import shopping.auth.dto.LoginRequest;
 
 @DisplayName("Auth 인수테스트")

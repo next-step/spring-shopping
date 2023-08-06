@@ -1,4 +1,4 @@
-package shopping.app.accept;
+package shopping.accept;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -10,6 +10,12 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    implementation project(':auth')
+    implementation project(':mart')
+    implementation project(':core')
+}
+
 allprojects {
 
     apply plugin: 'java'

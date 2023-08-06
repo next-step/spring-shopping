@@ -1,4 +1,4 @@
-package shopping.app.accept;
+package shopping.accept;
 
 import static io.restassured.RestAssured.given;
 
