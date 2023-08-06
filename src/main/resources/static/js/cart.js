@@ -6,18 +6,23 @@ const addCartItem = (productId) => {
         return;
     }
 
-    // TODO: [3단계] 장바구니 아이템 추가 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch('/cart-items', {
+        method: 'POST',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({productId: productId})
     }).then((response) => {
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
         alert('장바구니에 담았습니다.');
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }
 
@@ -29,18 +34,23 @@ const updateCartItemQuantity = (id, quantity) => {
         return;
     }
 
-    // TODO: [3단계] 장바구니 아이템 수량 변경 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch('/cart-items/' + id, {
+        method: 'PATCH',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({quantity: quantity})
     }).then((response) => {
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
         window.location.reload();
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }
 
@@ -52,16 +62,21 @@ const removeCartItem = (id) => {
         return;
     }
 
-    // TODO: [3단계] 장바구니 아이템 삭제 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch('cart-items/' + id, {
+        method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
         }
     }).then((response) => {
+        const json = response.json();
+        if (!response.ok) {
+            return json.then((errorData) => {
+                throw new Error(errorData.message);
+            });
+        }
         window.location.reload();
     }).catch((error) => {
-        console.error(error);
+        alert(error);
     });
 }
