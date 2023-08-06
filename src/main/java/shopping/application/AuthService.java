@@ -1,6 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
+import shopping.domain.Email;
 import shopping.domain.Member;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
@@ -21,7 +22,8 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
-        Member member = memberRepository.findByEmail(loginRequest.getEmail())
+        Email email = new Email(loginRequest.getEmail());
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new AuthException("존재하지 않는 사용자입니다."));
 
         if (!member.matchPassword(loginRequest.getPassword())) {

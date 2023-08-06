@@ -1,6 +1,7 @@
 package shopping.repository;
 
 import org.springframework.stereotype.Repository;
+import shopping.domain.Email;
 import shopping.domain.Member;
 
 import javax.persistence.EntityManager;
@@ -15,7 +16,7 @@ public class MemberRepository {
         this.entityManager = entityManager;
     }
 
-    public Optional<Member> findByEmail(String email) {
+    public Optional<Member> findByEmail(Email email) {
         return entityManager.createQuery("select m from Member m where m.email = :email", Member.class)
                 .setParameter("email", email)
                 .getResultStream()

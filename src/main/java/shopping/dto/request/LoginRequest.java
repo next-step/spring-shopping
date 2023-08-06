@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.util.StringUtils;
 import shopping.exception.RequestException;
-import shopping.utils.EmailUtils;
 
 public class LoginRequest {
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
 
 
     @JsonCreator
@@ -37,9 +36,6 @@ public class LoginRequest {
     private void validateEmail(String email) {
         if (!StringUtils.hasText(email)) {
             throw new RequestException("이메일 입력이 존재하지 않습니다");
-        }
-        if (!EmailUtils.isValidEmail(email)) {
-            throw new RequestException("올바른 이메일 형식이 아닙니다");
         }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import shopping.domain.CartProduct;
+import shopping.domain.Email;
 import shopping.domain.Member;
 
 @DisplayName("MemberRepository 클래스")
@@ -30,14 +31,14 @@ class MemberRepositoryTest {
         @DisplayName("email에 해당하는 Member 를 반환한다.")
         void returnMemberByEmail() {
             // given
-            String memberEmail = "woowa1@woowa.com";
+            Email email = new Email("woowa1@woowa.com");
 
             // when
-            Optional<Member> result = memberRepository.findByEmail(memberEmail);
+            Optional<Member> result = memberRepository.findByEmail(email);
 
             // then
             assertThat(result).isPresent();
-            assertThat(result.get().getEmail()).isEqualTo(memberEmail);
+            assertThat(result.get().getEmail()).isEqualTo(email);
         }
     }
 
