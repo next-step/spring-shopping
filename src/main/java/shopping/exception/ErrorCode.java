@@ -31,4 +31,12 @@ public enum ErrorCode {
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String toString() {
+        return "ErrorCode{" +
+            "status=" + status +
+            ", message='" + message + '\'' +
+            '}';
+    }
 }
