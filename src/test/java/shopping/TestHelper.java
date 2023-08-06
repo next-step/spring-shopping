@@ -8,7 +8,7 @@ import shopping.domain.entity.ProductEntity;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.request.LoginRequest;
 
-public class TestFixture {
+public class TestHelper {
 
     private static Long sequence = 1L;
 
