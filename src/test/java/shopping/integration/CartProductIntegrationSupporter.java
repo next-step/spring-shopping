@@ -10,13 +10,7 @@ import shopping.dto.request.UpdateCartProductRequest;
 public class CartProductIntegrationSupporter {
 
     static ExtractableResponse<Response> addProduct(Long productId) {
-        String email = "woowa1@woowa.com";
-        String password = "1234";
-
-        String accessToken = AuthIntegrationSupporter
-                .login(email, password)
-                .as(LoginResponse.class)
-                .getAccessToken();
+        String accessToken = getAccessToken();
 
         return RestAssured
                 .given().log().all()
@@ -27,13 +21,7 @@ public class CartProductIntegrationSupporter {
     }
 
     static ExtractableResponse<Response> findCartProducts() {
-        String email = "woowa1@woowa.com";
-        String password = "1234";
-
-        String accessToken = AuthIntegrationSupporter
-                .login(email, password)
-                .as(LoginResponse.class)
-                .getAccessToken();
+        String accessToken = getAccessToken();
 
         return RestAssured
                 .given().log().all()
@@ -44,13 +32,7 @@ public class CartProductIntegrationSupporter {
     }
 
     static ExtractableResponse<Response> deleteCartProduct(Long id) {
-        String email = "woowa1@woowa.com";
-        String password = "1234";
-
-        String accessToken = AuthIntegrationSupporter
-                .login(email, password)
-                .as(LoginResponse.class)
-                .getAccessToken();
+        String accessToken = getAccessToken();
 
         return RestAssured
                 .given().log().all()
@@ -61,13 +43,7 @@ public class CartProductIntegrationSupporter {
     }
 
     static ExtractableResponse<Response> updateCartProduct(Long id, UpdateCartProductRequest request) {
-        String email = "woowa1@woowa.com";
-        String password = "1234";
-
-        String accessToken = AuthIntegrationSupporter
-                .login(email, password)
-                .as(LoginResponse.class)
-                .getAccessToken();
+        String accessToken = getAccessToken();
 
         return RestAssured
                 .given().log().all()
@@ -77,6 +53,29 @@ public class CartProductIntegrationSupporter {
                 .body(request)
                 .when().patch("/cart/{id}", id)
                 .then().log().all().extract();
+    }
+
+    static ExtractableResponse<Response> updateProductWithJson(Long id, String jsonRequest) {
+        String accessToken = getAccessToken();
+
+        return RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(jsonRequest)
+            .when().patch("/cart/{id}", id)
+            .then().log().all().extract();
+    }
+
+    private static String getAccessToken() {
+        String email = "woowa1@woowa.com";
+        String password = "1234";
+
+        return AuthIntegrationSupporter
+            .login(email, password)
+            .as(LoginResponse.class)
+            .getAccessToken();
     }
 
 }

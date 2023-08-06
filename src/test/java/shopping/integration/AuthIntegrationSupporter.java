@@ -17,4 +17,14 @@ public class AuthIntegrationSupporter {
                 .when().post("/login")
                 .then().log().all().extract();
     }
+
+    static ExtractableResponse<Response> loginWithJson(String jsonRequest) {
+        return RestAssured
+            .given().log().all()
+            .body(jsonRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/login")
+            .then().log().all().extract();
+    }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import shopping.dto.request.UpdateCartProductRequest;
+import shopping.dto.response.ErrorResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +17,6 @@ class CartProductIntegrationTest extends IntegrationTest {
     @Test
     void addProduct() {
         // given
-        Long memberId = 1L;
         Long productId = 5L;
 
         // when
@@ -29,11 +29,10 @@ class CartProductIntegrationTest extends IntegrationTest {
 
     }
 
-    @DisplayName("상품 id 에 해당하는 상품이 존재하지 않으면 BADREQUEST 상태를 반환한다.")
+    @DisplayName("상품 id 에 해당하는 상품이 존재하지 않으면 BAD REQUEST 상태를 반환한다.")
     @Test
     void returnStatusBadRequest_WhenProductIsNotExist() {
         // given
-        Long memberId = 1L;
         Long productId = 50L;
 
         // when
@@ -62,7 +61,8 @@ class CartProductIntegrationTest extends IntegrationTest {
         Long cartProductId = 1L;
 
         // when
-        ExtractableResponse<Response> response = CartProductIntegrationSupporter.deleteCartProduct(cartProductId);
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.deleteCartProduct(
+            cartProductId);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -76,9 +76,31 @@ class CartProductIntegrationTest extends IntegrationTest {
         UpdateCartProductRequest request = new UpdateCartProductRequest(15);
 
         // when
-        ExtractableResponse<Response> response = CartProductIntegrationSupporter.updateCartProduct(cartProductId, request);
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.updateCartProduct(
+            cartProductId, request);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @DisplayName("장바구니에 있는 상품 수량 요청이 음수일 경우 BAD REQUEST 상태를 반환한다.")
+    @Test
+    void returnBadRequest_WhenQuantityIsNegative() {
+        // given
+        Long cartProductId = 1L;
+        String jsonRequest = createJsonRequest(-1);
+
+        // when
+        ExtractableResponse<Response> response = CartProductIntegrationSupporter.updateProductWithJson(
+            cartProductId, jsonRequest);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.body().as(ErrorResponse.class).getMessage())
+            .isEqualTo("상품 수량은 0 보다 작을 수 없습니다");
+    }
+
+    private String createJsonRequest(int quantity) {
+        return "{\"quantity\":\""+ quantity +"\"}";
     }
 }

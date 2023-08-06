@@ -21,7 +21,7 @@ public class UpdateCartProductRequest {
 
     private void validateQuantity(int quantity) {
         if (quantity < 0) {
-            throw new CartException("상품 수량은 0 이하일 수 없습니다");
+            throw new CartException("상품 수량은 0 보다 작을 수 없습니다");
         }
     }
 }
