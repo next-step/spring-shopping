@@ -82,8 +82,7 @@ class CartPersistServiceTest extends JpaTest {
             // given
             UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
 
-            Product product = PersistFixture.Product.withEntity(
-                saveProduct("product", "/images/default.png", "10000"));
+            Product product = saveProduct("product", "/images/default.png", "10000").toDomain();
 
             Cart expected = cartPersistService.newCart(userEntity.getId());
             expected.addProduct(product);
@@ -102,8 +101,7 @@ class CartPersistServiceTest extends JpaTest {
             // given
             UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
 
-            Product product = PersistFixture.Product.withEntity(
-                saveProduct("product1", "/images/default.png", "10000"));
+            Product product = saveProduct("product1", "/images/default.png", "10000").toDomain();
 
             Cart expected = cartPersistService.newCart(userEntity.getId());
             expected.addProduct(product);
