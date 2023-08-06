@@ -1,0 +1,5 @@
+dependencies {
+    implementation project(':mart:mart-domain')
+
+    implementation project(':auth:auth-service')
+}

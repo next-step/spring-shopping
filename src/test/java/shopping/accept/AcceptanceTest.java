@@ -11,8 +11,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.TestDefaultLocation;
-import shopping.mart.dto.ProductResponse;
 import shopping.mart.service.ProductService;
+import shopping.mart.service.dto.ProductResponse;
 
 @ContextConfiguration(classes = TestDefaultLocation.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

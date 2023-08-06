@@ -1,5 +1,15 @@
 rootProject.name = 'spring-shopping'
 
-include 'auth'
 include 'core'
+
 include 'mart'
+include 'mart:mart-domain'
+include 'mart:mart-service'
+include 'mart:mart-controller'
+include 'mart:mart-repository'
+
+include 'auth'
+include 'auth:auth-domain'
+include 'auth:auth-service'
+include 'auth:auth-controller'
+include 'auth:auth-repository'

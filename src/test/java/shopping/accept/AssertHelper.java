@@ -9,9 +9,9 @@ import java.util.Arrays;
 import java.util.Optional;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
-import shopping.auth.dto.TokenResponse;
-import shopping.mart.dto.CartResponse;
-import shopping.mart.dto.CartResponse.ProductResponse;
+import shopping.auth.service.dto.TokenResponse;
+import shopping.mart.service.dto.CartResponse;
+import shopping.mart.service.dto.CartResponse.ProductResponse;
 
 class AssertHelper {
 
