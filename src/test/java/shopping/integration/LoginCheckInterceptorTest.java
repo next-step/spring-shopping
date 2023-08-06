@@ -65,6 +65,6 @@ public class LoginCheckInterceptorTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(response.body().as(ErrorResponse.class).getMessage()).isEqualTo("로그인이 필요한 서비스입니다");
+        assertThat(response.body().as(ErrorResponse.class).getMessage()).contains("로그인이 필요한 서비스입니다");
     }
 }

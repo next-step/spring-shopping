@@ -73,6 +73,7 @@ public class AuthServiceTest {
 
             // then
             assertThat(exception).isInstanceOf(AuthException.class);
+            assertThat(exception.getMessage()).contains("존재하지 않는 사용자입니다");
         }
 
         @Test
@@ -93,6 +94,7 @@ public class AuthServiceTest {
 
             // then
             assertThat(exception).isInstanceOf(AuthException.class);
+            assertThat(exception.getMessage()).contains("비밀번호가 일치하지 않습니다");
         }
     }
 

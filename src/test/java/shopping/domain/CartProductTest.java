@@ -8,12 +8,12 @@ import shopping.exception.CartProductException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
-@DisplayName("Cart 클래스")
+@DisplayName("CartProduct 클래스")
 class CartProductTest {
 
     @Nested
     @DisplayName("new CartProduct 는")
-    class Cart_Constructor {
+    class CartProduct_Constructor {
 
         @Test
         @DisplayName("CartProduct 를 생성한다.")
@@ -43,6 +43,7 @@ class CartProductTest {
 
             // then
             assertThat(exception).isInstanceOf(CartProductException.class);
+            assertThat(exception.getMessage()).contains("상품의 개수는 최소 1개여야합니다");
         }
 
 
@@ -59,6 +60,7 @@ class CartProductTest {
 
             // then
             assertThat(exception).isInstanceOf(CartProductException.class);
+            assertThat(exception.getMessage()).contains("member 가 존재하지 않습니다");
         }
 
 
@@ -75,6 +77,7 @@ class CartProductTest {
 
             // then
             assertThat(exception).isInstanceOf(CartProductException.class);
+            assertThat(exception.getMessage()).contains("product 가 존재하지 않습니다");
         }
     }
 }

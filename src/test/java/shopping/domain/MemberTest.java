@@ -41,6 +41,7 @@ public class MemberTest {
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
+            assertThat(exception.getMessage()).contains("사용자 이메일이 존재하지 않습니다");
         }
 
         @Test
@@ -55,6 +56,7 @@ public class MemberTest {
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
+            assertThat(exception.getMessage()).contains("올바른 이메일 형식이 아닙니다");
         }
 
         @Test
@@ -69,6 +71,7 @@ public class MemberTest {
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
+            assertThat(exception.getMessage()).contains("사용자 비밀번호가 존재하지 않습니다");
         }
 
         @Test
@@ -83,6 +86,7 @@ public class MemberTest {
 
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
+            assertThat(exception.getMessage()).contains("사용자 비밀번호가 존재하지 않습니다");
         }
     }
 }
