@@ -2,8 +2,13 @@ package shopping.domain.product;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.exception.ShoppingException;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -23,5 +28,23 @@ class ImageTest {
         assertThatCode(() -> new Image("a".repeat(256)))
                 .isInstanceOf(ShoppingException.class)
                 .hasMessage("이미지 주소는 255자를 넘을 수 없습니다.");
+    }
+
+    @DataJpaTest
+    static
+    class ProductRepositoryTest {
+
+        @Autowired
+        ProductRepository productRepository;
+
+        @Test
+        @DisplayName("모든 상품을 조회한다.")
+        void findAll() {
+            // when
+            List<Product> products = productRepository.findAll();
+
+            // then
+            assertThat(products).hasSize(2);
+        }
     }
 }

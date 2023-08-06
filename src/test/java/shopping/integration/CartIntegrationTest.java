@@ -195,7 +195,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("유효하지 않은 cart item 입니다 : 2");
+        assertThat(response.getMessage()).isEqualTo("사용자에게 접근 권한이 없는 cart item 입니다 : 2");
     }
 
     @Test
@@ -336,6 +336,6 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("유효하지 않은 cart item 입니다 : 2");
+        assertThat(response.getMessage()).isEqualTo("사용자에게 접근 권한이 없는 cart item 입니다 : 2");
     }
 }

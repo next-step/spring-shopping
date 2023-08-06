@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
-import shopping.infrastructure.TokenProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +15,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     private static final String TOKEN_TYPE = "Bearer";
     private static final String TOKEN_DELIMITER = " ";
 
-    private final TokenProvider tokenProvider;
+    private final TokenConsumer tokenConsumer;
 
-    public AuthInterceptor(final TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public AuthInterceptor(final TokenConsumer tokenConsumer) {
+        this.tokenConsumer = tokenConsumer;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         final String token = extractToken(accessToken);
         validateExtractedToken(token);
 
-        request.setAttribute("userId", tokenProvider.getPayload(token));
+        request.setAttribute("userId", tokenConsumer.getPayload(token));
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
@@ -43,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private void validateExtractedToken(final String token) {
-        if (!tokenProvider.validateToken(token)) {
+        if (!tokenConsumer.validateToken(token)) {
             throw new ShoppingException(ErrorType.TOKEN_INVALID);
         }
     }

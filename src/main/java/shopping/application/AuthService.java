@@ -3,14 +3,13 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import shopping.domain.user.Email;
 import shopping.domain.user.Password;
+import shopping.domain.user.PasswordEncoder;
 import shopping.domain.user.User;
+import shopping.domain.user.UserRepository;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
-import shopping.infrastructure.PasswordEncoder;
-import shopping.infrastructure.TokenProvider;
-import shopping.repository.UserRepository;
 
 @Service
 public class AuthService {

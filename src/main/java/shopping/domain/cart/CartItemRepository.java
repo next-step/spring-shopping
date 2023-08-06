@@ -1,8 +1,7 @@
-package shopping.repository;
+package shopping.domain.cart;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import shopping.domain.cart.CartItem;
 
 import java.util.List;
 

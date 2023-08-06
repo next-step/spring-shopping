@@ -7,11 +7,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import shopping.application.TokenProvider;
+import shopping.config.interceptor.TokenConsumer;
 
 import java.util.Date;
 
 @Component
-public class JwtProvider implements TokenProvider {
+public class JwtManager implements TokenProvider, TokenConsumer {
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;

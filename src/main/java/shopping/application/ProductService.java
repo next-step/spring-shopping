@@ -1,8 +1,8 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
+import shopping.domain.product.ProductRepository;
 import shopping.dto.ProductResponse;
-import shopping.repository.ProductRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

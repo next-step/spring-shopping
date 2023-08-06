@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.config.interceptor.TokenConsumer;
 import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
-import shopping.infrastructure.TokenProvider;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 
@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.containsString;
 public class AuthIntegrationTest {
 
     @Autowired
-    TokenProvider tokenProvider;
+    TokenConsumer tokenConsumer;
 
     @Test
     @DisplayName("로그인 페이지 접속 테스트")
@@ -44,7 +44,7 @@ public class AuthIntegrationTest {
                 .getAccessToken();
 
         // then
-        assertThat(tokenProvider.getPayload(token)).isEqualTo("1");
+        assertThat(tokenConsumer.getPayload(token)).isEqualTo("1");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class AuthIntegrationTest {
                 .as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
+        assertThat(response.getMessage()).isEqualTo("이메일이 존재하지 않거나 올바르지 않은 비밀번호입니다.");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class AuthIntegrationTest {
                 .as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
+        assertThat(response.getMessage()).isEqualTo("이메일이 존재하지 않거나 올바르지 않은 비밀번호입니다.");
     }
 
     @Test
