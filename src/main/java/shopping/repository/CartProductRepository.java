@@ -3,7 +3,6 @@ package shopping.repository;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
@@ -33,18 +32,14 @@ public class CartProductRepository {
 
     @Transactional(readOnly = true)
     public Optional<CartProduct> findOneByMemberIdAndProductId(Long memberId, Long productId) {
-        try {
-            return Optional.of(
-                entityManager.createQuery(
-                        "select c from CartProduct c where c.member.id = :memberId and c.product.id = :productId",
-                        CartProduct.class)
-                    .setParameter("productId", productId)
-                    .setParameter("memberId", memberId)
-                    .getSingleResult()
-            );
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return entityManager.createQuery(
+                "select c from CartProduct c where c.member.id = :memberId and c.product.id = :productId",
+                CartProduct.class)
+            .setMaxResults(1)
+            .setParameter("productId", productId)
+            .setParameter("memberId", memberId)
+            .getResultStream()
+            .findFirst();
     }
 
     public void updateById(Long id, int quantity) {
