@@ -1,6 +1,5 @@
 package shopping.mart.repository.entity;
 
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -35,10 +34,6 @@ public class CartProductEntity extends TimeBaseEntity {
         this.count = count;
     }
 
-    public CartEntity getCartEntity() {
-        return cartEntity;
-    }
-
     public Long getProductId() {
         return productId;
     }
@@ -47,29 +42,7 @@ public class CartProductEntity extends TimeBaseEntity {
         return count;
     }
 
-    public void increaseCount() {
-        this.count++;
-    }
-
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CartProductEntity)) {
-            return false;
-        }
-        CartProductEntity that = (CartProductEntity) o;
-        return Objects.equals(cartEntity.getId(), that.cartEntity.getId()) && Objects.equals(
-            productId, that.productId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(cartEntity.getId(), productId);
     }
 }
