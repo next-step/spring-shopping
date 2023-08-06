@@ -24,7 +24,7 @@ public class UserTest {
 
         // then
         assertThatNoException()
-            .isThrownBy(() -> user.matchPassword(loginRequest.getPassword()));
+            .isThrownBy(() -> user.validatePassword(loginRequest));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class UserTest {
         User user = User.from(userEntity);
 
         // then
-        assertThatThrownBy(() -> user.matchPassword(loginRequest.getPassword()))
+        assertThatThrownBy(() -> user.validatePassword(loginRequest))
             .isInstanceOf(ShoppingException.class)
             .extracting("errorCode")
             .isEqualTo(ErrorCode.INVALID_PASSWORD);
