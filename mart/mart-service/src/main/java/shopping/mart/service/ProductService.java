@@ -12,6 +12,7 @@ import shopping.mart.service.dto.ProductResponse;
 import shopping.mart.service.spi.ProductRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -35,7 +36,6 @@ public class ProductService {
             });
     }
 
-    @Transactional(readOnly = true)
     public List<ProductResponse> findAllProducts() {
         List<Product> products = productRepository.findAllProducts();
         return products.stream()

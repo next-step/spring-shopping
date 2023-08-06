@@ -13,6 +13,7 @@ import shopping.auth.service.infra.JwtUtils;
 import shopping.auth.service.spi.UserRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -39,7 +40,6 @@ public class AuthService {
                 });
     }
 
-    @Transactional(readOnly = true)
     public TokenResponse authenticate(final LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new DoesNotExistUserException(

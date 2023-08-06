@@ -15,6 +15,7 @@ import shopping.mart.service.spi.CartRepository;
 import shopping.mart.service.spi.ProductRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class CartService {
 
     private final ProductRepository productRepository;
@@ -56,7 +57,6 @@ public class CartService {
         cartRepository.persistCart(cart);
     }
 
-    @Transactional
     public CartResponse getCart(final long userId) {
         Cart cart = getCartByUserId(userId);
 
