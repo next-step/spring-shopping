@@ -28,7 +28,7 @@ public class AuthService {
                         MessageFormat.format("존재하지 않는 사용자입니다 email : {0})", loginRequest.getEmail())
                 ));
 
-        if (!member.matchPassword(loginRequest.getPassword())) {
+        if (member.mismatchPassword(loginRequest.getPassword())) {
             throw new AuthException("비밀번호가 일치하지 않습니다");
         }
 

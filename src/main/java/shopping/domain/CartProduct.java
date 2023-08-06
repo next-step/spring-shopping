@@ -34,6 +34,10 @@ public class CartProduct {
     @Column(nullable = false)
     private int quantity;
 
+    protected CartProduct() {
+
+    }
+
     public CartProduct(Long id, Member member, Product product, int quantity) {
         validateMember(member);
         validateProduct(product);
@@ -46,10 +50,6 @@ public class CartProduct {
 
     public CartProduct(Member member, Product product, int quantity) {
         this(null, member, product, quantity);
-    }
-
-    protected CartProduct() {
-
     }
 
     private void validateQuantity(int quantity) {

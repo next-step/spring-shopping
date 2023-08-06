@@ -63,7 +63,7 @@ public class Member {
         return email;
     }
 
-    public boolean matchPassword(String password) {
-        return this.password.equals(password);
+    public boolean mismatchPassword(String password) {
+        return !this.password.equals(password);
     }
 }
