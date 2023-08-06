@@ -7,7 +7,7 @@ public enum ErrorType {
     CART_ITEM_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 장바구니 상품 id입니다 : "),
     USER_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 사용자 id입니다 : "),
     PRODUCT_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 상품 id입니다 : "),
-    USER_NOT_CONTAINS_ITEM(HttpStatus.BAD_REQUEST, "유효하지 않은 cart item 입니다 : "),
+    USER_NOT_CONTAINS_ITEM(HttpStatus.BAD_REQUEST, "사용자에게 접근 권한이 없는 cart item 입니다 : "),
     WRONG_LOGIN_REQUEST(HttpStatus.BAD_REQUEST, "이메일이 존재하지 않거나 올바르지 않은 비밀번호입니다."),
     EMAIL_TOO_LONG(HttpStatus.BAD_REQUEST, "이메일 길이는 50자를 넘을 수 없습니다."),
     EMAIL_INVALID_FORM(HttpStatus.BAD_REQUEST, "이메일 형식이 올바르지 않습니다."),
