@@ -31,7 +31,7 @@ class CartProductServiceTest {
     CartProductRepository cartProductRepository;
 
     @InjectMocks
-    CartProductService cartProductService;
+    CartService cartService;
 
     @Test
     @DisplayName("장바구니 상품을 추가할 수 있다")
@@ -48,7 +48,7 @@ class CartProductServiceTest {
         );
 
         /* when */
-        cartProductService.createCartProduct(memberId, new CartProductCreateRequest(productId));
+        cartService.createCartProduct(memberId, new CartProductCreateRequest(productId));
 
         /* then */
         verify(productRepository, atLeast(1)).findById(productId);
@@ -67,7 +67,7 @@ class CartProductServiceTest {
 
         /* when & then */
         assertThatCode(
-            () -> cartProductService.createCartProduct(memberId,
+            () -> cartService.createCartProduct(memberId,
                 new CartProductCreateRequest(productId))
         ).isInstanceOf(ShoppingException.class)
             .hasMessage("존재하지 않는 상품입니다. 입력값: " + productId);
@@ -93,7 +93,7 @@ class CartProductServiceTest {
 
         /* when & then */
         assertThatCode(
-            () -> cartProductService.createCartProduct(memberId,
+            () -> cartService.createCartProduct(memberId,
                 new CartProductCreateRequest(productId))
         ).isInstanceOf(ShoppingException.class)
             .hasMessage("이미 장바구니에 담긴 상품입니다. 입력값: " + productId);

@@ -1,6 +1,7 @@
 package shopping.controller.api;
 
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import shopping.auth.LoginUser;
 import shopping.dto.request.CartProductCreateRequest;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
 import shopping.dto.response.CartResponse;
-import shopping.service.CartProductService;
 import shopping.service.CartService;
 
 
@@ -22,14 +22,11 @@ import shopping.service.CartService;
 @RequestMapping("/api/cartProduct")
 public class CartProductRestController {
 
-    private final CartProductService cartProductService;
     private final CartService cartService;
 
     public CartProductRestController(
-        final CartProductService cartProductService,
         final CartService cartService
     ) {
-        this.cartProductService = cartProductService;
         this.cartService = cartService;
     }
 
@@ -38,7 +35,7 @@ public class CartProductRestController {
         @LoginUser Long memberId,
         @RequestBody final CartProductCreateRequest request
     ) {
-        cartProductService.createCartProduct(memberId, request);
+        cartService.createCartProduct(memberId, request);
 
         return ResponseEntity.ok().build();
     }
@@ -55,7 +52,7 @@ public class CartProductRestController {
         final @PathVariable Long cartProductId,
         final @RequestBody CartProductQuantityUpdateRequest request
     ) {
-        cartProductService.updateCartProductQuantity(cartProductId, memberId, request);
+        cartService.updateCartProductQuantity(cartProductId, memberId, request);
 
         return ResponseEntity.ok().build();
     }
@@ -65,7 +62,7 @@ public class CartProductRestController {
         final @PathVariable Long cartProductId,
         final @LoginUser Long memberId
     ) {
-        cartProductService.deleteCartProduct(cartProductId, memberId);
+        cartService.deleteCartProduct(cartProductId, memberId);
 
         return ResponseEntity.noContent().build();
     }

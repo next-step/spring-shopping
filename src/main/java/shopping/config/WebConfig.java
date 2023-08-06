@@ -1,6 +1,7 @@
 package shopping.config;
 
 import java.util.List;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,7 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
     private final AuthArgumentResolver authArgumentResolver;
 
     public WebConfig(final JwtInterceptor jwtInterceptor,
-        final AuthArgumentResolver authArgumentResolver) {
+                     final AuthArgumentResolver authArgumentResolver) {
         this.jwtInterceptor = jwtInterceptor;
         this.authArgumentResolver = authArgumentResolver;
     }
@@ -23,7 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-            .addPathPatterns("/api/cartProduct/**");
+            .addPathPatterns("/**")
+            .excludePathPatterns("/", "/cart", "/login")
+            .excludePathPatterns("/api/login")
+            .excludePathPatterns("/css/**", "/assets/**", "/js/**", "/*.ico");
     }
 
     @Override

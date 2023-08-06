@@ -14,7 +14,6 @@ import shopping.exception.ShoppingAuthenticationException;
 
 @DisplayName("Bearer 토큰 관련 기능 테스트")
 class BearerExtractorTest {
-
     BearerExtractor bearerExtractor;
 
     @BeforeEach

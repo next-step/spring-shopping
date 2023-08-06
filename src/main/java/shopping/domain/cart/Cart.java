@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 
 public class Cart {
 
-    private final Map<Long, CartProduct> values;
+    private final Map<Long, CartProduct> cartProduct;
 
     public Cart(final List<CartProduct> cartProducts) {
-        this.values = cartProducts.stream()
+        this.cartProduct = cartProducts.stream()
             .collect(Collectors.toMap(CartProduct::getProductId, Function.identity()));
     }
 
-    public CartProduct find(final Long productId) {
-        return values.get(productId);
+    public CartProduct findByProductId(final Long productId) {
+        return cartProduct.get(productId);
     }
 }
