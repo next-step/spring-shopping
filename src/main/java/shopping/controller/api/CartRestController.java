@@ -20,11 +20,11 @@ import shopping.service.CartService;
 
 @RestController
 @RequestMapping("/api/cartProduct")
-public class CartProductRestController {
+public class CartRestController {
 
     private final CartService cartService;
 
-    public CartProductRestController(
+    public CartRestController(
         final CartService cartService
     ) {
         this.cartService = cartService;
@@ -42,7 +42,6 @@ public class CartProductRestController {
 
     @GetMapping
     public ResponseEntity<List<CartResponse>> getAllCartProducts(final @LoginUser Long memberId) {
-
         return ResponseEntity.ok().body(cartService.findAllCartProducts(memberId));
     }
 

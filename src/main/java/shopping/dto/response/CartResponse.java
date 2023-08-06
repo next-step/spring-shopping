@@ -1,5 +1,6 @@
 package shopping.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.domain.cart.CartProduct;
 import shopping.domain.product.Product;
 
@@ -10,6 +11,7 @@ public class CartResponse {
     private final String productName;
     private final int cartProductQuantity;
 
+    @JsonCreator
     public CartResponse(
         final Long cartProductId,
         final String productImage,
@@ -21,7 +23,16 @@ public class CartResponse {
         this.cartProductQuantity = cartProductQuantity;
     }
 
-    public static CartResponse of(final CartProduct cartProduct, Product product) {
+    public CartResponse(final CartProduct cartProduct, final Product product) {
+        this(
+            cartProduct.getProductId(),
+            product.getImage(),
+            product.getName(),
+            cartProduct.getQuantity()
+        );
+    }
+
+    public static CartResponse of(final CartProduct cartProduct, final Product product) {
         return new CartResponse(
             cartProduct.getProductId(),
             product.getImage(),
