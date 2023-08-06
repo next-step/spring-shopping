@@ -27,7 +27,7 @@ public class CartEntity extends TimeBaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true)
     private Long userId;
 
     @Column(name = "cart_product_entities")

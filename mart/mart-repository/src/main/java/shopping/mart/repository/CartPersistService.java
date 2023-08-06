@@ -1,6 +1,5 @@
 package shopping.mart.repository;
 
-import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,8 +13,6 @@ import shopping.mart.service.spi.CartRepository;
 
 @Repository
 public class CartPersistService implements CartRepository {
-
-    private static final Object LOCK = new Object();
 
     private final CartJpaRepository cartJpaRepository;
     private final ProductJpaRepository productJpaRepository;
@@ -39,19 +36,10 @@ public class CartPersistService implements CartRepository {
 
     @Override
     public Cart newCart(long userId) {
-        synchronized (LOCK) {
-            if (cartJpaRepository.findByUserId(userId).isEmpty()) {
-                cartJpaRepository.save(new CartEntity(null, userId, null));
-            }
-        }
-        return getEmptyCart(userId);
-    }
+        cartJpaRepository.findByUserId(userId).ifPresentOrElse(cartEntity -> {
+        }, () -> cartJpaRepository.save(new CartEntity(null, userId, null)));
 
-    private Cart getEmptyCart(long userId) {
-        CartEntity cartEntity = cartJpaRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalStateException(MessageFormat.format(
-                "userId\"{0}\"에 해당하는 Cart가 존재하지 않습니다.", userId)));
-        return new Cart(cartEntity.getId(), cartEntity.getUserId());
+        return getByUserId(userId);
     }
 
     @Override
