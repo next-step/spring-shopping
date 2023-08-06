@@ -4,10 +4,10 @@ import shopping.domain.entity.ProductEntity;
 
 public class ProductResponse {
 
-    private Long id;
-    private String name;
-    private String imageFileName;
-    private int price;
+    private final Long id;
+    private final String name;
+    private final String imageFileName;
+    private final int price;
 
     private ProductResponse(final Long id, final String name, final String imageUuid,
         final int price) {
