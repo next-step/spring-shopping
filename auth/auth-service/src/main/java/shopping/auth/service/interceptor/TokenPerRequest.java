@@ -8,7 +8,7 @@ import org.springframework.web.context.annotation.RequestScope;
 public class TokenPerRequest {
     private String decryptedToken;
 
-    void setDecryptedToken(String decryptedToken) {
+    public void setDecryptedToken(String decryptedToken) {
         this.decryptedToken = decryptedToken;
     }
 

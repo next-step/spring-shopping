@@ -11,14 +11,14 @@ import shopping.core.util.ErrorTemplate;
 
 @Order
 @RestControllerAdvice
-class GlobalExceptionHandler {
+public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(
         GlobalExceptionHandler.class.getSimpleName());
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    ErrorTemplate handleStatusCodeException(Exception exception) {
+    private ErrorTemplate handleStatusCodeException(Exception exception) {
         logger.error(exception.getMessage());
         return new ErrorTemplate("INTERNAL-SERVER-ERROR");
     }

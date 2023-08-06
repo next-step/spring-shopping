@@ -13,7 +13,7 @@ public class ProductPersistService implements ProductRepository {
 
     private final ProductJpaRepository productJpaRepository;
 
-    ProductPersistService(ProductJpaRepository productJpaRepository) {
+    public ProductPersistService(ProductJpaRepository productJpaRepository) {
         this.productJpaRepository = productJpaRepository;
     }
 

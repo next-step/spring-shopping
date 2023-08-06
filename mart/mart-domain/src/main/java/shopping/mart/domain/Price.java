@@ -5,13 +5,13 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import shopping.mart.domain.exception.InvalidPriceException;
 
-final class Price {
+public final class Price {
 
     private static final BigInteger NEGATIVE_NUMBER = BigInteger.valueOf(-1);
 
     private final BigInteger value;
 
-    Price(final String price) {
+    public Price(final String price) {
         BigInteger notValidatedPrice = getValidNumber(price);
         validPrice(notValidatedPrice);
         this.value = notValidatedPrice;
@@ -37,7 +37,7 @@ final class Price {
         }
     }
 
-    BigInteger getValue() {
+    public BigInteger getValue() {
         return value;
     }
 

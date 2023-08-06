@@ -15,7 +15,7 @@ class InterceptorConfigurer implements WebMvcConfigurer {
     private final List<AuthorizationPath> authorizationPaths;
     private final TokenPerRequest tokenPerRequest;
 
-    InterceptorConfigurer(JwtUtils jwtUtils, List<AuthorizationPath> authorizationPaths,
+    public InterceptorConfigurer(JwtUtils jwtUtils, List<AuthorizationPath> authorizationPaths,
         TokenPerRequest tokenPerRequest) {
         this.jwtUtils = jwtUtils;
         this.authorizationPaths = authorizationPaths;

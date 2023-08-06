@@ -28,7 +28,7 @@ public class CartController {
     private final CartService cartService;
     private final TokenPerRequest tokenPerRequest;
 
-    CartController(CartService cartService, TokenPerRequest tokenPerRequest) {
+    public CartController(CartService cartService, TokenPerRequest tokenPerRequest) {
         this.cartService = cartService;
         this.tokenPerRequest = tokenPerRequest;
     }
@@ -61,7 +61,7 @@ public class CartController {
         DoesNotExistProductException.class,
         NegativeProductCountException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ErrorTemplate handleBadRequest(RuntimeException runtimeException) {
+    private ErrorTemplate handleBadRequest(RuntimeException runtimeException) {
         return new ErrorTemplate(runtimeException.getMessage());
     }
 

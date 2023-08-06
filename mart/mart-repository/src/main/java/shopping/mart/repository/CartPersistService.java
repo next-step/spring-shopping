@@ -20,7 +20,7 @@ public class CartPersistService implements CartRepository {
     private final CartJpaRepository cartJpaRepository;
     private final ProductJpaRepository productJpaRepository;
 
-    CartPersistService(CartJpaRepository cartJpaRepository,
+    public CartPersistService(CartJpaRepository cartJpaRepository,
         ProductJpaRepository productJpaRepository) {
         this.cartJpaRepository = cartJpaRepository;
         this.productJpaRepository = productJpaRepository;

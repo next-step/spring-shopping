@@ -7,7 +7,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 @MappedSuperclass
-abstract class TimeBaseEntity {
+public abstract class TimeBaseEntity {
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP(6)", nullable = false, updatable = false)
     protected Instant createdAt;

@@ -6,7 +6,7 @@ public final class ProductCreateRequest {
     private String imageUrl;
     private String price;
 
-    ProductCreateRequest() {
+    public ProductCreateRequest() {
     }
 
     public ProductCreateRequest(final String name, final String imageUrl, final String price) {

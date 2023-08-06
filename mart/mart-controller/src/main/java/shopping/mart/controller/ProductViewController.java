@@ -17,7 +17,7 @@ public class ProductViewController {
 
     private final ProductService productService;
 
-    ProductViewController(final ProductService productService) {
+    public ProductViewController(final ProductService productService) {
         this.productService = productService;
     }
 
@@ -31,7 +31,7 @@ public class ProductViewController {
     @ExceptionHandler({InvalidPriceException.class,
         InvalidProductNameException.class,
         AlreadyExistProductException.class})
-    ErrorTemplate handleBadRequest(RuntimeException runtimeException) {
+    private ErrorTemplate handleBadRequest(RuntimeException runtimeException) {
         return new ErrorTemplate(runtimeException.getMessage());
     }
 }

@@ -5,7 +5,7 @@ public final class CartUpdateRequest {
     private long productId;
     private int count;
 
-    CartUpdateRequest() {
+    public CartUpdateRequest() {
     }
 
     public CartUpdateRequest(long productId, int count) {

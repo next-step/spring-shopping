@@ -5,7 +5,7 @@ public class UserJoinRequest {
     private String email;
     private String password;
 
-    UserJoinRequest() {
+    public UserJoinRequest() {
     }
 
     public UserJoinRequest(String email, String password) {

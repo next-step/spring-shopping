@@ -3,7 +3,7 @@ package shopping.mart.repository.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-class CartProductIdEntity implements Serializable {
+public class CartProductIdEntity implements Serializable {
 
     private CartEntity cartEntity;
     private Long productId;

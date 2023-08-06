@@ -13,7 +13,7 @@ final class UserConfigurer {
 
     private final AuthService authService;
 
-    UserConfigurer(final AuthService authService) {
+    public UserConfigurer(final AuthService authService) {
         this.authService = authService;
     }
 

@@ -8,7 +8,7 @@ import shopping.auth.domain.exception.InvalidTokenException;
 import shopping.core.util.ErrorTemplate;
 
 @RestControllerAdvice
-class AuthorizationControllerAdvice {
+public class AuthorizationControllerAdvice {
 
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

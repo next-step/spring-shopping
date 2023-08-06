@@ -21,12 +21,12 @@ final class ProductConfigurer {
 
     private final ProductService productService;
 
-    ProductConfigurer(final ProductService productService) {
+    public ProductConfigurer(final ProductService productService) {
         this.productService = productService;
     }
 
     @EventListener(ApplicationStartedEvent.class)
-    void setDefaultProducts() {
+    private void setDefaultProducts() {
         productService.saveProduct(SOJU_PRODUCT_CREATE_REQUEST);
         productService.saveProduct(BEER_PRODUCT_CREATE_REQUEST);
         productService.saveProduct(MAKGEOLLI_PRODUCT_CREATE_REQUEST);

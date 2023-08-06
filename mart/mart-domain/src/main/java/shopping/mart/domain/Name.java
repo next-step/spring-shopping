@@ -4,11 +4,11 @@ import java.text.MessageFormat;
 import java.util.Objects;
 import shopping.mart.domain.exception.InvalidProductNameException;
 
-final class Name {
+public final class Name {
 
     private final String value;
 
-    Name(final String name) {
+    public Name(final String name) {
         validName(name);
         this.value = name;
     }
@@ -39,7 +39,7 @@ final class Name {
         }
     }
 
-    String getValue() {
+    public String getValue() {
         return value;
     }
 

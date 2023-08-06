@@ -4,7 +4,7 @@ public final class TokenResponse {
 
     private String accessToken;
 
-    TokenResponse() {
+    public TokenResponse() {
     }
 
     public TokenResponse(final String accessToken) {

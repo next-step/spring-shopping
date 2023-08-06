@@ -2,10 +2,7 @@ package shopping.core.util;
 
 public class ErrorTemplate {
 
-    private String message;
-
-    ErrorTemplate() {
-    }
+    private final String message;
 
     public ErrorTemplate(final String message) {
         this.message = message;

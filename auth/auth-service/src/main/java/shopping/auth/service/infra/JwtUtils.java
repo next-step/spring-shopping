@@ -14,7 +14,7 @@ public final class JwtUtils {
     private final String secretKey;
     private final long validityInMilliseconds;
 
-    JwtUtils(@Value("${security.jwt.token.secret-key:testKey}") String secretKey,
+    public JwtUtils(@Value("${security.jwt.token.secret-key:testKey}") String secretKey,
             @Value("${security.jwt.token.expire-length:3000000}") long validityInMilliseconds) {
         this.secretKey = secretKey;
         this.validityInMilliseconds = validityInMilliseconds;

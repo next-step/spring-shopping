@@ -3,12 +3,12 @@ package shopping.mart.service.dto;
 import java.util.List;
 import java.util.Objects;
 
-public class CartResponse {
+public final class CartResponse {
 
     private long cartId;
     private List<ProductResponse> productResponses;
 
-    CartResponse() {
+    public CartResponse() {
     }
 
     public CartResponse(long cartId, List<ProductResponse> productResponses) {
