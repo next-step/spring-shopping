@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.TestFixture;
+import shopping.TestHelper;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.request.LoginRequest;
@@ -35,7 +35,7 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(1L);
@@ -60,11 +60,11 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartItemAddRequest);
+        TestHelper.addCartItem(accessToken, cartItemAddRequest);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -88,7 +88,7 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final Long invalidProductId = Long.MAX_VALUE;
@@ -116,13 +116,13 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
         final CartItemAddRequest cartPizza = new CartItemAddRequest(2L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        TestFixture.addCartItem(accessToken, cartPizza);
+        TestHelper.addCartItem(accessToken, cartChicken);
+        TestHelper.addCartItem(accessToken, cartPizza);
 
         /* when */
         final ExtractableResponse<Response> response = RestAssured
@@ -144,12 +144,12 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        TestHelper.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
@@ -167,7 +167,7 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+        final List<CartItemResponse> updatedCartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -181,12 +181,12 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        TestHelper.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
@@ -204,7 +204,7 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+        final List<CartItemResponse> updatedCartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -217,12 +217,12 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        TestHelper.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
@@ -251,12 +251,12 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        TestHelper.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
@@ -285,12 +285,12 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        TestHelper.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
@@ -299,7 +299,7 @@ class CartIntegrationTest extends IntegrationTest {
 
         final LoginRequest otherLoginRequest = new LoginRequest("other_test_email@woowafriends.com",
             "test_password!");
-        String otherAccessToken = TestFixture.login(otherLoginRequest).as(LoginResponse.class)
+        String otherAccessToken = TestHelper.login(otherLoginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         /* when */
@@ -324,7 +324,7 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final Long invalidCartItemId = Long.MAX_VALUE;
@@ -352,12 +352,12 @@ class CartIntegrationTest extends IntegrationTest {
         /* given */
         final LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
             "test_password!");
-        String accessToken = TestFixture.login(loginRequest).as(LoginResponse.class)
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
             .getAccessToken();
 
         final CartItemAddRequest cartChicken = new CartItemAddRequest(1L);
-        TestFixture.addCartItem(accessToken, cartChicken);
-        final List<CartItemResponse> cartItems = TestFixture.readCartItems(accessToken)
+        TestHelper.addCartItem(accessToken, cartChicken);
+        final List<CartItemResponse> cartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
 
@@ -372,7 +372,7 @@ class CartIntegrationTest extends IntegrationTest {
             .extract();
 
         /* then */
-        final List<CartItemResponse> updatedCartItems = TestFixture.readCartItems(accessToken)
+        final List<CartItemResponse> updatedCartItems = TestHelper.readCartItems(accessToken)
             .jsonPath()
             .getList(".", CartItemResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
