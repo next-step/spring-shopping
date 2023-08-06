@@ -5,37 +5,37 @@ import org.springframework.util.StringUtils;
 
 public class ShoppingException extends RuntimeException {
 
-    private final ExceptionType exceptionType;
+    private final ExceptionType cartExceptionType;
     private final String causeValue;
 
     public ShoppingException(
-        final ExceptionType exceptionType,
+        final ExceptionType cartExceptionType,
         final Object causeValue
     ) {
-        this.exceptionType = exceptionType;
+        this.cartExceptionType = cartExceptionType;
         this.causeValue = causeValue == null ? "" : causeValue.toString();
     }
 
     public ShoppingException(
-        final ExceptionType exceptionType
+        final ExceptionType cartExceptionType
     ) {
-        this(exceptionType, "");
+        this(cartExceptionType, "");
     }
 
     public HttpStatus getHttpStatus() {
-        return exceptionType.getHttpStatus();
+        return cartExceptionType.getHttpStatus();
     }
 
     @Override
     public String getMessage() {
-        return exceptionType.getMessage();
+        return cartExceptionType.getMessage();
     }
 
     public String getMessageWithCauseValue() {
         if (StringUtils.hasText(causeValue)) {
-            return exceptionType.getMessage() + " cause value = " + causeValue;
+            return cartExceptionType.getMessage() + " cause value = " + causeValue;
         }
 
-        return exceptionType.getMessage();
+        return cartExceptionType.getMessage();
     }
 }

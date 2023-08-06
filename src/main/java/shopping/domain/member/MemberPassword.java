@@ -3,7 +3,7 @@ package shopping.domain.member;
 import java.util.Objects;
 import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
-import shopping.exception.ExceptionType;
+import shopping.exception.MemberExceptionType;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -25,13 +25,13 @@ public class MemberPassword {
 
     private void validateGreaterThanMaxLength(final String password) {
         if (password.length() > MAX_LENGTH) {
-            throw new ShoppingException(ExceptionType.INVALID_PASSWORD_LENGTH, password);
+            throw new ShoppingException(MemberExceptionType.INVALID_PASSWORD_LENGTH, password);
         }
     }
 
     private void validateIsNotNullOrEmpty(final String password) {
         if (!StringUtils.hasText(password)) {
-            throw new ShoppingException(ExceptionType.NO_CONTENT_PASSWORD, password);
+            throw new ShoppingException(MemberExceptionType.NO_CONTENT_PASSWORD, password);
         }
     }
 

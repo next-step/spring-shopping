@@ -3,7 +3,7 @@ package shopping.domain.product;
 import java.util.Objects;
 import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
-import shopping.exception.ExceptionType;
+import shopping.exception.ProductExceptionType;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -22,7 +22,7 @@ public class ProductName {
 
     private void validateIsNotNullOrEmpty(final String name) {
         if (!StringUtils.hasText(name)) {
-            throw new ShoppingException(ExceptionType.NO_CONTENT_NAME, name);
+            throw new ShoppingException(ProductExceptionType.NO_CONTENT_NAME, name);
         }
     }
 

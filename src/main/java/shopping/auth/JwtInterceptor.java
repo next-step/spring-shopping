@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import shopping.exception.ExceptionType;
+import shopping.exception.AuthExceptionType;
 import shopping.exception.ShoppingException;
 
 @Component
@@ -26,7 +26,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     ) throws Exception {
         final String jwt = bearerExtractor.extract(request);
         if (!jwtHelper.validateToken(jwt)) {
-            throw new ShoppingException(ExceptionType.INVALID_TOKEN, jwt);
+            throw new ShoppingException(AuthExceptionType.INVALID_TOKEN, jwt);
         }
 
         request.setAttribute("memberId", Long.parseLong(jwtHelper.getSubject(jwt)));

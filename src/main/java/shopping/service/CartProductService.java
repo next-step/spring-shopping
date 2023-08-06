@@ -5,7 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartProduct;
 import shopping.dto.request.CartProductCreateRequest;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
-import shopping.exception.ExceptionType;
+import shopping.exception.CartExceptionType;
+import shopping.exception.ProductExceptionType;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
@@ -34,13 +35,13 @@ public class CartProductService {
 
         productRepository.findById(productId)
             .orElseThrow(
-                () -> new ShoppingException(ExceptionType.NOT_FOUND_PRODUCT, productId)
+                () -> new ShoppingException(ProductExceptionType.NOT_FOUND_PRODUCT, productId)
             );
 
         cartProductRepository.findByMemberIdAndProductId(memberId, productId)
             .ifPresent(cartProduct -> {
                 throw new ShoppingException(
-                    ExceptionType.DUPLICATED_CART_PRODUCT, cartProduct.getProductId()
+                    CartExceptionType.DUPLICATED_CART_PRODUCT, cartProduct.getProductId()
                 );
             });
 
@@ -62,7 +63,7 @@ public class CartProductService {
             .findByIdAndMemberId(cartProductId, memberId)
             .orElseThrow(
                 () -> new ShoppingException(
-                    ExceptionType.NOT_FOUND_CART_PRODUCT, cartProductId
+                    CartExceptionType.NOT_FOUND_CART_PRODUCT, cartProductId
                 )
             );
 

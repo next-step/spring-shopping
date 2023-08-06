@@ -1,7 +1,7 @@
 package shopping.domain.cart;
 
 import java.util.Objects;
-import shopping.exception.ExceptionType;
+import shopping.exception.CartExceptionType;
 import shopping.exception.ShoppingException;
 
 public class CartProductQuantity {
@@ -20,7 +20,7 @@ public class CartProductQuantity {
 
     private void validateCountLessThanEqualZero(final int value) {
         if (value <= 0) {
-            throw new ShoppingException(ExceptionType.INVALID_QUANTITY_SIZE, value);
+            throw new ShoppingException(CartExceptionType.INVALID_QUANTITY_SIZE, value);
         }
     }
 

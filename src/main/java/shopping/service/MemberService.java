@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.member.Member;
 import shopping.domain.member.MemberEmail;
 import shopping.dto.request.LoginRequest;
-import shopping.exception.ExceptionType;
+import shopping.exception.MemberExceptionType;
 import shopping.exception.ShoppingException;
 import shopping.repository.MemberRepository;
 
@@ -22,11 +22,11 @@ public class MemberService {
     public Member matchMember(final LoginRequest loginRequest) {
         final String email = loginRequest.getEmail();
         final Member member = memberRepository.findByEmail(new MemberEmail(email))
-            .orElseThrow(() -> new ShoppingException(ExceptionType.NOT_FOUND_EMAIL, email));
+            .orElseThrow(() -> new ShoppingException(MemberExceptionType.NOT_FOUND_EMAIL, email));
 
         final String password = loginRequest.getPassword();
         if (!member.matchPassword(password)) {
-            throw new ShoppingException(ExceptionType.NOT_MATCH_PASSWORD, password);
+            throw new ShoppingException(MemberExceptionType.NOT_MATCH_PASSWORD, password);
         }
 
         return member;
