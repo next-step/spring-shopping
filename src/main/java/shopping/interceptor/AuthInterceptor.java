@@ -43,7 +43,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private void validateAuthorizationHeader(final String header) {
         if (Objects.isNull(header)) {
-            throw new ShoppingException(ErrorCode.NO_AUTHENTICATION_HEADER);
+            throw new ShoppingException(ErrorCode.NO_AUTHORIZATION_HEADER);
         }
     }
 

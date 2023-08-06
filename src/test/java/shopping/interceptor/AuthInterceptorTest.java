@@ -57,7 +57,7 @@ class AuthInterceptorTest {
         /* when & then */
         final ShoppingException exception = assertThrows(ShoppingException.class,
             () -> authInterceptor.preHandle(request, null, null));
-        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NO_AUTHENTICATION_HEADER);
+        assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NO_AUTHORIZATION_HEADER);
     }
 
     @Test
