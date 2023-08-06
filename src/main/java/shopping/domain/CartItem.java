@@ -8,8 +8,8 @@ import shopping.exception.ShoppingException;
 public final class CartItem {
 
     private final static int QUANTITY_ZERO = 0;
-    private static final int ITEM_MIN_QUANTITY = 0;
-    private static final int ITEM_MAX_QUANTITY = 1000;
+    public static final int ITEM_MIN_QUANTITY = 0;
+    public static final int ITEM_MAX_QUANTITY = 1000;
 
     private final Long id;
     private final Long userId;
@@ -32,7 +32,7 @@ public final class CartItem {
             cartItemEntity.getQuantity());
     }
 
-    public static CartItem of(final CartItemEntity cartItemEntity, final int quantity) {
+    public static CartItem ofCartItemEntityAndQuantity(final CartItemEntity cartItemEntity, final int quantity) {
         return new CartItem(
             cartItemEntity.getId(),
             cartItemEntity.getUser().getId(),
@@ -50,7 +50,7 @@ public final class CartItem {
         return (quantity < ITEM_MIN_QUANTITY || ITEM_MAX_QUANTITY < quantity);
     }
 
-    public void matchUser(final Long userId) {
+    public void validateUser(final Long userId) {
         if (!Objects.equals(this.userId, userId)) {
             throw new ShoppingException(ErrorCode.INVALID_CART_ITEM);
         }
