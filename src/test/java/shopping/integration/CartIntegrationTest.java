@@ -248,7 +248,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 - 요청 장바구니 id: 2");
+        assertThat(response.getMessage()).isEqualTo("사용자가 장바구니에 담지 않은 상품입니다");
     }
 
     @Test
@@ -336,7 +336,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 - 요청 장바구니 id: 2");
+        assertThat(response.getMessage()).isEqualTo("사용자가 장바구니에 담지 않은 상품입니다");
     }
 
     @Test

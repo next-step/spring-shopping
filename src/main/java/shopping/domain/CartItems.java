@@ -19,23 +19,24 @@ public class CartItems {
         findSameProduct(item).ifPresentOrElse(CartItem::increaseQuantity, () -> items.add(item));
     }
 
-    public Optional<CartItem> findSameProduct(final CartItem item) {
-        return items.stream()
-                .filter(item::checkSameProduct)
-                .findAny();
-    }
-
-    public void validateContains(final CartItem item) {
-        if (!items.contains(item)) {
-            throw new UserNotHasCartItemException();
-        }
-    }
-
     public boolean contains(final CartItem cartItem) {
         return items.contains(cartItem);
     }
 
+    public CartItem find(final Long itemId) {
+        return items.stream()
+                .filter(cartItem -> cartItem.equalsById(itemId))
+                .findAny()
+                .orElseThrow(UserNotHasCartItemException::new);
+    }
+
     public List<CartItem> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    private Optional<CartItem> findSameProduct(final CartItem item) {
+        return items.stream()
+                .filter(item::checkSameProduct)
+                .findAny();
     }
 }

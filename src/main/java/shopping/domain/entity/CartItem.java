@@ -60,4 +60,9 @@ public class CartItem {
     public int getQuantity() {
         return quantity.getValue();
     }
+
+    public boolean equalsById(final long id) {
+        return this.id == id;
+    }
+
 }

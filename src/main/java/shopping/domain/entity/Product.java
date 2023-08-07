@@ -22,7 +22,7 @@ public class Product {
 
     protected Product() {
     }
-    
+
     public Product(final Long id, final Name name, final Image image, final Price price) {
         this.id = id;
         this.name = name;
@@ -57,5 +57,9 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public boolean equalsById(final long id) {
+        return Objects.equals(this.id, id);
     }
 }

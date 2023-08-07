@@ -10,7 +10,6 @@ import shopping.domain.entity.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
-import shopping.exception.CartItemNotFoundException;
 import shopping.exception.ProductNotFoundException;
 import shopping.exception.UserNotFoundException;
 import shopping.repository.CartItemRepository;
@@ -41,13 +40,10 @@ public class CartService {
         final User user = findUserById(userId);
         final Product product = findProductById(request.getProductId());
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = new CartItem(user, product, Quantity.ONE);
+        final CartItem newItem = new CartItem(user, product, Quantity.ONE);
 
-        items.add(item);
-
-        if (items.contains(item)) {
-            cartItemRepository.save(item);
-        }
+        items.add(newItem);
+        checkItemIsNew(items, newItem);
     }
 
     @Transactional(readOnly = true)
@@ -61,8 +57,7 @@ public class CartService {
     @Transactional
     public void update(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = findCartItemById(cartItemId);
-        items.validateContains(item);
+        final CartItem item = items.find(cartItemId);
 
         item.updateQuantity(request.getQuantity());
     }
@@ -70,19 +65,19 @@ public class CartService {
     @Transactional
     public void delete(final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = findCartItemById(cartItemId);
-        items.validateContains(item);
+        final CartItem item = items.find(cartItemId);
 
         cartItemRepository.delete(item);
     }
 
-    private CartItems findCartItemsByUserId(final Long userId) {
-        return new CartItems(cartItemRepository.findAllByUserId(userId));
+    private void checkItemIsNew(final CartItems items, final CartItem newItem) {
+        if (items.contains(newItem)) {
+            cartItemRepository.save(newItem);
+        }
     }
 
-    private CartItem findCartItemById(final Long id) {
-        return cartItemRepository.findById(id)
-                .orElseThrow(() -> new CartItemNotFoundException(id));
+    private CartItems findCartItemsByUserId(final Long userId) {
+        return new CartItems(cartItemRepository.findAllByUserId(userId));
     }
 
     private User findUserById(final Long id) {
