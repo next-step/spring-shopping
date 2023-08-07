@@ -1,10 +1,6 @@
 package shopping.infrastructure;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +11,9 @@ public class JwtProvider implements TokenProvider {
 
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
+
+    @Value("${security.jwt.token.secret-key.version}")
+    private String secretKeyVersion;
 
     @Value("${security.jwt.token.expire-length}")
     private long expireLength;
@@ -28,6 +27,7 @@ public class JwtProvider implements TokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expire)
+                .setPayload(secretKeyVersion)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
