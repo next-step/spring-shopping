@@ -1,4 +1,4 @@
-package shopping.ui;
+package shopping.ui.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

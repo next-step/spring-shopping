@@ -14,6 +14,7 @@ import shopping.application.CartService;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
+import shopping.ui.config.AuthenticationPrincipal;
 
 import java.util.List;
 
