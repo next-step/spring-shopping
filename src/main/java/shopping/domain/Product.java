@@ -12,8 +12,8 @@ import shopping.exception.ProductException;
 @Entity
 public class Product {
 
-    public static final int MAX_NAME_LENGTH = 25;
-    public static final int MIN_PRICE = 0;
+    private static final int MAX_NAME_LENGTH = 25;
+    private static final int MIN_PRICE = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

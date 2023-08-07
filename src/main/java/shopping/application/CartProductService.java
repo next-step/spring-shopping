@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class CartProductService {
 
-    public static final int DEFAULT_PRODUCT_QUANTITY = 1;
-    public static final int MIN_CART_PRODUCT_QUANTITY = 1;
+    private static final int DEFAULT_PRODUCT_QUANTITY = 1;
+    private static final int MIN_CART_PRODUCT_QUANTITY = 1;
 
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
