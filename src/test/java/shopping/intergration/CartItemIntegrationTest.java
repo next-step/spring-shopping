@@ -65,6 +65,30 @@ class CartItemIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("장바구니에 상품을 추가할 때 이미 장바구니에 담겨져 있는 경우 개수가 증가한다.")
+    void addProductToCartWithExistsCartItem() {
+        final String accessToken = login(EMAIL, PASSWORD).getToken();
+        final Long productId = 1L;
+        addCartItem(accessToken, productId);
+
+        final ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .body(new CartItemAddRequest(productId))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/cart-items")
+                .then().log().all().extract();
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        final CartItemResponse cartItemResponse = extractObject(response, CartItemResponse.class);
+        assertThat(cartItemResponse.getCartItemId()).isNotNull();
+        assertThat(cartItemResponse)
+                .extracting("quantity", "product.id", "product.name", "product.image", "product.price")
+                .contains(2, productId, "Chicken", "/image/Chicken.png", 10_000);
+    }
+
+    @Test
     @DisplayName("장바구니에 상품 목록을 읽는다.")
     void readCartItems() {
         final String accessToken = login(EMAIL, PASSWORD).getToken();
