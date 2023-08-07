@@ -3,7 +3,6 @@ package shopping.application;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
 import shopping.dto.request.LoginRequest;
@@ -27,19 +26,13 @@ class AuthServiceTest extends ServiceTest {
     @Autowired
     private TokenProvider tokenProvider;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @DisplayName("정상 로그인 요청시 액세스 토큰 반환")
     @Test
     void login() {
         // given
         String email = "test@example.com";
         String password = "1234";
-        String digest = passwordEncoder.encode(password);
-
-        User user = new User(email, digest);
-        User savedUser = userRepository.save(user);
+        User savedUser = saveUser(email, password);
         Long userId = savedUser.getId();
 
         LoginRequest loginRequest = new LoginRequest(email, password);
@@ -71,10 +64,7 @@ class AuthServiceTest extends ServiceTest {
         // given
         String email = "test@example.com";
         String password = "1234";
-        String digest = passwordEncoder.encode(password);
-
-        User user = new User(email, digest);
-        userRepository.save(user);
+        saveUser(email, password);
 
         String wrongPassword = "wrong password";
         LoginRequest loginRequest = new LoginRequest(email, wrongPassword);
@@ -82,5 +72,10 @@ class AuthServiceTest extends ServiceTest {
         // when & then
         assertThatThrownBy(() -> authService.login(loginRequest))
                 .isInstanceOf(PasswordNotMatchException.class);
+    }
+
+    private User saveUser(String email, String password) {
+        User user = new User(email, password);
+        return userRepository.save(user);
     }
 }

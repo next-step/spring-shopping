@@ -1,9 +1,7 @@
 package shopping.auth;
 
-import shopping.domain.user.Password;
-
 public interface PasswordEncoder {
 
-    boolean match(String planePassword, Password digest);
+    boolean match(String planePassword, String encodedPassword);
     String encode(String password);
 }

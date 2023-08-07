@@ -1,5 +1,7 @@
 package shopping.domain.user;
 
+import shopping.exception.PasswordNotMatchException;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,14 +18,14 @@ public class User {
 
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "password", column = @Column(name = "password", nullable = false, length = 100)))
-    private Password password;
+    private EncodedPassword encodedPassword;
 
     protected User() {
     }
 
     public User(String email, String password) {
         this.email = new Email(email);
-        this.password = new Password(password);
+        this.encodedPassword = new EncodedPassword(password);
     }
 
     public User(Long id, String email, String password) {
@@ -31,19 +33,21 @@ public class User {
         this.id = id;
     }
 
+    public void matchPassword(String password) {
+        if(!encodedPassword.match(password)) {
+            throw new PasswordNotMatchException();
+        }
+    }
+
     public Long getId() {
         return id;
     }
 
-    public Password getPassword() {
-        return password;
+    public EncodedPassword getPassword() {
+        return encodedPassword;
     }
 
     public Email getEmail() {
         return email;
-    }
-
-    public boolean isSame(User other) {
-        return this.id.equals(other.id);
     }
 }

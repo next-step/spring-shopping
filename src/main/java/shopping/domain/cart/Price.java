@@ -3,6 +3,7 @@ package shopping.domain.cart;
 import shopping.exception.InvalidRequestException;
 
 import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class Price {
@@ -29,5 +30,18 @@ public class Price {
 
     public Long getPrice() {
         return price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Price price1 = (Price) o;
+        return Objects.equals(price, price1.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(price);
     }
 }

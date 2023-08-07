@@ -29,21 +29,14 @@ class AuthIntegrationTest extends IntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private TokenProvider tokenProvider;
-
-    @Autowired
-    private TokenExtractor tokenExtractor;
 
     @Override
     @BeforeEach
     void setUp() {
         super.setUp();
         String password = "1234";
-        String encodedPassword = passwordEncoder.encode(password);
-        userRepository.save(new User("test@example.com", encodedPassword));
+        userRepository.save(new User("test@example.com", password));
     }
 
     @DisplayName("로그인 페이지 연동")
@@ -263,8 +256,7 @@ class AuthIntegrationTest extends IntegrationTest {
         // given
         Long invalidId = 100L;
         String email = "notexist@example.com";
-        String digest = passwordEncoder.encode("1234");
-        User user = new User(invalidId, email, digest);
+        User user = new User(invalidId, email, "1234");
         String accessToken = tokenProvider.issueToken(user);
 
         // when
