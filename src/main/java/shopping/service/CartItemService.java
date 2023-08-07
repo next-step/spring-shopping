@@ -65,8 +65,7 @@ public class CartItemService {
             final CartItemUpdateRequest cartItemUpdateRequest
     ) {
         final Member member = getMemberById(memberId);
-        final CartItem cartItem = getCartItemById(cartItemId);
-        cartItem.validateMember(member);
+        final CartItem cartItem = getCartItemByIdWithValidMember(cartItemId, member);
 
         cartItem.updateQuantity(cartItemUpdateRequest.getQuantity());
 
@@ -76,8 +75,7 @@ public class CartItemService {
     @Transactional
     public void deleteCartItem(final Long memberId, final Long cartItemId) {
         final Member member = getMemberById(memberId);
-        final CartItem cartItem = getCartItemById(cartItemId);
-        cartItem.validateMember(member);
+        final CartItem cartItem = getCartItemByIdWithValidMember(cartItemId, member);
 
         cartItemRepository.delete(cartItem);
     }
@@ -92,8 +90,9 @@ public class CartItemService {
                 .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_PRODUCT_ID));
     }
 
-    private CartItem getCartItemById(final Long cartItemId) {
-        return cartItemRepository.findById(cartItemId)
+    private CartItem getCartItemByIdWithValidMember(final Long cartItemId, final Member member) {
+        return cartItemRepository.findOneWithProductAndMemberById(cartItemId)
+                .filter(cartItem -> cartItem.validateMember(member))
                 .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_CART_ITEM_ID));
     }
 

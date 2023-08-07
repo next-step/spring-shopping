@@ -55,10 +55,11 @@ public class CartItem {
         this.quantity = Quantity.from(this.getQuantity() + 1);
     }
 
-    public void validateMember(final Member member) {
+    public boolean validateMember(final Member member) {
         if (!this.member.equals(member)) {
             throw new ShoppingException(ErrorCode.FORBIDDEN_MODIFY_CART_ITEM);
         }
+        return true;
     }
 
     public Long getId() {

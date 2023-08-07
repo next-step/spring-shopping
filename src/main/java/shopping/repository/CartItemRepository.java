@@ -11,7 +11,7 @@ import shopping.domain.product.Product;
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     @EntityGraph(attributePaths = {"product", "member"})
-    Optional<CartItem> findById(final Long cartItemId);
+    Optional<CartItem> findOneWithProductAndMemberById(final Long cartItemId);
 
     CartItem getByMemberAndProduct(final Member member, final Product product);
 
