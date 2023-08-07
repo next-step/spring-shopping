@@ -1,6 +1,6 @@
 package shopping.dto.response;
 
-import shopping.domain.cart.Order;
+import shopping.domain.cart.OrderItems;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,15 +16,15 @@ public class OrderResponse {
         this.totalPrice = totalPrice;
     }
 
-    public static OrderResponse of(Order order) {
-        List<OrderItemResponse> orderItemResponses = order.getOrderItems()
+    public static OrderResponse of(OrderItems orderItems) {
+        List<OrderItemResponse> orderItemResponses = orderItems.getOrderItems()
                 .stream()
                 .map(OrderItemResponse::of)
                 .collect(Collectors.toList());
         Long totalPrice = orderItemResponses.stream()
                 .mapToLong(OrderItemResponse::getPrice)
                 .sum();
-        return new OrderResponse(order.getId(), orderItemResponses, totalPrice);
+        return new OrderResponse(orderItems.getId(), orderItemResponses, totalPrice);
     }
 
     public Long getId() {

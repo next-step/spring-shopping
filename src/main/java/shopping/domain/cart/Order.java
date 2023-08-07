@@ -1,7 +1,6 @@
 package shopping.domain.cart;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name = "orders")
 public class Order {
@@ -11,10 +10,16 @@ public class Order {
 
     private Long userId;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
-
     protected Order() {
+    }
+
+    private Order(Long id, Long userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
+    public Order(Long userId) {
+        this(null, userId);
     }
 
     public Long getId() {
@@ -23,9 +28,5 @@ public class Order {
 
     public Long getUserId() {
         return userId;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
     }
 }

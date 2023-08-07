@@ -25,6 +25,17 @@ public class OrderItem {
     protected OrderItem() {
     }
 
+    public OrderItem(Long id, Product product, Quantity quantity, Order order) {
+        this.id = id;
+        this.product = product;
+        this.quantity = quantity;
+        this.order = order;
+    }
+
+    public static OrderItem from(CartItem cartItem, Order order) {
+        return new OrderItem(cartItem.getId(), cartItem.getProduct(), cartItem.getQuantity(), order);
+    }
+
     public Long getId() {
         return id;
     }
