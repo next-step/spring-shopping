@@ -12,6 +12,7 @@ import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.response.FindCartProductResponse;
 import shopping.dto.request.UpdateCartProductRequest;
+import shopping.exception.CartException;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
@@ -60,7 +61,7 @@ public class CartProductServiceTest {
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
             given(cartProductRepository.findOneByMemberIdAndProductId(member.getId(), product.getId()))
-                .willReturn(Optional.empty());
+                .willThrow(CartException.class);
 
             // when
             CartProduct result =  cartProductService.addProduct(product.getId(), member.getId());
@@ -72,7 +73,7 @@ public class CartProductServiceTest {
         }
 
         @Test
-        @DisplayName("memberId와 productId쌍이 이미 존재 한다면, 수량을 1개 증가한다")
+        @DisplayName("memberId와 productId 쌍이 이미 존재 한다면, 수량을 1개 증가한다")
         void increaseProductQuantity_WhenCartAlreadyExists() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
@@ -83,7 +84,7 @@ public class CartProductServiceTest {
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
             given(cartProductRepository.findOneByMemberIdAndProductId(product.getId(), member.getId()))
-                .willReturn(Optional.of(cartProduct));
+                .willReturn(cartProduct);
 
             // when
             CartProduct result = cartProductService.addProduct(product.getId(), member.getId());

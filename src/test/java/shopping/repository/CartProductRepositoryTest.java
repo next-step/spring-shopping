@@ -1,9 +1,9 @@
 package shopping.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import shopping.domain.CartProduct;
+import shopping.exception.CartException;
 
 @DisplayName("CartRepository 클래스")
 @DataJpaTest
@@ -51,26 +52,24 @@ public class CartProductRepositoryTest {
             Long productId = 1L;
 
             // when
-            Optional<CartProduct> result = cartRepository.findOneByMemberIdAndProductId(memberId,
+            CartProduct result = cartRepository.findOneByMemberIdAndProductId(memberId,
                 productId);
 
             // then
-            assertThat(result).isPresent();
+            assertThat(result.getMember().getId()).isEqualTo(memberId);
+            assertThat(result.getProduct().getId()).isEqualTo(productId);
         }
 
         @Test
-        @DisplayName("memberId와 productId에 해당하는 cart 가 없으면 Optional.empty 를 반환한다")
+        @DisplayName("memberId와 productId에 해당하는 cart 가 없으면 CartException 을 던진다")
         void returnOptionalEmptyByMemberIdAndProductId() {
             // given
             Long memberId = 5L;
             Long productId = 1L;
 
-            // when
-            Optional<CartProduct> result = cartRepository.findOneByMemberIdAndProductId(memberId,
-                productId);
-
-            // then
-            assertThat(result).isEmpty();
+            // when & then
+            assertThatThrownBy(() -> cartRepository.findOneByMemberIdAndProductId(memberId,
+                productId)).isInstanceOf(CartException.class);
         }
     }
 
@@ -89,8 +88,8 @@ public class CartProductRepositoryTest {
             cartRepository.updateById(id, updateQuantity);
 
             // then
-            Optional<CartProduct> updated = cartRepository.findOneByMemberIdAndProductId(1L, 1L);
-            assertThat(updated.get().getQuantity()).isEqualTo(updateQuantity);
+            CartProduct updated = cartRepository.findOneByMemberIdAndProductId(1L, 1L);
+            assertThat(updated.getQuantity()).isEqualTo(updateQuantity);
         }
     }
 
@@ -109,8 +108,8 @@ public class CartProductRepositoryTest {
             cartRepository.deleteById(id);
 
             // then
-            Optional<CartProduct> deleted = cartRepository.findOneByMemberIdAndProductId(1L, 1L);
-            assertThat(deleted).isNotPresent();
+            assertThatThrownBy(() -> cartRepository.findOneByMemberIdAndProductId(1L, 1L))
+                .isInstanceOf(CartException.class);
         }
     }
 }

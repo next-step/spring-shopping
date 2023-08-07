@@ -1,11 +1,12 @@
 package shopping.repository;
 
 import java.util.List;
-import java.util.Optional;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
+import shopping.exception.CartException;
 
 @Repository
 @Transactional
@@ -31,15 +32,18 @@ public class CartProductRepository {
     }
 
     @Transactional(readOnly = true)
-    public Optional<CartProduct> findOneByMemberIdAndProductId(Long memberId, Long productId) {
-        return entityManager.createQuery(
-                "select c from CartProduct c where c.member.id = :memberId and c.product.id = :productId",
-                CartProduct.class)
-            .setMaxResults(1)
-            .setParameter("productId", productId)
-            .setParameter("memberId", memberId)
-            .getResultStream()
-            .findFirst();
+    public CartProduct findOneByMemberIdAndProductId(Long memberId, Long productId) {
+        try {
+            return entityManager.createQuery(
+                    "select c from CartProduct c where c.member.id = :memberId and c.product.id = :productId",
+                    CartProduct.class)
+                .setMaxResults(1)
+                .setParameter("productId", productId)
+                .setParameter("memberId", memberId)
+                .getSingleResult();
+        } catch (NoResultException e) {
+            throw new CartException(e.getMessage());
+        }
     }
 
     public void updateById(Long id, int quantity) {
