@@ -32,7 +32,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new ShoppingException(TOKEN_INVALID);
         }
-        request.setAttribute("loginMemberId", jwtTokenProvider.getPayload(token));
+        request.setAttribute("loginMemberId", jwtTokenProvider.getSubject(token));
         return true;
     }
 
