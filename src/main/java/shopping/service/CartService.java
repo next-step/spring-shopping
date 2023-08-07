@@ -56,7 +56,7 @@ public class CartService {
         final int updateQuantity = cartItemUpdateRequest.getQuantity();
         final CartItemEntity cartItemEntity = findCartItemEntityBy(cartItemId);
 
-        CartItem cartItem = CartItem.ofCartItemEntityAndQuantity(cartItemEntity, updateQuantity);
+        CartItem cartItem = CartItem.of(cartItemEntity, updateQuantity);
         cartItem.validateUser(userId);
         if (cartItem.isQuantityZero()) {
             cartItemRepository.delete(cartItemEntity);

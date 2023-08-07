@@ -32,7 +32,7 @@ public final class CartItem {
             cartItemEntity.getQuantity());
     }
 
-    public static CartItem ofCartItemEntityAndQuantity(final CartItemEntity cartItemEntity, final int quantity) {
+    public static CartItem of(final CartItemEntity cartItemEntity, final int quantity) {
         return new CartItem(
             cartItemEntity.getId(),
             cartItemEntity.getUser().getId(),
