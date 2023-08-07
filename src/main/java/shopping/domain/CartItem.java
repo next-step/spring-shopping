@@ -8,8 +8,8 @@ import shopping.exception.ShoppingException;
 public final class CartItem {
 
     private final static int QUANTITY_ZERO = 0;
-    public static final int ITEM_MIN_QUANTITY = 0;
-    public static final int ITEM_MAX_QUANTITY = 1000;
+    private static final int ITEM_MIN_QUANTITY = 0;
+    private static final int ITEM_MAX_QUANTITY = 1000;
 
     private final Long id;
     private final Long userId;
