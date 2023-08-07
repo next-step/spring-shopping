@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.ProductCartItemDto;
-import shopping.common.vo.Image;
+import shopping.product.domain.vo.Image;
 import shopping.common.vo.ImageStoreType;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;

@@ -3,9 +3,9 @@ package shopping.product.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.common.vo.Image;
 import shopping.common.vo.ImageStoreType;
 import shopping.exception.WooWaException;
+import shopping.product.domain.vo.Image;
 
 @DisplayName("Product 단위 테스")
 class ProductTest {

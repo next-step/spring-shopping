@@ -1,8 +1,8 @@
 package shopping.product.dto.request;
 
-import shopping.common.vo.Image;
 import shopping.common.vo.ImageStoreType;
 import shopping.product.domain.Product;
+import shopping.product.domain.vo.Image;
 
 public class ProductCreationRequest {
 

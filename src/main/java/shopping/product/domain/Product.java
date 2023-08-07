@@ -6,9 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import org.springframework.http.HttpStatus;
-import shopping.common.vo.Image;
 import shopping.common.vo.ImageStoreType;
 import shopping.exception.WooWaException;
+import shopping.product.domain.vo.Image;
 import shopping.product.domain.vo.Money;
 
 @Entity

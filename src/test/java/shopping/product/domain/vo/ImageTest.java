@@ -1,8 +1,9 @@
-package shopping.common.vo;
+package shopping.product.domain.vo;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.common.vo.ImageStoreType;
 
 @DisplayName("Image 단위 테스트")
 class ImageTest {

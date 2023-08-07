@@ -1,8 +1,9 @@
-package shopping.common.vo;
+package shopping.product.domain.vo;
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import shopping.common.vo.ImageStoreType;
 
 @Embeddable
 public class Image {

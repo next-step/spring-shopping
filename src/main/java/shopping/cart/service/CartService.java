@@ -54,7 +54,6 @@ public class CartService {
 
         Member member = getMemberById(loggedInMember.getId());
         Product product = getProductById(cartItemCreationRequest.getProductId());
-
         CartItem cartItem = new CartItem(product, member);
 
         cartItemRepository.save(cartItem);
