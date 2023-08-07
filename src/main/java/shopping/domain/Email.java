@@ -1,27 +1,24 @@
-package shopping.entity.user;
+package shopping.domain;
 
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class Email {
 
     private static final int MAX_LENGTH = 50;
     private static final String FORM_PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
-    private final String email;
+    private final String value;
 
     protected Email() {
-        this.email = null;
+        this.value = null;
     }
 
     public Email(final String value) {
         validateLength(value);
         validateForm(value);
 
-        this.email = value;
+        this.value = value;
     }
 
     private void validateLength(final String value) {
@@ -36,7 +33,7 @@ public class Email {
         }
     }
 
-    public String getEmail() {
-        return email;
+    public String getValue() {
+        return value;
     }
 }

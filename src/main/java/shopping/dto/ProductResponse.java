@@ -1,6 +1,6 @@
 package shopping.dto;
 
-import shopping.entity.product.Product;
+import shopping.domain.entity.Product;
 
 import java.util.Objects;
 

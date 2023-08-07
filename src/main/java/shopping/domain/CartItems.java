@@ -1,6 +1,6 @@
 package shopping.domain;
 
-import shopping.entity.cart.CartItem;
+import shopping.domain.entity.CartItem;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 

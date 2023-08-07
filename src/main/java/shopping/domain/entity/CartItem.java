@@ -1,20 +1,11 @@
-package shopping.entity.cart;
+package shopping.domain.entity;
 
-import shopping.entity.product.Product;
-import shopping.entity.user.User;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "cart_items")
 public class CartItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,8 +37,8 @@ public class CartItem {
         quantity = quantity.increase();
     }
 
-    public void updateQuantity(final int quantity) {
-        this.quantity = this.quantity.update(quantity);
+    public void updateQuantity(final Quantity quantity) {
+        this.quantity = quantity;
     }
 
     public boolean checkSameProduct(final CartItem other) {

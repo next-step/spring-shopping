@@ -1,11 +1,6 @@
-package shopping.entity.user;
+package shopping.domain.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -16,16 +11,16 @@ public class User {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private Email email;
+    private String email;
 
     @Column(nullable = false)
-    private Password password;
+    private String password;
 
     protected User() {
 
     }
 
-    public User(final Long id, final Email email, final Password password) {
+    public User(final Long id, final String email, final String password) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -36,10 +31,10 @@ public class User {
     }
 
     public String getEmail() {
-        return email.getEmail();
+        return email;
     }
 
     public String getPassword() {
-        return password.getPassword();
+        return password;
     }
 }

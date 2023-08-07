@@ -1,11 +1,12 @@
-package shopping.entity.cart;
+package shopping.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.domain.CartItems;
-import shopping.entity.EntityFixture;
-import shopping.entity.product.Product;
-import shopping.entity.user.User;
+import shopping.domain.entity.CartItem;
+import shopping.domain.entity.Product;
+import shopping.domain.entity.Quantity;
+import shopping.domain.entity.User;
+import shopping.domain.entity.fixture.EntityFixture;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ class CartItemsTest {
         Product product = EntityFixture.createProduct();
         CartItem item = new CartItem(user, product, Quantity.ONE);
         CartItems items = new CartItems(new ArrayList<>());
+
         // when
         items.add(item);
 

@@ -1,4 +1,4 @@
-package shopping.entity.cart;
+package shopping.domain.entity;
 
 
 import shopping.exception.ErrorType;
@@ -10,7 +10,7 @@ import java.util.Objects;
 @Embeddable
 public class Quantity {
 
-    public final static Quantity ONE = new Quantity(1);
+    public static final Quantity ONE = new Quantity(1);
 
     private final int quantity;
 

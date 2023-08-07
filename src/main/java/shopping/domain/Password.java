@@ -1,26 +1,24 @@
-package shopping.entity.user;
+package shopping.domain;
 
 import shopping.infrastructure.PasswordEncoder;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class Password {
-    private final String password;
+
+    private final String value;
 
     protected Password() {
-        this.password = null;
+        this.value = null;
     }
 
-    private Password(final String password) {
-        this.password = password;
+    private Password(final String value) {
+        this.value = value;
     }
 
     public static Password createEncodedPassword(final String password, final PasswordEncoder encoder) {
         return new Password(encoder.encode(password));
     }
 
-    public String getPassword() {
-        return password;
+    public String getValue() {
+        return value;
     }
 }

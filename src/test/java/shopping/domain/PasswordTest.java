@@ -1,4 +1,4 @@
-package shopping.entity.user;
+package shopping.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ class PasswordTest {
     void passwordEncrypted() {
         Password password = Password.createEncodedPassword("test1234", rawPassword -> rawPassword + "a");
 
-        assertThat(password.getPassword()).isEqualTo("test1234a");
-        assertThat(password.getPassword().length()).isEqualTo(9);
+        assertThat(password.getValue()).isEqualTo("test1234a");
+        assertThat(password.getValue().length()).isEqualTo(9);
     }
 }

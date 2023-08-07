@@ -1,10 +1,8 @@
-package shopping.entity.cart;
+package shopping.domain.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.entity.EntityFixture;
-import shopping.entity.product.Product;
-import shopping.entity.user.User;
+import shopping.domain.entity.fixture.EntityFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +32,7 @@ class CartItemTest {
         CartItem cartItem = new CartItem(user, product, Quantity.ONE);
 
         // when
-        cartItem.updateQuantity(4);
+        cartItem.updateQuantity(new Quantity(4));
 
         // then
         assertThat(cartItem.getQuantity()).isEqualTo(4);
