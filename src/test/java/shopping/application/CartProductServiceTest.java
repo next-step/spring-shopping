@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
@@ -60,10 +59,9 @@ public class CartProductServiceTest {
             given(cartProductRepository.findOneByMemberIdAndProductId(member.getId(), product.getId())).willReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> cartProductService.addProduct(product.getId(), member.getId()));
+            cartProductService.addProduct(product.getId(), member.getId());
 
             // then
-            assertThat(exception).isNull();
             verify(cartProductRepository).save(any(CartProduct.class));
         }
 
@@ -158,14 +156,11 @@ public class CartProductServiceTest {
             int initialQuantity = 5;
             CartProduct cartProduct = new CartProduct(member, product, initialQuantity);
 
-            doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
-
             // when
-            Exception exception = catchException(
-                () -> cartProductService.deleteCartProduct(cartProduct.getId()));
+            cartProductService.deleteCartProduct(cartProduct.getId());
 
             // then
-            assertThat(exception).isNull();
+            verify(cartProductRepository).deleteById(cartProduct.getId());
         }
     }
 

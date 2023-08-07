@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Member;
 import shopping.dto.LoginRequest;
+import shopping.dto.LoginResponse;
 import shopping.exception.AuthException;
 import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
@@ -36,7 +37,7 @@ public class AuthServiceTest {
     class login_Method {
 
         @Test
-        @DisplayName("유효한 회원일 경우 로그인에 성공한다")
+        @DisplayName("유효한 회원일 경우 로그인에 성공하고 accessToken 을 응답한다")
         void LoginSuccess_WhenValidMember() {
             // given
             String email = "woowa1@woowa.com";
@@ -50,10 +51,10 @@ public class AuthServiceTest {
             given(tokenProvider.createToken(member.getId())).willReturn("token");
 
             // when
-            Exception exception = catchException(() -> authService.login(loginRequest));
+            LoginResponse result = authService.login(loginRequest);
 
             // then
-            assertThat(exception).isNull();
+            assertThat(result).extracting("accessToken").isEqualTo("token");
         }
 
         @Test
