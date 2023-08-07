@@ -2,14 +2,14 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.entity.cart.CartItem;
 import shopping.domain.CartItems;
-import shopping.entity.cart.Quantity;
-import shopping.entity.product.Product;
-import shopping.entity.user.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
+import shopping.entity.cart.CartItem;
+import shopping.entity.cart.Quantity;
+import shopping.entity.product.Product;
+import shopping.entity.user.User;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
@@ -61,8 +61,7 @@ public class CartService {
     public void update(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
         final CartItem item = findCartItemById(cartItemId);
-
-        validateUserContainsItem(items, item);
+        items.validateContains(item);
 
         item.updateQuantity(request.getQuantity());
     }
@@ -71,20 +70,13 @@ public class CartService {
     public void delete(final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
         final CartItem item = findCartItemById(cartItemId);
-
-        validateUserContainsItem(items, item);
+        items.validateContains(item);
 
         cartItemRepository.delete(item);
     }
 
     private CartItems findCartItemsByUserId(final Long userId) {
         return new CartItems(cartItemRepository.findAllByUserId(userId));
-    }
-
-    private void validateUserContainsItem(final CartItems items, final CartItem item) {
-        if (!items.contains(item)) {
-            throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
-        }
     }
 
     private CartItem findCartItemById(final Long id) {

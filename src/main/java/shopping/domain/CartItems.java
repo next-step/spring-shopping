@@ -1,6 +1,8 @@
 package shopping.domain;
 
 import shopping.entity.cart.CartItem;
+import shopping.exception.ErrorType;
+import shopping.exception.ShoppingException;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,12 @@ public class CartItems {
         return items.stream()
                 .filter(item::checkSameProduct)
                 .findAny();
+    }
+
+    public void validateContains(final CartItem item) {
+        if (!items.contains(item)) {
+            throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
+        }
     }
 
     public boolean contains(final CartItem cartItem) {
