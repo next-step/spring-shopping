@@ -1,6 +1,7 @@
 package shopping.argumentresolver;
 
 import java.util.Objects;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -8,6 +9,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import shopping.argumentresolver.annotation.UserId;
+import shopping.exception.ErrorCode;
+import shopping.exception.ShoppingException;
 
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -24,6 +27,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
         final ModelAndViewContainer mavContainer,
         final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        return (Long) request.getAttribute(USER_ID);
+        return Optional.ofNullable((Long) request.getAttribute(USER_ID))
+            .orElseThrow(() -> new ShoppingException(ErrorCode.NO_AUTHORIZATION_HEADER));
     }
 }
