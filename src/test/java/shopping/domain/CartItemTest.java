@@ -61,7 +61,7 @@ public class CartItemTest {
 
         // then
         assertThatNoException()
-            .isThrownBy(() -> cartItem.validateUser(userId));
+            .isThrownBy(() -> cartItem.matchUser(userId));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class CartItemTest {
         Long userId = 2L;
 
         // then
-        assertThatThrownBy(() -> cartItem.validateUser(userId))
+        assertThatThrownBy(() -> cartItem.matchUser(userId))
             .isInstanceOf(ShoppingException.class)
             .extracting("errorCode")
             .isEqualTo(ErrorCode.INVALID_CART_ITEM);

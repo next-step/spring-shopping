@@ -57,7 +57,7 @@ public class CartService {
         final CartItemEntity cartItemEntity = findCartItemEntityBy(cartItemId);
 
         CartItem cartItem = CartItem.of(cartItemEntity, updateQuantity);
-        cartItem.validateUser(userId);
+        cartItem.matchUser(userId);
         if (cartItem.isQuantityZero()) {
             cartItemRepository.delete(cartItemEntity);
             return;
@@ -70,7 +70,7 @@ public class CartService {
     public void removeCartItem(final Long cartItemId, final Long userId) {
         final CartItemEntity cartItemEntity = findCartItemEntityBy(cartItemId);
         final CartItem cartItem = CartItem.from(cartItemEntity);
-        cartItem.validateUser(userId);
+        cartItem.matchUser(userId);
         cartItemRepository.delete(cartItemEntity);
     }
 
