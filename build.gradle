@@ -11,18 +11,43 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation project(':auth:auth-domain')
+    implementation project(':auth:auth-service')
+    implementation project(':auth:auth-controller')
+    implementation project(':auth:auth-repository')
 
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation project(':mart:mart-domain')
+    implementation project(':mart:mart-service')
+    implementation project(':mart:mart-controller')
+    implementation project(':mart:mart-repository')
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.rest-assured:rest-assured:4.4.0'
-
-    runtimeOnly 'com.h2database:h2'
+    implementation project(':core')
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+        implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'io.rest-assured:rest-assured:4.4.0'
+
+        runtimeOnly 'com.h2database:h2'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
 }

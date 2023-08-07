@@ -12,7 +12,7 @@ form.addEventListener('submit', (event) => {
     }
 
     // TODO: [2단계] 로그인 path에 맞게 변경
-    fetch('', {
+    fetch('/login/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
