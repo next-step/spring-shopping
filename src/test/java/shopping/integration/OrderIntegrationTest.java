@@ -8,9 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.domain.cart.Price;
 import shopping.domain.cart.Product;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.LoginRequest;
+import shopping.dto.response.OrderItemResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
@@ -47,6 +50,14 @@ class OrderIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.as(OrderResponse.class).getTotalPrice())
+                .isEqualTo(productList.stream()
+                        .map(Product::getPrice)
+                        .mapToLong(Price::getPrice)
+                        .sum());
+        assertThat(response.as(OrderResponse.class).getOrderItemResponses())
+                .extracting(OrderItemResponse::getName)
+                .containsExactlyInAnyOrder("치킨", "피자", "샐러드");
     }
 
     private String login() {
