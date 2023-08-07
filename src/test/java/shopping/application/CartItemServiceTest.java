@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Price;
 import shopping.domain.cart.Product;
@@ -68,7 +66,7 @@ class CartItemServiceTest extends ServiceTest {
             List<CartItem> savedItems = cartItemRepository.saveAll(cartItems);
 
             // when
-            List<CartItemResponse> responses = cartItemService.findAllByUserId(savedUser.getId(), PageRequest.of(0, 3));
+            List<CartItemResponse> responses = cartItemService.findAllByUserId(savedUser.getId());
 
             // then
             assertThat(responses).usingRecursiveComparison().isEqualTo(

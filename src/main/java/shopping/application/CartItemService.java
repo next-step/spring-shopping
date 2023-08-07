@@ -1,6 +1,5 @@
 package shopping.application;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
@@ -16,6 +15,7 @@ import shopping.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -44,10 +44,11 @@ public class CartItemService {
                                 .orElse(new CartItem(userId, product))));
     }
 
-    public List<CartItemResponse> findAllByUserId(Long userId, Pageable pageable) {
-        return cartItemRepository.findAllByUserId(userId, pageable)
+    public List<CartItemResponse> findAllByUserId(Long userId) {
+        return cartItemRepository.findAllByUserId(userId)
+                .stream()
                 .map(CartItemResponse::of)
-                .getContent();
+                .collect(Collectors.toList());
     }
 
     @Transactional

@@ -1,7 +1,5 @@
 package shopping.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shopping.application.CartItemService;
@@ -30,8 +28,8 @@ public class CartItemController {
     }
 
     @GetMapping("/cart/items")
-    public ResponseEntity<List<CartItemResponse>> getCartItems(@UserIdPrincipal Long userId, @PageableDefault Pageable pageable) {
-        List<CartItemResponse> cartItems = cartItemService.findAllByUserId(userId, pageable);
+    public ResponseEntity<List<CartItemResponse>> getCartItems(@UserIdPrincipal Long userId) {
+        List<CartItemResponse> cartItems = cartItemService.findAllByUserId(userId);
         return ResponseEntity.ok().body(cartItems);
     }
 

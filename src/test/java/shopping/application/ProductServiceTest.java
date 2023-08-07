@@ -3,7 +3,6 @@ package shopping.application;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import shopping.domain.cart.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
@@ -34,7 +33,7 @@ class ProductServiceTest extends ServiceTest {
         List<Product> savedProducts = productRepository.saveAll(productList);
 
         // when
-        List<ProductResponse> products = productService.findAll(PageRequest.of(0, 3));
+        List<ProductResponse> products = productService.findAll();
 
         // then
         assertThat(products).usingRecursiveComparison().isEqualTo(
