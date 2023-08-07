@@ -26,8 +26,8 @@ public class User {
         );
     }
 
-    public void validatePassword(final LoginRequest loginRequest) {
-        if (!Objects.equals(this.password, loginRequest.getPassword())) {
+    public void matchPassword(final String password) {
+        if (!Objects.equals(this.password, password)) {
             throw new ShoppingException(ErrorCode.INVALID_PASSWORD);
         }
     }
