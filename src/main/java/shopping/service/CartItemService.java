@@ -1,6 +1,9 @@
 package shopping.service;
 
 import static java.util.stream.Collectors.toList;
+import static shopping.exception.ShoppingErrorType.NOT_FOUND_CART_ITEM_ID;
+import static shopping.exception.ShoppingErrorType.NOT_FOUND_MEMBER_ID;
+import static shopping.exception.ShoppingErrorType.NOT_FOUND_PRODUCT_ID;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -12,7 +15,6 @@ import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
@@ -82,18 +84,18 @@ public class CartItemService {
 
     private Member getMemberById(final Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_MEMBER_ID));
+                .orElseThrow(() -> new ShoppingException(NOT_FOUND_MEMBER_ID));
     }
 
     private Product getProductById(final Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_PRODUCT_ID));
+                .orElseThrow(() -> new ShoppingException(NOT_FOUND_PRODUCT_ID));
     }
 
     private CartItem getCartItemByIdWithValidMember(final Long cartItemId, final Member member) {
         return cartItemRepository.findOneWithProductAndMemberById(cartItemId)
                 .filter(cartItem -> cartItem.validateMember(member))
-                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_CART_ITEM_ID));
+                .orElseThrow(() -> new ShoppingException(NOT_FOUND_CART_ITEM_ID));
     }
 
     private boolean existsCartItem(final Member member, final Product product) {

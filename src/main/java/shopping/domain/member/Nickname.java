@@ -1,7 +1,8 @@
 package shopping.domain.member;
 
+import static shopping.exception.ShoppingErrorType.NICKNAME_INVALID;
+
 import org.springframework.util.StringUtils;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 public class Nickname {
@@ -17,7 +18,7 @@ public class Nickname {
 
     private void validate(final String value) {
         if (!StringUtils.hasText(value) || value.length() > MAX_NICKNAME_LENGTH) {
-            throw new ShoppingException(ErrorCode.NICKNAME_INVALID);
+            throw new ShoppingException(NICKNAME_INVALID);
         }
     }
 

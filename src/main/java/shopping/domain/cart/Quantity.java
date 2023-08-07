@@ -1,9 +1,10 @@
 package shopping.domain.cart;
 
+import static shopping.exception.ShoppingErrorType.QUANTITY_INVALID;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -25,7 +26,7 @@ public class Quantity {
 
     private void validate(final int value) {
         if (value < MIN_QUANTITY || value > MAX_QUANTITY) {
-            throw new ShoppingException(ErrorCode.QUANTITY_INVALID);
+            throw new ShoppingException(QUANTITY_INVALID);
         }
     }
 

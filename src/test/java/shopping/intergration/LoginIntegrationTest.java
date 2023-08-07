@@ -1,6 +1,8 @@
 package shopping.intergration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static shopping.exception.ShoppingErrorType.NOT_FOUND_MEMBER_EMAIL;
+import static shopping.exception.ShoppingErrorType.PASSWORD_NOT_MATCH;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -13,7 +15,6 @@ import org.springframework.http.MediaType;
 import shopping.auth.JwtTokenProvider;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
-import shopping.exception.ErrorCode;
 
 class LoginIntegrationTest extends IntegrationTest {
 
@@ -52,7 +53,7 @@ class LoginIntegrationTest extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
         assertThat(response.body().jsonPath().getString("message"))
-                .isEqualTo(ErrorCode.NOT_FOUND_MEMBER_EMAIL.getMessage());
+                .isEqualTo(NOT_FOUND_MEMBER_EMAIL.getMessage());
     }
 
     @Test
@@ -70,6 +71,6 @@ class LoginIntegrationTest extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         assertThat(response.body().jsonPath().getString("message"))
-                .isEqualTo(ErrorCode.PASSWORD_NOT_MATCH.getMessage());
+                .isEqualTo(PASSWORD_NOT_MATCH.getMessage());
     }
 }

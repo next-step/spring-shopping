@@ -2,6 +2,10 @@ package shopping.intergration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
+import static shopping.exception.ShoppingErrorType.FORBIDDEN_MODIFY_CART_ITEM;
+import static shopping.exception.ShoppingErrorType.QUANTITY_INVALID;
+import static shopping.exception.ShoppingErrorType.TOKEN_INVALID;
+import static shopping.exception.ShoppingErrorType.TOKEN_IS_EMPTY;
 import static shopping.intergration.helper.RestAssuredHelper.addCartItem;
 import static shopping.intergration.helper.RestAssuredHelper.extractObject;
 import static shopping.intergration.helper.RestAssuredHelper.login;
@@ -20,7 +24,6 @@ import shopping.dto.request.CartItemUpdateRequest;
 import shopping.dto.response.CartItemResponse;
 import shopping.dto.response.CartItemResponses;
 import shopping.dto.response.ProductResponse;
-import shopping.exception.ErrorCode;
 import shopping.repository.CartItemRepository;
 
 class CartItemIntegrationTest extends IntegrationTest {
@@ -142,7 +145,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.TOKEN_IS_EMPTY.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(TOKEN_IS_EMPTY.getMessage());
     }
 
     @Test
@@ -161,7 +164,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.TOKEN_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(TOKEN_INVALID.getMessage());
     }
 
     @Test
@@ -183,7 +186,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(QUANTITY_INVALID.getMessage());
     }
 
     @Test
@@ -205,7 +208,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(QUANTITY_INVALID.getMessage());
     }
 
     @Test
@@ -227,7 +230,7 @@ class CartItemIntegrationTest extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(
-                ErrorCode.FORBIDDEN_MODIFY_CART_ITEM.getMessage());
+                FORBIDDEN_MODIFY_CART_ITEM.getMessage());
     }
 
     @Test
@@ -246,6 +249,6 @@ class CartItemIntegrationTest extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
         assertThat(response.jsonPath().getString("message")).isEqualTo(
-                ErrorCode.FORBIDDEN_MODIFY_CART_ITEM.getMessage());
+                FORBIDDEN_MODIFY_CART_ITEM.getMessage());
     }
 }

@@ -1,10 +1,11 @@
 package shopping.domain.product;
 
+import static shopping.exception.ShoppingErrorType.PRODUCT_IMAGE_INVALID;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import org.springframework.util.StringUtils;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -25,7 +26,7 @@ public class ProductImage {
 
     private void validate(final String value) {
         if (!StringUtils.hasText(value) || value.length() > MAX_IMAGE_LENGTH) {
-            throw new ShoppingException(ErrorCode.PRODUCT_IMAGE_INVALID);
+            throw new ShoppingException(PRODUCT_IMAGE_INVALID);
         }
     }
 

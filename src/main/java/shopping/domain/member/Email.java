@@ -1,6 +1,7 @@
 package shopping.domain.member;
 
-import shopping.exception.ErrorCode;
+import static shopping.exception.ShoppingErrorType.EMAIL_INVALID;
+
 import shopping.exception.ShoppingException;
 
 public class Email {
@@ -16,7 +17,7 @@ public class Email {
 
     private void validate(final String value) {
         if (value == null || !value.matches(EMAIL_REGEX_PATTERN)) {
-            throw new ShoppingException(ErrorCode.EMAIL_INVALID);
+            throw new ShoppingException(EMAIL_INVALID);
         }
     }
 

@@ -1,5 +1,6 @@
 package shopping.domain.cart;
 
+import static shopping.exception.ShoppingErrorType.FORBIDDEN_MODIFY_CART_ITEM;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -12,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 @Entity
@@ -57,7 +57,7 @@ public class CartItem {
 
     public boolean validateMember(final Member member) {
         if (!this.member.equals(member)) {
-            throw new ShoppingException(ErrorCode.FORBIDDEN_MODIFY_CART_ITEM);
+            throw new ShoppingException(FORBIDDEN_MODIFY_CART_ITEM);
         }
         return true;
     }

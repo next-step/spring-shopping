@@ -1,12 +1,13 @@
 package shopping.domain.member;
 
+import static shopping.exception.ShoppingErrorType.PASSWORD_NOT_MATCH;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 @Entity
@@ -37,7 +38,7 @@ public class Member {
 
     public void matchPassword(final Password requestPassword) {
         if (!Password.from(this.password).isMatch(requestPassword)) {
-            throw new ShoppingException(ErrorCode.PASSWORD_NOT_MATCH);
+            throw new ShoppingException(PASSWORD_NOT_MATCH);
         }
     }
 

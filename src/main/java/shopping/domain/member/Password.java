@@ -1,7 +1,8 @@
 package shopping.domain.member;
 
+import static shopping.exception.ShoppingErrorType.PASSWORD_INVALID;
+
 import java.util.Objects;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 public class Password {
@@ -17,7 +18,7 @@ public class Password {
 
     private void validate(final String value) {
         if (value == null || !value.matches(PASSWORD_REGEX_PATTERN)) {
-            throw new ShoppingException(ErrorCode.PASSWORD_INVALID);
+            throw new ShoppingException(PASSWORD_INVALID);
         }
     }
 

@@ -1,9 +1,10 @@
 package shopping.domain.product;
 
+import static shopping.exception.ShoppingErrorType.PRICE_LESS_THAN_ZERO;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 @Embeddable
@@ -22,7 +23,7 @@ public class Price {
 
     private void validate(final int value) {
         if (value <= 0) {
-            throw new ShoppingException(ErrorCode.PRICE_LESS_THAN_ZERO);
+            throw new ShoppingException(PRICE_LESS_THAN_ZERO);
         }
     }
 
