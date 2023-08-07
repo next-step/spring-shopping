@@ -25,3 +25,22 @@ CREATE TABLE IF NOT EXISTS `cart_item`
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(product_id) REFERENCES product(id)
 );
+
+CREATE TABLE IF NOT EXISTS `order_item`
+(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    order_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(product_id) REFERENCES product(id),
+    FOREIGN KEY(order_id) REFERENCES orders(id)
+);
+
+CREATE TABLE IF NOT EXISTS `orders`
+(
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    user_id BIGINT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
