@@ -6,6 +6,7 @@ import static shopping.exception.ShoppingErrorType.NOT_FOUND_MEMBER_ID;
 import static shopping.exception.ShoppingErrorType.NOT_FOUND_PRODUCT_ID;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
@@ -48,16 +49,19 @@ public class CartItemService {
 
     @Transactional
     public CartItemResponse addCartItem(final Long memberId, final CartItemAddRequest cartItemAddRequest) {
-        final Member member = getMemberById(memberId);
         final Product product = getProductById(cartItemAddRequest.getProductId());
+        final Optional<CartItem> existsCartItem = cartItemRepository.findAllByMemberId(memberId).stream()
+                .filter(cartItem -> cartItem.getProduct() == product)
+                .findAny();
 
-        if (existsCartItem(member, product)) {
-            final CartItem cartItem = increaseCartItemQuantity(member, product);
+        if (existsCartItem.isPresent()) {
+            final CartItem cartItem = existsCartItem.get();
+            cartItem.plusQuantity();
             return CartItemResponse.from(cartItem);
         }
 
-        final CartItem cartItem = addNewCartItem(member, product);
-        return CartItemResponse.from(cartItem);
+        final Member member = getMemberById(memberId);
+        return CartItemResponse.from(addNewCartItem(member, product));
     }
 
     @Transactional
@@ -96,16 +100,6 @@ public class CartItemService {
         return cartItemRepository.findOneWithProductAndMemberById(cartItemId)
                 .filter(cartItem -> cartItem.validateMember(member))
                 .orElseThrow(() -> new ShoppingException(NOT_FOUND_CART_ITEM_ID));
-    }
-
-    private boolean existsCartItem(final Member member, final Product product) {
-        return cartItemRepository.existsByMemberAndProduct(member, product);
-    }
-
-    private CartItem increaseCartItemQuantity(final Member member, final Product product) {
-        final CartItem cartItem = cartItemRepository.getByMemberAndProduct(member, product);
-        cartItem.plusQuantity();
-        return cartItem;
     }
 
     private CartItem addNewCartItem(final Member member, final Product product) {
