@@ -63,6 +63,18 @@ public class OrderItem {
     }
 
     public OrderItem(
+            Order order,
+            CartItem cartItem) {
+
+        this.order = order;
+        this.originalProduct = cartItem.getProduct();
+        this.name = this.originalProduct.getName();
+        this.imageUrl = this.originalProduct.getImageUrl();
+        this.price = new Price(this.originalProduct.getPrice());
+        this.quantity = new Quantity(cartItem.getQuantity());
+    }
+
+    public OrderItem(
             Long id,
             Order order,
             Product originalProduct,
@@ -95,11 +107,11 @@ public class OrderItem {
         return imageUrl;
     }
 
-    public Price getPrice() {
-        return price;
+    public Long getPrice() {
+        return price.getPrice();
     }
 
-    public Quantity getQuantity() {
-        return quantity;
+    public Integer getQuantity() {
+        return quantity.getQuantity();
     }
 }
