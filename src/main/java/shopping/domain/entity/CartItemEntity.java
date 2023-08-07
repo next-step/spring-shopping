@@ -26,7 +26,7 @@ public class CartItemEntity {
 
     private int quantity;
 
-    public CartItemEntity() {
+    protected CartItemEntity() {
     }
 
     public CartItemEntity(final Long id, final UserEntity user, final ProductEntity product,
