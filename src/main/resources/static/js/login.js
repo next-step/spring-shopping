@@ -22,7 +22,7 @@ form.addEventListener('submit', (event) => {
         return response.json();
     }).then((data) => {
         const {accessToken} = data;
-        localStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('accessToken', accessToken);
         window.location.href = '/';
     }).catch((error) => {
         alert(error);
