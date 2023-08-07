@@ -21,7 +21,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -52,5 +52,9 @@ public class Order {
 
     public Price getTotalPrice() {
         return totalPrice;
+    }
+
+    public boolean isDifferentUser(User user) {
+        return !this.user.equals(user);
     }
 }

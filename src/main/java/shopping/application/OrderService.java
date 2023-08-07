@@ -10,7 +10,10 @@ import shopping.domain.Email;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
 import shopping.domain.User;
+import shopping.dto.response.OrderResponse;
+import shopping.exception.OrderNotFoundException;
 import shopping.exception.UserNotFoundException;
+import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
@@ -48,5 +51,20 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
         cartItemRepository.deleteAll(cartItems);
         return order.getId();
+    }
+
+    public OrderResponse findOrder(String email, Long orderId) {
+        // TODO: refactor
+        User user = userRepository.findByEmail(new Email(email))
+                .orElseThrow(() -> new UserNotFoundException(email));
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId.toString()));
+        if (order.isDifferentUser(user)) {
+            throw new UserNotMatchException();
+        }
+
+        List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
+
+        return OrderResponse.of(order, orderItems);
     }
 }
