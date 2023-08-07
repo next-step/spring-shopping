@@ -5,7 +5,7 @@ public class ErrorResponse {
     private ErrorCode errorCode;
     private String message;
 
-    protected ErrorResponse() {
+    private ErrorResponse() {
     }
 
     private ErrorResponse(final ErrorCode errorCode) {

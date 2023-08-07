@@ -15,7 +15,7 @@ public class ProductEntity {
     private String imageFileName;
     private int price;
 
-    public ProductEntity() {
+    protected ProductEntity() {
     }
 
     public ProductEntity(final Long id, final String name, final String imageFileName,

@@ -16,7 +16,7 @@ public class UserEntity {
     private String email;
     private String password;
 
-    public UserEntity() {
+    protected UserEntity() {
     }
 
     public UserEntity(final Long id, final String email, final String password) {
