@@ -27,7 +27,7 @@ public class UserService {
         UserEntity userEntity = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new ShoppingException(ErrorCode.INVALID_EMAIL));
         User user = User.from(userEntity);
-        user.validatePassword(loginRequest);
+        user.matchPassword(loginRequest.getPassword());
 
         final String accessToken = jwtProvider.generateToken(String.valueOf(userEntity.getId()));
         return LoginResponse.from(accessToken);
