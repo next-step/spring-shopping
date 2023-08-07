@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.ProductCartItemDto;
 import shopping.common.vo.Image;
-import shopping.common.vo.ImageStoreType;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.product.domain.Product;
@@ -31,7 +30,7 @@ class CartItemRepositoryTest {
     void findAllDtoByMemberIdTest() {
         // given
         Member newMember = new Member("email", "zz");
-        Product newProduct = new Product("치킨", new Image(ImageStoreType.NONE, "url"), "10000");
+        Product newProduct = new Product("치킨", new Image("url"), "10000");
 
         memberRepository.save(newMember);
         productRepository.save(newProduct);

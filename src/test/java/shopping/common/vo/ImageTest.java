@@ -14,11 +14,11 @@ class ImageTest {
 
         String url = image.getImagePath();
 
-        Assertions.assertThat(url).isEqualTo("http://localhost:8080/image/name");
+        Assertions.assertThat(url).isEqualTo("name");
     }
 
     private static Image createLocalImage() {
-        return new Image(ImageStoreType.LOCAL_STATIC, "name");
+        return new Image("name");
     }
 
 }

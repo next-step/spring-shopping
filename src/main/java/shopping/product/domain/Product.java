@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import org.springframework.http.HttpStatus;
 import shopping.common.vo.Image;
-import shopping.common.vo.ImageStoreType;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Money;
 
@@ -48,7 +47,7 @@ public class Product {
     }
 
     public Product(String name, String imageUrl, String price) {
-        this(name, new Image(ImageStoreType.NONE, imageUrl), new Money(price));
+        this(name, new Image(imageUrl), new Money(price));
     }
 
     public Long getId() {
@@ -70,6 +69,6 @@ public class Product {
     public void update(String name, String price, String imageUrl) {
         this.name = name;
         this.price = new Money(price);
-        this.image = new Image(ImageStoreType.NONE, imageUrl);
+        this.image = new Image(imageUrl);
     }
 }
