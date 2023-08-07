@@ -1,6 +1,5 @@
 package shopping.domain.cart;
 
-import shopping.exception.NoOrderItemException;
 import shopping.exception.NotSameOrderException;
 
 import java.util.List;
@@ -16,14 +15,7 @@ public class OrderItems {
     }
 
     public static OrderItems of(List<OrderItem> orderItems) {
-        validateNotEmpty(orderItems);
         return new OrderItems(reduceOrderId(orderItems), orderItems);
-    }
-
-    private static void validateNotEmpty(List<OrderItem> orderItems) {
-        if (orderItems.isEmpty()) {
-            throw new NoOrderItemException();
-        }
     }
 
     private static Long reduceOrderId(List<OrderItem> orderItems) {

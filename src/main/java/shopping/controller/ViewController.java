@@ -3,6 +3,7 @@ package shopping.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import shopping.application.ProductService;
 import shopping.dto.response.ProductResponse;
 
@@ -32,5 +33,11 @@ public class ViewController {
     @GetMapping("/cart")
     public String getCartPage() {
         return "cart";
+    }
+
+    @GetMapping("/order/{id}/detail")
+    public String orderDetailPage(Model model, @PathVariable Long id) {
+        model.addAttribute("orderId", id);
+        return "order-detail";
     }
 }

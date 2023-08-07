@@ -30,6 +30,7 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
+    @Transactional
     public OrderResponse createOrder(Long userId) {
         List<CartItem> cartItems = cartItemRepository.findAllByUserId(userId);
         validateCartItemExists(cartItems);
@@ -46,5 +47,9 @@ public class OrderService {
         if (cartItems.isEmpty()) {
             throw new NoCartItemForOrderException();
         }
+    }
+
+    public OrderResponse findOrderById(Long orderId) {
+        return OrderResponse.of(OrderItems.of(orderItemRepository.findAllByOrderId(orderId)));
     }
 }

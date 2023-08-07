@@ -1,6 +1,8 @@
 package shopping.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.OrderService;
@@ -22,5 +24,11 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrder(@UserIdPrincipal Long userId) {
         OrderResponse orderResponse = orderService.createOrder(userId);
         return ResponseEntity.created(URI.create("/order/" + orderResponse.getId())).body(orderResponse);
+    }
+
+    @GetMapping("/order/{id}")
+    public ResponseEntity<OrderResponse> getOrderDetail(@PathVariable Long id) {
+        OrderResponse orderResponse = orderService.findOrderById(id);
+        return ResponseEntity.ok().body(orderResponse);
     }
 }

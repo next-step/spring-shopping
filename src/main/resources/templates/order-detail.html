@@ -49,10 +49,9 @@
       return;
     }
 
-    const orderId = /*[[${orderId}]]*/ '';
+    const orderId = [[${orderId}]];
 
-    // TODO: [4단계] 주문 상세 조회 스펙에 맞게 변경
-    fetch('', {
+    fetch('/order/'+orderId, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${credentials}`,
@@ -62,23 +61,25 @@
       return response.json();
     }).then((data) => {
       let element = '<hr class="divide-line-gray mt-10" />';
+      let totalSum = 0;
       data.items.forEach(orderItem => {
         element += `
                     <div class="cart-container">
                       <div class="flex gap-15 mt-10">
-                        <img class="w-144 h-144" /> <!-- 아이템 이미지 -->
+                        <img class="w-144 h-144" src="${orderItem.imageUrl}"/> <!-- 아이템 이미지 -->
                         <div class="flex-col gap-15">
-                          <span class="cart-name"></span> <!-- 아이템 이름 -->
-                          <span class="cart-info">원 / 수량: 개</span> <!-- 아이템 가격 및 수량 -->
+                          <span class="cart-name">${orderItem.name}</span> <!-- 아이템 이름 -->
+                          <span class="cart-info">${orderItem.price}원 / 수량: ${orderItem.quantity}개</span> <!-- 아이템 가격 및 수량 -->
                         </div>
                       </div>
                     </div>
                     <hr class="divide-line-thin mt-10"/>
                     `;
+        totalSum += orderItem.price * orderItem.quantity;
       });
 
       document.querySelector('.order-item-list').innerHTML = element;
-      document.querySelector('.order-right-section .order-total-price').innerText = ` 원`; <!-- 아이템 가격 및 수량 -->
+      document.querySelector('.order-right-section .order-total-price').innerText = `${totalSum}원`; <!-- 아이템 가격 및 수량 -->
     }).catch((error) => {
       console.error(error);
     });

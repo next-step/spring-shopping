@@ -21,7 +21,7 @@
     ```
   - [ ] 특정 주문의 상세 정보를 확인
     ```
-    GET /order/{:id} HTTP/1.1
+    GET /order/{id} HTTP/1.1
     content-type: application/json
     host: localhost:8080
     ```
