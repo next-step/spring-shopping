@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 
 public class CommonRestAssuredUtils {
 
-    public static final String DEFAULT_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkxMDUxMTUyLCJleHAiOjkxNjkxMDUxMTUyfQ.AEu-Z9ndgW24b5M45dj6uSY3ZgY1JpSmB3S05wJZhwo";
+    public static final String LONG_EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkxMDUxMTUyLCJleHAiOjkxNjkxMDUxMTUyfQ.AEu-Z9ndgW24b5M45dj6uSY3ZgY1JpSmB3S05wJZhwo";
 
     public static ExtractableResponse<Response> get(String url) {
         return RestAssured.given().log().all()

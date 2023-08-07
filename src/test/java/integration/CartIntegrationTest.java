@@ -1,6 +1,6 @@
 package integration;
 
-import static integration.helper.CommonRestAssuredUtils.DEFAULT_TOKEN;
+import static integration.helper.CommonRestAssuredUtils.LONG_EXPIRED_TOKEN;
 import static integration.helper.CommonRestAssuredUtils.delete;
 import static integration.helper.CommonRestAssuredUtils.get;
 import static integration.helper.CommonRestAssuredUtils.patch;
@@ -31,7 +31,7 @@ class CartIntegrationTest extends IntegrationTest {
 
         //when
         ExtractableResponse<Response> response = post("/cart", new CartItemCreationRequest(1L),
-            DEFAULT_TOKEN);
+            LONG_EXPIRED_TOKEN);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
@@ -45,12 +45,12 @@ class CartIntegrationTest extends IntegrationTest {
         ProductHelper.createProduct(new ProductCreationRequest("치킨", "100000", "imageUrl1"));
         ProductHelper.createProduct(new ProductCreationRequest("햄버거", "1000", "imageUrl2"));
 
-        post("/cart", new CartItemCreationRequest(1L), DEFAULT_TOKEN);
-        post("/cart", new CartItemCreationRequest(2L), DEFAULT_TOKEN);
-        post("/cart", new CartItemCreationRequest(3L), DEFAULT_TOKEN);
+        post("/cart", new CartItemCreationRequest(1L), LONG_EXPIRED_TOKEN);
+        post("/cart", new CartItemCreationRequest(2L), LONG_EXPIRED_TOKEN);
+        post("/cart", new CartItemCreationRequest(3L), LONG_EXPIRED_TOKEN);
 
         //when
-        ExtractableResponse<Response> response = get("/cart", DEFAULT_TOKEN);
+        ExtractableResponse<Response> response = get("/cart", LONG_EXPIRED_TOKEN);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         AllCartItemsResponse allCartItem = response.body().as(AllCartItemsResponse.class);
@@ -70,13 +70,13 @@ class CartIntegrationTest extends IntegrationTest {
     @DisplayName("상품 개수를 수정한다.")
     void updateQuantity() {
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));
-        post("/cart", new CartItemCreationRequest(1L), DEFAULT_TOKEN);
+        post("/cart", new CartItemCreationRequest(1L), LONG_EXPIRED_TOKEN);
 
         ExtractableResponse<Response> response = patch("/cart/{cartItemId}/quantity", 1L,
-            new CartItemQuantityUpdateRequest(2), DEFAULT_TOKEN);
+            new CartItemQuantityUpdateRequest(2), LONG_EXPIRED_TOKEN);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        CartItemResponse targetItem = get("/cart", DEFAULT_TOKEN).body()
+        CartItemResponse targetItem = get("/cart", LONG_EXPIRED_TOKEN).body()
             .as(AllCartItemsResponse.class).getCartItemResponses()
             .get(0);
         assertThat(targetItem).extracting("quantity").isEqualTo(2);
@@ -86,12 +86,13 @@ class CartIntegrationTest extends IntegrationTest {
     @DisplayName("장바구니 물품을 삭제한다.")
     void deleteCartItem() {
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));
-        post("/cart", new CartItemCreationRequest(1L), DEFAULT_TOKEN);
+        post("/cart", new CartItemCreationRequest(1L), LONG_EXPIRED_TOKEN);
 
-        ExtractableResponse<Response> response = delete("/cart/{cartItemId}", 1L, DEFAULT_TOKEN);
+        ExtractableResponse<Response> response = delete("/cart/{cartItemId}", 1L,
+            LONG_EXPIRED_TOKEN);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        List<CartItemResponse> cartItemResponses = get("/cart", DEFAULT_TOKEN).body()
+        List<CartItemResponse> cartItemResponses = get("/cart", LONG_EXPIRED_TOKEN).body()
             .as(AllCartItemsResponse.class).getCartItemResponses();
         assertThat(cartItemResponses).isEmpty();
     }

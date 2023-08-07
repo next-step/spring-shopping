@@ -14,7 +14,7 @@ public class ProductHelper {
         ExtractableResponse<Response> response = CommonRestAssuredUtils.post(
             "/products",
             productCreationRequest,
-            CommonRestAssuredUtils.DEFAULT_TOKEN
+            CommonRestAssuredUtils.LONG_EXPIRED_TOKEN
         );
         return response;
     }
