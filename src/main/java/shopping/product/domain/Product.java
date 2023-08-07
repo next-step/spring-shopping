@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import org.springframework.http.HttpStatus;
 import shopping.common.vo.Image;
 import shopping.exception.WooWaException;
-import shopping.product.domain.vo.Money;
+import shopping.common.vo.Money;
 
 @Entity
 public class Product {

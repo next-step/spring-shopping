@@ -12,7 +12,7 @@ import shopping.common.vo.Image;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.vo.Money;
 import shopping.product.repository.ProductRepository;
 
 @DataJpaTest

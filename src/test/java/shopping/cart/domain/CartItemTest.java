@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.exception.WooWaException;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.vo.Money;
 
 @DisplayName("CartItem 단위 테스트")
 class CartItemTest {

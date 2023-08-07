@@ -1,9 +1,8 @@
-package shopping.product.domain;
+package shopping.common.vo;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.product.domain.vo.Money;
 
 @DisplayName("Money 단위 테스트")
 class MoneyTest {

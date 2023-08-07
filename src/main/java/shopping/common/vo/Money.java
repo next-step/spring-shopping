@@ -1,12 +1,14 @@
-package shopping.product.domain.vo;
+package shopping.common.vo;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Money {
 
+    @Column
     private BigDecimal amount;
 
     protected Money() {
