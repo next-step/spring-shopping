@@ -5,11 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.CartCreateRequest;
-import shopping.dto.CartResponse;
-import shopping.dto.ErrorResponse;
-import shopping.dto.LoginResponse;
-import shopping.dto.QuantityUpdateRequest;
+import shopping.dto.*;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
@@ -105,7 +101,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("productId는 필수 항목입니다.");
+        assertThat(response.getMessage()).isEqualTo("productId는 필수 항목입니다");
     }
 
     @Test
@@ -129,7 +125,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다.");
+        assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다");
     }
 
     @Test
@@ -153,7 +149,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다.");
+        assertThat(response.getMessage()).isEqualTo("productId는 양의 정수입니다");
     }
 
     @Test
@@ -227,7 +223,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("유효하지 않은 cart item 입니다 : 2");
+        assertThat(response.getMessage()).isEqualTo("사용자가 장바구니에 담지 않은 상품입니다");
     }
 
     @Test
@@ -252,7 +248,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 : 2");
+        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 - 요청 장바구니 id: 2");
     }
 
     @Test
@@ -277,7 +273,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("수량은 0보다 작거나 같을 수 없습니다.");
+        assertThat(response.getMessage()).isEqualTo("수량은 0보다 작거나 같을 수 없습니다");
     }
 
     @Test
@@ -302,7 +298,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("수량은 0보다 작거나 같을 수 없습니다.");
+        assertThat(response.getMessage()).isEqualTo("수량은 0보다 작거나 같을 수 없습니다");
     }
 
     @Test
@@ -340,7 +336,7 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 : 2");
+        assertThat(response.getMessage()).isEqualTo("존재하지 않는 장바구니 상품 id입니다 - 요청 장바구니 id: 2");
     }
 
     @Test
@@ -368,6 +364,6 @@ public class CartIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("유효하지 않은 cart item 입니다 : 2");
+        assertThat(response.getMessage()).isEqualTo("사용자가 장바구니에 담지 않은 상품입니다");
     }
 }

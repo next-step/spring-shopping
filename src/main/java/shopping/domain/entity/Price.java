@@ -1,7 +1,6 @@
 package shopping.domain.entity;
 
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.PriceInvalidException;
 
 import javax.persistence.Embeddable;
 
@@ -22,7 +21,7 @@ public class Price {
 
     private void validateIsPositive(final int value) {
         if (value <= 0) {
-            throw new ShoppingException(ErrorType.PRICE_INVALID);
+            throw new PriceInvalidException();
         }
     }
 

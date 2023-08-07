@@ -5,8 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.entity.User;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.BadLoginRequestException;
 import shopping.infrastructure.TokenProvider;
 import shopping.repository.UserRepository;
 
@@ -26,7 +25,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public LoginResponse login(final LoginRequest request) {
         final User user = userRepository.findByEmailAndPassword(request.getEmail(), request.getPassword())
-                .orElseThrow(() -> new ShoppingException(ErrorType.WRONG_LOGIN_REQUEST));
+                .orElseThrow(BadLoginRequestException::new);
 
         return new LoginResponse(tokenProvider.create(user.getId().toString()));
     }

@@ -1,8 +1,7 @@
 package shopping.domain.entity;
 
 
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.QuantityInvalidException;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;
@@ -25,7 +24,7 @@ public class Quantity {
 
     private void validatePositive(final int quantity) {
         if (quantity <= 0) {
-            throw new ShoppingException(ErrorType.QUANTITY_INVALID);
+            throw new QuantityInvalidException();
         }
     }
 

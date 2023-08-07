@@ -1,8 +1,8 @@
 package shopping.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.ProductIdInvalidException;
+import shopping.exception.ProductIdNotFoundException;
 
 public class CartCreateRequest {
     private Long productId;
@@ -20,13 +20,13 @@ public class CartCreateRequest {
 
     private void validatePositive(final Long productId) {
         if (productId <= 0) {
-            throw new ShoppingException(ErrorType.PRODUCT_INVALID);
+            throw new ProductIdInvalidException();
         }
     }
 
     private void validateNotNull(final Long productId) {
         if (productId == null) {
-            throw new ShoppingException(ErrorType.PRODUCT_NULL);
+            throw new ProductIdNotFoundException();
         }
     }
 

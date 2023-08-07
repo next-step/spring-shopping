@@ -1,7 +1,7 @@
 package shopping.domain;
 
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.EmailFormInvalidException;
+import shopping.exception.EmailLengthInvalidException;
 
 public class Email {
 
@@ -23,13 +23,13 @@ public class Email {
 
     private void validateLength(final String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new ShoppingException(ErrorType.EMAIL_TOO_LONG);
+            throw new EmailLengthInvalidException();
         }
     }
 
     private void validateForm(final String value) {
         if (!value.matches(FORM_PATTERN)) {
-            throw new ShoppingException(ErrorType.EMAIL_INVALID_FORM);
+            throw new EmailFormInvalidException();
         }
     }
 

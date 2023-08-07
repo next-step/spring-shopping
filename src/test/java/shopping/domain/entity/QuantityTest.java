@@ -48,7 +48,7 @@ class QuantityTest {
     void valueZero() {
         assertThatCode(() -> new Quantity(0))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("수량은 0보다 작거나 같을 수 없습니다.");
+                .hasMessage("수량은 0보다 작거나 같을 수 없습니다");
     }
 
     @Test
@@ -56,6 +56,6 @@ class QuantityTest {
     void valueNegative() {
         assertThatCode(() -> new Quantity(-1))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("수량은 0보다 작거나 같을 수 없습니다.");
+                .hasMessage("수량은 0보다 작거나 같을 수 없습니다");
     }
 }

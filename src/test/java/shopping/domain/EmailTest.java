@@ -24,7 +24,7 @@ class EmailTest {
         // when, then
         assertThatCode(() -> new Email("a".repeat(43) + "@abc.com"))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("이메일 길이는 50자를 넘을 수 없습니다.");
+                .hasMessage("이메일 길이는 50자를 넘을 수 없습니다");
     }
 
     @Test
@@ -41,6 +41,6 @@ class EmailTest {
         // when, then
         assertThatCode(() -> new Email(email))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("이메일 형식이 올바르지 않습니다.");
+                .hasMessage("이메일 형식이 올바르지 않습니다");
     }
 }

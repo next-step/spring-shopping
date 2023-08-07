@@ -22,6 +22,6 @@ class ImageTest {
         // when, then
         assertThatCode(() -> new Image("a".repeat(256)))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("이미지 주소는 255자를 넘을 수 없습니다.");
+                .hasMessage("이미지 주소는 255자를 넘을 수 없습니다");
     }
 }

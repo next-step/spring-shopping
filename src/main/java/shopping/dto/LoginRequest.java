@@ -3,8 +3,8 @@ package shopping.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.domain.Email;
 import shopping.domain.Password;
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.EmailNotFoundException;
+import shopping.exception.PasswordNotFoundException;
 import shopping.infrastructure.SHA256PasswordEncoder;
 
 public class LoginRequest {
@@ -26,13 +26,13 @@ public class LoginRequest {
 
     private void validatePasswordNotNull(final String password) {
         if (password == null) {
-            throw new ShoppingException(ErrorType.PASSWORD_NULL);
+            throw new PasswordNotFoundException();
         }
     }
 
     private void validateEmailNotNull(final String email) {
         if (email == null) {
-            throw new ShoppingException(ErrorType.EMAIL_NULL);
+            throw new EmailNotFoundException();
         }
     }
 

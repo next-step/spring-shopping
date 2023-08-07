@@ -1,7 +1,6 @@
 package shopping.domain.entity;
 
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.NameLengthInvalidException;
 
 import javax.persistence.Embeddable;
 
@@ -24,7 +23,7 @@ public class Name {
 
     private void validateLength(final String value) {
         if (value.length() > MAX_LENGTH) {
-            throw new ShoppingException(ErrorType.NAME_TOO_LONG);
+            throw new NameLengthInvalidException();
         }
     }
 

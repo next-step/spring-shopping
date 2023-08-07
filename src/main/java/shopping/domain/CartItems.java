@@ -1,8 +1,7 @@
 package shopping.domain;
 
 import shopping.domain.entity.CartItem;
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.UserNotHasCartItemException;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +27,7 @@ public class CartItems {
 
     public void validateContains(final CartItem item) {
         if (!items.contains(item)) {
-            throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
+            throw new UserNotHasCartItemException();
         }
     }
 

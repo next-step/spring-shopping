@@ -22,6 +22,6 @@ class NameTest {
         // when, then
         assertThatCode(() -> new Name("a".repeat(21)))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("이름은 20자를 넘을 수 없습니다.");
+                .hasMessage("이름은 20자를 넘을 수 없습니다");
     }
 }

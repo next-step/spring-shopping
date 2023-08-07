@@ -12,7 +12,7 @@ class CartCreateRequestTest {
     void productIdIsNull() {
         assertThatCode(() -> new CartCreateRequest(null))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("productId는 필수 항목입니다.");
+                .hasMessage("productId는 필수 항목입니다");
     }
 
     @Test
@@ -20,7 +20,7 @@ class CartCreateRequestTest {
     void productIdIsZero() {
         assertThatCode(() -> new CartCreateRequest(0L))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("productId는 양의 정수입니다.");
+                .hasMessage("productId는 양의 정수입니다");
     }
 
     @Test
@@ -28,6 +28,6 @@ class CartCreateRequestTest {
     void productIdIsNegative() {
         assertThatCode(() -> new CartCreateRequest(-1L))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("productId는 양의 정수입니다.");
+                .hasMessage("productId는 양의 정수입니다");
     }
 }

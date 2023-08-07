@@ -55,7 +55,7 @@ public class AuthIntegrationTest {
                 .as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
+        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다");
     }
 
     @Test
@@ -66,7 +66,7 @@ public class AuthIntegrationTest {
                 .as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다.");
+        assertThat(response.getMessage()).isEqualTo("잘못된 로그인 요청입니다");
     }
 
     @Test
@@ -89,7 +89,7 @@ public class AuthIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("email은 필수 항목입니다.");
+        assertThat(response.getMessage()).isEqualTo("email은 필수 항목입니다");
     }
 
     @Test
@@ -112,7 +112,7 @@ public class AuthIntegrationTest {
                 .extract().as(ErrorResponse.class);
 
         // then
-        assertThat(response.getMessage()).isEqualTo("password는 필수 항목입니다.");
+        assertThat(response.getMessage()).isEqualTo("password는 필수 항목입니다");
     }
 
     @Test
@@ -126,7 +126,7 @@ public class AuthIntegrationTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
 
-        assertThat(response.getMessage()).isEqualTo("토큰 정보가 없습니다.");
+        assertThat(response.getMessage()).isEqualTo("토큰 정보가 없습니다");
     }
 
     @Test
@@ -141,7 +141,7 @@ public class AuthIntegrationTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
 
-        assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다.");
+        assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다");
     }
 
     @Test
@@ -156,6 +156,6 @@ public class AuthIntegrationTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
 
-        assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다.");
+        assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다");
     }
 }

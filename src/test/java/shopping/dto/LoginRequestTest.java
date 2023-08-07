@@ -13,7 +13,7 @@ class LoginRequestTest {
     void loginWithNullEmail() {
         assertThatCode(() -> new LoginRequest(null, "abc"))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("email은 필수 항목입니다.");
+                .hasMessage("email은 필수 항목입니다");
     }
 
     @Test
@@ -21,6 +21,6 @@ class LoginRequestTest {
     void loginWithNullPassword() {
         assertThatCode(() -> new LoginRequest("asf", null))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("password는 필수 항목입니다.");
+                .hasMessage("password는 필수 항목입니다");
     }
 }

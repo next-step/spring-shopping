@@ -2,7 +2,6 @@ package shopping.infrastructure;
 
 import org.springframework.stereotype.Component;
 import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +19,7 @@ public class SHA256PasswordEncoder implements PasswordEncoder {
 
             return bytesToHex(messageDigest.digest());
         } catch (final NoSuchAlgorithmException exception) {
-            throw new ShoppingException(ErrorType.DECODING_FAIL, exception);
+            throw new IllegalStateException(ErrorType.DECODING_FAIL.getMessage());
         }
     }
 

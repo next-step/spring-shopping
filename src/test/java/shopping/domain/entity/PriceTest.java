@@ -14,6 +14,6 @@ class PriceTest {
         // when, then
         assertThatCode(() -> new Price(-1))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("가격은 음수일 수 없습니다.");
+                .hasMessage("가격은 음수일 수 없습니다");
     }
 }

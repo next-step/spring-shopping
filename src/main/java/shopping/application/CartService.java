@@ -10,8 +10,9 @@ import shopping.domain.entity.User;
 import shopping.dto.CartCreateRequest;
 import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.CartItemNotFoundException;
+import shopping.exception.ProductNotFoundException;
+import shopping.exception.UserNotFoundException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -81,16 +82,16 @@ public class CartService {
 
     private CartItem findCartItemById(final Long id) {
         return cartItemRepository.findById(id)
-                .orElseThrow(() -> new ShoppingException(ErrorType.CART_ITEM_NO_EXIST, id));
+                .orElseThrow(() -> new CartItemNotFoundException(id));
     }
 
     private User findUserById(final Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ShoppingException(ErrorType.USER_NO_EXIST, id));
+                .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     private Product findProductById(final Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ShoppingException(ErrorType.PRODUCT_NO_EXIST, id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 }

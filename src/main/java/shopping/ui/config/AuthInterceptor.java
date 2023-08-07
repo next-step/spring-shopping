@@ -2,8 +2,8 @@ package shopping.ui.config;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import shopping.exception.ErrorType;
-import shopping.exception.ShoppingException;
+import shopping.exception.TokenInvalidException;
+import shopping.exception.TokenNotFoundException;
 import shopping.infrastructure.TokenProvider;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,20 +44,20 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private void validateExtractedToken(final String token) {
         if (!tokenProvider.validateToken(token)) {
-            throw new ShoppingException(ErrorType.TOKEN_INVALID);
+            throw new TokenInvalidException();
         }
     }
 
     private void validateNotNull(final String accessToken) {
         if (accessToken == null) {
-            throw new ShoppingException(ErrorType.NO_TOKEN);
+            throw new TokenNotFoundException();
         }
     }
 
     private void validateTokenType(final String accessToken) {
         final String tokenType = accessToken.split(TOKEN_DELIMITER)[0];
         if (!tokenType.equals(TOKEN_TYPE)) {
-            throw new ShoppingException(ErrorType.TOKEN_INVALID);
+            throw new TokenInvalidException();
         }
     }
 }
