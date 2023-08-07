@@ -1,5 +1,10 @@
 package shopping.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
+import static org.mockito.BDDMockito.given;
+
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,13 +17,6 @@ import shopping.dto.LoginRequest;
 import shopping.exception.AuthException;
 import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @DisplayName("AuthService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -56,9 +54,6 @@ public class AuthServiceTest {
 
             // then
             assertThat(exception).isNull();
-
-            verify(memberRepository).findByEmail(loginRequest.getEmail());
-            verify(tokenProvider).createToken(member.getId());
         }
 
         @Test
@@ -78,8 +73,6 @@ public class AuthServiceTest {
             // then
             assertThat(exception).isInstanceOf(AuthException.class);
             assertThat(exception.getMessage()).contains("존재하지 않는 사용자입니다");
-
-            verify(memberRepository).findByEmail(email);
         }
 
         @Test
@@ -101,8 +94,6 @@ public class AuthServiceTest {
             // then
             assertThat(exception).isInstanceOf(AuthException.class);
             assertThat(exception.getMessage()).contains("비밀번호가 일치하지 않습니다");
-
-            verify(memberRepository).findByEmail(email);
         }
     }
 

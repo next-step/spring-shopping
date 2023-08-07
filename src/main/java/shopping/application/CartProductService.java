@@ -45,11 +45,11 @@ public class CartProductService {
                         MessageFormat.format("회원Id에 해당하는 회원이 존재하지 않습니다 id : {0}", memberId)
                 ));
 
-        CartProduct cart = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
+        CartProduct cartProduct = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
                 .map(CartProduct::increaseQuantity)
                 .orElseGet(() -> new CartProduct(member, product, DEFAULT_PRODUCT_QUANTITY));
 
-        cartProductRepository.save(cart);
+        cartProductRepository.save(cartProduct);
     }
 
     public List<CartProductResponse> findCartProducts(Long memberId) {

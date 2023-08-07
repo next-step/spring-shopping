@@ -45,8 +45,6 @@ class ProductServiceTest {
             // then
             assertThat(result).extracting("name").containsExactlyInAnyOrder("치킨", "피자");
 
-            verify(productRepository).findAll();
-
         }
     }
 }

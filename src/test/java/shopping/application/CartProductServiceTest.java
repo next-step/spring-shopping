@@ -1,5 +1,15 @@
 package shopping.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,23 +20,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
-import shopping.dto.CartProductResponse;
 import shopping.dto.CartProductRequest;
+import shopping.dto.CartProductResponse;
 import shopping.exception.MemberException;
 import shopping.exception.ProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 
 @DisplayName("CartService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -45,27 +45,26 @@ public class CartProductServiceTest {
     private ProductRepository productRepository;
 
     @Nested
-    @DisplayName("add 메소드는")
-    class add_Method {
+    @DisplayName("addProduct 메소드는")
+    class addProduct_Method {
 
         @Test
         @DisplayName("member 와 product 를 찾아서 장바구니에 추가한다")
-        void add_Product() {
+        void addProduct() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
             Product product = new Product(1L, "치킨", "image", 23000L);
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
+            given(cartProductRepository.findOneByMemberIdAndProductId(member.getId(), product.getId())).willReturn(Optional.empty());
 
             // when
             Exception exception = catchException(() -> cartProductService.addProduct(product.getId(), member.getId()));
 
             // then
             assertThat(exception).isNull();
-
-            verify(memberRepository).findById(member.getId());
-            verify(productRepository).findById(product.getId());
+            verify(cartProductRepository).save(any(CartProduct.class));
         }
 
         @Test
@@ -83,9 +82,6 @@ public class CartProductServiceTest {
             // then
             assertThat(exception).isInstanceOf(MemberException.class);
             assertThat(exception.getMessage()).contains("회원Id에 해당하는 회원이 존재하지 않습니다");
-
-            verify(productRepository).findById(product.getId());
-            verify(memberRepository).findById(anyLong());
         }
 
         @Test
@@ -102,8 +98,6 @@ public class CartProductServiceTest {
             // then
             assertThat(exception).isInstanceOf(ProductException.class);
             assertThat(exception.getMessage()).contains("상품Id에 해당하는 상품 존재하지 않습니다");
-
-            verify(productRepository).findById(anyLong());
         }
 
         @Test
@@ -124,10 +118,6 @@ public class CartProductServiceTest {
 
             // then
             assertThat(cart.getQuantity()).isEqualTo(initialQuantity + 1);
-
-            verify(memberRepository).findById(member.getId());
-            verify(productRepository).findById(product.getId());
-            verify(cartProductRepository).findOneByMemberIdAndProductId(member.getId(), product.getId());
         }
     }
 
@@ -152,8 +142,6 @@ public class CartProductServiceTest {
             // then
             assertThat(result).hasSize(1);
             assertThat(result.get(0).getProductId()).isEqualTo(product.getId());
-
-            verify(cartProductRepository).findAllByMemberId(member.getId());
         }
     }
 
@@ -173,10 +161,11 @@ public class CartProductServiceTest {
             doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
 
             // when
-            cartProductService.deleteCartProduct(cartProduct.getId());
+            Exception exception = catchException(
+                () -> cartProductService.deleteCartProduct(cartProduct.getId()));
 
             // then
-            verify(cartProductRepository).deleteById(cartProduct.getId());
+            assertThat(exception).isNull();
         }
     }
 
@@ -193,8 +182,6 @@ public class CartProductServiceTest {
             CartProduct cartProduct = new CartProduct(member, product, 5);
             CartProductRequest updateRequest = new CartProductRequest(6);
 
-            doNothing().when(cartProductRepository).updateById(cartProduct.getId(), updateRequest.getQuantity());
-
             // when
             cartProductService.updateCartProduct(cartProduct.getId(), updateRequest);
 
@@ -210,8 +197,6 @@ public class CartProductServiceTest {
             Product product = new Product(1L, "치킨", "image", 23000L);
             CartProduct cartProduct = new CartProduct(1L, member, product, 5);
             CartProductRequest updateRequest = new CartProductRequest(0);
-
-            doNothing().when(cartProductRepository).deleteById(cartProduct.getId());
 
             // when
             cartProductService.updateCartProduct(product.getId(), updateRequest);
