@@ -50,7 +50,7 @@ public final class CartItem {
         return (quantity < ITEM_MIN_QUANTITY || ITEM_MAX_QUANTITY < quantity);
     }
 
-    public void validateUser(final Long userId) {
+    public void matchUser(final Long userId) {
         if (!Objects.equals(this.userId, userId)) {
             throw new ShoppingException(ErrorCode.INVALID_CART_ITEM);
         }
