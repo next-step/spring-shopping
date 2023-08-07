@@ -2,7 +2,7 @@ package shopping.exception;
 
 import org.springframework.http.HttpStatus;
 
-public enum ErrorCode {
+public enum ShoppingErrorType {
 
     PRICE_LESS_THAN_ZERO(HttpStatus.BAD_REQUEST, "가격은 0원보다 커야합니다."),
     PRODUCT_IMAGE_INVALID(HttpStatus.BAD_REQUEST, "상품의 이미지 주소가 올바른 형식이 아닙니다."),
@@ -20,7 +20,7 @@ public enum ErrorCode {
     TOKEN_IS_EMPTY(HttpStatus.BAD_REQUEST, "토큰이 존재하지 않습니다."),
     FORBIDDEN_MODIFY_CART_ITEM(HttpStatus.FORBIDDEN, "해당 장바구니 아이템을 수정할 권한이 없습니다.");
 
-    ErrorCode(final HttpStatus httpStatus, final String message) {
+    ShoppingErrorType(final HttpStatus httpStatus, final String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }
