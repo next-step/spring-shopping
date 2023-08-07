@@ -24,7 +24,7 @@ class CartIntegrationTest extends IntegrationTest {
 
     @Test
     @DisplayName("장바구니에 상품을 추가한다.")
-    void create() {
+    void addCartItem() {
         // given
         // member -> data.sql
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));

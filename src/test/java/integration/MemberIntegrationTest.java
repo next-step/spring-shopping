@@ -27,10 +27,9 @@ class MemberIntegrationTest extends IntegrationTest {
             .isNotNull();
     }
 
-    //일치하지 않는 email로 로그인을 실패한다
     @Test
     @DisplayName("일치하지 않는 email로 로그인을 실패한다")
-    void loginFail2() {
+    void loginFail2() { // 해당 테스트는 ControllerAdvice를 통해 처리되는 예외도 테스트 한다
         // given from test_data.sql
 
         ExtractableResponse<Response> response =
