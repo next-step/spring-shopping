@@ -14,8 +14,12 @@ public class Money {
     protected Money() {
     }
 
+    public Money(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public Money(String amount) {
-        this.amount = new BigDecimal(amount);
+        this(new BigDecimal(amount));
     }
 
     public boolean isMoreThan(Money otherMoney) {
@@ -24,6 +28,14 @@ public class Money {
 
     public boolean isSmallerThan(Money otherMoney) {
         return this.amount.compareTo(otherMoney.amount) < 0;
+    }
+
+    public Money add(Money otherMoney) {
+        return new Money(this.amount.add(otherMoney.amount));
+    }
+
+    public Money multiply(int count) {
+        return new Money(this.amount.multiply(new BigDecimal(count)));
     }
 
     public BigDecimal getAmount() {
