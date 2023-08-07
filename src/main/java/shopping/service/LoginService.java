@@ -3,7 +3,6 @@ package shopping.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.auth.JwtTokenProvider;
-import shopping.domain.member.Email;
 import shopping.domain.member.Member;
 import shopping.domain.member.Password;
 import shopping.dto.request.LoginRequest;
@@ -25,7 +24,7 @@ public class LoginService {
 
     @Transactional(readOnly = true)
     public LoginResponse login(final LoginRequest loginRequest) {
-        final Member member = memberRepository.findByEmail(Email.from(loginRequest.getEmail()))
+        final Member member = memberRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_MEMBER_EMAIL));
 
         final Password requestPassword = Password.from(loginRequest.getPassword());

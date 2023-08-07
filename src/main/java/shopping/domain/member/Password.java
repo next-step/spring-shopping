@@ -1,21 +1,14 @@
 package shopping.domain.member;
 
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
-@Embeddable
 public class Password {
 
     private static final String PASSWORD_REGEX_PATTERN = "^(?=.*[a-z])(?=.*[!@#$%^&*])(?=.{7,18}$).*";
 
-    @Column(name = "password", nullable = false, length = 18)
-    private String value;
-
-    protected Password() {
-    }
+    private final String value;
 
     private Password(final String value) {
         validate(value);

@@ -2,7 +2,6 @@ package shopping.domain.member;
 
 import java.util.Objects;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,26 +17,26 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Embedded
-    private Nickname nickname;
+    @Column(name = "nickname", length = 10, nullable = false, unique = true)
+    private String nickname;
 
-    @Embedded
-    private Email email;
+    @Column(name = "email", length = 40, nullable = false, unique = true)
+    private String email;
 
-    @Embedded
-    private Password password;
+    @Column(name = "password", nullable = false, length = 18)
+    private String password;
 
     protected Member() {
     }
 
     public Member(final Nickname nickname, final Email email, final Password password) {
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
+        this.nickname = nickname.getValue();
+        this.email = email.getValue();
+        this.password = password.getValue();
     }
 
     public void matchPassword(final Password requestPassword) {
-        if (!this.password.isMatch(requestPassword)) {
+        if (!Password.from(this.password).isMatch(requestPassword)) {
             throw new ShoppingException(ErrorCode.PASSWORD_NOT_MATCH);
         }
     }
@@ -46,15 +45,15 @@ public class Member {
         return this.id;
     }
 
-    public Nickname getNickname() {
+    public String getNickname() {
         return this.nickname;
     }
 
-    public Email getEmail() {
+    public String getEmail() {
         return this.email;
     }
 
-    public Password getPassword() {
+    public String getPassword() {
         return this.password;
     }
 
