@@ -4,7 +4,7 @@ public class CartItemAddRequest {
 
     private Long productId;
 
-    public CartItemAddRequest() {
+    protected CartItemAddRequest() {
     }
 
     public CartItemAddRequest(final Long productId) {

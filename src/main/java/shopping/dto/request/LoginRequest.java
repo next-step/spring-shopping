@@ -5,7 +5,7 @@ public class LoginRequest {
     private String email;
     private String password;
 
-    public LoginRequest() {
+    protected LoginRequest() {
     }
 
     public LoginRequest(final String email, final String password) {

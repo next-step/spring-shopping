@@ -10,7 +10,7 @@ public class CartItemResponse {
     private int price;
     private int quantity;
 
-    public CartItemResponse() {
+    protected CartItemResponse() {
     }
 
     private CartItemResponse(final Long cartItemId, final String name,
