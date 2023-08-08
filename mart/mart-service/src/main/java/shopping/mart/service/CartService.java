@@ -3,11 +3,12 @@ package shopping.mart.service;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.event.CartOrderedEvent;
+import shopping.mart.app.api.cart.event.CartClearEvent;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
@@ -76,9 +77,9 @@ public class CartService implements CartUseCase {
     }
 
     @Override
-    @EventListener(CartOrderedEvent.class)
-    public void cartOrdered(CartOrderedEvent cartOrderedEvent) {
-        Cart cart = cartRepository.getById(cartOrderedEvent.getCartId());
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT, classes = CartClearEvent.class)
+    public void clearCart(CartClearEvent cartClearEvent) {
+        Cart cart = cartRepository.getById(cartClearEvent.getCartId());
 
         cart.deleteAllProducts();
 

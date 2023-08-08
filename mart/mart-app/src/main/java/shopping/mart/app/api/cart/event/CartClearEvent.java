@@ -1,9 +1,9 @@
 package shopping.mart.app.api.cart.event;
 
-public final class CartOrderedEvent {
+public final class CartClearEvent {
     private final long cartId;
 
-    public CartOrderedEvent(long cartId) {
+    public CartClearEvent(long cartId) {
         this.cartId = cartId;
     }
 

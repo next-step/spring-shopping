@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.mart.app.api.cart.event.CartOrderedEvent;
+import shopping.mart.app.api.cart.event.CartClearEvent;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("CartService 클래스 - Event")
@@ -22,20 +22,20 @@ public class CartServiceEventTest {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Nested
-    @DisplayName("cartOrdered 메소드는")
-    class cartOrdered_method {
+    @DisplayName("clearCart 메소드는")
+    class clearCart_method {
 
         @Test
         @DisplayName("CartOrderedEvent가 발행되면, 호출된다.")
         void called_when_publish_cart_ordered_event() {
             // given
-            CartOrderedEvent cartOrderedEvent = new CartOrderedEvent(1L);
+            CartClearEvent cartClearEvent = new CartClearEvent(1L);
 
             // when
-            applicationEventPublisher.publishEvent(cartOrderedEvent);
+            applicationEventPublisher.publishEvent(cartClearEvent);
 
             // then
-            Mockito.verify(cartService).cartOrdered(cartOrderedEvent);
+            Mockito.verify(cartService).clearCart(cartClearEvent);
         }
     }
 }
