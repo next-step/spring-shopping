@@ -32,8 +32,16 @@
         <hr class="divide-line-thin"/>
         <div class="order-right-section__bottom">
           <div class="flex justify-between p-20 mt-20">
-            <span class="highlight-text">총 결제금액</span>
-            <span class="highlight-text order-total-price"></span>
+            <span class="highlight-text">총 결제금액(₩)</span>
+            <span class="highlight-text order-total-price" id="price-korea"></span>
+          </div>
+          <div class="flex justify-between p-20 mt-20">
+            <span class="highlight-text">총 결제금액($)</span>
+            <span class="highlight-text order-total-price" id="price-usa"></span>
+          </div>
+          <div class="flex justify-between p-20 mt-20">
+            <span class="">환율</span>
+            <span class="order-total-price" id="price-ratio"></span>
           </div>
         </div>
       </section>
@@ -79,8 +87,12 @@
       });
 
       document.querySelector('.order-item-list').innerHTML = element;
+      document.querySelector('#price-korea').innerText = ` ${data.totalPrice}원`;
+      document.querySelector('#price-usa').innerText = `$ ${(data.totalPrice / data.ratio).toFixed(
+          2)}`;
       document.querySelector(
-          '.order-right-section .order-total-price').innerText = ` ${data.totalPrice}원`; <!-- 아이템 가격 및 수량 -->
+          '#price-ratio').innerHTML = `${(data.ratio).toFixed(2)} 원/달러
+                  <br> (${data.createdDate} 기준)`;
     }).catch((error) => {
       console.error(error);
     });
