@@ -14,12 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.auth.domain.User;
-import shopping.auth.domain.exception.DoesNotExistUserException;
-import shopping.auth.service.dto.LoginRequest;
-import shopping.auth.service.dto.TokenResponse;
+import shopping.auth.app.api.request.LoginRequest;
+import shopping.auth.app.api.response.TokenResponse;
+import shopping.auth.app.domain.User;
+import shopping.auth.app.domain.exception.DoesNotExistUserException;
+import shopping.auth.app.spi.UserRepository;
 import shopping.auth.service.infra.JwtUtils;
-import shopping.auth.service.spi.UserRepository;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("AuthService 클래스")

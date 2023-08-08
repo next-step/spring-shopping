@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.accept.UrlHelper.Cart;
 import shopping.accept.AssertHelper.Http;
-import shopping.auth.service.dto.LoginRequest;
-import shopping.auth.service.dto.TokenResponse;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartResponse;
-import shopping.mart.service.dto.CartUpdateRequest;
-import shopping.mart.service.dto.ProductResponse;
+import shopping.accept.UrlHelper.Cart;
+import shopping.auth.app.api.request.LoginRequest;
+import shopping.auth.app.api.response.TokenResponse;
+import shopping.mart.app.api.cart.request.CartAddRequest;
+import shopping.mart.app.api.cart.request.CartUpdateRequest;
+import shopping.mart.app.api.cart.response.CartResponse;
+import shopping.mart.app.api.product.response.ProductResponse;
 
 @DisplayName("Cart 인수테스트")
 class CartAcceptanceTest extends AcceptanceTest {

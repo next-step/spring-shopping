@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.auth.repository.entity.UserEntity;
-import shopping.mart.domain.Cart;
-import shopping.mart.domain.Product;
+import shopping.mart.app.domain.Cart;
+import shopping.mart.app.domain.Product;
 import shopping.mart.repository.entity.ProductEntity;
 
 @DisplayName("cartPersistService 클래스")
@@ -35,6 +35,17 @@ class CartPersistServiceTest extends JpaTest {
 
     private ProductEntity saveProduct(String name, String imageUrl, String price) {
         return productJpaRepository.save(new ProductEntity(null, name, imageUrl, price));
+    }
+
+    static final class Assertions {
+
+        static void assertCart(Cart result, Cart expected) {
+            SoftAssertions.assertSoftly(softAssertions -> {
+                assertThat(result.getCartId()).isEqualTo(expected.getCartId());
+                assertThat(result.getUserId()).isEqualTo(expected.getUserId());
+                assertThat(result.getProductCounts()).isEqualTo(expected.getProductCounts());
+            });
+        }
     }
 
     @Nested
@@ -115,17 +126,6 @@ class CartPersistServiceTest extends JpaTest {
 
             // then
             Assertions.assertCart(result, expected);
-        }
-    }
-
-    static final class Assertions {
-
-        static void assertCart(Cart result, Cart expected) {
-            SoftAssertions.assertSoftly(softAssertions -> {
-                assertThat(result.getCartId()).isEqualTo(expected.getCartId());
-                assertThat(result.getUserId()).isEqualTo(expected.getUserId());
-                assertThat(result.getProductCounts()).isEqualTo(expected.getProductCounts());
-            });
         }
     }
 

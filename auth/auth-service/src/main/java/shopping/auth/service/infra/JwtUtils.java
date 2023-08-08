@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import shopping.auth.domain.User;
+import shopping.auth.app.domain.User;
 
 @Component
 public final class JwtUtils {

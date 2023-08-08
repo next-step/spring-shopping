@@ -3,8 +3,8 @@ package shopping.mart.service.config;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import shopping.mart.domain.Product;
-import shopping.mart.service.spi.ProductRepository;
+import shopping.mart.app.domain.Product;
+import shopping.mart.app.spi.ProductRepository;
 
 @Component
 final class ProductConfigurer {

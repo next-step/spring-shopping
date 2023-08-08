@@ -2,9 +2,9 @@ package shopping.auth.repository;
 
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import shopping.auth.domain.User;
+import shopping.auth.app.domain.User;
+import shopping.auth.app.spi.UserRepository;
 import shopping.auth.repository.entity.UserEntity;
-import shopping.auth.service.spi.UserRepository;
 
 @Repository
 public class UserPersistService implements UserRepository {
@@ -15,6 +15,7 @@ public class UserPersistService implements UserRepository {
         this.userJpaRepository = userJpaRepository;
     }
 
+    @Override
     public Optional<User> findByEmail(final String email) {
         Optional<UserEntity> optionalUserEntity = userJpaRepository.findByEmail(email);
         return optionalUserEntity.map(
@@ -22,6 +23,7 @@ public class UserPersistService implements UserRepository {
                 userEntity.getPassword()));
     }
 
+    @Override
     public void saveUser(User user) {
         UserEntity userEntity = new UserEntity(user.getId(), user.getEmail(), user.getPassword());
         userJpaRepository.save(userEntity);

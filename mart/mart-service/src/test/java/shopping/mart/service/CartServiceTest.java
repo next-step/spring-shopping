@@ -14,12 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.mart.domain.Cart;
-import shopping.mart.domain.exception.DoesNotExistProductException;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartUpdateRequest;
-import shopping.mart.service.spi.CartRepository;
-import shopping.mart.service.spi.ProductRepository;
+import shopping.mart.app.api.cart.request.CartAddRequest;
+import shopping.mart.app.api.cart.request.CartUpdateRequest;
+import shopping.mart.app.domain.Cart;
+import shopping.mart.app.domain.exception.DoesNotExistProductException;
+import shopping.mart.app.spi.CartRepository;
+import shopping.mart.app.spi.ProductRepository;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("CartService 테스트")
@@ -96,7 +96,7 @@ class CartServiceTest {
 
             // when
             Exception exception = catchException(
-                () -> cartService.deleteProduct(userId, productId));
+                    () -> cartService.deleteProduct(userId, productId));
 
             // then
             assertThat(exception).isInstanceOf(DoesNotExistProductException.class);

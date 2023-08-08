@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.accept.UrlHelper.Auth;
-import shopping.auth.service.dto.LoginRequest;
+import shopping.auth.app.api.request.LoginRequest;
 
 @DisplayName("Auth 인수테스트")
 class AuthAcceptanceTest extends AcceptanceTest {

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import shopping.mart.domain.Product;
+import shopping.mart.app.domain.Product;
 
 @DisplayName("ProductPersistService 클래스")
 @ContextConfiguration(classes = {ProductPersistService.class})

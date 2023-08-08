@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import shopping.auth.domain.User;
+import shopping.auth.app.domain.User;
 
 @DisplayName("UserPersistService 클래스")
 @ContextConfiguration(classes = {UserPersistService.class})

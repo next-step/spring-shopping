@@ -13,48 +13,48 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.service.interceptor.TokenPerRequest;
 import shopping.core.util.ErrorTemplate;
-import shopping.mart.domain.exception.AlreadyExistProductException;
-import shopping.mart.domain.exception.DoesNotExistProductException;
-import shopping.mart.domain.exception.NegativeProductCountException;
-import shopping.mart.service.CartService;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartResponse;
-import shopping.mart.service.dto.CartUpdateRequest;
+import shopping.mart.app.api.cart.CartUseCase;
+import shopping.mart.app.api.cart.request.CartAddRequest;
+import shopping.mart.app.api.cart.request.CartUpdateRequest;
+import shopping.mart.app.api.cart.response.CartResponse;
+import shopping.mart.app.domain.exception.AlreadyExistProductException;
+import shopping.mart.app.domain.exception.DoesNotExistProductException;
+import shopping.mart.app.domain.exception.NegativeProductCountException;
 
 @RestController
 @RequestMapping("/carts")
 public class CartController {
 
-    private final CartService cartService;
+    private final CartUseCase cartUseCase;
     private final TokenPerRequest tokenPerRequest;
 
-    public CartController(CartService cartService, TokenPerRequest tokenPerRequest) {
-        this.cartService = cartService;
+    public CartController(CartUseCase cartUseCase, TokenPerRequest tokenPerRequest) {
+        this.cartUseCase = cartUseCase;
         this.tokenPerRequest = tokenPerRequest;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addProduct(@RequestBody CartAddRequest request) {
-        cartService.addProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
+        cartUseCase.addProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CartResponse findAllProducts() {
-        return cartService.getCart(Long.parseLong(tokenPerRequest.getDecryptedToken()));
+        return cartUseCase.getCart(Long.parseLong(tokenPerRequest.getDecryptedToken()));
     }
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     public void updateProductCount(@RequestBody CartUpdateRequest request) {
-        cartService.updateProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
+        cartUseCase.updateProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCart(@RequestParam(name = "product-id") Long productId) {
-        cartService.deleteProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), productId);
+        cartUseCase.deleteProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), productId);
     }
 
     @ExceptionHandler({AlreadyExistProductException.class,

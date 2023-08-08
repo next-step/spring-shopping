@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import shopping.auth.domain.exception.InvalidTokenException;
+import shopping.auth.app.domain.exception.InvalidTokenException;
 import shopping.core.util.ErrorTemplate;
 
 @RestControllerAdvice

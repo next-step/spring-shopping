@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import shopping.mart.domain.Product;
+import shopping.mart.app.domain.Product;
 
 @Entity
 @Table(name = "product")

@@ -5,28 +5,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.mart.domain.Cart;
-import shopping.mart.domain.Product;
-import shopping.mart.domain.exception.DoesNotExistProductException;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartResponse;
-import shopping.mart.service.dto.CartUpdateRequest;
-import shopping.mart.service.spi.CartRepository;
-import shopping.mart.service.spi.ProductRepository;
+import shopping.mart.app.api.cart.CartUseCase;
+import shopping.mart.app.api.cart.request.CartAddRequest;
+import shopping.mart.app.api.cart.request.CartUpdateRequest;
+import shopping.mart.app.api.cart.response.CartResponse;
+import shopping.mart.app.domain.Cart;
+import shopping.mart.app.domain.Product;
+import shopping.mart.app.domain.exception.DoesNotExistProductException;
+import shopping.mart.app.spi.CartRepository;
+import shopping.mart.app.spi.ProductRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class CartService {
+public class CartService implements CartUseCase {
 
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
     public CartService(final ProductRepository productRepository,
-        final CartRepository cartRepository) {
+            final CartRepository cartRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
     }
 
+    @Override
     @Transactional
     public void addProduct(final long userId, final CartAddRequest request) {
         Cart cart = getCartByUserId(userId);
@@ -37,6 +39,7 @@ public class CartService {
         cartRepository.persistCart(cart);
     }
 
+    @Override
     @Transactional
     public void updateProduct(final long userId, final CartUpdateRequest request) {
         Cart cart = getCartByUserId(userId);
@@ -47,6 +50,7 @@ public class CartService {
         cartRepository.persistCart(cart);
     }
 
+    @Override
     @Transactional
     public void deleteProduct(final long userId, final long productId) {
         Cart cart = getCartByUserId(userId);
@@ -57,13 +61,14 @@ public class CartService {
         cartRepository.persistCart(cart);
     }
 
+    @Override
     public CartResponse getCart(final long userId) {
         Cart cart = getCartByUserId(userId);
 
         List<CartResponse.ProductResponse> products = cart.getProductCounts().entrySet().stream()
-            .map(entry -> new CartResponse.ProductResponse(entry.getKey().getId(), entry.getValue(),
-                entry.getKey().getImageUrl(), entry.getKey().getName()))
-            .collect(Collectors.toList());
+                .map(entry -> new CartResponse.ProductResponse(entry.getKey().getId(), entry.getValue(),
+                        entry.getKey().getImageUrl(), entry.getKey().getName()))
+                .collect(Collectors.toList());
 
         return new CartResponse(cart.getCartId(), products);
     }
@@ -77,8 +82,8 @@ public class CartService {
 
     private Product getProductById(long productId) {
         return productRepository.findById(productId).orElseThrow(
-            () -> new DoesNotExistProductException(
-                MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId)));
+                () -> new DoesNotExistProductException(
+                        MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId)));
     }
 
 }
