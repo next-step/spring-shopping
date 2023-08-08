@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderResponse;
+import shopping.dto.response.OrderResponses;
 import shopping.service.OrderService;
 
 @RestController
@@ -20,6 +21,13 @@ public class OrderController {
         final OrderResponse orderResponse = orderService.readOrder(orderId);
 
         return ResponseEntity.ok(orderResponse);
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<OrderResponses> readOrders(@RequestAttribute final Long loginMemberId) {
+        final OrderResponses orderResponses = orderService.readOrders(loginMemberId);
+
+        return ResponseEntity.ok(orderResponses);
     }
 
     @PostMapping("/orders")

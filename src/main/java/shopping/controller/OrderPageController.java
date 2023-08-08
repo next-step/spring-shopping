@@ -13,4 +13,9 @@ public class OrderPageController {
         model.addAttribute("orderId", orderId);
         return "order-detail";
     }
+
+    @GetMapping("/order-history")
+    public String orderHistory() {
+        return "order-history";
+    }
 }

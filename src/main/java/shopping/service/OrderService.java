@@ -10,6 +10,7 @@ import shopping.domain.product.Product;
 import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
+import shopping.dto.response.OrderResponses;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
@@ -17,6 +18,7 @@ import shopping.repository.MemberRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -69,6 +71,18 @@ public class OrderService {
                 order.getOrderPrice(),
                 orderItemResponses
         );
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponses readOrders(final Long memberId) {
+        final Member member = getMemberById(memberId);
+        final List<Order> orders = orderRepository.findAllByMember(member);
+
+        List<OrderResponse> response = new ArrayList<>();
+        for (Order order : orders) {
+            response.add(readOrder(order.getId()));
+        }
+        return OrderResponses.from(response);
     }
 
     private Order getOrderById(final Long orderId) {
