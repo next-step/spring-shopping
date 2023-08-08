@@ -40,4 +40,9 @@ public class ViewController {
         model.addAttribute("orderId", id);
         return "order-detail";
     }
+
+    @GetMapping("/order-history")
+    public String orderHistoryPage() {
+        return "order-history";
+    }
 }

@@ -3,7 +3,6 @@ package shopping.integration;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +10,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.domain.cart.Price;
 import shopping.domain.cart.Product;
+import shopping.domain.user.User;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.repository.ProductRepository;
+import shopping.repository.UserRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
 
 class OrderIntegrationTest extends IntegrationTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @DisplayName("주문 요청 성공시 201 Created")
     @Test
@@ -94,6 +97,72 @@ class OrderIntegrationTest extends IntegrationTest {
                 .containsExactlyInAnyOrder("치킨", "피자", "샐러드");
     }
 
+    @DisplayName("타인의 주문 세부 내역 조회시 403 Forbidden")
+    @Test
+    void getOthersOrderDetail() {
+        // given
+        String accessToken = login();
+        String otherAccess = otherLogin();
+
+        List<Product> productList = List.of(
+                new Product("치킨", "/chicken.jpg", 10_000L),
+                new Product("피자", "/pizza.jpg", 20_000L),
+                new Product("샐러드", "/salad.jpg", 5_000L)
+        );
+        List<Product> savedProducts = productRepository.saveAll(productList);
+        savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
+        OrderResponse orderResponse = createOrdeer(accessToken);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(otherAccess)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/order/{:id}", orderResponse.getId())
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    }
+
+    @DisplayName("주문 전체 내역 조회 성공시 200 Ok")
+    @Test
+    void getOrderSuccess() {
+        // given
+        String accessToken = login();
+
+        OrderResponse orderResponse = createProductAndOrder(accessToken);
+        OrderResponse orderResponse2 = createProductAndOrder(accessToken);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/order/")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        List<OrderResponse> orderResponses = response.jsonPath().getList(".", OrderResponse.class);
+        assertThat(orderResponses).hasSize(2);
+        assertThat(orderResponses.get(0)).usingRecursiveComparison().isEqualTo(orderResponse);
+        assertThat(orderResponses.get(1)).usingRecursiveComparison().isEqualTo(orderResponse2);
+    }
+
+    private OrderResponse createProductAndOrder(String accessToken) {
+        List<Product> productList = List.of(
+                new Product("치킨", "/chicken.jpg", 10_000L),
+                new Product("피자", "/pizza.jpg", 20_000L),
+                new Product("샐러드", "/salad.jpg", 5_000L)
+        );
+        List<Product> savedProducts = productRepository.saveAll(productList);
+        savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
+        return createOrdeer(accessToken);
+    }
+
     private OrderResponse createOrdeer(String accessToken) {
         return RestAssured.given().auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -105,6 +174,21 @@ class OrderIntegrationTest extends IntegrationTest {
         return RestAssured
                 .given()
                 .body(new LoginRequest("admin@example.com", "123456789"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/login/token")
+                .then()
+                .extract().jsonPath().getString("accessToken");
+    }
+
+    private String otherLogin() {
+        String email = "other@example.com";
+        String password = "12345";
+        userRepository.save(new User(email, password));
+
+        return RestAssured
+                .given()
+                .body(new LoginRequest(email, password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/login/token")

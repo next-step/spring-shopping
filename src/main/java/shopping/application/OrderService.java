@@ -11,6 +11,7 @@ import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service
@@ -43,5 +44,12 @@ public class OrderService {
         OrderItems orderItems = OrderItems.of(orderItemRepository.findAllByOrderId(orderId));
         orderItems.validateUserOwns(userId);
         return OrderResponse.of(orderItems);
+    }
+
+    public List<OrderResponse> findAllByUserId(Long userId) {
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+        return orders.stream()
+                .map(order -> findOrderById(userId, order.getId()))
+                .collect(Collectors.toList());
     }
 }

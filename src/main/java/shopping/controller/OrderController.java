@@ -10,6 +10,7 @@ import shopping.auth.UserIdPrincipal;
 import shopping.dto.response.OrderResponse;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 public class OrderController {
@@ -24,6 +25,12 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrder(@UserIdPrincipal Long userId) {
         OrderResponse orderResponse = orderService.createOrder(userId);
         return ResponseEntity.created(URI.create("/order/" + orderResponse.getId())).body(orderResponse);
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<List<OrderResponse>> getOrder(@UserIdPrincipal Long userId) {
+        List<OrderResponse> orderResponses = orderService.findAllByUserId(userId);
+        return ResponseEntity.ok().body(orderResponses);
     }
 
     @GetMapping("/order/{id}")
