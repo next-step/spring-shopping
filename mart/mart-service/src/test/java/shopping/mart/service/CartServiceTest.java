@@ -17,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
 import shopping.mart.app.domain.Cart;
-import shopping.mart.app.domain.exception.DoesNotExistProductException;
+import shopping.mart.app.exception.DoesNotExistProductException;
 import shopping.mart.app.spi.CartRepository;
 import shopping.mart.app.spi.ProductRepository;
 

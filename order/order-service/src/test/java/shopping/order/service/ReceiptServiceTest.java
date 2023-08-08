@@ -14,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.order.app.api.receipt.ReceiptUseCase;
-import shopping.order.app.domain.exception.DoesNotFindReceiptException;
+import shopping.order.app.exception.DoesNotFindReceiptException;
 import shopping.order.app.spi.ReceiptRepository;
 
 @ExtendWith(SpringExtension.class)

@@ -17,9 +17,9 @@ import shopping.mart.app.api.cart.CartUseCase;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.domain.exception.AlreadyExistProductException;
-import shopping.mart.app.domain.exception.DoesNotExistProductException;
-import shopping.mart.app.domain.exception.NegativeProductCountException;
+import shopping.mart.app.exception.AlreadyExistProductException;
+import shopping.mart.app.exception.DoesNotExistProductException;
+import shopping.mart.app.exception.NegativeProductCountException;
 
 @RestController
 @RequestMapping("/carts")

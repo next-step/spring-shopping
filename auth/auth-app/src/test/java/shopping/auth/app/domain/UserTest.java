@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.catchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import shopping.auth.app.domain.exception.InvalidEmailException;
-import shopping.auth.app.domain.exception.InvalidPasswordException;
+import shopping.auth.app.exception.InvalidEmailException;
+import shopping.auth.app.exception.InvalidPasswordException;
 
 @DisplayName("User 클래스")
 class UserTest {

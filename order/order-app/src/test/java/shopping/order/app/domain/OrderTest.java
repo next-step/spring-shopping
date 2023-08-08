@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import shopping.mart.app.domain.Cart;
-import shopping.order.app.domain.exception.EmptyCartException;
+import shopping.order.app.exception.EmptyCartException;
 
 @DisplayName("Order 클래스")
 class OrderTest {

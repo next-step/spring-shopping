@@ -17,7 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.auth.app.api.request.LoginRequest;
 import shopping.auth.app.api.response.TokenResponse;
 import shopping.auth.app.domain.User;
-import shopping.auth.app.domain.exception.DoesNotExistUserException;
+import shopping.auth.app.exception.DoesNotExistUserException;
 import shopping.auth.app.spi.UserRepository;
 import shopping.auth.service.infra.JwtUtils;
 

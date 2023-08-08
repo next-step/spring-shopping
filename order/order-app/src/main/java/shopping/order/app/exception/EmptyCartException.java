@@ -1,4 +1,4 @@
-package shopping.order.app.domain.exception;
+package shopping.order.app.exception;
 
 public final class EmptyCartException extends RuntimeException {
 

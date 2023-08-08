@@ -8,9 +8,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import shopping.mart.app.domain.exception.AlreadyExistProductException;
-import shopping.mart.app.domain.exception.DoesNotExistProductException;
-import shopping.mart.app.domain.exception.NegativeProductCountException;
+import shopping.mart.app.exception.AlreadyExistProductException;
+import shopping.mart.app.exception.DoesNotExistProductException;
+import shopping.mart.app.exception.NegativeProductCountException;
 
 @DisplayName("Cart 클래스")
 class CartTest {

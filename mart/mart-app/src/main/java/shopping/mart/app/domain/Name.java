@@ -2,7 +2,7 @@ package shopping.mart.app.domain;
 
 import java.text.MessageFormat;
 import java.util.Objects;
-import shopping.mart.app.domain.exception.InvalidProductNameException;
+import shopping.mart.app.exception.InvalidProductNameException;
 
 public final class Name {
 

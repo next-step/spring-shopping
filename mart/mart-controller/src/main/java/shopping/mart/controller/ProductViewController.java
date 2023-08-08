@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import shopping.core.util.ErrorTemplate;
 import shopping.mart.app.api.product.ProductUseCase;
 import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.mart.app.domain.exception.AlreadyExistProductException;
-import shopping.mart.app.domain.exception.InvalidPriceException;
-import shopping.mart.app.domain.exception.InvalidProductNameException;
+import shopping.mart.app.exception.AlreadyExistProductException;
+import shopping.mart.app.exception.InvalidPriceException;
+import shopping.mart.app.exception.InvalidProductNameException;
 
 @Controller
 public class ProductViewController {

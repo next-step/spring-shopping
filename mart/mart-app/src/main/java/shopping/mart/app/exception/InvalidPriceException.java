@@ -1,4 +1,4 @@
-package shopping.mart.app.domain.exception;
+package shopping.mart.app.exception;
 
 public final class InvalidPriceException extends RuntimeException {
 

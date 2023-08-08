@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.catchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import shopping.mart.app.domain.exception.InvalidPriceException;
-import shopping.mart.app.domain.exception.InvalidProductNameException;
+import shopping.mart.app.exception.InvalidPriceException;
+import shopping.mart.app.exception.InvalidProductNameException;
 
 @DisplayName("Product 클래스")
 class ProductTest {

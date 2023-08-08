@@ -13,7 +13,7 @@ import shopping.core.util.ErrorTemplate;
 import shopping.order.app.api.receipt.ReceiptUseCase;
 import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
 import shopping.order.app.api.receipt.response.ReceiptResponse;
-import shopping.order.app.domain.exception.DoesNotFindReceiptException;
+import shopping.order.app.exception.DoesNotFindReceiptException;
 
 @RestController
 @RequestMapping("/receipts")

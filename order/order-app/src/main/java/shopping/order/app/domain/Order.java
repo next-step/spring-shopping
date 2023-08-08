@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import shopping.mart.app.domain.Cart;
 import shopping.mart.app.domain.Product;
-import shopping.order.app.domain.exception.EmptyCartException;
+import shopping.order.app.exception.EmptyCartException;
 
 public final class Order {
 

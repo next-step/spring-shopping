@@ -11,7 +11,7 @@ import shopping.order.app.api.receipt.response.ReceiptProductResponse;
 import shopping.order.app.api.receipt.response.ReceiptResponse;
 import shopping.order.app.domain.Receipt;
 import shopping.order.app.domain.ReceiptProduct;
-import shopping.order.app.domain.exception.DoesNotFindReceiptException;
+import shopping.order.app.exception.DoesNotFindReceiptException;
 import shopping.order.app.spi.ReceiptRepository;
 
 @Service

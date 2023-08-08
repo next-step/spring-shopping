@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
-import shopping.auth.app.domain.exception.InvalidTokenException;
+import shopping.auth.app.exception.InvalidTokenException;
 import shopping.auth.service.infra.JwtUtils;
 
 public class AuthInterceptor implements HandlerInterceptor {

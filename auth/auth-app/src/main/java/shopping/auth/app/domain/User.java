@@ -1,8 +1,8 @@
 package shopping.auth.app.domain;
 
 import java.text.MessageFormat;
-import shopping.auth.app.domain.exception.InvalidEmailException;
-import shopping.auth.app.domain.exception.InvalidPasswordException;
+import shopping.auth.app.exception.InvalidEmailException;
+import shopping.auth.app.exception.InvalidPasswordException;
 
 public final class User {
 

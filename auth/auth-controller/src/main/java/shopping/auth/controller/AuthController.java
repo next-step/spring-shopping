@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.app.api.AuthUseCase;
 import shopping.auth.app.api.request.LoginRequest;
 import shopping.auth.app.api.response.TokenResponse;
-import shopping.auth.app.domain.exception.AlreadyExistUserException;
-import shopping.auth.app.domain.exception.DoesNotExistUserException;
-import shopping.auth.app.domain.exception.InvalidEmailException;
-import shopping.auth.app.domain.exception.InvalidPasswordException;
+import shopping.auth.app.exception.AlreadyExistUserException;
+import shopping.auth.app.exception.DoesNotExistUserException;
+import shopping.auth.app.exception.InvalidEmailException;
+import shopping.auth.app.exception.InvalidPasswordException;
 import shopping.core.util.ErrorTemplate;
 
 @RestController

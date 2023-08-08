@@ -11,7 +11,7 @@ import shopping.auth.service.interceptor.TokenPerRequest;
 import shopping.core.util.ErrorTemplate;
 import shopping.order.app.api.order.OrderUseCase;
 import shopping.order.app.api.order.request.OrderRequest;
-import shopping.order.app.domain.exception.EmptyCartException;
+import shopping.order.app.exception.EmptyCartException;
 
 @RestController
 public class OrderController {

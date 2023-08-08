@@ -1,4 +1,4 @@
-package shopping.auth.app.domain.exception;
+package shopping.auth.app.exception;
 
 public final class DoesNotExistUserException extends RuntimeException {
 

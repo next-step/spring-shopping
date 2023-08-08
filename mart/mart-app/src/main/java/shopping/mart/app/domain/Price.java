@@ -3,7 +3,7 @@ package shopping.mart.app.domain;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.Objects;
-import shopping.mart.app.domain.exception.InvalidPriceException;
+import shopping.mart.app.exception.InvalidPriceException;
 
 public final class Price {
 
