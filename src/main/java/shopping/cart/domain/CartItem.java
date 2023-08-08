@@ -94,7 +94,7 @@ public class CartItem {
         return productPrice;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
     }
 }
