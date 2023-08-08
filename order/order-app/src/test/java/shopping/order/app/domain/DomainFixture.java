@@ -24,7 +24,7 @@ class DomainFixture {
     static class Product {
 
         static shopping.mart.app.domain.Product defaultProduct() {
-            return new shopping.mart.app.domain.Product("default", "images/default-image.png", "1000");
+            return new shopping.mart.app.domain.Product(0L, "default", "images/default-image.png", "1000");
         }
     }
 
@@ -33,7 +33,7 @@ class DomainFixture {
         static shopping.order.app.domain.Receipt fromOrder(Order order) {
             List<ReceiptProduct> receiptProducts = order.getProducts().entrySet()
                     .stream()
-                    .map(entry -> new ReceiptProduct(entry.getKey().getName(),
+                    .map(entry -> new ReceiptProduct(0, entry.getKey().getName(),
                             new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
                     .collect(Collectors.toList());
 

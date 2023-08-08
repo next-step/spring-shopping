@@ -44,7 +44,7 @@ public final class Order {
     public Receipt purchase() {
         List<ReceiptProduct> receiptProducts = products.entrySet()
                 .stream()
-                .map(entry -> new ReceiptProduct(entry.getKey().getName(),
+                .map(entry -> new ReceiptProduct(entry.getKey().getId(), entry.getKey().getName(),
                         new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
                 .collect(Collectors.toList());
 

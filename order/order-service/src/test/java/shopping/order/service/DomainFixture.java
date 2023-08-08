@@ -18,7 +18,7 @@ class DomainFixture {
     static class Product {
 
         static shopping.mart.app.domain.Product defaultProduct() {
-            return new shopping.mart.app.domain.Product("default", "images/default-image.png", "1000");
+            return new shopping.mart.app.domain.Product(0L, "default", "images/default-image.png", "1000");
         }
     }
 }
