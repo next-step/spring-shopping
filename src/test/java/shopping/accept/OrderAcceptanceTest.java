@@ -24,7 +24,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /orders API는 cart에 담긴 상품을 구매한다.")
+    @DisplayName("POST /orders API는 cart에 담긴 상품을 구매한다.")
     void order_cart_products() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -42,7 +42,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /orders API는 cartId를 찾을 수 없을경우, Bad Request를 던진다.")
+    @DisplayName("POST /orders API는 cartId를 찾을 수 없을경우, Bad Request를 던진다.")
     void throw_Bad_Request_when_cart_does_not_exists() {
         // when
         ExtractableResponse<Response> result = UrlHelper.Order.orderCart(accessToken);

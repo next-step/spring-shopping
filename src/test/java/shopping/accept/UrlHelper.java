@@ -87,7 +87,7 @@ class UrlHelper {
             return given().log().all()
                     .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .when().get("/orders")
+                    .when().post("/orders")
                     .then().log().all()
                     .extract();
         }
