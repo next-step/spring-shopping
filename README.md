@@ -33,7 +33,6 @@
 
 ## Step 3. 장바구니
 
-- `User`와 `Product` 사이 N:M 관계 테이블
 - 사용자 정보는 요청 Header의 `Authrozation` 필드를 이용
 - 인증 방식은 bearer
 - `Authrozation: <type> <credentials>`
@@ -77,6 +76,58 @@
 - [x] 사용자 토큰이 만료되었을 시 인증 실패 메시지 반환
 - [x] 사용자 토큰이 `null`인 경우 인증 실패 메시지 반환
 - [x] 사용자 토큰이 올바르지 않은 경우 인증 실패 메시지 반환
+
+## Step 4. 주문
+
+- 주문 기본 정보
+	- 주문 번호
+	- 주문 아이템 정보
+		- 이름
+		- 가격
+		- 이미지
+		- 수량
+	- 총 결제금액
+
+- [ ] 장바구니에 담긴 상품 전체 주문
+	- `POST /orders`
+	- 토큰의 `userId`를 이용해 사용자 식별 후 주문 생성
+
+- [ ] 사용자별 주문 목록 조회
+	- `GET /orders`
+		```json
+		[
+			{
+				"id": 1,
+				"orderItems": [
+					{
+						"name": "피자",
+						"image": "/images/pizza.png",
+						"price": 25000,
+						"quantity": 2
+					},
+					{
+						"name": "치킨",
+						"image": "/images/chicken.png",
+						"price": 20000,
+						"quantity": 2
+					},
+					...
+				]
+			},
+			...
+		]
+		```
+
+- [ ] 주문 상세 정보 조회
+	- `GET /orders/{id}`
+		```json
+		{
+			"name": "피자",
+			"image": "/images/pizza.png",
+			"price": 25000,
+			"quantity": 2
+		}
+		```
 
 ## 커밋 규칙
 
