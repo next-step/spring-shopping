@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import shopping.acceptance.helper.AuthHelper;
 import shopping.acceptance.helper.RestHelper;
 import shopping.cart.dto.response.CartResponse;
+import shopping.order.dto.OrderResponse;
 
 public class OrderAcceptanceTest extends AcceptanceTest {
 
@@ -34,9 +35,37 @@ public class OrderAcceptanceTest extends AcceptanceTest {
             .extract();
         final ExtractableResponse<Response> cartProductResponse = RestHelper.get("/api/cartProduct",
             jwt);
+
         // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.body().as(OrderResponse.class)
+            .getOrderProducts().size())
+            .isEqualTo(2);
         assertThat(cartProductResponse.body().as(new TypeRef<List<CartResponse>>() {}))
             .hasSize(0);
+
+    }
+
+
+    @Test
+    @DisplayName("사용자가 주문번호로 주문을 상세 볼 수 있다.")
+    void 주문번호_상세_조회_성공(){
+        // given
+        final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
+        Long orderId = RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwt)
+            .when().post("/api/order")
+            .then().log().all()
+            .extract().body().as(OrderResponse.class).getId();
+
+        // when
+        ExtractableResponse<Response> response = RestHelper.get("/api/order/"+orderId, jwt);
+
+        // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.body().as(OrderResponse.class).getId()).isEqualTo(orderId);
     }
 }

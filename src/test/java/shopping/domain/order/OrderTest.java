@@ -26,7 +26,7 @@ public class OrderTest {
             new Name(name),
             new ProductImage(imageUrl),
             new Price(price),
-            new Quantity(10))), new Price(1000))
+            new Quantity(10))), new Price(1000), 1L)
         ).doesNotThrowAnyException();
     }
 
@@ -36,6 +36,7 @@ public class OrderTest {
         final String name = "치킨";
         final String imageUrl = "image.png";
         final int price = 20000;
+        final Long memberId = 1L;
         OrderProduct orderProduct = new OrderProduct(
             1L,
             new Name(name),
@@ -43,7 +44,7 @@ public class OrderTest {
             new Price(price),
             new Quantity(10));
         List<OrderProduct> orderProducts = List.of(orderProduct,orderProduct);
-        Order order =new Order(orderProducts);
+        Order order =new Order(orderProducts,memberId);
         assertThat(order.getTotalPrice()).isEqualTo(400000);
     }
 

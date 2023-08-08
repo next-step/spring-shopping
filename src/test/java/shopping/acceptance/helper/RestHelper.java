@@ -54,7 +54,7 @@ public class RestHelper {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .header(HttpHeaders.AUTHORIZATION, BEARER + jwt)
-            .when().get("/api/cartProduct")
+            .when().get(path)
             .then().log().all()
             .extract();
     }

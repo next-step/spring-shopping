@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartProductWithProduct;
 import shopping.cart.repository.CartProductRepository;
+import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
+import shopping.order.dto.OrderResponse;
 import shopping.order.repository.OrderRepository;
 
 @Service
@@ -25,15 +27,20 @@ public class OrderService {
     }
 
     @Transactional
-    public Order saveOrder(final Long memberId) {
+    public OrderResponse saveOrder(final Long memberId) {
         List<CartProductWithProduct> cartProducts = cartProductRepository.findAllByMemberId(
             memberId);
         List<OrderProduct> orderProducts = cartProducts.stream().map(OrderProduct::from)
             .collect(Collectors.toList());
 
-        Order saveOrder = orderRepository.save(new Order(orderProducts));
+        Order saveOrder = orderRepository.save(new Order(orderProducts, memberId));
         cartProductRepository.deleteAllByMemberId(memberId);
-        return saveOrder;
+        return OrderResponse.from(saveOrder);
     }
 
+    public OrderResponse getOrder(Long memberId, Long orderId) {
+        Order order = orderRepository.findByMemberIdAndId(memberId, orderId)
+            .orElseThrow(() -> new ShoppingException("찾으시는 주문이 존재하지 않습니다. 입력 값 : " + orderId));
+        return OrderResponse.from(order);
+    }
 }
