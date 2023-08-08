@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import shopping.application.ProductService;
 import shopping.dto.response.ProductResponse;
@@ -31,12 +32,23 @@ public class PageController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginPage() {
         return "login";
     }
 
     @GetMapping("/cart")
     public String getCartPage() {
         return "cart";
+    }
+
+    @GetMapping("/order-history/{orderId}")
+    public String getOrderPage(@PathVariable Long orderId, Model model) {
+        model.addAttribute("orderId", orderId);
+        return "order-detail";
+    }
+
+    @GetMapping("/order-history")
+    public String getOrderHistoryPage() {
+        return "order-history";
     }
 }
