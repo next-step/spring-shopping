@@ -21,6 +21,8 @@ public enum ErrorType {
     PRODUCT_NULL(HttpStatus.BAD_REQUEST, "productId는 필수 항목입니다."),
     PASSWORD_NULL(HttpStatus.BAD_REQUEST, "password는 필수 항목입니다."),
     EMAIL_NULL(HttpStatus.BAD_REQUEST, "email은 필수 항목입니다."),
+    ORDER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "주문 접근 권한이 없습니다."),
+    ORDER_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 주문 번호입니다 : "),
     DECODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "복호화 실패");
 
     private final HttpStatus status;

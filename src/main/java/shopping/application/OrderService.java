@@ -8,9 +8,13 @@ import shopping.domain.cart.Quantity;
 import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
 import shopping.domain.order.OrderRepository;
+import shopping.dto.OrderDetailResponse;
 import shopping.dto.OrderResponse;
+import shopping.exception.ErrorType;
+import shopping.exception.ShoppingException;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +39,7 @@ public class OrderService {
 
         long sum = items.getItems()
                 .stream()
-                .mapToInt(item -> item.getProduct().getPrice())
+                .mapToInt(item -> item.getProduct().getPrice() * item.getQuantity())
                 .sum();
 
         Order order = new Order(userId, orderItems, sum);
@@ -45,7 +49,19 @@ public class OrderService {
         return orderRepository.save(order).getId();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
+    public OrderDetailResponse findById(Long userId, Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ShoppingException(ErrorType.ORDER_NO_EXIST, id));
+
+        if (!Objects.equals(order.getUserId(), userId)) {
+            throw new ShoppingException(ErrorType.ORDER_UNAUTHORIZED);
+        }
+
+        return OrderDetailResponse.from(order);
+    }
+
+    @Transactional(readOnly = true)
     public List<OrderResponse> findAll(Long userId) {
         List<Order> orders = orderRepository.findAllByUserId(userId);
 

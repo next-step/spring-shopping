@@ -13,9 +13,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleShoppingException(final ShoppingException e) {
         return new ResponseEntity<>(new ErrorResponse(e.getMessage()), e.getStatus());
     }
-    
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
-        return new ResponseEntity<>(new ErrorResponse("Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

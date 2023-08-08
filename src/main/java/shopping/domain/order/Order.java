@@ -28,7 +28,7 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @Column(name = "total_price")
-    private Long totalPrice;
+    private long totalPrice;
 
     protected Order() {
 
