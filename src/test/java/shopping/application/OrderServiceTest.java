@@ -8,8 +8,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -54,8 +52,6 @@ class OrderServiceTest {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
-
-    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Nested
     @DisplayName("주문 생성 서비스 테스트")
