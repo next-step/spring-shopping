@@ -28,10 +28,11 @@ CREATE TABLE IF NOT EXISTS `cart_item`
 
 CREATE TABLE IF NOT EXISTS `orders`
 (
-    id          BIGINT AUTO_INCREMENT NOT NULL,
-    user_id     BIGINT                NOT NULL,
-    total_price BIGINT                NOT NULL,
-    ratio       DOUBLE                NOT NULL,
+    id           BIGINT AUTO_INCREMENT NOT NULL,
+    user_id      BIGINT                NOT NULL,
+    total_price  BIGINT                NOT NULL,
+    ratio        DOUBLE                NOT NULL,
+    created_date DATETIME,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

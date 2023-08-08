@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.AttributeOverride;
@@ -8,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,9 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "orders")
+@EntityListeners(AuditingEntityListener.class)
 public class Order {
 
     @Id
@@ -36,6 +41,10 @@ public class Order {
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "ratio", column = @Column(name = "ratio", nullable = false)))
     private Ratio ratio;
+
+    @CreatedDate
+    @Column(name = "created_date")
+    private Instant createdDate;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItems;
@@ -68,8 +77,12 @@ public class Order {
         return totalPrice;
     }
 
-    public Ratio getRatio() {
-        return ratio;
+    public Double getRatio() {
+        return ratio.getRatio();
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
     }
 
     public List<OrderItem> getOrderItems() {
