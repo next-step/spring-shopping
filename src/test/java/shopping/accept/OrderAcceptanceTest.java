@@ -10,7 +10,6 @@ import shopping.auth.app.api.response.TokenResponse;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
 import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.order.app.api.request.OrderRequest;
 
 @DisplayName("order 인수테스트")
 class OrderAcceptanceTest extends AcceptanceTest {
@@ -25,7 +24,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /orders API는 cart에 담긴 상품을 구매한다.")
+    @DisplayName("GET /orders API는 cart에 담긴 상품을 구매한다.")
     void order_cart_products() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -35,23 +34,18 @@ class OrderAcceptanceTest extends AcceptanceTest {
 
         CartResponse cartResponse = UrlHelper.Cart.findCart(accessToken).as(CartResponse.class);
 
-        OrderRequest orderRequest = new OrderRequest(cartResponse.getCartId());
-
         // when
-        ExtractableResponse<Response> result = UrlHelper.Order.orderCart(orderRequest, accessToken);
+        ExtractableResponse<Response> result = UrlHelper.Order.orderCart(accessToken);
 
         // then
         AssertHelper.Order.assertOrdered(result);
     }
 
     @Test
-    @DisplayName("POST /orders API는 cartId를 찾을 수 없을경우, Bad Request를 던진다.")
+    @DisplayName("GET /orders API는 cartId를 찾을 수 없을경우, Bad Request를 던진다.")
     void throw_Bad_Request_when_cart_does_not_exists() {
-        // given
-        OrderRequest orderRequest = new OrderRequest(99999L);
-
         // when
-        ExtractableResponse<Response> result = UrlHelper.Order.orderCart(orderRequest, accessToken);
+        ExtractableResponse<Response> result = UrlHelper.Order.orderCart(accessToken);
 
         // then
         AssertHelper.Http.assertIsBadRequest(result);

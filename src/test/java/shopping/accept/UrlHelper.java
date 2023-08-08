@@ -10,7 +10,6 @@ import org.springframework.http.MediaType;
 import shopping.auth.app.api.request.LoginRequest;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
-import shopping.order.app.api.request.OrderRequest;
 
 class UrlHelper {
 
@@ -84,12 +83,11 @@ class UrlHelper {
 
     static final class Order {
 
-        static ExtractableResponse<Response> orderCart(OrderRequest orderRequest, String accessToken) {
+        static ExtractableResponse<Response> orderCart(String accessToken) {
             return given().log().all()
                     .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .body(orderRequest)
-                    .when().post("/orders")
+                    .when().get("/orders")
                     .then().log().all()
                     .extract();
         }

@@ -2,4 +2,6 @@ dependencies {
     implementation project(':order:order-app')
 
     implementation project(':auth:auth-service')
+
+    implementation project(':core')
 }

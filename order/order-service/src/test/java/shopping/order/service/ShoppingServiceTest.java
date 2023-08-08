@@ -13,8 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import shopping.mart.app.api.cart.CartUseCase;
 import shopping.mart.app.api.cart.event.CartClearEvent;
-import shopping.mart.app.spi.CartRepository;
 import shopping.order.app.api.OrderUseCase;
 import shopping.order.app.api.request.OrderRequest;
 import shopping.order.app.spi.ReceiptRepository;
@@ -32,7 +32,7 @@ class ShoppingServiceTest {
     private ApplicationEvents applicationEvents;
 
     @MockBean
-    private CartRepository cartRepository;
+    private CartUseCase cartUseCase;
 
     @MockBean
     private ReceiptRepository receiptRepository;
@@ -45,10 +45,10 @@ class ShoppingServiceTest {
         @DisplayName("cartId를 받아서, Cart의 product를 주문 한다")
         void order_cart_items_when_receive_cart_id() {
             // given
-            long cartId = 1L;
-            OrderRequest orderRequest = new OrderRequest(cartId);
+            long userId = 1L;
+            OrderRequest orderRequest = new OrderRequest(userId);
 
-            when(cartRepository.getById(cartId)).thenReturn(DomainFixture.Cart.defaultCart());
+            when(cartUseCase.getCart(userId)).thenReturn(DtoFixture.CartResponse.defaultCartResponse());
 
             // when
             orderUseCase.order(orderRequest);

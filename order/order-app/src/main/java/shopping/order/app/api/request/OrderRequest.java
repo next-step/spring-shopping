@@ -2,16 +2,16 @@ package shopping.order.app.api.request;
 
 public final class OrderRequest {
 
-    private long cartId;
+    private long userId;
 
     public OrderRequest() {
     }
 
-    public OrderRequest(long cartId) {
-        this.cartId = cartId;
+    public OrderRequest(long userId) {
+        this.userId = userId;
     }
 
-    public long getCartId() {
-        return cartId;
+    public long getUserId() {
+        return userId;
     }
 }
