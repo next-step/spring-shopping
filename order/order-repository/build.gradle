@@ -1,3 +1,5 @@
 dependencies {
     implementation project(':order:order-app')
+
+    implementation project(':mart:mart-app')
 }
