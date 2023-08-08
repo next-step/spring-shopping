@@ -1,6 +1,5 @@
 package shopping.repository;
 
-import io.restassured.specification.RequestSpecification;
 import org.springframework.stereotype.Repository;
 import shopping.domain.Order;
 
