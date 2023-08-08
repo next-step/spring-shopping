@@ -1,16 +1,28 @@
 # Dependencies
 
+### Module dependencies
 ```mermaid
----
-title: Module dependencies
----
-flowchart LR
+flowchart LR  
+  
+auth-service --> auth-app
+auth-repository --> auth-app
+auth-controller --> auth-app
+auth-app
 
-app[app] --> mart[mart]
-app --> auth[auth]
-mart --> core[core `ex. global util...`]
-auth --> core
-mart --> auth
+mart-controller --> auth-app
+mart-controller --> mart-app
+mart-repository --> mart-app
+mart-service --> mart-app
+mart-app
+
+order-controller --> auth-app
+order-controller --> order-app
+order-exchange --> order-app
+order-app --> mart-app
+order-service --> order-app
+order-service --> mart-app
+order-repository --> order-app
+order-repository --> mart-app
 ```
 
 # API Documentation
