@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class OrderItem {
 
+    private static final int MAX_NAME_LENGTH = 25;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +21,11 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    @Column(nullable = false, length = MAX_NAME_LENGTH)
     private String name;
 
     @Column(nullable = false)
@@ -34,12 +40,26 @@ public class OrderItem {
     protected OrderItem() {
     }
 
+    public OrderItem(Order order, Product product, String name, long price, int quantity,
+            String imageUrl) {
+        setOrder(order);
+        this.product = product;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+    }
+
     public Long getId() {
         return id;
     }
 
     public Order getOrder() {
         return order;
+    }
+
+    public Product getProduct() {
+        return product;
     }
 
     public String getName() {
@@ -56,5 +76,10 @@ public class OrderItem {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    private void setOrder(Order order) {
+        this.order = order;
+        order.addOrderItem(this);
     }
 }
