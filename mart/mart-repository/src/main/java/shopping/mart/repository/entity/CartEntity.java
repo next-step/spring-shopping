@@ -36,7 +36,7 @@ public class CartEntity extends TimeBaseEntity {
     @OneToMany(mappedBy = "cartEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartProductEntity> cartProductEntities;
 
-    private CartEntity() {
+    public CartEntity() {
     }
 
     public CartEntity(Long id, Long userId, List<CartProductEntity> cartProductEntities) {
