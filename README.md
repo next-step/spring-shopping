@@ -10,13 +10,12 @@
 
 ### 주문 기능 구현
 
-- [ ] 쇼핑 주문과 관련된 아래 기능을 구현합니다.
-    - [ ] 장바구니에 담긴 아이템 전체 주문
-    - [ ] 특정 주문의 상세 정보를 확인
-    - [ ] 사용자 별 주문 목록 확인
-- [ ] 장바구니 기능과 동일하게 사용자 정보는 요청 Header의 Authorization 필드를 사용해 인증 처리를 하여 얻습니다.
-- [ ] 주문 정보에는 아래의 내용이 담겨 있어야 합니다.
-    - [ ] 필요한 경우 주문 정보의 종류를 추가할 수 있습니다.(ex. 주문 시간, 상태)
+- [x] 쇼핑 주문과 관련된 아래 기능을 구현합니다.
+    - [x] 장바구니에 담긴 아이템 전체 주문
+    - [x] 특정 주문의 상세 정보를 확인
+    - [x] 사용자 별 주문 목록 확인
+- [x] 장바구니 기능과 동일하게 사용자 정보는 요청 Header의 Authorization 필드를 사용해 인증 처리를 하여 얻습니다.
+- [x] 주문 정보에는 아래의 내용이 담겨 있어야 합니다.
 
 #### 주문 기본 정보
 
@@ -30,32 +29,45 @@
 
 ### 주문 페이지 연동
 
-- [ ] 장바구니에 담긴 아이템 전체 주문
-    - [ ] 장바구니 목록 페이지(/cart)에서 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문할 수 있습니다.
-    - [ ] 주문 요청이 성공하면 주문 상세 페이지로 이동합니다.
-    - [ ] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
-    - [ ] 사용자의 장바구니 속의 아이템을 구매합니다.
+- [x] 장바구니에 담긴 아이템 전체 주문
+    - [x] 장바구니 목록 페이지(/cart)에서 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문할 수 있습니다.
+    - [x] 주문 요청이 성공하면 주문 상세 페이지로 이동합니다.
+    - [x] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+    - [x] 사용자의 장바구니 속의 아이템을 구매합니다.
     ```
     POST /orders HTTP/1.1
     content-type: application/json
     host: localhost:8080  
     ```
-- [ ] 주문 상세 정보
-    - [ ] order-detail.html 파일을 이용하여 특정 주문의 상세 정보를 확인할 수 있게 만듭니다.
-    - [ ] 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가해야 빠르게 연동할 수 있습니다.
-    - [ ] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
-    - [ ] 사용자의 주문이 아닐시 403 Forbidden을 반환합니다.
+- [x] 주문 상세 정보
+    - [x] `/order-history/{orderId}` url로 접근할 경우 주문 상세 페이지를 조회할 수 있어야 합니다.
+    - [x] order-detail.html 파일을 이용하여 특정 주문의 상세 정보를 확인할 수 있게 만듭니다.
+    - [x] 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가해야 빠르게 연동할 수 있습니다.
+    - [x] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+    - [x] 사용자의 주문이 아닐시 403 Forbidden을 반환합니다.
+    - Page
+    ``` 
+    GET /order-history/{orderId} HTTP/1.1
+    host: localhost:8080
+    ```
+    - Order
     ```
     GET /orders/{orderId} HTTP/1.1
     host: localhost:8080
     ```
-- [ ] 사용자 별 주문 목록 확인
-    - [ ] /order-history url로 접근할 경우 주문 목록 페이지를 조회할 수 있어야 합니다.
-    - [ ] order-history.html 파일을 이용하여 사용자 별 주문 목록을 확인할 수 있게 만듭니다.
-    - [ ] 상세보기 버튼을 클릭해 주문 상세 정보 페이지로 이동할 수 있습니다.
-    - [ ] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+- [x] 사용자 별 주문 목록 확인
+    - [x] `/order-history` url로 접근할 경우 주문 목록 페이지를 조회할 수 있어야 합니다.
+    - [x] order-history.html 파일을 이용하여 사용자 별 주문 목록을 확인할 수 있게 만듭니다.
+    - [x] 상세보기 버튼을 클릭해 주문 상세 정보 페이지로 이동할 수 있습니다.
+    - [x] Authorization 헤더에 Bearer 토큰을 통해 사용자를 파악합니다.
+    - Page
     ```
     GET /order-history HTTP/1.1
+    host: localhost:8080
+    ```
+    - Orders
+    ```
+    GET /orders HTTP/1.1
     host: localhost:8080
     ```
 
