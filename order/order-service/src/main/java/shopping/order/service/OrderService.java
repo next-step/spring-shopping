@@ -13,6 +13,7 @@ import shopping.order.app.api.order.OrderUseCase;
 import shopping.order.app.api.order.request.OrderRequest;
 import shopping.order.app.domain.Order;
 import shopping.order.app.domain.Receipt;
+import shopping.order.app.spi.ExchangeVendor;
 import shopping.order.app.spi.ReceiptRepository;
 
 @Service
@@ -21,10 +22,12 @@ public class OrderService implements OrderUseCase {
 
     private final CartUseCase cartUseCase;
     private final ReceiptRepository receiptRepository;
+    private final ExchangeVendor exchangeVendor;
 
-    public OrderService(CartUseCase cartUseCase, ReceiptRepository receiptRepository) {
+    public OrderService(CartUseCase cartUseCase, ReceiptRepository receiptRepository, ExchangeVendor exchangeVendor) {
         this.cartUseCase = cartUseCase;
         this.receiptRepository = receiptRepository;
+        this.exchangeVendor = exchangeVendor;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class OrderService implements OrderUseCase {
         CartResponse cartResponse = cartUseCase.getCart(orderRequest.getUserId());
 
         Order order = new Order(toCart(orderRequest.getUserId(), cartResponse));
-        Receipt receipt = order.purchase();
+        Receipt receipt = order.purchase(exchangeVendor.currentExchange());
 
         long receiptId = receiptRepository.persist(receipt);
 

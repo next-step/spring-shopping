@@ -1,5 +1,6 @@
 package shopping.order.repository.entity;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class ReceiptEntity extends TimeBaseEntity {
             Product product = getMatchedProduct(receiptProductEntity, products);
             receiptProducts.add(receiptProductEntity.toDomain(product));
         }
-        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice), new BigInteger(exchangedPrice));
+        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice), new BigDecimal(exchangedPrice));
     }
 
     private Product getMatchedProduct(ReceiptProductEntity receiptProductEntity, List<Product> products) {

@@ -18,6 +18,7 @@ import shopping.mart.app.api.product.ProductUseCase;
 import shopping.mart.app.api.product.response.ProductResponse;
 import shopping.mart.app.domain.Cart;
 import shopping.mart.app.domain.Product;
+import shopping.order.app.domain.Exchange;
 import shopping.order.app.domain.Order;
 import shopping.order.app.domain.Receipt;
 import shopping.order.app.domain.ReceiptProduct;
@@ -37,6 +38,8 @@ public class ReceiptPersistServiceTest extends JpaTest {
     @MockBean
     private ProductUseCase productUseCase;
 
+    private static final Exchange defaultExchange = new Exchange(1D);
+
     @Nested
     @DisplayName("persist 메소드는")
     class persist_method {
@@ -47,7 +50,7 @@ public class ReceiptPersistServiceTest extends JpaTest {
             // given
             Cart cart = DomainFixture.Cart.defaultCart();
             Order order = new Order(cart);
-            Receipt receipt = order.purchase();
+            Receipt receipt = order.purchase(defaultExchange);
             ReceiptEntity expected = new ReceiptEntity(receipt);
 
             // when
@@ -91,7 +94,7 @@ public class ReceiptPersistServiceTest extends JpaTest {
             // given
             Cart cart = DomainFixture.Cart.defaultCart();
             Order order = new Order(cart);
-            Receipt receipt = order.purchase();
+            Receipt receipt = order.purchase(defaultExchange);
 
             receiptPersistService.persist(receipt);
             receiptPersistService.persist(receipt);
@@ -118,7 +121,7 @@ public class ReceiptPersistServiceTest extends JpaTest {
             // given
             Cart cart = DomainFixture.Cart.defaultCart();
             Order order = new Order(cart);
-            Receipt receipt = order.purchase();
+            Receipt receipt = order.purchase(defaultExchange);
 
             receiptPersistService.persist(receipt);
 

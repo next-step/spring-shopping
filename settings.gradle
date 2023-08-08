@@ -20,4 +20,8 @@ include 'order:order-service'
 include 'order:order-repository'
 include 'order:order-controller'
 findProject(':order:order-controller')?.name = 'order-controller'
+include 'order:currencylayer-vendor'
+findProject(':order:currencylayer-vendor')?.name = 'currencylayer-vendor'
+include 'order:currency-exchange'
+findProject(':order:currency-exchange')?.name = 'currency-exchange'
 
