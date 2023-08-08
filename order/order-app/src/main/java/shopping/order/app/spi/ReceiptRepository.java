@@ -1,8 +1,8 @@
 package shopping.order.app.spi;
 
-import shopping.order.app.domain.Order;
+import shopping.order.app.domain.Receipt;
 
 public interface ReceiptRepository {
 
-    void persist(Order order);
+    void persist(Receipt receipt);
 }

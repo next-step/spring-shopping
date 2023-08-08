@@ -8,6 +8,7 @@ import shopping.mart.app.domain.Cart;
 import shopping.mart.app.spi.CartRepository;
 import shopping.order.app.api.OrderUseCase;
 import shopping.order.app.domain.Order;
+import shopping.order.app.domain.Receipt;
 import shopping.order.app.spi.ReceiptRepository;
 
 @Service
@@ -31,8 +32,9 @@ public class OrderService implements OrderUseCase {
         Cart cart = cartRepository.getById(cartId);
 
         Order order = new Order(cart);
+        Receipt receipt = order.purchase();
 
-        receiptRepository.persist(order);
+        receiptRepository.persist(receipt);
 
         applicationEventPublisher.publishEvent(new CartClearEvent(cartId));
     }
