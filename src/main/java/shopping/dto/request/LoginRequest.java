@@ -9,21 +9,23 @@ public class LoginRequest {
 
     private static final int PASSWORD_MAX_LENGTH = 100;
     private static final int EMAIL_MAX_LENGTH = 100;
+    private static final String EMAIL_NAME = "email";
+    private static final String PASSWORD_NAME = "password";
 
     private final String email;
     private final String password;
 
     @JsonCreator
-    public LoginRequest(@JsonProperty("email") final String email,
-            @JsonProperty("password") final String password) {
+    public LoginRequest(@JsonProperty(EMAIL_NAME) final String email,
+            @JsonProperty(PASSWORD_NAME) final String password) {
         validate(email, password);
         this.email = email;
         this.password = password;
     }
 
     private void validate(String email, String password) {
-        validateStringArgument(email, "이메일", EMAIL_MAX_LENGTH);
-        validateStringArgument(password, "비밀번호", PASSWORD_MAX_LENGTH);
+        validateStringArgument(email, EMAIL_NAME, EMAIL_MAX_LENGTH);
+        validateStringArgument(password, PASSWORD_NAME, PASSWORD_MAX_LENGTH);
     }
 
     public String getEmail() {

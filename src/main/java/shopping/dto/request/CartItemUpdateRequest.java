@@ -7,16 +7,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CartItemUpdateRequest {
 
+    private static final String QUANTITY_NAME = "quantity";
+    
     private final Integer quantity;
 
     @JsonCreator
-    public CartItemUpdateRequest(@JsonProperty("quantity") Integer quantity) {
+    public CartItemUpdateRequest(@JsonProperty(QUANTITY_NAME) final Integer quantity) {
         validate(quantity);
         this.quantity = quantity;
     }
 
     private void validate(Integer quantity) {
-        validateNumberArgument(quantity, "수량");
+        validateNumberArgument(quantity, QUANTITY_NAME);
     }
 
     public Integer getQuantity() {
