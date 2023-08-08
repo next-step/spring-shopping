@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.mart.app.api.cart.event.CartClearEvent;
 import shopping.mart.app.spi.CartRepository;
 import shopping.order.app.api.OrderUseCase;
+import shopping.order.app.api.request.OrderRequest;
 import shopping.order.app.spi.ReceiptRepository;
 
 @RecordApplicationEvents
@@ -45,11 +46,12 @@ class ShoppingServiceTest {
         void order_cart_items_when_receive_cart_id() {
             // given
             long cartId = 1L;
+            OrderRequest orderRequest = new OrderRequest(cartId);
 
             when(cartRepository.getById(cartId)).thenReturn(DomainFixture.Cart.defaultCart());
 
             // when
-            orderUseCase.order(cartId);
+            orderUseCase.order(orderRequest);
 
             // then
             assertThat(applicationEvents.stream(CartClearEvent.class).count()).isEqualTo(1L);

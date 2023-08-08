@@ -18,4 +18,6 @@ include 'order'
 include 'order:order-app'
 include 'order:order-service'
 include 'order:order-repository'
+include 'order:order-controller'
+findProject(':order:order-controller')?.name = 'order-controller'
 

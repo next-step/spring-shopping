@@ -1,4 +1,4 @@
-package shopping.accept;
+package shopping.order.app.api.request;
 
 public final class OrderRequest {
 

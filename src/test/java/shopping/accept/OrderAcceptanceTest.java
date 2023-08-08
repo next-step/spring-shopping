@@ -10,6 +10,7 @@ import shopping.auth.app.api.response.TokenResponse;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
 import shopping.mart.app.api.product.response.ProductResponse;
+import shopping.order.app.api.request.OrderRequest;
 
 @DisplayName("order 인수테스트")
 class OrderAcceptanceTest extends AcceptanceTest {

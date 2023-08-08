@@ -1,6 +1,8 @@
 package shopping.order.app.api;
 
+import shopping.order.app.api.request.OrderRequest;
+
 public interface OrderUseCase {
 
-    void order(long cartId);
+    void order(OrderRequest orderRequest);
 }

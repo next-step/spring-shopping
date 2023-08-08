@@ -7,6 +7,7 @@ import shopping.mart.app.api.cart.event.CartClearEvent;
 import shopping.mart.app.domain.Cart;
 import shopping.mart.app.spi.CartRepository;
 import shopping.order.app.api.OrderUseCase;
+import shopping.order.app.api.request.OrderRequest;
 import shopping.order.app.domain.Order;
 import shopping.order.app.domain.Receipt;
 import shopping.order.app.spi.ReceiptRepository;
@@ -28,14 +29,14 @@ public class OrderService implements OrderUseCase {
 
     @Override
     @Transactional
-    public void order(long cartId) {
-        Cart cart = cartRepository.getById(cartId);
+    public void order(OrderRequest orderRequest) {
+        Cart cart = cartRepository.getById(orderRequest.getCartId());
 
         Order order = new Order(cart);
         Receipt receipt = order.purchase();
 
         receiptRepository.persist(receipt);
 
-        applicationEventPublisher.publishEvent(new CartClearEvent(cartId));
+        applicationEventPublisher.publishEvent(new CartClearEvent(orderRequest.getCartId()));
     }
 }

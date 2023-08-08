@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import shopping.auth.app.api.request.LoginRequest;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
+import shopping.order.app.api.request.OrderRequest;
 
 class UrlHelper {
 
