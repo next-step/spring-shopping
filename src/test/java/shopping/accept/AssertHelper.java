@@ -119,6 +119,7 @@ class AssertHelper {
             SoftAssertions.assertSoftly(softAssertions -> {
                 softAssertions.assertThat(resultElement.getId()).isEqualTo(expected.getId());
                 softAssertions.assertThat(resultElement.getTotalPrice()).isEqualTo(expected.getTotalPrice());
+                softAssertions.assertThat(resultElement.getExchangedPrice()).isNotNull();
                 assertExactlyReceiptDetailProduct(resultElement.getReceiptDetailProducts(), expected.getReceiptDetailProducts());
             });
         }

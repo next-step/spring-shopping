@@ -44,7 +44,7 @@ public final class Order {
                         new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
                 .collect(Collectors.toList());
 
-        return new Receipt(userId, receiptProducts, totalPrice);
+        return new Receipt(userId, receiptProducts, totalPrice, null);
     }
 
     public String getTotalPrice() {
