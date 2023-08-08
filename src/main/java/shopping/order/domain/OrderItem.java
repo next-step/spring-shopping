@@ -44,6 +44,16 @@ public class OrderItem {
         this.order = order;
     }
 
+    public OrderItem(Long productId, String productName, String productPrice, String productImage,
+        int quantity, Order order) {
+        this(productId, productName, new Money(productPrice), new Image(productImage),
+            new Quantity(quantity), order);
+    }
+
+    void updateOrder(Order order) {
+        this.order = order;
+    }
+
     public Money getTotalPrice() {
         return productPrice.multiply(quantity.getValue());
     }
