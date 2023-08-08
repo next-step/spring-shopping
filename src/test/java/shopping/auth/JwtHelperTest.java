@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 @DisplayName("JWT 관련 기능 테스트")
 class JwtHelperTest {
-    
+
     JwtHelper jwtHelper;
 
     @BeforeEach

@@ -8,7 +8,7 @@ import shopping.exception.AuthExceptionType;
 import shopping.exception.ShoppingException;
 
 @Component
-public class BearerExtractor {
+public class BearerExtractor implements TokenExtractor {
 
     private static final String BEARER_TYPE = "Bearer";
     private static final int TOKEN_VALUE_BEGIN_INDEX = 7;

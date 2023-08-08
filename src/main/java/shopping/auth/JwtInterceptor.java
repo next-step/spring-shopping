@@ -11,11 +11,11 @@ import shopping.exception.ShoppingException;
 public class JwtInterceptor implements HandlerInterceptor {
 
     private final JwtHelper jwtHelper;
-    private final BearerExtractor bearerExtractor;
+    private final TokenExtractor tokenExtractor;
 
-    public JwtInterceptor(final JwtHelper jwtHelper, final BearerExtractor bearerExtractor) {
+    public JwtInterceptor(final JwtHelper jwtHelper, final BearerExtractor tokenExtractor) {
         this.jwtHelper = jwtHelper;
-        this.bearerExtractor = bearerExtractor;
+        this.tokenExtractor = tokenExtractor;
     }
 
     @Override
@@ -24,12 +24,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         final HttpServletResponse response,
         final Object handler
     ) throws Exception {
-        final String jwt = bearerExtractor.extract(request);
+        final String jwt = tokenExtractor.extract(request);
         if (!jwtHelper.validateToken(jwt)) {
             throw new ShoppingException(AuthExceptionType.INVALID_TOKEN, jwt);
         }
 
-        request.setAttribute("memberId", Long.parseLong(jwtHelper.getSubject(jwt)));
         return true;
     }
 }
