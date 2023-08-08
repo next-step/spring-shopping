@@ -63,6 +63,8 @@ class OrderTest {
     @DisplayName("purchase 메소드는")
     class purchase_method {
 
+        private final Exchange defaultExchange = new Exchange(1D);
+
         @Test
         @DisplayName("구매에 성공하면, Receipt를 생성해서 반환한다.")
         void return_receipt_when_purchase_success() {
@@ -72,7 +74,7 @@ class OrderTest {
             Receipt expected = DomainFixture.Receipt.fromOrder(order);
 
             // when
-            Receipt result = order.purchase();
+            Receipt result = order.purchase(defaultExchange);
 
             // then
             assertReceipt(expected, result);

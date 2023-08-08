@@ -1,5 +1,6 @@
 package shopping.order.app.domain;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -9,13 +10,13 @@ public final class Receipt {
     private final long userId;
     private final List<ReceiptProduct> receiptProducts;
     private final BigInteger totalPrice;
-    private final BigInteger exchangedPrice;
+    private final BigDecimal exchangedPrice;
 
-    public Receipt(long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigInteger exchangedPrice) {
+    public Receipt(long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigDecimal exchangedPrice) {
         this(null, userId, receiptProducts, totalPrice, exchangedPrice);
     }
 
-    public Receipt(Long id, long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigInteger exchangedPrice) {
+    public Receipt(Long id, long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigDecimal exchangedPrice) {
         this.id = id;
         this.userId = userId;
         this.receiptProducts = receiptProducts;
@@ -39,7 +40,7 @@ public final class Receipt {
         return totalPrice;
     }
 
-    public BigInteger getExchangedPrice() {
+    public BigDecimal getExchangedPrice() {
         return exchangedPrice;
     }
 

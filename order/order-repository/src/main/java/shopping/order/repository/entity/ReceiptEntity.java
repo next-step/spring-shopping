@@ -38,6 +38,9 @@ public class ReceiptEntity extends TimeBaseEntity {
     @Column(name = "total_price")
     private String totalPrice;
 
+    @Column(name = "exchanged_price")
+    private String exchangedPrice;
+
     private ReceiptEntity() {
     }
 
@@ -48,6 +51,7 @@ public class ReceiptEntity extends TimeBaseEntity {
 
         this.userId = receipt.getUserId();
         this.totalPrice = receipt.getTotalPrice().toString();
+        this.exchangedPrice = receipt.getExchangedPrice().toString();
     }
 
     public Receipt toDomain(List<Product> products) {
@@ -56,7 +60,7 @@ public class ReceiptEntity extends TimeBaseEntity {
             Product product = getMatchedProduct(receiptProductEntity, products);
             receiptProducts.add(receiptProductEntity.toDomain(product));
         }
-        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice));
+        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice), new BigInteger(exchangedPrice));
     }
 
     private Product getMatchedProduct(ReceiptProductEntity receiptProductEntity, List<Product> products) {

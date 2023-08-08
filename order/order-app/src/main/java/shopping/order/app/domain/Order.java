@@ -37,14 +37,14 @@ public final class Order {
         return calculate;
     }
 
-    public Receipt purchase() {
+    public Receipt purchase(Exchange exchange) {
         List<ReceiptProduct> receiptProducts = products.entrySet()
                 .stream()
                 .map(entry -> new ReceiptProduct(entry.getKey().getId(), entry.getKey().getName(),
                         new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
                 .collect(Collectors.toList());
 
-        return new Receipt(userId, receiptProducts, totalPrice, null);
+        return new Receipt(userId, receiptProducts, totalPrice, exchange.calculate(totalPrice));
     }
 
     public String getTotalPrice() {
@@ -58,4 +58,5 @@ public final class Order {
     public long getUserId() {
         return userId;
     }
+
 }
