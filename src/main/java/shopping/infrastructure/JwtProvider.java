@@ -11,7 +11,7 @@ import java.util.Map;
 @Component
 public class JwtProvider implements TokenProvider {
 
-    @Value("${security.jwt.token.secret-key}")
+    @Value("${security.jwt.token.secret-key.value}")
     private String secretKey;
 
     @Value("${security.jwt.token.secret-key.version}")
