@@ -18,6 +18,10 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Embedded
+    private OrderPrice orderPrice;
+
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -26,16 +30,16 @@ public class Order {
 
     public Order(final Member member) {
         this.member = member;
+        this.orderPrice = OrderPrice.defaultValue();
     }
 
     public void addOrderItem(final OrderItem orderItem) {
         orderItems.add(orderItem);
+        orderPrice = orderPrice.plusPrice(orderItem.getTotalPrice());
     }
 
     public int getOrderPrice() {
-        return orderItems.stream()
-                .mapToInt(OrderItem::getTotalPrice)
-                .sum();
+        return orderPrice.getValue();
     }
 
     public Long getId() {
