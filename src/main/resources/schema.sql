@@ -1,6 +1,6 @@
+DROP TABLE IF EXISTS cart_items;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS cart_items;
 
 CREATE TABLE products
 (
@@ -22,5 +22,7 @@ CREATE TABLE cart_items
     id         bigint auto_increment primary key,
     user_id    bigint not null,
     product_id bigint not null,
-    quantity   int    not null
+    quantity   int    not null,
+    foreign key (user_id) references users (id) on delete cascade,
+    foreign key (product_id) references products (id) on delete cascade
 );
