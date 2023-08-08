@@ -2,6 +2,7 @@ package shopping.mart.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.mart.domain.Product;
@@ -26,8 +27,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductResponse> findAllProducts() {
-        List<Product> products = productRepository.findAllProducts();
+    public List<ProductResponse> findAllProducts(final Pageable pageable) {
+        List<Product> products = productRepository.findAllProducts(pageable);
+
         return products.stream()
                 .map(product -> new ProductResponse(product.getId(), product.getName(), product.getImageUrl(),
                         product.getPrice()))

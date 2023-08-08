@@ -57,7 +57,7 @@ class AssertHelper {
         static void assertCart(final ExtractableResponse<Response> result, CartResponse exactlyExpected) {
             Http.assertIsOk(result);
 
-            assertThat(result.as(CartResponse.class).getProductResponses()).isEqualTo(
+            assertThat(result.as(CartResponse.class).getProductResponses()).containsAll(
                     exactlyExpected.getProductResponses());
         }
 

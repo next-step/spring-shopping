@@ -3,6 +3,8 @@ package shopping.mart.persist;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.ProductEntity;
 import shopping.mart.domain.Product;
@@ -24,10 +26,10 @@ public class ProductRepository {
         productJpaRepository.save(productEntity);
     }
 
-    public List<Product> findAllProducts() {
-        List<ProductEntity> productEntities = productJpaRepository.findAll();
+    public List<Product> findAllProducts(final Pageable pageable) {
+        Page<ProductEntity> pagedProductEntities = productJpaRepository.findAll(pageable);
 
-        return productEntities.stream()
+        return pagedProductEntities.getContent().stream()
                 .map(productEntity -> new Product(productEntity.getId(), productEntity.getName(),
                         productEntity.getImageUrl(), productEntity.getPrice()))
                 .collect(Collectors.toList());

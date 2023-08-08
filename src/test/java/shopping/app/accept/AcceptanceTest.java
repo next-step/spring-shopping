@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.TestDefaultLocation;
@@ -31,6 +34,7 @@ abstract class AcceptanceTest {
     }
 
     protected List<ProductResponse> findAllProducts() {
-        return productService.findAllProducts();
+        return productService.findAllProducts(PageRequest.of(
+                0, 10, Sort.by(Direction.DESC, "createdAt")));
     }
 }
