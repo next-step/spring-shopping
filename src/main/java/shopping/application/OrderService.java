@@ -13,40 +13,41 @@ import shopping.exception.MemberException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
-import shopping.repository.ProductRepository;
 
 @Service
 @Transactional
 public class OrderService {
 
     OrderRepository orderRepository;
-    ProductRepository productRepository;
     MemberRepository memberRepository;
     CartProductRepository cartProductRepository;
 
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository,
-        MemberRepository memberRepository) {
+    public OrderService(OrderRepository orderRepository, MemberRepository memberRepository,
+            CartProductRepository cartProductRepository) {
         this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
         this.memberRepository = memberRepository;
+        this.cartProductRepository = cartProductRepository;
     }
 
     public OrderResponse order(long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
+        Order order = new Order(member);
 
         List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(memberId);
+        List<OrderItem> orderItems = createOrderItems(order, cartProducts);
 
-        Order order = new Order(member);
-        List<OrderItem> orderItems = cartProducts.stream()
+        orderRepository.save(order);
+
+        return new OrderResponse(order.getId(), orderItems);
+    }
+
+    private List<OrderItem> createOrderItems(Order order, List<CartProduct> cartProducts) {
+        return cartProducts.stream()
             .map(cartProduct -> new OrderItem(order, cartProduct.getProduct(),
                 cartProduct.getProduct().getName(),
                 cartProduct.getProduct().getPrice(), cartProduct.getQuantity(),
                 cartProduct.getProduct().getImageUrl()))
             .collect(Collectors.toList());
-
-        orderRepository.save(order);
-
-        return new OrderResponse(order.getId(), orderItems);
     }
 }
