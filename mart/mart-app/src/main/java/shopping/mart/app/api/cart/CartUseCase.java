@@ -1,6 +1,5 @@
 package shopping.mart.app.api.cart;
 
-import shopping.mart.app.api.cart.event.CartClearEvent;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
@@ -15,5 +14,5 @@ public interface CartUseCase {
 
     CartResponse getCart(long userId);
 
-    void clearCart(CartClearEvent cartClearEvent);
+    void clearCart(long userId);
 }

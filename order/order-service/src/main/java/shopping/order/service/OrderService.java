@@ -2,11 +2,9 @@ package shopping.order.service;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.event.CartClearEvent;
 import shopping.mart.app.api.cart.response.CartResponse;
 import shopping.mart.app.api.cart.response.CartResponse.ProductResponse;
 import shopping.mart.app.domain.Cart;
@@ -21,13 +19,10 @@ import shopping.order.app.spi.ReceiptRepository;
 @Transactional(readOnly = true)
 public class OrderService implements OrderUseCase {
 
-    private final ApplicationEventPublisher applicationEventPublisher;
     private final CartUseCase cartUseCase;
     private final ReceiptRepository receiptRepository;
 
-    public OrderService(ApplicationEventPublisher applicationEventPublisher, CartUseCase cartUseCase,
-            ReceiptRepository receiptRepository) {
-        this.applicationEventPublisher = applicationEventPublisher;
+    public OrderService(CartUseCase cartUseCase, ReceiptRepository receiptRepository) {
         this.cartUseCase = cartUseCase;
         this.receiptRepository = receiptRepository;
     }
@@ -42,7 +37,7 @@ public class OrderService implements OrderUseCase {
 
         long receiptId = receiptRepository.persist(receipt);
 
-        applicationEventPublisher.publishEvent(new CartClearEvent(cartResponse.getCartId()));
+        cartUseCase.clearCart(orderRequest.getUserId());
 
         return receiptId;
     }
@@ -65,4 +60,5 @@ public class OrderService implements OrderUseCase {
         return new Product(productResponse.getId(), productResponse.getName(), productResponse.getImageUrl(),
                 productResponse.getPrice());
     }
+
 }

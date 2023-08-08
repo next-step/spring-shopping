@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.event.CartClearEvent;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
@@ -25,7 +22,7 @@ public class CartService implements CartUseCase {
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
-    public CartService(final ProductRepository productRepository,
+    public CartService(ProductRepository productRepository,
             final CartRepository cartRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
@@ -33,7 +30,7 @@ public class CartService implements CartUseCase {
 
     @Override
     @Transactional
-    public void addProduct(final long userId, final CartAddRequest request) {
+    public void addProduct(long userId, CartAddRequest request) {
         Cart cart = getCartByUserId(userId);
         Product product = getProductById(request.getProductId());
 
@@ -55,7 +52,7 @@ public class CartService implements CartUseCase {
 
     @Override
     @Transactional
-    public void deleteProduct(final long userId, final long productId) {
+    public void deleteProduct(long userId, long productId) {
         Cart cart = getCartByUserId(userId);
         Product product = getProductById(productId);
 
@@ -65,7 +62,7 @@ public class CartService implements CartUseCase {
     }
 
     @Override
-    public CartResponse getCart(final long userId) {
+    public CartResponse getCart(long userId) {
         Cart cart = getCartByUserId(userId);
 
         List<CartResponse.ProductResponse> products = cart.getProductCounts().entrySet().stream()
@@ -77,9 +74,9 @@ public class CartService implements CartUseCase {
     }
 
     @Override
-    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT, classes = CartClearEvent.class)
-    public void clearCart(CartClearEvent cartClearEvent) {
-        Cart cart = cartRepository.getByUserId(cartClearEvent.getUserId());
+    @Transactional
+    public void clearCart(long userId) {
+        Cart cart = cartRepository.getByUserId(userId);
 
         cart.deleteAllProducts();
 
