@@ -2,11 +2,13 @@ package shopping.order.app.domain;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import shopping.order.app.exception.IllegalExchangeRateException;
 
 public class Exchange {
 
     private static final double MINIMUM_RATE = 0D;
+    private static final int SCALE = 5;
 
     private final double rate;
 
@@ -22,7 +24,7 @@ public class Exchange {
     }
 
     BigDecimal calculate(BigInteger price) {
-        return new BigDecimal(price).multiply(BigDecimal.valueOf(rate));
+        return new BigDecimal(price).divide(BigDecimal.valueOf(rate), SCALE, RoundingMode.HALF_UP);
     }
 
     public double getRate() {

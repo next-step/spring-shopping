@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.catchException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,7 @@ class ExchangeTest {
             // given
             BigInteger price = BigInteger.valueOf(10000);
             double rate = 1.345D;
-            BigDecimal expected = BigDecimal.valueOf(10000).multiply(BigDecimal.valueOf(rate));
+            BigDecimal expected = BigDecimal.valueOf(10000).divide(BigDecimal.valueOf(rate), 5, RoundingMode.HALF_UP);
             Exchange exchange = new Exchange(1.345D);
 
             // when
