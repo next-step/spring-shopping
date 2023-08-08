@@ -11,6 +11,7 @@ public class OrderPageController {
     @GetMapping("/order-detail/{orderId}")
     public String orderDetail(@PathVariable Long orderId, Model model) {
         model.addAttribute("orderId", orderId);
+
         return "order-detail";
     }
 

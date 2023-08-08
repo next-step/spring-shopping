@@ -1,4 +1,4 @@
-package shopping.intergration.util;
+package shopping.intergration.utils;
 
 public class LoginUtils {
     public static final String EMAIL = "yongs170@naver.com";

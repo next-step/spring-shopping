@@ -28,7 +28,7 @@ public class Order {
         this.member = member;
     }
 
-    public void addOrderItem(OrderItem orderItem) {
+    public void addOrderItem(final OrderItem orderItem) {
         orderItems.add(orderItem);
     }
 
@@ -40,6 +40,10 @@ public class Order {
 
     public Long getId() {
         return id;
+    }
+
+    public Member getMember() {
+        return member;
     }
 
     public List<OrderItem> getOrderItems() {

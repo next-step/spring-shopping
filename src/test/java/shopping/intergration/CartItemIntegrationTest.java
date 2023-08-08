@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.tuple;
 import static shopping.intergration.helper.CartItemHelper.*;
 import static shopping.intergration.helper.LogInHelper.login;
 import static shopping.intergration.helper.RestAssuredHelper.extractObject;
-import static shopping.intergration.util.LoginUtils.*;
+import static shopping.intergration.utils.LoginUtils.*;
 
 class CartItemIntegrationTest extends IntegrationTest {
 

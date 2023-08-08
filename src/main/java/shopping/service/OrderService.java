@@ -18,7 +18,6 @@ import shopping.repository.MemberRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -49,11 +48,9 @@ public class OrderService {
         final Member member = getMemberById(memberId);
         final Order persistOrder = orderRepository.save(new Order(member));
         final List<CartItem> cartItems = cartItemRepository.findAllByMemberId(memberId);
-
         orderItemRepository.saveAll(cartItems.stream()
                 .map(convertCartItemToOrderItem(persistOrder))
                 .collect(toList()));
-
         cartItemRepository.deleteAllByMember(member);
 
         return OrderCreateResponse.from(persistOrder.getId());
@@ -76,12 +73,10 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderResponses readOrders(final Long memberId) {
         final Member member = getMemberById(memberId);
-        final List<Order> orders = orderRepository.findAllByMember(member);
+        final List<OrderResponse> response = orderRepository.findAllByMember(member).stream()
+                .map(order -> readOrder(order.getId()))
+                .collect(toList());
 
-        List<OrderResponse> response = new ArrayList<>();
-        for (Order order : orders) {
-            response.add(readOrder(order.getId()));
-        }
         return OrderResponses.from(response);
     }
 
@@ -105,6 +100,4 @@ public class OrderService {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_MEMBER_ID));
     }
-
-
 }

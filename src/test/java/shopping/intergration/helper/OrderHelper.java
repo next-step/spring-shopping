@@ -17,6 +17,24 @@ public class OrderHelper {
                 .then().log().all().extract();
     }
 
+    public static ExtractableResponse<Response> readOrderRequest(final String accessToken, final OrderCreateResponse orders) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/orders/{orderId}", orders.getOrderId())
+                .then().log().all().extract();
+    }
+
+    public static ExtractableResponse<Response> readOrdersRequest(final String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/orders")
+                .then().log().all().extract();
+    }
+
     public static OrderCreateResponse createOrders(final String accessToken) {
         return RestAssuredHelper.extractObject(RestAssured
                 .given().log().all()
@@ -25,6 +43,7 @@ public class OrderHelper {
                 .when().post("/orders")
                 .then().log().all().extract(), OrderCreateResponse.class);
     }
+
 
 }
 

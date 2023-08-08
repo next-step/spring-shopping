@@ -28,7 +28,8 @@ public class OrderItemResponse {
                 orderItem.getOrderItemImage(),
                 orderItem.getOrderItemName(),
                 orderItem.getOrderItemPrice(),
-                orderItem.getOrderItemQuantity());
+                orderItem.getOrderItemQuantity()
+        );
     }
 
     public String getImage() {
