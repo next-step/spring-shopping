@@ -15,7 +15,6 @@ import shopping.exception.OrderException;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.ProductRepository;
-import shopping.ui.argumentresolver.Login;
 
 @Service
 public class OrderService {
@@ -31,7 +30,7 @@ public class OrderService {
         this.memberRepository = memberRepository;
     }
 
-    public OrderResponse order(@Login long memberId, OrderRequest orderRequest) {
+    public OrderResponse order(long memberId, OrderRequest orderRequest) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
 
