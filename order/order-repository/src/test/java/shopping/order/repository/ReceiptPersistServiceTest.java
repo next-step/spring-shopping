@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.assertj.core.api.SoftAssertions;
@@ -77,6 +78,7 @@ public class ReceiptPersistServiceTest extends JpaTest {
                 }
             });
         }
+
     }
 
     @Nested
@@ -104,45 +106,88 @@ public class ReceiptPersistServiceTest extends JpaTest {
             assertReceipts(result, List.of(receipt, receipt, receipt));
         }
 
-        private void assertReceipts(List<Receipt> result, List<Receipt> expected) {
-            assertThat(result).hasSize(expected.size());
-            SoftAssertions.assertSoftly(softAssertions -> {
-                for (int i = 0; i < result.size(); i++) {
-                    Receipt resultElement = result.get(i);
-                    Receipt expectedElement = expected.get(i);
-                    assertReceipt(resultElement, expectedElement);
-                }
-            });
+    }
+
+    @Nested
+    @DisplayName("findByIdAndUserId 메소드는")
+    class find_by_id_and_user_id_method {
+
+        @Test
+        @DisplayName("userId와 receiptId 모두 일치하는 Receipt를 반환한다.")
+        void return_receipt_matched_user_id_and_receipt_id() {
+            // given
+            Cart cart = DomainFixture.Cart.defaultCart();
+            Order order = new Order(cart);
+            Receipt receipt = order.purchase();
+
+            receiptPersistService.persist(receipt);
+
+            long receiptId = receiptJpaRepository.findAll().get(0).getId();
+            long userId = receipt.getUserId();
+
+            when(productUseCase.findAllProducts()).thenReturn(defaultProductResponse(cart));
+
+            // when
+            Optional<Receipt> result = receiptPersistService.findByIdAndUserId(receiptId, userId);
+
+            // then
+            assertThat(result).isNotEmpty();
+            assertReceiptWithOutId(result.get(), receipt);
         }
 
-        private void assertReceipt(Receipt expected, Receipt result) {
-            SoftAssertions.assertSoftly(softAssertions -> {
-                softAssertions.assertThat(expected.getId()).isEqualTo(result.getId());
-                softAssertions.assertThat(expected.getTotalPrice()).isEqualTo(result.getTotalPrice());
-                assertExactlyReceiptProducts(expected.getReceiptProducts(), result.getReceiptProducts());
-            });
-        }
+        @Test
+        @DisplayName("userId와 receiptId 모두 일치하는 Receipt를 찾을 수 없으면, Optional.empty를 반환한다.")
+        void return_empty_optional_if_cannot_find_matched_receipt() {
+            // given
+            long receiptId = 1L;
+            long userId = 2L;
 
-        private void assertExactlyReceiptProducts(List<ReceiptProduct> expected, List<ReceiptProduct> result) {
-            SoftAssertions.assertSoftly(softAssertions -> {
-                softAssertions.assertThat(expected).hasSize(result.size());
-                for (int i = 0; i < expected.size(); i++) {
-                    ReceiptProduct expectedElement = expected.get(0);
-                    ReceiptProduct resultElement = result.get(0);
-                    softAssertions.assertThat(expectedElement.getName()).isEqualTo(resultElement.getName());
-                    softAssertions.assertThat(expectedElement.getPrice()).isEqualTo(resultElement.getPrice());
-                    softAssertions.assertThat(expectedElement.getImageUrl()).isEqualTo(resultElement.getImageUrl());
-                    softAssertions.assertThat(expectedElement.getQuantity()).isEqualTo(resultElement.getQuantity());
-                }
-            });
-        }
+            // when
+            Optional<Receipt> result = receiptPersistService.findByIdAndUserId(receiptId, userId);
 
-        public List<ProductResponse> defaultProductResponse(Cart cart) {
-            Set<Product> products = cart.getProductCounts().keySet();
-            return products.stream()
-                    .map(product -> new ProductResponse(product.getId(), product.getName(), product.getImageUrl(),
-                            product.getPrice()))
-                    .collect(Collectors.toList());
+            // then
+            assertThat(result).isEmpty();
         }
     }
+
+    private void assertReceipts(List<Receipt> result, List<Receipt> expected) {
+        assertThat(result).hasSize(expected.size());
+        SoftAssertions.assertSoftly(softAssertions -> {
+            for (int i = 0; i < result.size(); i++) {
+                Receipt resultElement = result.get(i);
+                Receipt expectedElement = expected.get(i);
+                assertReceiptWithOutId(resultElement, expectedElement);
+            }
+        });
+    }
+
+    private void assertReceiptWithOutId(Receipt expected, Receipt result) {
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(expected.getTotalPrice()).isEqualTo(result.getTotalPrice());
+            assertExactlyReceiptProducts(expected.getReceiptProducts(), result.getReceiptProducts());
+        });
+    }
+
+    private void assertExactlyReceiptProducts(List<ReceiptProduct> expected, List<ReceiptProduct> result) {
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(expected).hasSize(result.size());
+            for (int i = 0; i < expected.size(); i++) {
+                ReceiptProduct expectedElement = expected.get(0);
+                ReceiptProduct resultElement = result.get(0);
+                softAssertions.assertThat(expectedElement.getName()).isEqualTo(resultElement.getName());
+                softAssertions.assertThat(expectedElement.getPrice()).isEqualTo(resultElement.getPrice());
+                softAssertions.assertThat(expectedElement.getImageUrl()).isEqualTo(resultElement.getImageUrl());
+                softAssertions.assertThat(expectedElement.getQuantity()).isEqualTo(resultElement.getQuantity());
+            }
+        });
+    }
+
+    private List<ProductResponse> defaultProductResponse(Cart cart) {
+        Set<Product> products = cart.getProductCounts().keySet();
+        return products.stream()
+                .map(product -> new ProductResponse(product.getId(), product.getName(), product.getImageUrl(),
+                        product.getPrice()))
+                .collect(Collectors.toList());
+    }
+
 }

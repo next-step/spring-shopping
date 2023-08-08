@@ -10,5 +10,5 @@ public interface ReceiptRepository {
 
     List<Receipt> findAllByUserId(long userId);
 
-    Optional<Receipt> findReceiptByIdAndUserId(long id, long userId);
+    Optional<Receipt> findByIdAndUserId(long id, long userId);
 }

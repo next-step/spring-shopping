@@ -8,5 +8,5 @@ public interface ReceiptUseCase {
 
     List<ReceiptResponse> findAllByUserId(long userId);
 
-    ReceiptDetailResponse getReceiptByIdAndUserId(long id, long userId);
+    ReceiptDetailResponse getByIdAndUserId(long id, long userId);
 }

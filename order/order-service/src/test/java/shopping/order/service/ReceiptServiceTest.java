@@ -29,7 +29,7 @@ class ReceiptServiceTest {
     private ReceiptRepository receiptRepository;
 
     @Nested
-    @DisplayName("getReceiptByIdAndUserId 메소드는")
+    @DisplayName("getByIdAndUserId 메소드는")
     class get_receipt_by_id_and_user_id_method {
 
         @Test
@@ -39,10 +39,10 @@ class ReceiptServiceTest {
             long id = 1L;
             long userId = 2L;
 
-            Mockito.when(receiptRepository.findReceiptByIdAndUserId(id, userId)).thenReturn(Optional.empty());
+            Mockito.when(receiptRepository.findByIdAndUserId(id, userId)).thenReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> receiptUseCase.getReceiptByIdAndUserId(id, userId));
+            Exception exception = catchException(() -> receiptUseCase.getByIdAndUserId(id, userId));
 
             // then
             assertThat(exception).isInstanceOf(DoesNotFindReceiptException.class);

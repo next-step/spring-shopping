@@ -32,8 +32,8 @@ public class ReceiptService implements ReceiptUseCase {
     }
 
     @Override
-    public ReceiptDetailResponse getReceiptByIdAndUserId(long id, long userId) {
-        Receipt receipt = receiptRepository.findReceiptByIdAndUserId(id, userId)
+    public ReceiptDetailResponse getByIdAndUserId(long id, long userId) {
+        Receipt receipt = receiptRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new DoesNotFindReceiptException(id));
 
         return toReceiptDetailResponse(receipt);

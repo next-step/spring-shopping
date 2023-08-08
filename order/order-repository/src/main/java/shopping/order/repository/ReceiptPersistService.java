@@ -45,8 +45,18 @@ public class ReceiptPersistService implements ReceiptRepository {
     }
 
     @Override
-    public Optional<Receipt> findReceiptByIdAndUserId(long id, long userId) {
-        return Optional.empty();
+    public Optional<Receipt> findByIdAndUserId(long id, long userId) {
+        ReceiptEntity receiptEntity = receiptJpaRepository.getReferenceByIdAndUserId(id, userId);
+
+        if (receiptEntity == null) {
+            return Optional.empty();
+        }
+
+        List<ProductResponse> productResponses = productUseCase.findAllProducts();
+        List<Product> products = toProducts(productResponses, receiptEntity.getReceiptProductEntities());
+        Receipt receipt = receiptEntity.toDomain(products);
+
+        return Optional.of(receipt);
     }
 
     private List<Product> toProducts(List<ProductResponse> productResponses,
