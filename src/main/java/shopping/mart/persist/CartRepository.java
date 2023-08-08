@@ -98,7 +98,7 @@ public class CartRepository {
     private List<CartProductEntity> getDeletedProducts(Cart cart, List<CartProductEntity> cartProductEntities) {
         List<CartProductEntity> deleteCartProductEntities = getZeroCountedProductEntities(cartProductEntities);
 
-        addDeletedCartProductEntities(cart, cartProductEntities, deleteCartProductEntities);
+        deleteCartProductEntities.addAll(findDeletedCartProductEntities(cart, cartProductEntities));
 
         return deleteCartProductEntities;
     }
@@ -109,8 +109,8 @@ public class CartRepository {
                 .collect(toList());
     }
 
-    private void addDeletedCartProductEntities(Cart cart, List<CartProductEntity> cartProductEntities,
-            List<CartProductEntity> deleteCartProductEntities) {
+    private List<CartProductEntity> findDeletedCartProductEntities(Cart cart,
+            List<CartProductEntity> cartProductEntities) {
         Set<Long> persistedProductIds = cartProductEntities.stream()
                 .map(CartProductEntity::getProductId)
                 .collect(toSet());
@@ -124,8 +124,9 @@ public class CartRepository {
         Map<Long, CartProductEntity> productIdIndexedCartProductEntities = cartProductEntities.stream()
                 .collect(toMap(CartProductEntity::getProductId, identity()));
 
-        persistedProductIds.forEach(deleteTarget -> deleteCartProductEntities.add(
-                productIdIndexedCartProductEntities.get(deleteTarget)));
+        return persistedProductIds.stream()
+                .map(productIdIndexedCartProductEntities::get)
+                .collect(toList());
     }
 
     public void addProduct(Cart cart, Product product) {
