@@ -39,7 +39,7 @@ public class OrderAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.body().as(OrderResponse.class)
-            .getOrderProducts().size())
+            .getItems().size())
             .isEqualTo(2);
         assertThat(cartProductResponse.body().as(new TypeRef<List<CartResponse>>() {}))
             .hasSize(0);

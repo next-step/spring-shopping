@@ -128,10 +128,10 @@
 `GET /api/order/`
 - 웹 프론트와 연동한다.
 - 장바구니 목록 페이지(/cart)
-  - [ ] 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문. 
-  - [ ] 주문 요청이 성공하면 주문 상세 페이지(`GET /order-detail`)로 이동.
+  - [x] 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문. 
+  - [x] 주문 요청이 성공하면 주문 상세 페이지(`GET /order-detail`)로 이동.
 - 특정 주문의 상세 정보(/order-detail)
-  - [ ] 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가. 
+  - [x] 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가. 
 - 사용자 별 주문 목록 확인(/order-history)
   - [ ] /order-history url로 접근할 경우 주문 목록 페이지를 조회.
   - [ ] 상세보기 버튼을 클릭해 주문 상세 정보 페이지(/order-detail)로 이동.

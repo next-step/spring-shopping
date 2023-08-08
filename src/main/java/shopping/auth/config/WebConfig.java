@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     private final AuthArgumentResolver authArgumentResolver;
 
     public WebConfig(final JwtInterceptor jwtInterceptor,
-                     final AuthArgumentResolver authArgumentResolver) {
+        final AuthArgumentResolver authArgumentResolver) {
         this.jwtInterceptor = jwtInterceptor;
         this.authArgumentResolver = authArgumentResolver;
     }
@@ -23,9 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
             .addPathPatterns("/**")
-            .excludePathPatterns("/", "/cart", "/login")
+            .excludePathPatterns("/", "/cart", "/login", "/order-detail/**")
             .excludePathPatterns("/api/login")
-            .excludePathPatterns("/css/**", "/assets/**", "/js/**", "/*.ico");
+            .excludePathPatterns("/error", "/css/**", "/assets/**", "/js/**", "/*.ico");
     }
 
     @Override

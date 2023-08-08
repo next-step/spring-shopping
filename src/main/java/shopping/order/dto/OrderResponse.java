@@ -1,35 +1,38 @@
 package shopping.order.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import shopping.order.domain.Order;
-import shopping.order.domain.OrderProduct;
 
 public class OrderResponse {
 
     private Long id;
-    private List<OrderProduct> orderProducts;
+    private List<OrderProductResponse> items;
     private int totalPrice;
 
     public OrderResponse(
         final Long id,
-        final List<OrderProduct> orderProducts,
+        final List<OrderProductResponse> items,
         final int totalPrice
     ) {
         this.id = id;
-        this.orderProducts = orderProducts;
+        this.items = items;
         this.totalPrice = totalPrice;
     }
 
     public static OrderResponse from(final Order order) {
-        return new OrderResponse(order.getId(), order.getOrderProducts(), order.getTotalPrice());
+        List<OrderProductResponse> orderProducts = order.getOrderProducts().stream()
+            .map(OrderProductResponse::from)
+            .collect(Collectors.toList());
+        return new OrderResponse(order.getId(), orderProducts, order.getTotalPrice());
     }
 
     public Long getId() {
         return id;
     }
 
-    public List<OrderProduct> getOrderProducts() {
-        return orderProducts;
+    public List<OrderProductResponse> getItems() {
+        return items;
     }
 
     public int getTotalPrice() {
