@@ -34,15 +34,17 @@ public class OrderService implements OrderUseCase {
 
     @Override
     @Transactional
-    public void order(OrderRequest orderRequest) {
+    public long order(OrderRequest orderRequest) {
         CartResponse cartResponse = cartUseCase.getCart(orderRequest.getUserId());
 
         Order order = new Order(toCart(orderRequest.getUserId(), cartResponse));
         Receipt receipt = order.purchase();
 
-        receiptRepository.persist(receipt);
+        long receiptId = receiptRepository.persist(receipt);
 
         applicationEventPublisher.publishEvent(new CartClearEvent(cartResponse.getCartId()));
+
+        return receiptId;
     }
 
     private Cart toCart(long userId, CartResponse cartResponse) {

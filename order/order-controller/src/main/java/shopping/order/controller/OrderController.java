@@ -28,9 +28,10 @@ public class OrderController {
     @PostMapping("/orders")
     public ResponseEntity<Void> orderCartProducts() {
         OrderRequest orderRequest = new OrderRequest(Long.parseLong(tokenPerRequest.getDecryptedToken()));
-        orderUseCase.order(orderRequest);
+        long receiptId = orderUseCase.order(orderRequest);
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.LOCATION, "/order-detail")
+                .header(HttpHeaders.LOCATION, "/order-detail/" + receiptId)
                 .build();
     }
 
@@ -39,4 +40,5 @@ public class OrderController {
     ErrorTemplate handleEmptyCartException(EmptyCartException emptyCartException) {
         return new ErrorTemplate(emptyCartException.getMessage());
     }
+
 }

@@ -29,7 +29,7 @@ public class ReceiptController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ReceiptResponse> orderHistory() {
+    public List<ReceiptResponse> receiptHistory() {
         return receiptUseCase.findAllByUserId(Long.parseLong(tokenPerRequest.getDecryptedToken()));
     }
 

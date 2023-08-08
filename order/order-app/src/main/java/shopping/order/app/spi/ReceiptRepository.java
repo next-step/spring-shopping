@@ -6,7 +6,7 @@ import shopping.order.app.domain.Receipt;
 
 public interface ReceiptRepository {
 
-    void persist(Receipt receipt);
+    long persist(Receipt receipt);
 
     List<Receipt> findAllByUserId(long userId);
 

@@ -26,8 +26,9 @@ public class ReceiptPersistService implements ReceiptRepository {
     }
 
     @Override
-    public void persist(Receipt receipt) {
-        receiptJpaRepository.save(new ReceiptEntity(receipt));
+    public long persist(Receipt receipt) {
+        ReceiptEntity receiptEntity = receiptJpaRepository.save(new ReceiptEntity(receipt));
+        return receiptEntity.getId();
     }
 
     @Override
