@@ -30,6 +30,11 @@ public class Order {
         return orderItems.getAllOrderMoney();
     }
 
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.updateOrder(this);
+    }
+
     public Long getId() {
         return id;
     }
