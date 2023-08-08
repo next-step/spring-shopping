@@ -18,15 +18,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
-import shopping.dto.request.OrderItemRequest;
-import shopping.dto.request.OrderRequest;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
-import shopping.exception.OrderException;
+import shopping.exception.MemberException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
-import shopping.repository.ProductRepository;
 
 @DisplayName("OrderService 클래스")
 @ExtendWith(MockitoExtension.class)
@@ -67,6 +64,20 @@ class OrderServiceTest {
                 .collect(Collectors.toList());
             List<Long> actualProductIds = extractProductIds(result.getOrderItems());
             assertThat(actualProductIds).isEqualTo(expectedProductIds);
+        }
+
+        @DisplayName("사용자 정보가 유효하 않으면 MemberException 을 던진다.")
+        @Test
+        void throwMemberException_WhenMemberNotExist() {
+            // given
+            long notExistMemberId = 12L;
+
+            given(memberRepository.findById(notExistMemberId)).willReturn(Optional.empty());
+
+            // when & then
+            assertThatThrownBy(() -> orderService.order(notExistMemberId))
+                .hasMessage("존재하지 않는 사용자 입니다")
+                .isInstanceOf(MemberException.class);
         }
     }
 
