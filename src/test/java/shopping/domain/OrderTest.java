@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.catchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import shopping.exception.OrderProductException;
+import shopping.exception.OrderException;
 
 @DisplayName("Order 클래스는")
 public class OrderTest {
@@ -30,8 +30,8 @@ public class OrderTest {
         }
 
         @Test
-        @DisplayName("Member 가 null 이면 OrderProductException 을 던진다.")
-        void throwOrderProductException_whenMemberIsNull() {
+        @DisplayName("Member 가 null 이면 OrderException 을 던진다.")
+        void throwOrderException_whenMemberIsNull() {
             // given
             Member member = null;
 
@@ -39,7 +39,7 @@ public class OrderTest {
             Exception exception = catchException(() -> new Order(member));
 
             // then
-            assertThat(exception).isInstanceOf(OrderProductException.class);
+            assertThat(exception).isInstanceOf(OrderException.class);
             assertThat(exception.getMessage()).contains("member 가 존재하지 않습니다");
         }
     }
