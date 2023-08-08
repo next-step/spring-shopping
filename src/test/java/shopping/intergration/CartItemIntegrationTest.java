@@ -18,12 +18,9 @@ import static org.assertj.core.api.Assertions.tuple;
 import static shopping.intergration.helper.CartItemHelper.*;
 import static shopping.intergration.helper.LogInHelper.login;
 import static shopping.intergration.helper.RestAssuredHelper.extractObject;
+import static shopping.intergration.util.LoginUtils.*;
 
 class CartItemIntegrationTest extends IntegrationTest {
-
-    private static final String EMAIL = "yongs170@naver.com";
-    private static final String PASSWORD = "123!@#asd";
-    private static final String DIFFERENT_MEMBER_EMAIL = "proto_seo@naver.com";
 
     @Autowired
     private CartItemRepository cartItemRepository;
