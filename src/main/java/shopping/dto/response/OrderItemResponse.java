@@ -4,7 +4,7 @@ import shopping.domain.OrderItem;
 
 public class OrderItemResponse {
 
-    private long id;
+    private Long id;
     private long productId;
 
     private String name;
@@ -18,7 +18,7 @@ public class OrderItemResponse {
     private OrderItemResponse() {
     }
 
-    public OrderItemResponse(long id, long productId, String name, long price, int quantity,
+    public OrderItemResponse(Long id, long productId, String name, long price, int quantity,
             String imageUrl) {
         this.id = id;
         this.productId = productId;
@@ -39,7 +39,7 @@ public class OrderItemResponse {
         );
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
