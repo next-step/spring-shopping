@@ -112,4 +112,23 @@ public class CartProductRepositoryTest {
                 .isInstanceOf(CartException.class);
         }
     }
+
+    @Nested
+    @Rollback
+    @DisplayName("deleteByMemberId 메소드는")
+    class DeleteByMemberId {
+
+        @Test
+        @DisplayName("member 의 모든 장바구니를 제거한다.")
+        void deleteCartProductByMemberId() {
+            // given
+            Long memberId = 1L;
+
+            // when
+            cartRepository.deleteByMemberId(memberId);
+
+            // then
+            assertThat(cartRepository.findAllByMemberId(memberId)).isEmpty();
+        }
+    }
 }
