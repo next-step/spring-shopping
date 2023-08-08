@@ -1,8 +1,6 @@
 package shopping.application;
 
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -12,14 +10,12 @@ import shopping.domain.Cart;
 import shopping.domain.CartItem;
 import shopping.domain.Email;
 import shopping.domain.Order;
-import shopping.domain.OrderItem;
 import shopping.domain.User;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.OrderNotFoundException;
 import shopping.exception.UserNotFoundException;
 import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
-import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.UserRepository;
 
@@ -33,15 +29,12 @@ public class OrderService {
     private static final String ID_COLUMN = "id";
 
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-            CartItemRepository cartItemRepository, UserRepository userRepository) {
+    public OrderService(OrderRepository orderRepository, CartItemRepository cartItemRepository,
+            UserRepository userRepository) {
         this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
     }
@@ -52,9 +45,8 @@ public class OrderService {
                 .orElseThrow(() -> new UserNotFoundException(email));
         List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
 
-        Cart cart = new Cart(cartItems);
-        Order order = new Order(user, cart.getTotalPrice());
-        cartItems.forEach(cartItem -> order.addOrderItem(new OrderItem(order, cartItem)));
+        Cart cart = new Cart(cartItems, user);
+        Order order = cart.toOrder();
         orderRepository.save(order);
         cartItemRepository.deleteAll(cartItems);
         return order.getId();

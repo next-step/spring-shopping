@@ -28,7 +28,7 @@ public class CartTest {
             );
 
             // when
-            Cart cart = new Cart(cartItems);
+            Cart cart = new Cart(cartItems, user);
 
             // then
             assertThat(cart.getCartItems()).hasSize(1);
@@ -39,9 +39,10 @@ public class CartTest {
         void nullListThenThrow() {
             // given
             List<CartItem> cartItems = null;
+            User user = new User(1L, "user@email.com", "userpassword");
 
             // when, then
-            assertThatCode(() -> new Cart(cartItems))
+            assertThatCode(() -> new Cart(cartItems, user))
                     .isInstanceOf(ArgumentValidateFailException.class)
                     .hasMessage("카트 아이템 리스트는 null일 수 없습니다.");
 
@@ -52,21 +53,22 @@ public class CartTest {
         void emptyListThenThrow() {
             // given
             List<CartItem> cartItems = List.of();
+            User user = new User(1L, "user@email.com", "userpassword");
 
             // when, then
-            assertThatCode(() -> new Cart(cartItems))
+            assertThatCode(() -> new Cart(cartItems, user))
                     .isInstanceOf(EmptyCartException.class);
         }
 
     }
 
     @Nested
-    @DisplayName("장바구니 총 가격 검증")
-    class WhenGetTotalPrice {
+    @DisplayName("장바구니에서 주문 생성")
+    class WhenToOrder {
 
-        @DisplayName("장바구니 총 가격 계산 성공")
+        @DisplayName("장바구니 주문 생성 성공")
         @Test
-        void calculateTotalPrice() {
+        void toOrderSuccess() {
             // given
             User user = new User(1L, "user@email.com", "userpassword");
             Product product1 = new Product(1L, "product1", "productImage.jpg", 10_000L);
@@ -75,12 +77,14 @@ public class CartTest {
                     new CartItem(1L, user, product1, 1),
                     new CartItem(2L, user, product2, 2)
             );
+            Cart cart = new Cart(cartItems, user);
 
             // when
-            Cart cart = new Cart(cartItems);
+            Order order = cart.toOrder();
 
             // then
-            assertThat(cart.getTotalPrice().getPrice()).isEqualTo(30_022L);
+            assertThat(order.getTotalPrice().getPrice()).isEqualTo(30_022L);
+            assertThat(order.getOrderItems()).hasSize(2);
         }
 
     }
