@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import shopping.cart.domain.vo.Quantity;
+import shopping.common.vo.Image;
 import shopping.common.vo.Money;
 
 @Entity
@@ -22,20 +23,23 @@ public class OrderItem {
     @Embedded
     private Money productPrice;
     @Embedded
+    private Image productImage;
+    @Embedded
     private Quantity quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "orders_id")
     private Order order;
 
     protected OrderItem() {
     }
 
-    public OrderItem(Long productId, String productName, Money productPrice, Quantity quantity,
-        Order order) {
+    public OrderItem(Long productId, String productName, Money productPrice, Image productImage,
+        Quantity quantity, Order order) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
+        this.productImage = productImage;
         this.quantity = quantity;
         this.order = order;
     }
@@ -58,6 +62,10 @@ public class OrderItem {
 
     public Money getProductPrice() {
         return productPrice;
+    }
+
+    public Image getProductImage() {
+        return productImage;
     }
 
     public Quantity getQuantity() {
