@@ -23,7 +23,7 @@ public class Order extends BaseTime {
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private final List<OrderItem> orderItems = new ArrayList<>();
 
     protected Order() {
     }
