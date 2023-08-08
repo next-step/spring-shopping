@@ -9,12 +9,14 @@ import shopping.domain.cart.CartItem;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
 import shopping.dto.response.OrderCreateResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.ProductRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 
 @DataJpaTest
 @Import(OrderService.class)
@@ -49,6 +51,26 @@ class OrderServiceTest {
         assertThat(orderRepository.findById(orderCreateResponse.getOrderId())).isPresent();
     }
 
+    @Test
+    @DisplayName("주문 아이디로 주문 내역을 조회한다.")
+    void readOrder() {
+        Member anyMember = getAnyMember();
+        Product anyProduct = getAnyProduct();
+        final CartItem cartItem = cartItemRepository.save(new CartItem(anyMember, anyProduct));
+        cartItem.plusQuantity();
+
+        final OrderCreateResponse order = orderService.createOrder(anyMember.getId());
+
+        final OrderResponse orderResponse = orderService.readOrder(order.getOrderId());
+
+        assertThat(orderResponse.getOrderId()).isEqualTo(order.getOrderId());
+        assertThat(orderResponse.getOrderPrice()).isEqualTo(anyProduct.getPrice() * 2);
+        assertThat(orderResponse.getOrderItems()).hasSize(1)
+                .extracting("image", "name", "price", "quantity")
+                .contains(
+                        tuple(anyProduct.getImage(), anyProduct.getName(), anyProduct.getPrice(), 2)
+                );
+    }
 
     private Member getAnyMember() {
         return memberRepository.findAll().stream()

@@ -8,6 +8,8 @@ import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
 import shopping.domain.product.Product;
 import shopping.dto.response.OrderCreateResponse;
+import shopping.dto.response.OrderItemResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
@@ -49,9 +51,28 @@ public class OrderService {
         orderItemRepository.saveAll(cartItems.stream()
                 .map(convertCartItemToOrderItem(persistOrder))
                 .collect(toList()));
+
         cartItemRepository.deleteAllByMember(member);
 
         return OrderCreateResponse.from(persistOrder.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponse readOrder(final Long orderId) {
+        final Order order = getOrderById(orderId);
+        final List<OrderItemResponse> orderItemResponses = order.getOrderItems().stream()
+                .map(OrderItemResponse::from)
+                .collect(toList());
+
+        return OrderResponse.of(
+                order.getId(),
+                order.getOrderPrice(),
+                orderItemResponses
+        );
+    }
+
+    private Order getOrderById(final Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_ORDER_ID));
     }
 
     private Function<CartItem, OrderItem> convertCartItemToOrderItem(final Order order) {

@@ -32,6 +32,12 @@ public class Order {
         orderItems.add(orderItem);
     }
 
+    public int getOrderPrice() {
+        return orderItems.stream()
+                .mapToInt(OrderItem::getTotalPrice)
+                .sum();
+    }
+
     public Long getId() {
         return id;
     }

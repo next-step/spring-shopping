@@ -13,12 +13,16 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
+
     @Embedded
     private OrderItemName orderItemName;
+
     @Embedded
     private OrderItemPrice orderItemPrice;
+
     @Embedded
     private OrderItemImage orderItemImage;
+
     @Embedded
     private OrderItemQuantity orderItemQuantity;
 
@@ -35,8 +39,12 @@ public class OrderItem {
         this.orderItemPrice = OrderItemPrice.from(orderItemPrice);
         this.orderItemImage = OrderItemImage.from(orderItemImage);
         this.orderItemQuantity = OrderItemQuantity.from(orderItemQuantity);
-
         this.order = order;
+        order.addOrderItem(this);
+    }
+
+    public int getTotalPrice() {
+        return getOrderItemPrice() * getOrderItemQuantity();
     }
 
     public Long getId() {
