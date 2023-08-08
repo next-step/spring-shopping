@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
             .addPathPatterns("/**")
-            .excludePathPatterns("/", "/cart", "/login", "/order-detail/**")
+            .excludePathPatterns("/", "/cart", "/login", "/order-detail/**","/order-history/**")
             .excludePathPatterns("/api/login")
             .excludePathPatterns("/error", "/css/**", "/assets/**", "/js/**", "/*.ico");
     }

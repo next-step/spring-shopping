@@ -124,7 +124,7 @@
 `POST /api/order`
 - [x]  특정 주문의 상세 정보를 확인
 `GET /api/order/{orderId}`
-- [ ] 사용자 별 주문 목록 확인
+- [x] 사용자 별 주문 목록 확인
 `GET /api/order/`
 - 웹 프론트와 연동한다.
 - 장바구니 목록 페이지(/cart)
@@ -133,7 +133,7 @@
 - 특정 주문의 상세 정보(/order-detail)
   - [x] 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가. 
 - 사용자 별 주문 목록 확인(/order-history)
-  - [ ] /order-history url로 접근할 경우 주문 목록 페이지를 조회.
-  - [ ] 상세보기 버튼을 클릭해 주문 상세 정보 페이지(/order-detail)로 이동.
+  - [x] /order-history url로 접근할 경우 주문 목록 페이지를 조회.
+  - [x] 상세보기 버튼을 클릭해 주문 상세 정보 페이지(/order-detail)로 이동.
 
 ### 5단계
