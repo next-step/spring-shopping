@@ -80,7 +80,7 @@ class OrderTest {
 
         private void assertReceipt(Receipt expected, Receipt result) {
             SoftAssertions.assertSoftly(softAssertions -> {
-                softAssertions.assertThat(expected.getReceiptId()).isEqualTo(result.getReceiptId());
+                softAssertions.assertThat(expected.getId()).isEqualTo(result.getId());
                 softAssertions.assertThat(expected.getTotalPrice()).isEqualTo(result.getTotalPrice());
                 assertExactlyReceiptProducts(expected.getReceiptProducts(), result.getReceiptProducts());
             });

@@ -5,7 +5,7 @@ import java.util.List;
 
 public final class Receipt {
 
-    private final Long receiptId;
+    private final Long id;
     private final List<ReceiptProduct> receiptProducts;
     private final BigInteger totalPrice;
 
@@ -13,14 +13,14 @@ public final class Receipt {
         this(null, receiptProducts, totalPrice);
     }
 
-    public Receipt(Long receiptId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice) {
-        this.receiptId = receiptId;
+    public Receipt(Long id, List<ReceiptProduct> receiptProducts, BigInteger totalPrice) {
+        this.id = id;
         this.receiptProducts = receiptProducts;
         this.totalPrice = totalPrice;
     }
 
-    public Long getReceiptId() {
-        return receiptId;
+    public Long getId() {
+        return id;
     }
 
     public List<ReceiptProduct> getReceiptProducts() {

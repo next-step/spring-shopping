@@ -11,17 +11,11 @@ import shopping.order.app.domain.exception.EmptyCartException;
 
 public final class Order {
 
-    private final Long id;
     private final BigInteger totalPrice;
     private final Map<Product, Integer> products;
 
     public Order(Cart cart) {
-        this(null, cart);
-    }
-
-    public Order(Long id, Cart cart) {
         validCart(cart);
-        this.id = id;
         this.products = cart.getProductCounts();
         this.totalPrice = calculatePrice();
     }
@@ -49,10 +43,6 @@ public final class Order {
                 .collect(Collectors.toList());
 
         return new Receipt(receiptProducts, totalPrice);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getTotalPrice() {
