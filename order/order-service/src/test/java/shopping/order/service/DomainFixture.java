@@ -1,6 +1,4 @@
-package shopping.order.app.domain;
-
-import static shopping.order.app.domain.DomainFixture.Product.defaultProduct;
+package shopping.order.service;
 
 class DomainFixture {
 
@@ -11,8 +9,8 @@ class DomainFixture {
 
         static shopping.mart.app.domain.Cart defaultCart() {
             shopping.mart.app.domain.Cart cart = new shopping.mart.app.domain.Cart(DEFAULT_CART_ID, DEFAULT_USER_ID);
-            cart.addProduct(defaultProduct());
-            cart.updateProduct(defaultProduct(), 100);
+            cart.addProduct(Product.defaultProduct());
+            cart.updateProduct(Product.defaultProduct(), 100);
             return cart;
         }
     }

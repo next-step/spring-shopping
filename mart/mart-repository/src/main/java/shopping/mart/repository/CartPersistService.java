@@ -15,7 +15,7 @@ public class CartPersistService implements CartRepository {
     private final ProductJpaRepository productJpaRepository;
 
     public CartPersistService(CartJpaRepository cartJpaRepository,
-        ProductJpaRepository productJpaRepository) {
+            ProductJpaRepository productJpaRepository) {
         this.cartJpaRepository = cartJpaRepository;
         this.productJpaRepository = productJpaRepository;
     }
@@ -43,11 +43,22 @@ public class CartPersistService implements CartRepository {
     public Cart getByUserId(long userId) {
         CartEntity cartEntity = cartJpaRepository.getReferenceByUserId(userId);
 
+        return addProductToCart(cartEntity);
+    }
+
+    @Override
+    public Cart getById(long cartId) {
+        CartEntity cartEntity = cartJpaRepository.getReferenceById(cartId);
+
+        return addProductToCart(cartEntity);
+    }
+
+    private Cart addProductToCart(CartEntity cartEntity) {
         List<ProductEntity> productEntities = productJpaRepository.findAllById(
-            cartEntity.getRegisteredProductIds());
+                cartEntity.getRegisteredProductIds());
 
         return cartEntity.toDomain(productEntities.stream()
-            .map(ProductEntity::toDomain)
-            .collect(Collectors.toList()));
+                .map(ProductEntity::toDomain)
+                .collect(Collectors.toList()));
     }
 }

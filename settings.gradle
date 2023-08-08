@@ -16,3 +16,6 @@ include 'auth:auth-repository'
 
 include 'order'
 include 'order:order-app'
+include 'order:order-service'
+findProject(':order:order-service')?.name = 'order-service'
+
