@@ -8,6 +8,7 @@ import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
+import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.MemberException;
 import shopping.repository.CartProductRepository;
@@ -30,16 +31,26 @@ public class OrderService {
     }
 
     public OrderResponse order(long memberId) {
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
+        Member member = findMember(memberId);
         Order order = new Order(member);
+        List<OrderItemResponse> orderItemResponses = orderMemberCartItems(member, order);
+        clearMemberCart(memberId);
+        return new OrderResponse(order.getId(), orderItemResponses);
+    }
 
-        List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(memberId);
+    private Member findMember(long memberId) {
+        return memberRepository.findById(memberId)
+            .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
+    }
+
+    private List<OrderItemResponse> orderMemberCartItems(Member member, Order order) {
+        List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(member.getId());
         List<OrderItem> orderItems = createOrderItems(order, cartProducts);
-
         orderRepository.save(order);
 
-        return new OrderResponse(order.getId(), orderItems);
+        return orderItems.stream()
+            .map(OrderItemResponse::of)
+            .collect(Collectors.toList());
     }
 
     private List<OrderItem> createOrderItems(Order order, List<CartProduct> cartProducts) {
@@ -49,5 +60,9 @@ public class OrderService {
                 cartProduct.getProduct().getPrice(), cartProduct.getQuantity(),
                 cartProduct.getProduct().getImageUrl()))
             .collect(Collectors.toList());
+    }
+
+    private void clearMemberCart(long memberId) {
+        cartProductRepository.deleteByMemberId(memberId);
     }
 }
