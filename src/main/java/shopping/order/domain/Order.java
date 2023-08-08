@@ -32,17 +32,22 @@ public class Order {
     @Embedded
     private Price totalPrice;
 
+    @Column(name = "member_id")
+    private Long memberId;
+
     protected Order() {
     }
 
-    public Order(List<OrderProduct> orderProducts, Price totalPrice) {
+    public Order(List<OrderProduct> orderProducts, Price totalPrice,Long memberId) {
         this.orderProducts = orderProducts;
         this.totalPrice = totalPrice;
+        this.memberId = memberId;
     }
 
-    public Order(List<OrderProduct> orderProducts) {
+    public Order(List<OrderProduct> orderProducts, Long memberId) {
         this.orderProducts = orderProducts;
         this.totalPrice = new Price(calculateTotalPrice());
+        this.memberId = memberId;
     }
 
     private int calculateTotalPrice() {
@@ -60,7 +65,11 @@ public class Order {
         return orderProducts;
     }
 
-    public double getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice.getPrice();
+    }
+
+    public Long getMemberId() {
+        return memberId;
     }
 }
