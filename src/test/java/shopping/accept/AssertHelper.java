@@ -16,6 +16,8 @@ import org.hamcrest.Matchers;
 import shopping.auth.app.api.response.TokenResponse;
 import shopping.mart.app.api.cart.response.CartResponse;
 import shopping.mart.app.api.cart.response.CartResponse.ProductResponse;
+import shopping.order.app.api.receipt.response.ReceiptDetailProductResponse;
+import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
 import shopping.order.app.api.receipt.response.ReceiptProductResponse;
 import shopping.order.app.api.receipt.response.ReceiptResponse;
 
@@ -103,6 +105,32 @@ class AssertHelper {
                 for (int i = 0; i < result.size(); i++) {
                     ReceiptProductResponse resultElement = result.get(i);
                     ReceiptProductResponse expectedElement = result.get(i);
+                    softAssertions.assertThat(resultElement.getName()).isEqualTo(expectedElement.getName());
+                    softAssertions.assertThat(resultElement.getPrice()).isEqualTo(expectedElement.getPrice());
+                    softAssertions.assertThat(resultElement.getImageUrl()).isEqualTo(expectedElement.getImageUrl());
+                    softAssertions.assertThat(resultElement.getQuantity()).isEqualTo(expectedElement.getQuantity());
+                }
+            });
+        }
+
+        static void assertReceiptDetail(ExtractableResponse<Response> result, ReceiptDetailResponse expected) {
+
+            ReceiptDetailResponse resultElement = result.as(ReceiptDetailResponse.class);
+            SoftAssertions.assertSoftly(softAssertions -> {
+                softAssertions.assertThat(resultElement.getId()).isEqualTo(expected.getId());
+                softAssertions.assertThat(resultElement.getTotalPrice()).isEqualTo(expected.getTotalPrice());
+                assertExactlyReceiptDetailProduct(resultElement.getReceiptDetailProducts(), expected.getReceiptDetailProducts());
+            });
+        }
+
+        private static void assertExactlyReceiptDetailProduct(List<ReceiptDetailProductResponse> result,
+            List<ReceiptDetailProductResponse> expected) {
+
+            SoftAssertions.assertSoftly(softAssertions -> {
+                assertThat(result).hasSize(expected.size());
+                for (int i = 0; i < result.size(); i++) {
+                    ReceiptDetailProductResponse resultElement = result.get(i);
+                    ReceiptDetailProductResponse expectedElement = result.get(i);
                     softAssertions.assertThat(resultElement.getName()).isEqualTo(expectedElement.getName());
                     softAssertions.assertThat(resultElement.getPrice()).isEqualTo(expectedElement.getPrice());
                     softAssertions.assertThat(resultElement.getImageUrl()).isEqualTo(expectedElement.getImageUrl());

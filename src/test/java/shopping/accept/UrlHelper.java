@@ -103,5 +103,14 @@ class UrlHelper {
                     .then().log().all()
                     .extract();
         }
+
+        static ExtractableResponse<Response> details(long receiptId, String accessToken) {
+            return given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/receipts/{receipt-id}", receiptId)
+                .then().log().all()
+                .extract();
+        }
     }
 }
