@@ -49,48 +49,20 @@ class OrderServiceTest {
         void createOrder() {
             // given
             final Member member = createMember();
-            final OrderRequest orderRequest = createOrderRequest();
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(anyLong()))
                 .willReturn(Optional.of(new Product(1L, "a", "a", 10)));
 
             // when
-            OrderResponse result = orderService.order(member.getId(), orderRequest);
+            OrderResponse result = orderService.order(member.getId());
 
             // then
-            assertThat(result.getOrderItems())
-                .hasSize(orderRequest.getOrderItems().size());
-        }
-
-        @DisplayName("장바구니 상품이 존재하지 않으면 OrderException 을 던진다")
-        @Test
-        void throwOrderException_WhenOrderItemNotExist() {
-            // given
-            final Member member = createMember();
-            final OrderRequest orderRequest = createOrderRequest();
-
-            given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-            given(productRepository.findById(anyLong()))
-                .willReturn(Optional.empty());
-
-            // when & then
-            assertThatThrownBy(() -> orderService.order(member.getId(), orderRequest))
-                .isInstanceOf(OrderException.class)
-                .hasMessage("존재하지 않는 상품 정보입니다");
+            assertThat(result.getOrderItems()).isNotEmpty();
         }
     }
 
     private Member createMember() {
         return new Member(1L, "woowa1@woowa.com", "1234");
     }
-
-    private OrderRequest createOrderRequest() {
-        final List<OrderItemRequest> orderItemRequests = List.of(
-            new OrderItemRequest(1, 1000, 10, "상품1", "url"),
-            new OrderItemRequest(2, 1000, 10, "상품1", "url")
-        );
-        return new OrderRequest(orderItemRequests);
-    }
-
 }

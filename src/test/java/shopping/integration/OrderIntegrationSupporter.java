@@ -4,18 +4,16 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
-import shopping.dto.request.OrderRequest;
 import shopping.dto.response.LoginResponse;
 
 public class OrderIntegrationSupporter {
 
-    static ExtractableResponse<Response> order(final OrderRequest orderItems) {
+    static ExtractableResponse<Response> order() {
         final String accessToken = getAccessToken();
 
         return RestAssured
             .given().log().all()
             .auth().oauth2(accessToken)
-            .body(orderItems)
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().post("/order")
             .then().log().all().extract();

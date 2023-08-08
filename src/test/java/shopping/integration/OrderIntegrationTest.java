@@ -4,11 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import shopping.dto.request.OrderRequest;
 
 @DisplayName("주문 기능")
 class OrderIntegrationTest extends IntegrationTest {
@@ -16,11 +14,8 @@ class OrderIntegrationTest extends IntegrationTest {
     @Test
     @DisplayName("장바구니 아이템 주문에 성공한다")
     void order() {
-        // given
-        OrderRequest orderRequest = new OrderRequest(List.of());
-
         // when
-        ExtractableResponse<Response> result = OrderIntegrationSupporter.order(orderRequest);
+        ExtractableResponse<Response> result = OrderIntegrationSupporter.order();
 
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.CREATED.value());
