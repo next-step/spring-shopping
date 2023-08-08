@@ -303,7 +303,7 @@ class OrderServiceTest {
 
             // when
             Page<OrderResponse> page = orderService.findAllOrder(email, 1, 12);
-            OrderResponse orderResponse = page.getContent().get(0);
+            OrderResponse orderResponse = page.getContent().get(1);
 
             // then
             assertSoftly(softAssertions -> {

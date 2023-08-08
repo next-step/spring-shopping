@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Cart;
@@ -80,7 +81,7 @@ public class OrderService {
         int size = validatePageSize(pageSize);
 
         Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email),
-                PageRequest.of(page - PAGE_START_NUMBER, size));
+                PageRequest.of(page - PAGE_START_NUMBER, size, Direction.DESC, "id"));
 
         return orders.map(order ->
                 OrderResponse.of(order, orderItemRepository.findByOrder(order)));
