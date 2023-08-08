@@ -17,5 +17,5 @@ security:
 
 secret:
   currency:
-    access_key: ${CURRENCY_KEY}
-    url: http://api.currencylayer.com/live?currencies=KRW&access_key=
+    access_key: test-access-key
+    url: http://localhost:1080/live?currencies=KRW&access_key=
