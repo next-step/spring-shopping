@@ -30,9 +30,11 @@ class CartItemRepositoryTest {
     void findAllDtoByMemberIdTest() {
         // given
         Member newMember = new Member("email", "zz");
+        Member otherMember = new Member("email2", "zz2");
         Product newProduct = new Product("치킨", new Image("url"), "10000");
 
         memberRepository.save(newMember);
+        memberRepository.save(otherMember);
         productRepository.save(newProduct);
 
         CartItem cartItem = new CartItem(newMember.getId(), newProduct.getId(), "치킨", new Money("10000"), 1);
@@ -40,11 +42,14 @@ class CartItemRepositoryTest {
         cartItemRepository.save(cartItem);
 
         // when
-        List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByMemberId(newMember.getId());
+        List<ProductCartItemDto> newMemberProductCartItemDtos = cartItemRepository.findAllDtoByMemberId(newMember.getId());
+        List<ProductCartItemDto> otherMemberProductCartItemDtos = cartItemRepository.findAllDtoByMemberId(otherMember.getId());
 
         // then
-        Assertions.assertThat(productCartItemDtos).hasSize(1);
-        Assertions.assertThat(productCartItemDtos.get(0).getCartItem()).isEqualTo(cartItem);
-        Assertions.assertThat(productCartItemDtos.get(0).getProduct()).isEqualTo(newProduct);
+        Assertions.assertThat(newMemberProductCartItemDtos).hasSize(1);
+        Assertions.assertThat(newMemberProductCartItemDtos.get(0).getCartItem()).isEqualTo(cartItem);
+        Assertions.assertThat(newMemberProductCartItemDtos.get(0).getProduct()).isEqualTo(newProduct);
+
+        Assertions.assertThat(otherMemberProductCartItemDtos).isEmpty();
     }
 }
