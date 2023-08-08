@@ -1,27 +1,42 @@
 package shopping.domain.cart;
 
+import shopping.exception.NoCartItemForOrderException;
 import shopping.exception.NoOrderItemException;
 import shopping.exception.NotSameOrderException;
 import shopping.exception.UserNotMatchException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderItems {
 
     private final Long orderId;
     private final Long userId;
-    private final List<OrderItem> orderItems;
+    private final List<OrderItem> items;
 
-    private OrderItems(Long orderId, Long userId, List<OrderItem> orderItems) {
+    private OrderItems(Long orderId, Long userId, List<OrderItem> items) {
         this.orderId = orderId;
         this.userId = userId;
-        this.orderItems = orderItems;
+        this.items = items;
+    }
+
+    public static OrderItems from(List<CartItem> cartItems, Order order) {
+        validateCartItemExists(cartItems);
+        return OrderItems.of(cartItems.stream()
+                .map(cartItem -> OrderItem.from(cartItem, order))
+                .collect(Collectors.toList()));
     }
 
     public static OrderItems of(List<OrderItem> orderItems) {
         validateNotEmpty(orderItems);
         Order order = reduceOrder(orderItems);
         return new OrderItems(order.getId(), order.getUserId(), orderItems);
+    }
+
+    private static void validateCartItemExists(List<CartItem> cartItems) {
+        if (cartItems.isEmpty()) {
+            throw new NoCartItemForOrderException();
+        }
     }
 
     private static void validateNotEmpty(List<OrderItem> orderItems) {
@@ -56,7 +71,7 @@ public class OrderItems {
         return userId;
     }
 
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
+    public List<OrderItem> getItems() {
+        return items;
     }
 }

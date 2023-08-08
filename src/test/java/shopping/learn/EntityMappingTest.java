@@ -62,6 +62,7 @@ class EntityMappingTest {
 
         public Team(List<Member> member) {
             this.members = member;
+            member.forEach(m -> m.setTeam(this));
         }
 
         public Team() {
@@ -84,13 +85,14 @@ class EntityMappingTest {
         }
     }
 
-    @DisplayName("양방향 매핑 시 hibernate select 문 확인")
+    @DisplayName("양방향 매핑 시 OneToMany insert 문 확인")
     @Test
-    void bidirectionalMapping() {
+    void bidirectionalInsert() {
         Member member = new Member();
         Member member2 = new Member();
         Team team = new Team(List.of(member, member2));
         entityManager.persist(team);
+        entityManager.flush();
         // there is no insert for member
     }
 }
