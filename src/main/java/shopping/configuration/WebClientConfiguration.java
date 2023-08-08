@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfiguration {
 
-    private static final String API_BASE_URL =
-            "http://api.currencylayer.com/live?currencies=KRW&access_key=";
+    @Value("${secret.currency.url}")
+    private String API_BASE_URL;
 
     @Value("${secret.currency.access_key}")
     private String API_ACCESS_KEY;
