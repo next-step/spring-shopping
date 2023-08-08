@@ -52,7 +52,7 @@ class WebClientConnectionTest {
                 .bodyToMono(ExchangeRateResponse.class)
                 .block();
         assertThat(exchangeRateResponse).isNotNull();
-        assertThat(exchangeRateResponse.getQuotes().get("USDKRW")).isCloseTo(1300L, Offset.offset(100L));
+        assertThat(exchangeRateResponse.getExchangeRates().get("USDKRW")).isCloseTo(1300L, Offset.offset(100L));
     }
 }
 

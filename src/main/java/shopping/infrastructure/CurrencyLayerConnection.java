@@ -22,7 +22,7 @@ public class CurrencyLayerConnection {
     public Long getExchangeRate(String source, String target) {
         ExchangeRateResponse response = getExchangeRateResponse(source, target);
         if (response.getSuccess()) {
-            return response.getQuotes().get(source+target);
+            return response.getExchangeRates().get(source+target);
         }
         // TODO: custom exception
         throw new RuntimeException();

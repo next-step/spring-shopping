@@ -9,8 +9,8 @@ public class LoginRequest {
     private static final int PASSWORD_MAX_LENGTH = 100;
     private static final int EMAIL_MAX_LENGTH = 100;
 
-    private String email;
-    private String password;
+    private final String email;
+    private final String password;
 
     @JsonCreator
     public LoginRequest(@JsonProperty("email") final String email,

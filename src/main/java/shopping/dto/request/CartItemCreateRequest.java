@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CartItemCreateRequest {
 
-    private Long productId;
+    private final Long productId;
 
     @JsonCreator
     public CartItemCreateRequest(@JsonProperty("productId") Long productId) {

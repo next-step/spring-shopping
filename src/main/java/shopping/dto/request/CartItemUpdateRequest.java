@@ -7,7 +7,7 @@ import shopping.exception.InvalidRequestException;
 public class CartItemUpdateRequest {
 
     private static final int MIN_QUANTITY = 1;
-    private Integer quantity;
+    private final Integer quantity;
 
     @JsonCreator
     public CartItemUpdateRequest(@JsonProperty("quantity") Integer quantity) {
