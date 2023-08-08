@@ -46,6 +46,7 @@ public class ReceiptEntity extends TimeBaseEntity {
                 .map(receiptProduct -> new ReceiptProductEntity(this, receiptProduct))
                 .collect(Collectors.toList());
 
+        this.userId = receipt.getUserId();
         this.totalPrice = receipt.getTotalPrice().toString();
     }
 
@@ -69,6 +70,10 @@ public class ReceiptEntity extends TimeBaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public List<ReceiptProductEntity> getReceiptProductEntities() {
