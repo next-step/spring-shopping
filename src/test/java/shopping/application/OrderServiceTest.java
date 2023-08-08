@@ -8,10 +8,13 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.api.CurrencyCaller;
 import shopping.domain.CartItem;
 import shopping.domain.Email;
 import shopping.domain.Order;
@@ -38,6 +41,9 @@ class OrderServiceTest {
     @Autowired
     private OrderService orderService;
 
+    @MockBean
+    private CurrencyCaller currencyCaller;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -62,6 +68,7 @@ class OrderServiceTest {
         void givenNoUserThenThrow() {
             // given
             String email = "test1@testing.com";
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
 
             // when, then
             assertThatCode(() -> orderService.createOrder(email))
@@ -73,6 +80,7 @@ class OrderServiceTest {
         void givenEmptyCartThenThrow() {
             // given
             String email = "test1@testing.com";
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             userRepository.save(new User(email, "userpasswordisthis"));
 
             // when, then
@@ -89,6 +97,7 @@ class OrderServiceTest {
             Product savedProduct1 = productRepository.save(
                     new Product(9871L, "chicken1", "/chicken.jpg", 10_000L));
             CartItem cartItem1 = cartItemRepository.save(new CartItem(savedUser, savedProduct1));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
 
             // when
             Long orderId = orderService.createOrder(email);
@@ -130,6 +139,7 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
 
             // when
             Long orderId = orderService.createOrder(email);
@@ -187,6 +197,7 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             Long orderId = orderService.createOrder(email);
 
             // when
@@ -230,6 +241,7 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             Long orderId = orderService.createOrder(email);
 
             // when, then
@@ -250,6 +262,7 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             Long orderId = orderService.createOrder(email);
 
             // when, then
@@ -272,6 +285,7 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             Long orderId = orderService.createOrder(email);
 
             // when, then
@@ -297,8 +311,10 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             orderService.createOrder(email);
             cartItemRepository.save(new CartItem(savedUser, savedProduct1));
+            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             orderService.createOrder(email);
 
             // when

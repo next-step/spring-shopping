@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `orders`
     id          BIGINT AUTO_INCREMENT NOT NULL,
     user_id     BIGINT                NOT NULL,
     total_price BIGINT                NOT NULL,
+    ratio       DOUBLE                NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

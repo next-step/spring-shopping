@@ -1,12 +1,20 @@
 package shopping.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockserver.integration.ClientAndServer;
+import org.mockserver.junit.jupiter.MockServerExtension;
+import org.mockserver.model.Header;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.request.CartItemCreateRequest;
@@ -14,7 +22,32 @@ import shopping.dto.request.LoginRequest;
 import shopping.dto.response.OrderResponse;
 
 @DisplayName("주문 기능 인수테스트")
+@ExtendWith(MockServerExtension.class)
 class OrderIntegrationTest extends IntegrationTest {
+
+    private ClientAndServer mockServer;
+
+    @Override
+    @BeforeEach
+    void setUp() {
+        super.setUp();
+        mockServer = ClientAndServer.startClientAndServer(1080);
+        mockServer.when(request()
+                .withMethod("GET")
+                .withPath("/live")
+        ).respond(response()
+                .withStatusCode(200)
+                .withHeader(new Header("Content-Type",
+                        MediaType.APPLICATION_JSON_VALUE))
+                .withBody(
+                        "{\"success\":true,\"terms\":\"https://localhost/terms\",\"privacy\":\"https://localhost.com/privacy\",\"timestamp\":1691490183,\"source\":\"USD\",\"quotes\":{\"USDKRW\":1318.400853}}")
+        );
+    }
+
+    @AfterEach
+    void shutDown() {
+        mockServer.stop();
+    }
 
     @DisplayName("주문 요청시 장바구니에있는 아이템 구매 및 장바구니 비우기")
     @Test

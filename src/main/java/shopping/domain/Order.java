@@ -33,20 +33,25 @@ public class Order {
     @AttributeOverrides(@AttributeOverride(name = "price", column = @Column(name = "total_price", nullable = false)))
     private Price totalPrice;
 
+    @Embedded
+    @AttributeOverrides(@AttributeOverride(name = "ratio", column = @Column(name = "ratio", nullable = false)))
+    private Ratio ratio;
+
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItems;
 
     protected Order() {
     }
 
-    public Order(User user, Price totalPrice) {
+    public Order(User user, Price totalPrice, Ratio ratio) {
         this.user = user;
         this.totalPrice = totalPrice;
+        this.ratio = ratio;
         this.orderItems = new ArrayList<>();
     }
 
-    public Order(Long id, User user, Price totalPrice, List<OrderItem> orderItems) {
-        this(user, totalPrice);
+    public Order(Long id, User user, Price totalPrice, Ratio ratio, List<OrderItem> orderItems) {
+        this(user, totalPrice, ratio);
         this.id = id;
         this.orderItems = orderItems;
     }
@@ -61,6 +66,10 @@ public class Order {
 
     public Price getTotalPrice() {
         return totalPrice;
+    }
+
+    public Ratio getRatio() {
+        return ratio;
     }
 
     public List<OrderItem> getOrderItems() {

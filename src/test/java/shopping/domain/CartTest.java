@@ -80,7 +80,7 @@ public class CartTest {
             Cart cart = new Cart(cartItems, user);
 
             // when
-            Order order = cart.toOrder();
+            Order order = cart.toOrder(1.0);
 
             // then
             assertThat(order.getTotalPrice().getPrice()).isEqualTo(30_022L);
