@@ -15,8 +15,8 @@ import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import shopping.mart.app.api.cart.CartUseCase;
 import shopping.mart.app.api.cart.event.CartClearEvent;
-import shopping.order.app.api.OrderUseCase;
-import shopping.order.app.api.request.OrderRequest;
+import shopping.order.app.api.order.OrderUseCase;
+import shopping.order.app.api.order.request.OrderRequest;
 import shopping.order.app.spi.ReceiptRepository;
 
 @RecordApplicationEvents

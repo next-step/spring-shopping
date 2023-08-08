@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.service.interceptor.TokenPerRequest;
 import shopping.core.util.ErrorTemplate;
-import shopping.order.app.api.OrderUseCase;
-import shopping.order.app.api.request.OrderRequest;
+import shopping.order.app.api.order.OrderUseCase;
+import shopping.order.app.api.order.request.OrderRequest;
 import shopping.order.app.domain.exception.EmptyCartException;
 
 @RestController
