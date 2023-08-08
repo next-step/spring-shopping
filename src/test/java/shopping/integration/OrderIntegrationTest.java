@@ -1,9 +1,12 @@
 package shopping.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,17 @@ class OrderIntegrationTest extends IntegrationTest {
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(result.header("Location")).isNotBlank();
+    }
+
+    @Test
+    @DisplayName("장바구니 아이템 주문에 성공하면 기존 장바구니 아이템들은 모두 제거된다")
+    void allCartProductsShouldBeDeleted_WhenOrderSuccess() {
+        // when
+        OrderIntegrationSupporter.order();
+
+        // then
+        ExtractableResponse<Response> cartProducts = CartProductIntegrationSupporter.findCartProducts();
+        assertThat(cartProducts.body().as(ArrayList.class)).isEmpty();
     }
 
     @Test
