@@ -10,11 +10,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.member.Member;
-import shopping.domain.member.MemberEmail;
-import shopping.domain.member.MemberPassword;
-import shopping.dto.request.LoginRequest;
-import shopping.repository.MemberRepository;
+import shopping.auth.service.MemberService;
+import shopping.auth.domain.Member;
+import shopping.auth.domain.MemberEmail;
+import shopping.auth.domain.MemberPassword;
+import shopping.auth.dto.request.LoginRequest;
+import shopping.auth.repository.MemberRepository;
 
 @DisplayName("회원 Service 테스트")
 @ExtendWith(MockitoExtension.class)

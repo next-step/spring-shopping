@@ -7,7 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import shopping.domain.cart.CartProduct;
+import shopping.cart.repository.CartProductRepository;
+import shopping.cart.domain.CartProduct;
 
 @DisplayName("장바구니 상품 Repository 테스트")
 @DataJpaTest

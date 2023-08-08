@@ -13,12 +13,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.cart.CartProduct;
-import shopping.domain.product.Product;
-import shopping.dto.request.CartProductCreateRequest;
-import shopping.exception.ShoppingException;
-import shopping.repository.CartProductRepository;
-import shopping.repository.ProductRepository;
+import shopping.cart.service.CartService;
+import shopping.cart.domain.CartProduct;
+import shopping.product.domain.Product;
+import shopping.cart.dto.request.CartProductCreateRequest;
+import shopping.global.exception.ShoppingException;
+import shopping.cart.repository.CartProductRepository;
+import shopping.product.repository.ProductRepository;
 
 @DisplayName("장바구니 상품 Service 테스트")
 @ExtendWith(MockitoExtension.class)

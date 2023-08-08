@@ -12,8 +12,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import shopping.acceptance.helper.RestHelper;
-import shopping.dto.request.LoginRequest;
-import shopping.exception.dto.ExceptionResponse;
+import shopping.auth.dto.request.LoginRequest;
+import shopping.global.exception.dto.ExceptionResponse;
 
 @DisplayName("인증 관련 기능 인수 테스트")
 class AuthAcceptanceTest extends AcceptanceTest {

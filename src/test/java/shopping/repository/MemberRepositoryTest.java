@@ -7,8 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import shopping.domain.member.Member;
-import shopping.domain.member.MemberEmail;
+import shopping.auth.repository.MemberRepository;
+import shopping.auth.domain.Member;
+import shopping.auth.domain.MemberEmail;
 
 @DisplayName("회원 Repository 테스트")
 @DataJpaTest

@@ -10,7 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
-import shopping.exception.ShoppingAuthenticationException;
+import shopping.auth.exception.ShoppingAuthenticationException;
+import shopping.auth.util.BearerExtractor;
 
 @DisplayName("Bearer 토큰 관련 기능 테스트")
 class BearerExtractorTest {

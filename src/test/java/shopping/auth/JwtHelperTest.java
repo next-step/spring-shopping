@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.auth.util.JwtHelper;
 
 @DisplayName("JWT 관련 기능 테스트")
 class JwtHelperTest {
