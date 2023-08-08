@@ -117,11 +117,6 @@ Authorization: Bearer {jwt_token}
 POST /order
 
 Authorization: Bearer {jwt_token}
-
-{
-  memberId: 1
-  orderItems: []
-}
 ```
 
 #### Response
