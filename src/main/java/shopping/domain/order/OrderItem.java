@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class OrderItem {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
 
     @Embedded

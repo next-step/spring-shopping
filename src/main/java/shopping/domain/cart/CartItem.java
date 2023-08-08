@@ -23,7 +23,7 @@ public class CartItem {
 
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
 
     @Column

@@ -8,6 +8,7 @@ import shopping.domain.cart.Quantity;
 import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
 import shopping.domain.order.OrderRepository;
+import shopping.dto.OrderResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +40,18 @@ public class OrderService {
 
         Order order = new Order(userId, orderItems, sum);
 
+        cartItemRepository.deleteAll(items.getItems());
+
         return orderRepository.save(order).getId();
+    }
+
+    @Transactional
+    public List<OrderResponse> findAll(Long userId) {
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+
+        return orders.stream()
+                .map(OrderResponse::from)
+                .collect(Collectors.toList());
     }
 
     private CartItems findCartItemsByUserId(final Long userId) {

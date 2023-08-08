@@ -34,10 +34,15 @@ public class Order {
 
     }
 
-    public Order(Long userId, List<OrderItem> orderItems, Long totalPrice) {
+    public Order(Long id, Long userId, List<OrderItem> orderItems, Long totalPrice) {
+        this.id = id;
         this.userId = userId;
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
+    }
+
+    public Order(Long userId, List<OrderItem> orderItems, Long totalPrice) {
+        this(null, userId, orderItems, totalPrice);
     }
 
     public Long getId() {
