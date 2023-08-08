@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.service.interceptor.TokenPerRequest;
+import shopping.auth.app.api.Token;
 import shopping.core.util.ErrorTemplate;
 import shopping.order.app.api.order.OrderUseCase;
 import shopping.order.app.api.order.request.OrderRequest;
@@ -17,17 +17,17 @@ import shopping.order.app.exception.EmptyCartException;
 public class OrderController {
 
     private final OrderUseCase orderUseCase;
-    private final TokenPerRequest tokenPerRequest;
+    private final Token token;
 
     public OrderController(OrderUseCase orderUseCase,
-            TokenPerRequest tokenPerRequest) {
+            Token token) {
         this.orderUseCase = orderUseCase;
-        this.tokenPerRequest = tokenPerRequest;
+        this.token = token;
     }
 
     @PostMapping("/orders")
     public ResponseEntity<Void> orderCartProducts() {
-        OrderRequest orderRequest = new OrderRequest(Long.parseLong(tokenPerRequest.getDecryptedToken()));
+        OrderRequest orderRequest = new OrderRequest(Long.parseLong(token.decrypted()));
         long receiptId = orderUseCase.order(orderRequest);
 
         return ResponseEntity.ok()

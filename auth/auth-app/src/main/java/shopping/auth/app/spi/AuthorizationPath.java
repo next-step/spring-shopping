@@ -1,4 +1,4 @@
-package shopping.auth.service.config;
+package shopping.auth.app.spi;
 
 @FunctionalInterface
 public interface AuthorizationPath {

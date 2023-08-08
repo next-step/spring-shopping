@@ -1,6 +1,5 @@
 dependencies {
-    implementation project(':mart:mart-app')
-
     implementation project(':core')
-    implementation project(':auth:auth-service')
+    implementation project(':mart:mart-app')
+    implementation project(':auth:auth-app')
 }

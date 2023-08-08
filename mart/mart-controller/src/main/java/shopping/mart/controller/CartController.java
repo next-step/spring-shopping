@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.service.interceptor.TokenPerRequest;
+import shopping.auth.app.api.Token;
 import shopping.core.util.ErrorTemplate;
 import shopping.mart.app.api.cart.CartUseCase;
 import shopping.mart.app.api.cart.request.CartAddRequest;
@@ -26,35 +26,35 @@ import shopping.mart.app.exception.NegativeProductCountException;
 public class CartController {
 
     private final CartUseCase cartUseCase;
-    private final TokenPerRequest tokenPerRequest;
+    private final Token token;
 
-    public CartController(CartUseCase cartUseCase, TokenPerRequest tokenPerRequest) {
+    public CartController(CartUseCase cartUseCase, Token token) {
         this.cartUseCase = cartUseCase;
-        this.tokenPerRequest = tokenPerRequest;
+        this.token = token;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addProduct(@RequestBody CartAddRequest request) {
-        cartUseCase.addProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
+        cartUseCase.addProduct(Long.parseLong(token.decrypted()), request);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CartResponse findAllProducts() {
-        return cartUseCase.getCart(Long.parseLong(tokenPerRequest.getDecryptedToken()));
+        return cartUseCase.getCart(Long.parseLong(token.decrypted()));
     }
 
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     public void updateProductCount(@RequestBody CartUpdateRequest request) {
-        cartUseCase.updateProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), request);
+        cartUseCase.updateProduct(Long.parseLong(token.decrypted()), request);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCart(@RequestParam(name = "product-id") Long productId) {
-        cartUseCase.deleteProduct(Long.parseLong(tokenPerRequest.getDecryptedToken()), productId);
+        cartUseCase.deleteProduct(Long.parseLong(token.decrypted()), productId);
     }
 
     @ExceptionHandler({AlreadyExistProductException.class,

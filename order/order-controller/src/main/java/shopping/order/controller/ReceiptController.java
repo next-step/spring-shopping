@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.service.interceptor.TokenPerRequest;
+import shopping.auth.app.api.Token;
 import shopping.core.util.ErrorTemplate;
 import shopping.order.app.api.receipt.ReceiptUseCase;
 import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
@@ -20,23 +20,22 @@ import shopping.order.app.exception.DoesNotFindReceiptException;
 public class ReceiptController {
 
     private final ReceiptUseCase receiptUseCase;
-    private final TokenPerRequest tokenPerRequest;
+    private final Token token;
 
-    public ReceiptController(ReceiptUseCase receiptUseCase, TokenPerRequest tokenPerRequest) {
+    public ReceiptController(ReceiptUseCase receiptUseCase, Token token) {
         this.receiptUseCase = receiptUseCase;
-        this.tokenPerRequest = tokenPerRequest;
+        this.token = token;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ReceiptResponse> receiptHistory() {
-        return receiptUseCase.findAllByUserId(Long.parseLong(tokenPerRequest.getDecryptedToken()));
+        return receiptUseCase.findAllByUserId(Long.parseLong(token.decrypted()));
     }
 
     @GetMapping("/{receiptId}")
     public ReceiptDetailResponse receiptDetail(@PathVariable("receiptId") long receiptId) {
-        return receiptUseCase.getByIdAndUserId(receiptId,
-                Long.parseLong(tokenPerRequest.getDecryptedToken()));
+        return receiptUseCase.getByIdAndUserId(receiptId, Long.parseLong(token.decrypted()));
     }
 
     @ExceptionHandler(DoesNotFindReceiptException.class)
@@ -44,4 +43,5 @@ public class ReceiptController {
     ErrorTemplate handleDoesNotFindReceiptException(DoesNotFindReceiptException doesNotFindReceiptException) {
         return new ErrorTemplate(doesNotFindReceiptException.getMessage());
     }
+
 }
