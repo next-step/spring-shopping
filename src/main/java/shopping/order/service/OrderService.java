@@ -43,4 +43,10 @@ public class OrderService {
             .orElseThrow(() -> new ShoppingException("찾으시는 주문이 존재하지 않습니다. 입력 값 : " + orderId));
         return OrderResponse.from(order);
     }
+
+    public List<OrderResponse> getOrderList(Long memberId) {
+        List<Order> orders = orderRepository.findByMemberId(memberId);
+        return orders.stream().map(order -> OrderResponse.from(order))
+            .collect(Collectors.toList());
+    }
 }

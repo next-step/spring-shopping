@@ -1,5 +1,6 @@
 package shopping.order.controller;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,10 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.saveOrder(memberId));
     }
 
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> getOrderByMember (@LoginUser Long memberId){
+        return  ResponseEntity.ok().body(orderService.getOrderList(memberId));
+    }
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(
         @LoginUser Long memberId,
