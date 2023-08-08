@@ -25,8 +25,7 @@ dependencies {
     implementation project(':order:order-service')
     implementation project(':order:order-controller')
     implementation project(':order:order-repository')
-    implementation project(':order:mock-exchange')
-    implementation project(':order:currency-exchange')
+    implementation project(':order:order-exchange')
 
     implementation project(':core')
 }
