@@ -6,21 +6,27 @@ import java.util.List;
 public final class Receipt {
 
     private final Long id;
+    private final long userId;
     private final List<ReceiptProduct> receiptProducts;
     private final BigInteger totalPrice;
 
-    public Receipt(List<ReceiptProduct> receiptProducts, BigInteger totalPrice) {
-        this(null, receiptProducts, totalPrice);
+    public Receipt(long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice) {
+        this(null, userId, receiptProducts, totalPrice);
     }
 
-    public Receipt(Long id, List<ReceiptProduct> receiptProducts, BigInteger totalPrice) {
+    public Receipt(Long id, long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice) {
         this.id = id;
+        this.userId = userId;
         this.receiptProducts = receiptProducts;
         this.totalPrice = totalPrice;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public long getUserId() {
+        return userId;
     }
 
     public List<ReceiptProduct> getReceiptProducts() {

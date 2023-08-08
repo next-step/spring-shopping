@@ -37,7 +37,8 @@ class DomainFixture {
                             new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
                     .collect(Collectors.toList());
 
-            return new shopping.order.app.domain.Receipt(receiptProducts, new BigInteger(order.getTotalPrice()));
+            return new shopping.order.app.domain.Receipt(order.getUserId(), receiptProducts,
+                    new BigInteger(order.getTotalPrice()));
         }
     }
 }

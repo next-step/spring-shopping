@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import shopping.mart.app.domain.Product;
@@ -26,6 +27,9 @@ public class ReceiptEntity extends TimeBaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @JoinColumn(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(name = "receipt_product_entities")
     @OneToMany(mappedBy = "receiptEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
