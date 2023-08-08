@@ -19,9 +19,9 @@ import shopping.repository.OrderRepository;
 @Transactional
 public class OrderService {
 
-    OrderRepository orderRepository;
-    MemberRepository memberRepository;
-    CartProductRepository cartProductRepository;
+    private final OrderRepository orderRepository;
+    private final MemberRepository memberRepository;
+    private final CartProductRepository cartProductRepository;
 
     public OrderService(OrderRepository orderRepository, MemberRepository memberRepository,
             CartProductRepository cartProductRepository) {
