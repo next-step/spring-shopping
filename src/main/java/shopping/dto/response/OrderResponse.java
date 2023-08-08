@@ -24,7 +24,7 @@ public class OrderResponse {
         Long totalPrice = orderItemResponses.stream()
                 .mapToLong(OrderItemResponse::getPrice)
                 .sum();
-        return new OrderResponse(orderItems.getId(), orderItemResponses, totalPrice);
+        return new OrderResponse(orderItems.getOrderId(), orderItemResponses, totalPrice);
     }
 
     public Long getId() {

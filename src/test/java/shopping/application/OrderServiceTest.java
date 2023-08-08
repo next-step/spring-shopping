@@ -81,6 +81,63 @@ class OrderServiceTest extends ServiceTest {
                 .isInstanceOf(NoCartItemForOrderException.class);
     }
 
+    @DisplayName("정상 주문 세부 내역 조회 요청")
+    @Test
+    void getOrder() {
+        // given
+        String email = "test@example.com";
+        String password = "1234";
+        User savedUser = saveUser(email, password);
+        Long userId = savedUser.getId();
+
+        String name = "치킨";
+        String imageUrl = "/chicken.jpg";
+        Long price = 10_000L;
+        Product product = new Product(name, imageUrl, price);
+        productRepository.save(product);
+
+        CartItem cartItem = new CartItem(savedUser.getId(), product);
+        cartItemRepository.save(cartItem);
+        OrderResponse orderResponse = orderService.createOrder(userId);
+
+        // when
+        OrderResponse response = orderService.findOrderById(userId, orderResponse.getId());
+
+        // then
+        assertThat(response)
+                .extracting(OrderResponse::getId, OrderResponse::getTotalPrice)
+                .containsExactly(orderResponse.getId(), orderResponse.getTotalPrice());
+        assertThat(response.getItems()).usingRecursiveComparison().isEqualTo(orderResponse.getItems());
+    }
+
+    @DisplayName("다른 유저 주문 내역을 조회할 때 예외 발생")
+    @Test
+    void getOtherUserOrder() {
+        // given
+        String email = "test@example.com";
+        String password = "1234";
+        User savedUser = saveUser(email, password);
+        Long userId = savedUser.getId();
+
+        User otherUser = saveUser("notsame@example.com", "1234");
+        Long otherId = otherUser.getId();
+
+        String name = "치킨";
+        String imageUrl = "/chicken.jpg";
+        Long price = 10_000L;
+        Product product = new Product(name, imageUrl, price);
+        productRepository.save(product);
+
+        CartItem cartItem = new CartItem(savedUser.getId(), product);
+        cartItemRepository.save(cartItem);
+        OrderResponse orderResponse = orderService.createOrder(userId);
+        Long orderId = orderResponse.getId();
+
+        // when, then
+        assertThatThrownBy(() -> orderService.findOrderById(otherId, orderId))
+                .isInstanceOf(UserNotMatchException.class);
+    }
+
     private User saveUser(String email, String digest) {
         User user = new User(email, digest);
         return userRepository.save(user);

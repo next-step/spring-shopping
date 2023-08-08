@@ -50,7 +50,9 @@ public class OrderService {
         }
     }
 
-    public OrderResponse findOrderById(Long orderId) {
-        return OrderResponse.of(OrderItems.of(orderItemRepository.findAllByOrderId(orderId)));
+    public OrderResponse findOrderById(Long userId, Long orderId) {
+        OrderItems orderItems = OrderItems.of(orderItemRepository.findAllByOrderId(orderId));
+        orderItems.validateUserOwns(userId);
+        return OrderResponse.of(orderItems);
     }
 }
