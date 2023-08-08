@@ -18,21 +18,28 @@ public class OrderTest {
     @Test
     @DisplayName("Order를 생성한다.")
     void 주문_생성_테스트() {
+        // given
         final String name = "치킨";
         final String imageUrl = "image.png";
         final int price = 20000;
-        assertThatCode(() -> new Order(List.of(new OrderProduct(
-            1L,
-            new Name(name),
-            new ProductImage(imageUrl),
-            new Price(price),
-            new Quantity(10))), new Price(1000), 1L)
+        // when & then
+        assertThatCode(() -> new Order(
+                List.of(new OrderProduct(
+                        1L,
+                        new Name(name),
+                        new ProductImage(imageUrl),
+                        new Price(price),
+                        new Quantity(10)
+                    )
+                ), 1L
+            )
         ).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("주문상품으로 주문의 총합을 구할 수 있다.")
-    void calculateOrderSum(){
+    void calculateOrderSum() {
+        // given
         final String name = "치킨";
         final String imageUrl = "image.png";
         final int price = 20000;
@@ -42,9 +49,13 @@ public class OrderTest {
             new Name(name),
             new ProductImage(imageUrl),
             new Price(price),
-            new Quantity(10));
-        List<OrderProduct> orderProducts = List.of(orderProduct,orderProduct);
-        Order order =new Order(orderProducts,memberId);
+            new Quantity(10)
+        );
+        List<OrderProduct> orderProducts = List.of(orderProduct, orderProduct);
+
+        // when
+        Order order = new Order(orderProducts, memberId);
+        // then
         assertThat(order.getTotalPrice()).isEqualTo(400000);
     }
 

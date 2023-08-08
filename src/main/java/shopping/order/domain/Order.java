@@ -1,6 +1,5 @@
 package shopping.order.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,8 +24,7 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private List<OrderProduct> orderProducts = new ArrayList<>();
-
+    private List<OrderProduct> orderProducts;
 
     @Column(name = "total_price")
     @Embedded
@@ -38,13 +36,10 @@ public class Order {
     protected Order() {
     }
 
-    public Order(List<OrderProduct> orderProducts, Price totalPrice,Long memberId) {
-        this.orderProducts = orderProducts;
-        this.totalPrice = totalPrice;
-        this.memberId = memberId;
-    }
-
-    public Order(List<OrderProduct> orderProducts, Long memberId) {
+    public Order(
+        final List<OrderProduct> orderProducts,
+        final Long memberId
+    ) {
         this.orderProducts = orderProducts;
         this.totalPrice = new Price(calculateTotalPrice());
         this.memberId = memberId;
@@ -52,10 +47,9 @@ public class Order {
 
     private int calculateTotalPrice() {
         return orderProducts.stream()
-            .mapToInt(orderProduct -> orderProduct.getPrice() * orderProduct.getQuantity())
+            .mapToInt(OrderProduct::calculatePrice)
             .sum();
     }
-
 
     public Long getId() {
         return id;

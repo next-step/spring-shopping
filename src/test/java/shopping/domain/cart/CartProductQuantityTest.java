@@ -30,7 +30,7 @@ class CartProductQuantityTest {
     void createCartProductCountFailWithLessThanEqualZero(final int value) {
         assertThatCode(() -> new Quantity(value))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("장바구니 상품 개수는 0이하면 안됩니다. 입력값: " + value);
+            .hasMessage("상품 개수는 0이하면 안됩니다. 입력값: " + value);
     }
 
     @Test

@@ -8,10 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import shopping.cart.domain.CartProduct;
 import shopping.cart.domain.CartProductWithProduct;
 import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
+import shopping.product.domain.Product;
 import shopping.product.domain.ProductImage;
 
 @Entity
@@ -54,7 +56,7 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
-    public OrderProduct(Long productId, String name, String image, int price, int quantity) {
+    private OrderProduct(Long productId, String name, String image, int price, int quantity) {
         this.productId = productId;
         this.name = new Name(name);
         this.image = new ProductImage(image);
@@ -62,15 +64,28 @@ public class OrderProduct {
         this.quantity = new Quantity(quantity);
     }
 
-    public static OrderProduct from(CartProductWithProduct cartItem) {
+    private static OrderProduct of(final CartProduct cartProduct, final Product product) {
         return new OrderProduct(
-            cartItem.getCartProduct().getProductId(),
-            cartItem.getProduct().getName(),
-            cartItem.getProduct().getImage(),
-            cartItem.getProduct().getPrice(),
-            cartItem.getCartProduct().getQuantity()
+            cartProduct.getProductId(),
+            product.getName(),
+            product.getImage(),
+            product.getPrice(),
+            cartProduct.getQuantity()
         );
     }
+
+    public static OrderProduct from(final CartProductWithProduct cartItem) {
+        return OrderProduct.of(
+            cartItem.getCartProduct(),
+            cartItem.getProduct()
+        );
+    }
+
+
+    public int calculatePrice() {
+        return getPrice() * getQuantity();
+    }
+
     public Long getId() {
         return id;
     }

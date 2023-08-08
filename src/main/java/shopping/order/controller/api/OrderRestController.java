@@ -22,19 +22,19 @@ public class OrderRestController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderResponse> saveOrder(@LoginUser Long memberId) {
+    public ResponseEntity<OrderResponse> saveOrder(final @LoginUser Long memberId) {
         return ResponseEntity.ok().body(orderService.saveOrder(memberId));
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getOrderByMember (@LoginUser Long memberId){
-        return  ResponseEntity.ok().body(orderService.getOrderList(memberId));
+    public ResponseEntity<List<OrderResponse>> getOrderByMember(final @LoginUser Long memberId) {
+        return ResponseEntity.ok().body(orderService.getOrderList(memberId));
     }
+
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(
-        @LoginUser Long memberId,
-        @PathVariable Long orderId)
-    {
+        final @LoginUser Long memberId,
+        final @PathVariable Long orderId) {
         return ResponseEntity.ok().body(orderService.getOrder(memberId, orderId));
     }
 }

@@ -6,7 +6,7 @@ public class CartProductWithProduct {
     private CartProduct cartProduct;
     private Product product;
 
-    public CartProductWithProduct(CartProduct cartProduct, Product product) {
+    public CartProductWithProduct(final CartProduct cartProduct, final Product product) {
         this.cartProduct = cartProduct;
         this.product = product;
     }

@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class OrderController {
+
     @GetMapping("/order-detail")
-    public String getOrderDetailPage(@RequestParam Long orderId, Model model){
+    public String getOrderDetailPage(
+        final @RequestParam Long orderId,
+        final Model model
+    ) {
         model.addAttribute("orderId", orderId);
         return "/order-detail";
     }
+
     @GetMapping("/order-history")
     public String getOrderHistoryPage() {
         return "/order-history";

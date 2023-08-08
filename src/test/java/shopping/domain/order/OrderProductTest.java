@@ -19,6 +19,8 @@ public class OrderProductTest {
         final String name = "치킨";
         final String imageUrl = "image.png";
         final int price = 20000;
+
+        // when & then
         assertThatCode(() -> new OrderProduct(
             1L,
             new Name(name),
@@ -26,6 +28,5 @@ public class OrderProductTest {
             new Price(price),
             new Quantity(10))
         ).doesNotThrowAnyException();
-
     }
 }

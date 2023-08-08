@@ -19,7 +19,7 @@ public class Quantity {
 
     private void validateCountLessThanEqualZero(final int value) {
         if (value <= 0) {
-            throw new ShoppingException("장바구니 상품 개수는 0이하면 안됩니다. 입력값: " + value);
+            throw new ShoppingException("상품 개수는 0이하면 안됩니다. 입력값: " + value);
         }
     }
 

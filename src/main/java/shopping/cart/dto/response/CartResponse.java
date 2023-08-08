@@ -24,28 +24,20 @@ public class CartResponse {
         this.cartProductQuantity = cartProductQuantity;
     }
 
-    public CartResponse(final CartProduct cartProduct, final Product product) {
+
+    public static CartResponse from(final CartProductWithProduct cartProductWithProduct) {
+        return new CartResponse(
+            cartProductWithProduct.getCartProduct(),
+            cartProductWithProduct.getProduct()
+        );
+    }
+
+    private CartResponse(final CartProduct cartProduct, final Product product) {
         this(
             cartProduct.getProductId(),
             product.getImage(),
             product.getName(),
             cartProduct.getQuantity()
-        );
-    }
-
-    public static CartResponse of(final CartProduct cartProduct, final Product product) {
-        return new CartResponse(
-            cartProduct.getProductId(),
-            product.getImage(),
-            product.getName(),
-            cartProduct.getQuantity()
-        );
-    }
-
-    public static CartResponse from(CartProductWithProduct cartProductWithProduct) {
-        return new CartResponse(
-            cartProductWithProduct.getCartProduct(),
-            cartProductWithProduct.getProduct()
         );
     }
 

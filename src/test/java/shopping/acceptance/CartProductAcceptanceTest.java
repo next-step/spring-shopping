@@ -139,7 +139,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("장바구니 상품 개수는 0이하면 안됩니다. 입력값: " + quantity);
+            .isEqualTo("상품 개수는 0이하면 안됩니다. 입력값: " + quantity);
     }
 
 

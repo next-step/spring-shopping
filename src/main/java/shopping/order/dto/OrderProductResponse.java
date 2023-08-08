@@ -10,7 +10,13 @@ public class OrderProductResponse {
     private String image;
     private int quantity;
 
-    public OrderProductResponse(Long id, String name, int price, String image, int quantity) {
+    public OrderProductResponse(
+        final Long id,
+        final String name,
+        final int price,
+        final String image,
+        final int quantity
+    ) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -18,7 +24,7 @@ public class OrderProductResponse {
         this.quantity = quantity;
     }
 
-    public static OrderProductResponse from(OrderProduct orderProduct) {
+    public static OrderProductResponse from(final OrderProduct orderProduct) {
         return new OrderProductResponse(
             orderProduct.getId(),
             orderProduct.getName(),
