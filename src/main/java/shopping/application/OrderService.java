@@ -1,7 +1,6 @@
 package shopping.application;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -29,6 +28,7 @@ public class OrderService {
     private static final int PAGE_START_NUMBER = 1;
     private static final int MIN_PAGE_SIZE = 6;
     private static final int MAX_PAGE_SIZE = 30;
+    private static final String ID_COLUMN = "id";
 
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
@@ -52,10 +52,7 @@ public class OrderService {
 
         Cart cart = new Cart(cartItems);
         Order order = orderRepository.save(new Order(user, cart.getTotalPrice()));
-        List<OrderItem> orderItems = cartItems.stream()
-                .map(cartItem -> new OrderItem(order, cartItem))
-                .collect(Collectors.toUnmodifiableList());
-        orderItemRepository.saveAll(orderItems);
+        cartItems.forEach(cartItem -> orderItemRepository.save(new OrderItem(order, cartItem)));
         cartItemRepository.deleteAll(cartItems);
         return order.getId();
     }
@@ -66,13 +63,17 @@ public class OrderService {
                 .orElseThrow(() -> new UserNotFoundException(email));
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId.toString()));
-        if (order.isDifferentUser(user)) {
-            throw new UserNotMatchException();
-        }
+        validateAccess(user, order);
 
         List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
 
         return OrderResponse.of(order, orderItems);
+    }
+
+    private static void validateAccess(User user, Order order) {
+        if (order.isDifferentUser(user)) {
+            throw new UserNotMatchException();
+        }
     }
 
     public Page<OrderResponse> findAllOrder(String email, Integer pageNumber, Integer pageSize) {
@@ -81,7 +82,7 @@ public class OrderService {
         int size = validatePageSize(pageSize);
 
         Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email),
-                PageRequest.of(page - PAGE_START_NUMBER, size, Direction.DESC, "id"));
+                PageRequest.of(page - PAGE_START_NUMBER, size, Direction.DESC, ID_COLUMN));
 
         return orders.map(order ->
                 OrderResponse.of(order, orderItemRepository.findByOrder(order)));
