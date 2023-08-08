@@ -3,9 +3,11 @@ package shopping.mart.service;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.mart.app.api.cart.CartUseCase;
+import shopping.mart.app.api.cart.event.CartOrderedEvent;
 import shopping.mart.app.api.cart.request.CartAddRequest;
 import shopping.mart.app.api.cart.request.CartUpdateRequest;
 import shopping.mart.app.api.cart.response.CartResponse;
@@ -71,6 +73,16 @@ public class CartService implements CartUseCase {
                 .collect(Collectors.toList());
 
         return new CartResponse(cart.getCartId(), products);
+    }
+
+    @Override
+    @EventListener(CartOrderedEvent.class)
+    public void cartOrdered(CartOrderedEvent cartOrderedEvent) {
+        Cart cart = cartRepository.getById(cartOrderedEvent.getCartId());
+
+        cart.deleteAllProducts();
+
+        cartRepository.persistCart(cart);
     }
 
     private Cart getCartByUserId(long userId) {

@@ -81,4 +81,8 @@ public final class Cart {
     public boolean isEmptyCart() {
         return productCounts.isEmpty();
     }
+
+    public void deleteAllProducts() {
+        productCounts.clear();
+    }
 }
