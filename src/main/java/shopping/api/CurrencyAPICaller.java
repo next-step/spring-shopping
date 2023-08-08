@@ -14,9 +14,9 @@ public class CurrencyAPICaller implements CurrencyCaller {
     private static final String QUOTES = "quotes";
     private static final String USDKRW = "USDKRW";
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private WebClient webClient;
+    private final WebClient webClient;
 
     public CurrencyAPICaller(WebClient webClient) {
         this.webClient = webClient;

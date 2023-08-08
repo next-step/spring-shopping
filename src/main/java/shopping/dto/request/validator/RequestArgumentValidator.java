@@ -12,7 +12,7 @@ public class RequestArgumentValidator {
         if (target == null || target.isBlank()) {
             throw new ArgumentValidateFailException(targetName + " 항목은 비어있으면 안됩니다.");
         }
-        
+
         if (target.length() > maxLength) {
             throw new ArgumentValidateFailException(
                     String.format("%s 항목은 %d 글자 이하여야 합니다. 현재 입력 값 : '%s'",

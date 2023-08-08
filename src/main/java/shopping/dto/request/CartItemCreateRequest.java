@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CartItemCreateRequest {
 
     private static final String PRODUCT_ID_NAME = "productId";
-    
+
     private final Long productId;
 
     @JsonCreator

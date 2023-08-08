@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CartItemUpdateRequest {
 
     private static final String QUANTITY_NAME = "quantity";
-    
+
     private final Integer quantity;
 
     @JsonCreator
