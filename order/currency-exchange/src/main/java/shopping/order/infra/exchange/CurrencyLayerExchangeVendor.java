@@ -6,12 +6,10 @@ import java.util.Objects;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import shopping.order.app.domain.Exchange;
 import shopping.order.app.spi.ExchangeVendor;
 
-@Service
 public class CurrencyLayerExchangeVendor implements ExchangeVendor {
 
     private static final Set<Integer> RETRY_CODES = Set.of(104, 106, 201, 202);
