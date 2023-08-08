@@ -80,4 +80,17 @@ class UrlHelper {
                     .extract();
         }
     }
+
+    static final class Order {
+
+        static ExtractableResponse<Response> orderCart(OrderRequest orderRequest, String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .body(orderRequest)
+                    .when().post("/orders")
+                    .then().log().all()
+                    .extract();
+        }
+    }
 }

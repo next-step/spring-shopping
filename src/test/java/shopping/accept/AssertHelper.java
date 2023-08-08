@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import java.util.Arrays;
 import java.util.Optional;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.hamcrest.Matchers;
 import shopping.auth.app.api.response.TokenResponse;
@@ -18,10 +19,10 @@ class AssertHelper {
     static final class Product {
 
         static void assertAllProducts(final ValidatableResponse response,
-            String... exactlyExpected) {
+                String... exactlyExpected) {
             response.statusCode(HttpStatus.SC_OK);
             Arrays.stream(exactlyExpected)
-                .forEach(expected -> response.body(Matchers.containsString(expected)));
+                    .forEach(expected -> response.body(Matchers.containsString(expected)));
         }
     }
 
@@ -35,25 +36,34 @@ class AssertHelper {
 
     static final class Cart {
 
-        static void assertCart(final ExtractableResponse<Response> result,
-            CartResponse exactlyExpected) {
+        static void assertCart(ExtractableResponse<Response> result,
+                CartResponse exactlyExpected) {
             Http.assertIsOk(result);
 
             assertThat(result.as(CartResponse.class).getProductResponses()).isEqualTo(
-                exactlyExpected.getProductResponses());
+                    exactlyExpected.getProductResponses());
         }
 
         static void assertCartUpdated(ExtractableResponse<Response> findResult, long id,
-            int expectedCount) {
+                int expectedCount) {
             Http.assertIsOk(findResult);
             CartResponse cartResponse = findResult.as(CartResponse.class);
             Optional<ProductResponse> optionalProductResponse = cartResponse.getProductResponses()
-                .stream()
-                .filter(productResponse -> productResponse.getId() == id)
-                .findFirst();
+                    .stream()
+                    .filter(productResponse -> productResponse.getId() == id)
+                    .findFirst();
 
             assertThat(optionalProductResponse).isPresent();
             assertThat(optionalProductResponse.get().getCount()).isEqualTo(expectedCount);
+        }
+    }
+
+    static final class Order {
+
+        static void assertOrdered(ExtractableResponse<Response> result) {
+            Http.assertIsOk(result);
+
+            assertThat(result.header(HttpHeaders.LOCATION)).isEqualTo("/order-history");
         }
     }
 
