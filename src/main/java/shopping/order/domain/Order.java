@@ -45,9 +45,9 @@ public class Order {
         this.totalPrice = new Price(calculateTotalPrice());
     }
 
-    private int calculateTotalPrice (){
+    private int calculateTotalPrice() {
         return orderProducts.stream()
-            .mapToInt(OrderProduct::getPrice)
+            .mapToInt(orderProduct -> orderProduct.getPrice() * orderProduct.getQuantity())
             .sum();
     }
 
