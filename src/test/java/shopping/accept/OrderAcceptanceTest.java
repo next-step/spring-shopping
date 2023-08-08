@@ -55,7 +55,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /receipts/history API는 로그인된 유저가 구매한 모든 receipts를 반환한다.")
+    @DisplayName("GET /receipts API는 로그인된 유저가 구매한 모든 receipts를 반환한다.")
     void return_all_receipts_bought_user() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -78,7 +78,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("Get /receipts/history API는 어떠한 구매내역도 찾을 수 없는경우, 빈 배열을 반환한다.")
+    @DisplayName("GET /receipts API는 어떠한 구매내역도 찾을 수 없는경우, 빈 배열을 반환한다.")
     void return_empty_array_when_user_bought_any_products() {
         // given
         List<ReceiptResponse> expected = List.of();

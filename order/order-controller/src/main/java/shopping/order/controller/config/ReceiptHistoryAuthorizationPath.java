@@ -8,6 +8,6 @@ public class ReceiptHistoryAuthorizationPath implements AuthorizationPath {
 
     @Override
     public String path() {
-        return "/receipts/history";
+        return "/receipts";
     }
 }

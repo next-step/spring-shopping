@@ -22,7 +22,7 @@ public class ReceiptController {
         this.tokenPerRequest = tokenPerRequest;
     }
 
-    @GetMapping("/history")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ReceiptResponse> orderHistory() {
         return receiptUseCase.findAllByUserId(Long.parseLong(tokenPerRequest.getDecryptedToken()));
