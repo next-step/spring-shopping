@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import shopping.domain.Product;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.MemberException;
+import shopping.exception.OrderException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
@@ -66,7 +68,7 @@ class OrderServiceTest {
             assertThat(actualProductIds).isEqualTo(expectedProductIds);
         }
 
-        @DisplayName("사용자 정보가 유효하 않으면 MemberException 을 던진다.")
+        @DisplayName("사용자 정보가 유효하지 않으면 MemberException 을 던진다.")
         @Test
         void throwMemberException_WhenMemberNotExist() {
             // given
@@ -78,6 +80,22 @@ class OrderServiceTest {
             assertThatThrownBy(() -> orderService.order(notExistMemberId))
                 .hasMessage("존재하지 않는 사용자 입니다")
                 .isInstanceOf(MemberException.class);
+        }
+
+        @DisplayName("사용자 카트에 상품이 없으면 예외를 던진다.")
+        @Test
+        void throwOrderException_WhenCartProductIsEmpty() {
+            // given
+            Member member = createMember();
+
+            given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+            given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(
+                new ArrayList<>());
+
+            // when & then
+            assertThatThrownBy(() -> orderService.order(member.getId()))
+                .hasMessage("주문할 상품이 존재하지 않습니다")
+                .isInstanceOf(OrderException.class);
         }
     }
 

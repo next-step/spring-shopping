@@ -19,6 +19,20 @@ public class OrderIntegrationSupporter {
             .then().log().all().extract();
     }
 
+    static ExtractableResponse<Response> order(String email, String password) {
+        String accessToken = AuthIntegrationSupporter
+            .login(email, password)
+            .as(LoginResponse.class)
+            .getAccessToken();
+
+        return RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/order")
+            .then().log().all().extract();
+    }
+
     static ExtractableResponse<Response> findMemberOrderById(final long id) {
         final String accessToken = getAccessToken();
 

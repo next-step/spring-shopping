@@ -37,6 +37,17 @@ class OrderIntegrationTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("장바구니에 아이템이 없으면 Bad Request 를 반환한다")
+    void returnBadRequest_WhenCartProductIsEmpty() {
+        // when
+        ExtractableResponse<Response> result = OrderIntegrationSupporter.order("woowa2@woowa.com",
+            "1234");
+
+        // then
+        assertThat(result.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("주문 상세 정보를 조회한다")
     void findMemberOrderById() {
         // given
