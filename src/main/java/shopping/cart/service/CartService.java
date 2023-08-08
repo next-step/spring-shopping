@@ -1,8 +1,10 @@
 package shopping.cart.service;
 
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartProduct;
+import shopping.cart.domain.CartProductWithProduct;
 import shopping.cart.dto.request.CartProductCreateRequest;
 import shopping.cart.dto.request.CartProductQuantityUpdateRequest;
 import shopping.cart.dto.response.CartResponse;
@@ -28,7 +30,11 @@ public class CartService {
     }
 
     public List<CartResponse> findAllCartProducts(final Long memberId) {
-       return cartProductRepository.findAllByMemberId(memberId);
+        List<CartProductWithProduct> cartProducts = cartProductRepository.findAllByMemberId(
+            memberId);
+        return cartProducts.stream()
+            .map(CartResponse::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional

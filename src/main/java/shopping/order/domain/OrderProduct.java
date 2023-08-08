@@ -1,6 +1,14 @@
 package shopping.order.domain;
 
-import javax.persistence.*;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import shopping.cart.domain.CartProductWithProduct;
 import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
@@ -46,6 +54,23 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
+    public OrderProduct(Long productId, String name, String image, int price, int quantity) {
+        this.productId = productId;
+        this.name = new Name(name);
+        this.image = new ProductImage(image);
+        this.price = new Price(price);
+        this.quantity = new Quantity(quantity);
+    }
+
+    public static OrderProduct from(CartProductWithProduct cartItem) {
+        return new OrderProduct(
+            cartItem.getCartProduct().getProductId(),
+            cartItem.getProduct().getName(),
+            cartItem.getProduct().getImage(),
+            cartItem.getProduct().getPrice(),
+            cartItem.getCartProduct().getQuantity()
+        );
+    }
     public Long getId() {
         return id;
     }

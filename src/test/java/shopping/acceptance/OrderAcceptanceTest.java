@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.acceptance.helper.AuthHelper;
 import shopping.acceptance.helper.RestHelper;
-import shopping.cart.dto.request.CartProductCreateRequest;
 import shopping.cart.dto.response.CartResponse;
 
 public class OrderAcceptanceTest extends AcceptanceTest {

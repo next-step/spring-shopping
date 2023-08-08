@@ -40,6 +40,18 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
+    public Order(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+        this.totalPrice = new Price(calculateTotalPrice());
+    }
+
+    private int calculateTotalPrice (){
+        return orderProducts.stream()
+            .mapToInt(OrderProduct::getPrice)
+            .sum();
+    }
+
+
     public Long getId() {
         return id;
     }
