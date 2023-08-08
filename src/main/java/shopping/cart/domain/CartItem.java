@@ -3,7 +3,7 @@ package shopping.cart.domain;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.Objects;
-import javax.persistence.Embedded;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,21 +25,27 @@ public class CartItem {
     private Long memberId;
     private Long productId;
     private String productName;
-    @Embedded
+    @Column(name = "product_price")
     private Money productPrice;
-    @Embedded
+
+    @Column(name = "quantity")
     private Quantity quantity;
 
     protected CartItem() {
     }
 
     public CartItem(Long memberId, Long productId, String productName, Money productPrice,
-        int quantity) {
+        Quantity quantity) {
         this.memberId = memberId;
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
-        this.quantity = new Quantity(quantity);
+        this.quantity = quantity;
+    }
+
+    public CartItem(Long memberId, Long productId, String productName, Money productPrice,
+        int quantity) {
+        this(memberId, productId, productName, productPrice, new Quantity(quantity));
     }
 
     public CartItem(Long memberId, Long productId, String productName, Money productPrice) {
@@ -94,7 +100,7 @@ public class CartItem {
         return productPrice;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
     }
 }
