@@ -7,6 +7,7 @@ import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
 import shopping.domain.Product;
+import shopping.dto.request.OrderItemRequest;
 import shopping.dto.request.OrderRequest;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
@@ -35,28 +36,32 @@ public class OrderService {
     }
 
     public OrderResponse order(@Login long memberId, OrderRequest orderRequest) {
-        // 사용자 정보 조회
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
 
-        // 주문 생성
         Order order = new Order(member);
 
-        // 주문 상품 정보 생성
-        List<OrderItemResponse> orderItems = orderRequest.getOrderItems()
-            .stream()
-            .map(orderItemRequest -> {
-                Product product = productRepository.findById(orderItemRequest.getProductId())
-                    .orElseThrow(() -> new OrderException("존재하지 않는 상품 정보입니다"));
-                OrderItem orderItem = orderItemRequest.toEntity(order, product);
-                orderItemRepository.save(orderItem);
-                return orderItem;
+        List<OrderItemResponse> orderItems = createOrderItems(orderRequest.getOrderItems(), order);
 
-            })
+        return new OrderResponse(order.getId(), orderItems);
+    }
+
+    private List<OrderItemResponse> createOrderItems(List<OrderItemRequest> orderItemRequests, Order order) {
+        return orderItemRequests
+            .stream()
+            .map(orderItemRequest -> createOrderItem(orderItemRequest, order))
             .map(OrderItemResponse::of)
             .collect(Collectors.toList());
+    }
 
-        // 주문 정보 반환
-        return new OrderResponse(order.getId(), orderItems);
+    private OrderItem createOrderItem(OrderItemRequest orderItemRequest, Order order) {
+        Product product = productRepository.findById(orderItemRequest.getProductId())
+            .orElseThrow(() -> new OrderException("존재하지 않는 상품 정보입니다"));
+
+        OrderItem orderItem = orderItemRequest.toEntity(order, product);
+
+        orderItemRepository.save(orderItem);
+
+        return orderItem;
     }
 }
