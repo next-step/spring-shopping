@@ -31,14 +31,20 @@ class CartItemRepositoryTest {
     void findAllDtoByMemberIdTest() {
         // given
         Member newMember = new Member("email", "zz");
+        Member otherMember = new Member("other", "zz");
         Product newProduct = new Product("치킨", new Image(ImageStoreType.NONE, "url"), "10000");
+        Product newProduct2 = new Product("피자", new Image(ImageStoreType.NONE, "url"), "100000");
 
         memberRepository.save(newMember);
+        memberRepository.save(otherMember);
         productRepository.save(newProduct);
+        productRepository.save(newProduct2);
 
         CartItem cartItem = new CartItem(newMember.getId(), newProduct.getId(), "치킨", new Money("10000"), 1);
+        CartItem othersCartItem = new CartItem(otherMember.getId(), newProduct2.getId(), "피자", new Money("100000"), 1);
 
         cartItemRepository.save(cartItem);
+        cartItemRepository.save(othersCartItem);
 
         // when
         List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByMemberId(newMember.getId());
