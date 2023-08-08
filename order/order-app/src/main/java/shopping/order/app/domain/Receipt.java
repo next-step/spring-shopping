@@ -36,4 +36,14 @@ public final class Receipt {
     public BigInteger getTotalPrice() {
         return totalPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", receiptProducts=" + receiptProducts +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

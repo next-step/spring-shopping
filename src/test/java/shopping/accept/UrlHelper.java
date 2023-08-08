@@ -92,4 +92,16 @@ class UrlHelper {
                     .extract();
         }
     }
+
+    static final class Receipt {
+
+        static ExtractableResponse<Response> history(String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().get("/receipts/history")
+                    .then().log().all()
+                    .extract();
+        }
+    }
 }

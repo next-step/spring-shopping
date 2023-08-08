@@ -2,17 +2,22 @@ package shopping.accept;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.SoftAssertions;
 import org.hamcrest.Matchers;
 import shopping.auth.app.api.response.TokenResponse;
 import shopping.mart.app.api.cart.response.CartResponse;
 import shopping.mart.app.api.cart.response.CartResponse.ProductResponse;
+import shopping.order.app.api.receipt.response.ReceiptProductResponse;
+import shopping.order.app.api.receipt.response.ReceiptResponse;
 
 class AssertHelper {
 
@@ -64,6 +69,46 @@ class AssertHelper {
             Http.assertIsOk(result);
 
             assertThat(result.header(HttpHeaders.LOCATION)).isEqualTo("/order-detail");
+        }
+    }
+
+    static final class Receipt {
+
+        static void assertReceipt(ExtractableResponse<Response> result, List<ReceiptResponse> expected) {
+            Http.assertIsOk(result);
+
+            List<ReceiptResponse> resultElement = result.as(new TypeRef<>() {
+            });
+            assertReceiptResponses(resultElement, expected);
+        }
+
+        private static void assertReceiptResponses(List<ReceiptResponse> result,
+                List<ReceiptResponse> expected) {
+
+            assertThat(result).hasSize(expected.size());
+
+            SoftAssertions.assertSoftly(softAssertions -> {
+                for (int i = 0; i < result.size(); i++) {
+                    assertExactlyReceiptProductResponse(result.get(i).getReceiptProducts(),
+                            expected.get(i).getReceiptProducts());
+                }
+            });
+        }
+
+        private static void assertExactlyReceiptProductResponse(List<ReceiptProductResponse> result,
+                List<ReceiptProductResponse> expected) {
+
+            SoftAssertions.assertSoftly(softAssertions -> {
+                assertThat(result).hasSize(expected.size());
+                for (int i = 0; i < result.size(); i++) {
+                    ReceiptProductResponse resultElement = result.get(i);
+                    ReceiptProductResponse expectedElement = result.get(i);
+                    softAssertions.assertThat(resultElement.getName()).isEqualTo(expectedElement.getName());
+                    softAssertions.assertThat(resultElement.getPrice()).isEqualTo(expectedElement.getPrice());
+                    softAssertions.assertThat(resultElement.getImageUrl()).isEqualTo(expectedElement.getImageUrl());
+                    softAssertions.assertThat(resultElement.getQuantity()).isEqualTo(expectedElement.getQuantity());
+                }
+            });
         }
     }
 

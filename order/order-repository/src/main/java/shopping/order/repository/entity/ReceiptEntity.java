@@ -56,7 +56,7 @@ public class ReceiptEntity extends TimeBaseEntity {
             Product product = getMatchedProduct(receiptProductEntity, products);
             receiptProducts.add(receiptProductEntity.toDomain(product));
         }
-        return new Receipt(id, receiptProducts, new BigInteger(totalPrice));
+        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice));
     }
 
     private Product getMatchedProduct(ReceiptProductEntity receiptProductEntity, List<Product> products) {
