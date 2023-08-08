@@ -64,6 +64,7 @@ class OrderServiceTest extends ServiceTest {
         assertThat(order).isPresent();
         assertThat(orderResponse.getId()).isEqualTo(order.get().getId());
         assertThat(orderResponse.getTotalPrice()).isEqualTo(price);
+        assertThat(cartItemRepository.findAllByUserId(userId)).isEmpty();
     }
 
     @DisplayName("장바구니에 물건이 없으면 예외 발생")

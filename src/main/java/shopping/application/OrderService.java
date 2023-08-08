@@ -39,8 +39,9 @@ public class OrderService {
         List<OrderItem> orderItems = cartItems.stream()
                 .map(cartItem -> OrderItem.from(cartItem, order))
                 .collect(Collectors.toList());
-        return OrderResponse.of(OrderItems.of(orderItemRepository.saveAll(orderItems)));
-
+        OrderResponse response = OrderResponse.of(OrderItems.of(orderItemRepository.saveAll(orderItems)));
+        cartItemRepository.deleteAll(cartItems);
+        return response;
     }
 
     private void validateCartItemExists(List<CartItem> cartItems) {
