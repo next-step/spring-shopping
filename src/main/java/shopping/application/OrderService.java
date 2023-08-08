@@ -11,6 +11,7 @@ import shopping.domain.OrderItem;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.MemberException;
+import shopping.exception.OrderException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
@@ -44,13 +45,21 @@ public class OrderService {
     }
 
     private List<OrderItemResponse> orderMemberCartItems(Member member, Order order) {
-        List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(member.getId());
+        List<CartProduct> cartProducts = findMemberCartProducts(member.getId());
         List<OrderItem> orderItems = createOrderItems(order, cartProducts);
         orderRepository.save(order);
 
         return orderItems.stream()
             .map(OrderItemResponse::of)
             .collect(Collectors.toList());
+    }
+
+    private List<CartProduct> findMemberCartProducts(long memberId){
+        List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(memberId);
+        if (cartProducts.isEmpty()) {
+            throw new OrderException("주문할 상품이 존재하지 않습니다");
+        }
+        return cartProducts;
     }
 
     private List<OrderItem> createOrderItems(Order order, List<CartProduct> cartProducts) {
