@@ -15,7 +15,7 @@ import shopping.repository.ProductRepository;
 @Transactional
 @SpringBootTest
 @DisplayName("상품 테스트 통합 테스트")
-class ProductServiceSpringBootTest {
+class ProductServiceTest {
 
     @Autowired
     ProductService productService;

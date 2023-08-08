@@ -29,7 +29,7 @@ import shopping.repository.UserRepository;
 @Transactional
 @SpringBootTest
 @DisplayName("장바구니 서비스 통합 테스트")
-public class CartServiceSpringBootTest {
+class CartServiceTest {
 
     @Autowired
     private CartService cartService;

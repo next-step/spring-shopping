@@ -20,7 +20,7 @@ import shopping.repository.UserRepository;
 @Transactional
 @SpringBootTest
 @DisplayName("인증 서비스 통합 테스트")
-class AuthServiceSpringBootTest {
+class AuthServiceTest {
 
     @Autowired
     private AuthService authService;
