@@ -4,12 +4,15 @@ package shopping.domain.cart;
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
+@Access(AccessType.FIELD)
 public class Quantity {
-    
+
     private final int quantity;
 
     protected Quantity() {
@@ -35,7 +38,7 @@ public class Quantity {
         return new Quantity(quantity);
     }
 
-    public int getValue() {
+    public int getQuantity() {
         return quantity;
     }
 
