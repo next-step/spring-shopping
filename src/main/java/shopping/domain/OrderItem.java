@@ -42,6 +42,12 @@ public class OrderItem {
 
     public OrderItem(Order order, Product product, String name, long price, int quantity,
             String imageUrl) {
+        this(null, order, product, name, price, quantity, imageUrl);
+    }
+
+    public OrderItem(Long id, Order order, Product product, String name, long price, int quantity,
+        String imageUrl) {
+        this.id = id;
         setOrder(order);
         this.product = product;
         this.name = name;

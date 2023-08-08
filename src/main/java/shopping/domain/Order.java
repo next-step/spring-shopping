@@ -29,6 +29,11 @@ public class Order extends BaseTime {
     }
 
     public Order(Member member) {
+        this(null, member);
+    }
+
+    public Order(Long id, Member member) {
+        this.id = id;
         this.member = member;
     }
 
