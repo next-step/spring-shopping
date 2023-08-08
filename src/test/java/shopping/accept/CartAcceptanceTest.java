@@ -171,8 +171,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     private CartResponse getExpectedCartResponse(List<ProductResponse> productResponses) {
         return new CartResponse(1L, productResponses.stream().map(
             productResponse -> new CartResponse.ProductResponse(
-                productResponse.getId(), 1, productResponse.getImageUrl(),
-                productResponse.getName())
+                    productResponse.getId(), 1, productResponse.getImageUrl(),
+                    productResponse.getName(), productResponse.getPrice())
         ).collect(Collectors.toList()));
     }
 

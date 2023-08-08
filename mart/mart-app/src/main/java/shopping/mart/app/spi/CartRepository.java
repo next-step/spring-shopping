@@ -11,6 +11,4 @@ public interface CartRepository {
     Cart newCart(long userId);
 
     Cart getByUserId(long userId);
-
-    Cart getById(long cartId);
 }

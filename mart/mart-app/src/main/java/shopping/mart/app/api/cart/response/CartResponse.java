@@ -29,15 +29,17 @@ public final class CartResponse {
         private int count;
         private String imageUrl;
         private String name;
+        private String price;
 
         public ProductResponse() {
         }
 
-        public ProductResponse(final long id, final int count, final String imageUrl, final String name) {
+        public ProductResponse(long id, int count, String imageUrl, String name, String price) {
             this.id = id;
             this.count = count;
             this.imageUrl = imageUrl;
             this.name = name;
+            this.price = price;
         }
 
         public long getId() {
@@ -54,6 +56,10 @@ public final class CartResponse {
 
         public String getName() {
             return name;
+        }
+
+        public String getPrice() {
+            return price;
         }
 
         @Override

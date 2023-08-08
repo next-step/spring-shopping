@@ -46,13 +46,6 @@ public class CartPersistService implements CartRepository {
         return addProductToCart(cartEntity);
     }
 
-    @Override
-    public Cart getById(long cartId) {
-        CartEntity cartEntity = cartJpaRepository.getReferenceById(cartId);
-
-        return addProductToCart(cartEntity);
-    }
-
     private Cart addProductToCart(CartEntity cartEntity) {
         List<ProductEntity> productEntities = productJpaRepository.findAllById(
                 cartEntity.getRegisteredProductIds());

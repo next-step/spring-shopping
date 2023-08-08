@@ -1,13 +1,13 @@
 package shopping.mart.app.api.cart.event;
 
 public final class CartClearEvent {
-    private final long cartId;
+    private final long userId;
 
-    public CartClearEvent(long cartId) {
-        this.cartId = cartId;
+    public CartClearEvent(long userId) {
+        this.userId = userId;
     }
 
-    public long getCartId() {
-        return cartId;
+    public long getUserId() {
+        return userId;
     }
 }

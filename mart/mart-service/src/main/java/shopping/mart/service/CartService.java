@@ -70,7 +70,7 @@ public class CartService implements CartUseCase {
 
         List<CartResponse.ProductResponse> products = cart.getProductCounts().entrySet().stream()
                 .map(entry -> new CartResponse.ProductResponse(entry.getKey().getId(), entry.getValue(),
-                        entry.getKey().getImageUrl(), entry.getKey().getName()))
+                        entry.getKey().getImageUrl(), entry.getKey().getName(), entry.getKey().getPrice()))
                 .collect(Collectors.toList());
 
         return new CartResponse(cart.getCartId(), products);
@@ -79,7 +79,7 @@ public class CartService implements CartUseCase {
     @Override
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT, classes = CartClearEvent.class)
     public void clearCart(CartClearEvent cartClearEvent) {
-        Cart cart = cartRepository.getById(cartClearEvent.getCartId());
+        Cart cart = cartRepository.getByUserId(cartClearEvent.getUserId());
 
         cart.deleteAllProducts();
 
