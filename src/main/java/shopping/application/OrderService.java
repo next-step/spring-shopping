@@ -3,6 +3,7 @@ package shopping.application;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
@@ -17,6 +18,7 @@ import shopping.repository.OrderRepository;
 import shopping.repository.ProductRepository;
 
 @Service
+@Transactional
 public class OrderService {
 
     OrderRepository orderRepository;
