@@ -42,4 +42,26 @@ public class OrderRepositoryTest {
         assertThat(orderRepository.findByMemberIdAndId(memberId, order.getId()).orElseThrow())
             .isEqualTo(saveOrder);
     }
+
+    @Test
+    @DisplayName("회원의 아이디를 이용해 주문번호로 Order를 조회할 수 있다.")
+    void findByMemberId(){
+        // given
+        final String name = "치킨";
+        final String imageUrl = "image.png";
+        final int price = 20000;
+        Long memberId = 1L;
+        OrderProduct orderProduct = new OrderProduct(
+            1L,
+            new Name(name),
+            new ProductImage(imageUrl),
+            new Price(price),
+            new Quantity(10));
+        Order order = new Order(List.of(orderProduct), memberId);
+        orderRepository.save(order);
+
+        // when & then
+        assertThat(orderRepository.findByMemberId(memberId))
+            .isEqualTo(List.of(order));
+    }
 }
