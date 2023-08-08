@@ -134,20 +134,24 @@ Location: /order-history/{orderId}
 
 #### Request
 ```
-GET
+GET /order-history/{orderId}
 
 Authorization: Bearer {jwt_token}
 ```
 
 #### Response
 ```
-- 주문 번호
-- 주문 아이템 정보
-  - 이름
-  - 가격
-  - 이미지
-  - 수량
-- 총 결제금액
+{
+  orderId: 1
+  orderItems: [{
+    name: test,
+    price: 10,
+    imageUrl: aaa,
+    quantity: 100
+  }]
+  totalPrice: 1000
+}
+
 ```
 - [ ] 주문 id 와 일치하는 주문 정보를 반환한다.
 - [ ] 주문자 정보와 요청을 보낸 사용자 정보가 일치하지 않으면 Bad Request 를 반환한다.
