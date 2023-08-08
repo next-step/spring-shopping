@@ -4,29 +4,30 @@ import javax.persistence.Embeddable;
 import shopping.exception.ArgumentValidateFailException;
 
 @Embeddable
-public class Price {
+public class Ratio {
 
-    private static final long MIN_PRICE = 0L;
-    private Long price;
+    private static final double MIN_RATIO = 0.0;
 
-    protected Price() {
+    private Double ratio;
+
+    protected Ratio() {
     }
 
-    public Price(Long price) {
-        validate(price);
-        this.price = price;
+    public Ratio(Double ratio) {
+        validate(ratio);
+        this.ratio = ratio;
     }
 
-    private void validate(Long price) {
-        if (price == null) {
+    private void validate(Double ratio) {
+        if (ratio == null) {
             throw new ArgumentValidateFailException("가격은 null일 수 없습니다.");
         }
-        if (price <= MIN_PRICE) {
+        if (ratio <= MIN_RATIO) {
             throw new ArgumentValidateFailException("가격은 0원 이하일 수 없습니다.");
         }
     }
 
-    public Long getPrice() {
-        return price;
+    public Double getRatio() {
+        return ratio;
     }
 }
