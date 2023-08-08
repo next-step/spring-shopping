@@ -2,6 +2,10 @@ package shopping.order.app.domain;
 
 import static shopping.order.app.domain.DomainFixture.Product.defaultProduct;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
+
 class DomainFixture {
 
     static class Cart {
@@ -21,6 +25,19 @@ class DomainFixture {
 
         static shopping.mart.app.domain.Product defaultProduct() {
             return new shopping.mart.app.domain.Product("default", "images/default-image.png", "1000");
+        }
+    }
+
+    static class Receipt {
+
+        static shopping.order.app.domain.Receipt fromOrder(Order order) {
+            List<ReceiptProduct> receiptProducts = order.getProducts().entrySet()
+                    .stream()
+                    .map(entry -> new ReceiptProduct(entry.getKey().getName(),
+                            new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
+                    .collect(Collectors.toList());
+
+            return new shopping.order.app.domain.Receipt(receiptProducts, new BigInteger(order.getTotalPrice()));
         }
     }
 }
