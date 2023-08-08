@@ -2,6 +2,7 @@ package shopping.cart.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.cart.domain.CartProduct;
+import shopping.cart.domain.CartProductWithProduct;
 import shopping.product.domain.Product;
 
 public class CartResponse {
@@ -38,6 +39,13 @@ public class CartResponse {
             product.getImage(),
             product.getName(),
             cartProduct.getQuantity()
+        );
+    }
+
+    public static CartResponse from(CartProductWithProduct cartProductWithProduct) {
+        return new CartResponse(
+            cartProductWithProduct.getCartProduct(),
+            cartProductWithProduct.getProduct()
         );
     }
 
