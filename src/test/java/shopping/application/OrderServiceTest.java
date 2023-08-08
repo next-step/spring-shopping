@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartItem;
 import shopping.domain.Email;
@@ -97,11 +98,11 @@ class OrderServiceTest {
             List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
             List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
             assertSoftly(softAssertions -> {
-                assertThat(order.getUser()).isEqualTo(savedUser);
-                assertThat(order.getTotalPrice().getPrice()).isEqualTo(
+                softAssertions.assertThat(order.getUser()).isEqualTo(savedUser);
+                softAssertions.assertThat(order.getTotalPrice().getPrice()).isEqualTo(
                         savedProduct1.getPrice());
-                assertThat(orderItems).hasSize(1);
-                assertThat(orderItems.get(0)).extracting(
+                softAssertions.assertThat(orderItems).hasSize(1);
+                softAssertions.assertThat(orderItems.get(0)).extracting(
                         OrderItem::getName,
                         OrderItem::getImageUrl,
                         OrderItem::getPrice,
@@ -112,7 +113,7 @@ class OrderServiceTest {
                         savedProduct1.getPrice(),
                         1
                 );
-                assertThat(cartItems).isEmpty();
+                softAssertions.assertThat(cartItems).isEmpty();
             });
         }
 
@@ -138,11 +139,11 @@ class OrderServiceTest {
             List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
             List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
             assertSoftly(softAssertions -> {
-                assertThat(order.getUser()).isEqualTo(savedUser);
-                assertThat(order.getTotalPrice().getPrice()).isEqualTo(
+                softAssertions.assertThat(order.getUser()).isEqualTo(savedUser);
+                softAssertions.assertThat(order.getTotalPrice().getPrice()).isEqualTo(
                         60_000L);
-                assertThat(orderItems).hasSize(2);
-                assertThat(orderItems.get(0)).extracting(
+                softAssertions.assertThat(orderItems).hasSize(2);
+                softAssertions.assertThat(orderItems.get(0)).extracting(
                         OrderItem::getName,
                         OrderItem::getImageUrl,
                         OrderItem::getPrice,
@@ -153,7 +154,7 @@ class OrderServiceTest {
                         savedProduct1.getPrice(),
                         3
                 );
-                assertThat(orderItems.get(1)).extracting(
+                softAssertions.assertThat(orderItems.get(1)).extracting(
                         OrderItem::getName,
                         OrderItem::getImageUrl,
                         OrderItem::getPrice,
@@ -164,7 +165,7 @@ class OrderServiceTest {
                         savedProduct2.getPrice(),
                         1
                 );
-                assertThat(cartItems).isEmpty();
+                softAssertions.assertThat(cartItems).isEmpty();
             });
         }
     }
@@ -193,9 +194,9 @@ class OrderServiceTest {
 
             // then
             assertSoftly(softAssertions -> {
-                assertThat(orderResponse.getTotalPrice()).isEqualTo(60_000L);
-                assertThat(orderResponse.getOrderItems()).hasSize(2);
-                assertThat(orderResponse.getOrderItems().get(0)).extracting(
+                softAssertions.assertThat(orderResponse.getTotalPrice()).isEqualTo(60_000L);
+                softAssertions.assertThat(orderResponse.getOrderItems()).hasSize(2);
+                softAssertions.assertThat(orderResponse.getOrderItems().get(0)).extracting(
                         OrderItemResponse::getName,
                         OrderItemResponse::getPrice,
                         OrderItemResponse::getQuantity
@@ -204,7 +205,7 @@ class OrderServiceTest {
                         savedProduct1.getPrice(),
                         3
                 );
-                assertThat(orderResponse.getOrderItems().get(1)).extracting(
+                softAssertions.assertThat(orderResponse.getOrderItems().get(1)).extracting(
                         OrderItemResponse::getName,
                         OrderItemResponse::getPrice,
                         OrderItemResponse::getQuantity
@@ -279,4 +280,103 @@ class OrderServiceTest {
         }
     }
 
+
+    @Nested
+    @DisplayName("주문 전체 정보 서비스 테스트")
+    class WhenFindAllOrder {
+
+        @DisplayName("주문 상세 정보 정상 반환")
+        @Test
+        void successFindAllOrderThenReturn() {
+            // given
+            String email = "test1234@example.com";
+            User savedUser = userRepository.save(new User(email, "1234"));
+            Product savedProduct1 = productRepository.save(
+                    new Product(9871L, "chicken1", "/chicken.jpg", 10_000L));
+            cartItemRepository.save(new CartItem(30L, savedUser, savedProduct1, 3));
+            Product savedProduct2 = productRepository.save(
+                    new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
+            cartItemRepository.save(new CartItem(savedUser, savedProduct2));
+            orderService.createOrder(email);
+            cartItemRepository.save(new CartItem(savedUser, savedProduct1));
+            orderService.createOrder(email);
+
+            // when
+            Page<OrderResponse> page = orderService.findAllOrder(email, 1, 12);
+            OrderResponse orderResponse = page.getContent().get(0);
+
+            // then
+            assertSoftly(softAssertions -> {
+                softAssertions.assertThat(page.getTotalElements()).isEqualTo(2L);
+                softAssertions.assertThat(orderResponse.getTotalPrice()).isEqualTo(60_000L);
+                softAssertions.assertThat(orderResponse.getOrderItems()).hasSize(2);
+                softAssertions.assertThat(orderResponse.getOrderItems().get(0)).extracting(
+                        OrderItemResponse::getName,
+                        OrderItemResponse::getPrice,
+                        OrderItemResponse::getQuantity
+                ).contains(
+                        savedProduct1.getName(),
+                        savedProduct1.getPrice(),
+                        3
+                );
+                softAssertions.assertThat(orderResponse.getOrderItems().get(1)).extracting(
+                        OrderItemResponse::getName,
+                        OrderItemResponse::getPrice,
+                        OrderItemResponse::getQuantity
+                ).contains(
+                        savedProduct2.getName(),
+                        savedProduct2.getPrice(),
+                        1
+                );
+            });
+        }
+
+        @DisplayName("주문 페이지 음수 일 시 첫 페이지 반환")
+        @Test
+        void minusPageNumberThenPAGE_START_NUMBER() {
+            // given
+            String email = "test1234@example.com";
+            User savedUser = userRepository.save(new User(email, "1234"));
+            int pageNumber = -1;
+            int pageSize = 12;
+
+            // when
+            Page<OrderResponse> page = orderService.findAllOrder(email, pageNumber, pageSize);
+
+            // then
+            assertThat(page.getNumber()).isZero();
+        }
+
+        @DisplayName("주문 페이지 사이즈 너무 작을시 최소 페이지 사이즈로 반환")
+        @Test
+        void smallPageSizeThenMIN_PAGE_SIZE() {
+            // given
+            String email = "test1234@example.com";
+            User savedUser = userRepository.save(new User(email, "1234"));
+            int pageNumber = 1;
+            int pageSize = 1;
+
+            // when
+            Page<OrderResponse> page = orderService.findAllOrder(email, pageNumber, pageSize);
+
+            // then
+            assertThat(page.getSize()).isEqualTo(6);
+        }
+
+        @DisplayName("주문 페이지 사이즈 너무 클시 최소 페이지 사이즈로 반환")
+        @Test
+        void largePageSizeThenMIN_PAGE_SIZE() {
+            // given
+            String email = "test1234@example.com";
+            User savedUser = userRepository.save(new User(email, "1234"));
+            int pageNumber = 1;
+            int pageSize = 100;
+
+            // when
+            Page<OrderResponse> page = orderService.findAllOrder(email, pageNumber, pageSize);
+
+            // then
+            assertThat(page.getSize()).isEqualTo(30);
+        }
+    }
 }

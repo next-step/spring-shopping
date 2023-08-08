@@ -2,6 +2,8 @@ package shopping.application;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Cart;
@@ -22,6 +24,10 @@ import shopping.repository.UserRepository;
 @Service
 @Transactional(readOnly = true)
 public class OrderService {
+
+    private static final int PAGE_START_NUMBER = 1;
+    private static final int MIN_PAGE_SIZE = 6;
+    private static final int MAX_PAGE_SIZE = 30;
 
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
@@ -66,5 +72,33 @@ public class OrderService {
         List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
 
         return OrderResponse.of(order, orderItems);
+    }
+
+    public Page<OrderResponse> findAllOrder(String email, Integer pageNumber, Integer pageSize) {
+        // TODO: refactor 1+N?
+        int page = validatePageNumber(pageNumber);
+        int size = validatePageSize(pageSize);
+
+        Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email),
+                PageRequest.of(page - PAGE_START_NUMBER, size));
+
+        return orders.map(order ->
+                OrderResponse.of(order, orderItemRepository.findByOrder(order)));
+    }
+
+
+    private int validatePageNumber(Integer pageNumber) {
+        return pageNumber < PAGE_START_NUMBER
+                ? PAGE_START_NUMBER : pageNumber;
+    }
+
+    private int validatePageSize(Integer pageSize) {
+        if (pageSize > MAX_PAGE_SIZE) {
+            return MAX_PAGE_SIZE;
+        }
+        if (pageSize < MIN_PAGE_SIZE) {
+            return MIN_PAGE_SIZE;
+        }
+        return pageSize;
     }
 }
