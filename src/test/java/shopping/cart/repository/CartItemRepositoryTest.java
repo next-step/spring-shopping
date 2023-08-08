@@ -52,4 +52,37 @@ class CartItemRepositoryTest {
 
         Assertions.assertThat(otherMemberProductCartItemDtos).isEmpty();
     }
+
+    @Test
+    @DisplayName("findAllDtoByCartItemIds 테스트")
+    void findAllDtoByCartItemIds() {
+        Member member = new Member("email", "zz");
+
+        Product chicken = new Product("치킨", new Image("url"), "10000");
+        Product pizza = new Product("피자", new Image("url"), "15000");
+        Product cola = new Product("콜라", new Image("url"), "1000");
+
+        memberRepository.save(member);
+        productRepository.save(chicken);
+        productRepository.save(pizza);
+        productRepository.save(cola);
+
+        CartItem chickenCartItem = new CartItem(member.getId(), chicken.getId(), "치킨", new Money("10000"), 1);
+        CartItem pizzaCartItem = new CartItem(member.getId(), pizza.getId(), "피자", new Money("15000"), 1);
+        CartItem colaCartItem = new CartItem(member.getId(), cola.getId(), "콜라", new Money("1000"), 1);
+
+        cartItemRepository.save(chickenCartItem);
+        cartItemRepository.save(pizzaCartItem);
+        cartItemRepository.save(colaCartItem);
+
+        List<ProductCartItemDto> queryResult = cartItemRepository.findAllDtoByCartItemIds(
+            List.of(chickenCartItem.getId(), colaCartItem.getId())
+        );
+
+        Assertions.assertThat(queryResult).hasSize(2);
+        Assertions.assertThat(queryResult.get(0)).extracting("product").isEqualTo(chicken);
+        Assertions.assertThat(queryResult.get(0)).extracting("cartItem").isEqualTo(chickenCartItem);
+        Assertions.assertThat(queryResult.get(1)).extracting("product").isEqualTo(cola);
+        Assertions.assertThat(queryResult.get(1)).extracting("cartItem").isEqualTo(colaCartItem);
+    }
 }
