@@ -22,7 +22,6 @@ import shopping.mart.persist.repository.ProductJpaRepository;
 @Repository
 public class CartRepository {
 
-    private static final Object LOCK = new Object();
     private static final int INITIAL_COUNT = 1;
 
     private final CartJpaRepository cartJpaRepository;
@@ -41,11 +40,10 @@ public class CartRepository {
     }
 
     public Cart newCart(long userId) {
-        synchronized (LOCK) {
-            if (cartJpaRepository.findByUserId(userId).isEmpty()) {
-                cartJpaRepository.save(new CartEntity(null, userId));
-            }
+        if (cartJpaRepository.findByUserIdWithLock(userId).isEmpty()) {
+            cartJpaRepository.save(new CartEntity(null, userId));
         }
+
         return getEmptyCart(userId);
     }
 
