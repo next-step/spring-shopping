@@ -1,6 +1,6 @@
 package shopping.order.app.api.receipt.response;
 
-public final class ReceiptProductResponse {
+public class ReceiptDetailProductResponse {
 
     private Long productId;
     private String name;
@@ -8,10 +8,10 @@ public final class ReceiptProductResponse {
     private String imageUrl;
     private int quantity;
 
-    public ReceiptProductResponse() {
+    public ReceiptDetailProductResponse() {
     }
 
-    public ReceiptProductResponse(Long productId, String name, String price, String imageUrl, int quantity) {
+    public ReceiptDetailProductResponse(Long productId, String name, String price, String imageUrl, int quantity) {
         this.productId = productId;
         this.name = name;
         this.price = price;

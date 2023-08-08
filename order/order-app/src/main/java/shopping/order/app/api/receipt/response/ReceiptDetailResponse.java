@@ -5,15 +5,15 @@ import java.util.List;
 public final class ReceiptDetailResponse {
 
     private Long id;
-    private List<ReceiptProductResponse> receiptProducts;
+    private List<ReceiptDetailProductResponse> receiptDetailProducts;
     private String totalPrice;
 
     public ReceiptDetailResponse() {
     }
 
-    public ReceiptDetailResponse(Long id, List<ReceiptProductResponse> receiptProducts, String totalPrice) {
+    public ReceiptDetailResponse(Long id, List<ReceiptDetailProductResponse> receiptDetailProducts, String totalPrice) {
         this.id = id;
-        this.receiptProducts = receiptProducts;
+        this.receiptDetailProducts = receiptDetailProducts;
         this.totalPrice = totalPrice;
     }
 
@@ -21,8 +21,8 @@ public final class ReceiptDetailResponse {
         return id;
     }
 
-    public List<ReceiptProductResponse> getReceiptProducts() {
-        return receiptProducts;
+    public List<ReceiptDetailProductResponse> getReceiptDetailProducts() {
+        return receiptDetailProducts;
     }
 
     public String getTotalPrice() {

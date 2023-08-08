@@ -3,13 +3,15 @@ package shopping.order.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.service.interceptor.TokenPerRequest;
 import shopping.order.app.api.receipt.ReceiptUseCase;
-import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
+import shopping.order.app.api.receipt.response.ReceiptResponse;
 
 @RestController
+@RequestMapping("/receipts")
 public class ReceiptController {
 
     private final ReceiptUseCase receiptUseCase;
@@ -20,11 +22,9 @@ public class ReceiptController {
         this.tokenPerRequest = tokenPerRequest;
     }
 
-    @GetMapping("/orders/details")
+    @GetMapping("/history")
     @ResponseStatus(HttpStatus.OK)
-    public List<ReceiptDetailResponse> orderHistory() {
+    public List<ReceiptResponse> orderHistory() {
         return receiptUseCase.findAllByUserId(Long.parseLong(tokenPerRequest.getDecryptedToken()));
     }
-
-
 }
