@@ -30,7 +30,7 @@ public class OrderController {
         OrderRequest orderRequest = new OrderRequest(Long.parseLong(tokenPerRequest.getDecryptedToken()));
         orderUseCase.order(orderRequest);
         return ResponseEntity.ok()
-                .header(HttpHeaders.LOCATION, "/order-history")
+                .header(HttpHeaders.LOCATION, "/order-detail")
                 .build();
     }
 

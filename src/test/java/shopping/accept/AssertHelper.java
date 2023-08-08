@@ -63,7 +63,7 @@ class AssertHelper {
         static void assertOrdered(ExtractableResponse<Response> result) {
             Http.assertIsOk(result);
 
-            assertThat(result.header(HttpHeaders.LOCATION)).isEqualTo("/order-history");
+            assertThat(result.header(HttpHeaders.LOCATION)).isEqualTo("/order-detail");
         }
     }
 
