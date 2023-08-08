@@ -23,7 +23,7 @@ import shopping.order.app.spi.ReceiptRepository;
 @ExtendWith(SpringExtension.class)
 @DisplayName("ShoppingService 클래스")
 @ContextConfiguration(classes = OrderService.class)
-class ShoppingServiceTest {
+class OrderServiceTest {
 
     @Autowired
     private OrderUseCase orderUseCase;

@@ -3,6 +3,7 @@ package shopping.order.repository;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import shopping.mart.app.api.product.ProductUseCase;
 import shopping.mart.app.api.product.response.ProductResponse;
@@ -41,6 +42,11 @@ public class ReceiptPersistService implements ReceiptRepository {
             receipts.add(receipt);
         }
         return receipts;
+    }
+
+    @Override
+    public Optional<Receipt> findReceiptByIdAndUserId(long id, long userId) {
+        return Optional.empty();
     }
 
     private List<Product> toProducts(List<ProductResponse> productResponses,

@@ -5,10 +5,13 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.order.app.api.receipt.ReceiptUseCase;
+import shopping.order.app.api.receipt.response.ReceiptDetailProductResponse;
+import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
 import shopping.order.app.api.receipt.response.ReceiptProductResponse;
 import shopping.order.app.api.receipt.response.ReceiptResponse;
 import shopping.order.app.domain.Receipt;
 import shopping.order.app.domain.ReceiptProduct;
+import shopping.order.app.domain.exception.DoesNotFindReceiptException;
 import shopping.order.app.spi.ReceiptRepository;
 
 @Service
@@ -28,6 +31,14 @@ public class ReceiptService implements ReceiptUseCase {
         return toReceiptResponse(receipts);
     }
 
+    @Override
+    public ReceiptDetailResponse getReceiptByIdAndUserId(long id, long userId) {
+        Receipt receipt = receiptRepository.findReceiptByIdAndUserId(id, userId)
+                .orElseThrow(() -> new DoesNotFindReceiptException(id));
+
+        return toReceiptDetailResponse(receipt);
+    }
+
     private List<ReceiptResponse> toReceiptResponse(List<Receipt> receipts) {
         return receipts.stream()
                 .map(receipt -> new ReceiptResponse(receipt.getId(),
@@ -42,4 +53,18 @@ public class ReceiptService implements ReceiptUseCase {
                         receiptProduct.getQuantity()))
                 .collect(Collectors.toList());
     }
+
+    private ReceiptDetailResponse toReceiptDetailResponse(Receipt receipt) {
+        return new ReceiptDetailResponse(receipt.getId(), toReceiptDetailProductResponse(receipt.getReceiptProducts()),
+                receipt.getTotalPrice().toString());
+    }
+
+    private List<ReceiptDetailProductResponse> toReceiptDetailProductResponse(List<ReceiptProduct> receiptProducts) {
+        return receiptProducts.stream()
+                .map(receiptProduct -> new ReceiptDetailProductResponse(receiptProduct.getProductId(),
+                        receiptProduct.getName(), receiptProduct.getPrice().toString(), receiptProduct.getImageUrl(),
+                        receiptProduct.getQuantity()))
+                .collect(Collectors.toList());
+    }
+
 }
