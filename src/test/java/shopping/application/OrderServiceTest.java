@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,12 +15,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Product;
 import shopping.dto.request.OrderItemRequest;
 import shopping.dto.request.OrderRequest;
+import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.OrderException;
+import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.ProductRepository;
@@ -38,7 +42,7 @@ class OrderServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
-    private ProductRepository productRepository;
+    private CartProductRepository cartProductRepository;
 
     @DisplayName("order 메소드는")
     @Nested
@@ -49,17 +53,38 @@ class OrderServiceTest {
         void createOrder() {
             // given
             final Member member = createMember();
+            final List<CartProduct> cartProducts = createCartProducts(member);
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
-            given(productRepository.findById(anyLong()))
-                .willReturn(Optional.of(new Product(1L, "a", "a", 10)));
+            given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(cartProducts);
 
             // when
             OrderResponse result = orderService.order(member.getId());
 
             // then
-            assertThat(result.getOrderItems()).isNotEmpty();
+            List<Long> expectedProductIds = cartProducts.stream()
+                .map(cartProduct -> cartProduct.getProduct().getId())
+                .collect(Collectors.toList());
+            List<Long> actualProductIds = extractProductIds(result.getOrderItems());
+            assertThat(actualProductIds).isEqualTo(expectedProductIds);
         }
+    }
+
+    private List<CartProduct> createCartProducts(Member member) {
+        List<Product> products = List.of(
+            new Product(1L, "상품1", "url", 10),
+            new Product(2L, "상품2", "url", 20),
+            new Product(3L, "상품3", "url", 30)
+        );
+        return products.stream()
+            .map(product -> new CartProduct(product.getId(), member, product, 5))
+            .collect(Collectors.toList());
+    }
+
+    private List<Long> extractProductIds(List<OrderItemResponse> responses) {
+        return responses.stream()
+            .map(OrderItemResponse::getProductId)
+            .collect(Collectors.toList());
     }
 
     private Member createMember() {
