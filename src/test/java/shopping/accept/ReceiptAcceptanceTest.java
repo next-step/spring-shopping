@@ -117,7 +117,7 @@ class ReceiptAcceptanceTest extends AcceptanceTest {
         String totalPrice = calculateTotalMoney(receiptDetailProductResponses);
 
         return new ReceiptDetailResponse(receiptResponse.getId(), receiptDetailProductResponses,
-                totalPrice, null);
+                totalPrice, null, 0D);
     }
 
     private String calculateTotalMoney(List<ReceiptDetailProductResponse> receiptDetailProductResponses) {

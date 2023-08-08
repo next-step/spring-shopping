@@ -11,17 +11,19 @@ public final class Receipt {
     private final List<ReceiptProduct> receiptProducts;
     private final BigInteger totalPrice;
     private final BigDecimal exchangedPrice;
+    private final double exchangeRate;
 
-    public Receipt(long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigDecimal exchangedPrice) {
-        this(null, userId, receiptProducts, totalPrice, exchangedPrice);
+    public Receipt(long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigDecimal exchangedPrice, double exchageRate) {
+        this(null, userId, receiptProducts, totalPrice, exchangedPrice, exchageRate);
     }
 
-    public Receipt(Long id, long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigDecimal exchangedPrice) {
+    public Receipt(Long id, long userId, List<ReceiptProduct> receiptProducts, BigInteger totalPrice, BigDecimal exchangedPrice, double exchageRate) {
         this.id = id;
         this.userId = userId;
         this.receiptProducts = receiptProducts;
         this.totalPrice = totalPrice;
         this.exchangedPrice = exchangedPrice;
+        this.exchangeRate = exchageRate;
     }
 
     public Long getId() {
@@ -42,6 +44,10 @@ public final class Receipt {
 
     public BigDecimal getExchangedPrice() {
         return exchangedPrice;
+    }
+
+    public double getExchangeRate() {
+        return exchangeRate;
     }
 
     @Override

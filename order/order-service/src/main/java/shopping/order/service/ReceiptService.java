@@ -56,7 +56,7 @@ public class ReceiptService implements ReceiptUseCase {
 
     private ReceiptDetailResponse toReceiptDetailResponse(Receipt receipt) {
         return new ReceiptDetailResponse(receipt.getId(), toReceiptDetailProductResponse(receipt.getReceiptProducts()),
-                receipt.getTotalPrice().toString(), receipt.getExchangedPrice().toString());
+                receipt.getTotalPrice().toString(), receipt.getExchangedPrice().toString(), receipt.getExchangeRate());
     }
 
     private List<ReceiptDetailProductResponse> toReceiptDetailProductResponse(List<ReceiptProduct> receiptProducts) {

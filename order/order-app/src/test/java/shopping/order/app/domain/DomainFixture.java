@@ -41,7 +41,7 @@ class DomainFixture {
                     .collect(Collectors.toList());
 
             return new shopping.order.app.domain.Receipt(order.getUserId(), receiptProducts,
-                    new BigInteger(order.getTotalPrice()), new BigDecimal(10000));
+                    new BigInteger(order.getTotalPrice()), new BigDecimal(10000), 1);
         }
     }
 }

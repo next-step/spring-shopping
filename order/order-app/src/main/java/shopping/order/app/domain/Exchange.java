@@ -24,4 +24,9 @@ public class Exchange {
     BigDecimal calculate(BigInteger price) {
         return new BigDecimal(price).multiply(BigDecimal.valueOf(rate));
     }
+
+    public double getRate() {
+        return rate;
+    }
+
 }

@@ -36,11 +36,14 @@ public class ReceiptEntity extends TimeBaseEntity {
     @OneToMany(mappedBy = "receiptEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReceiptProductEntity> receiptProductEntities;
 
-    @Column(name = "total_price")
+    @Column(name = "total_price", nullable = false)
     private String totalPrice;
 
-    @Column(name = "exchanged_price")
+    @Column(name = "exchanged_price", nullable = false)
     private String exchangedPrice;
+
+    @Column(name = "exchange_rate", nullable = false)
+    private double exchangeRate;
 
     private ReceiptEntity() {
     }
@@ -53,6 +56,7 @@ public class ReceiptEntity extends TimeBaseEntity {
         this.userId = receipt.getUserId();
         this.totalPrice = receipt.getTotalPrice().toString();
         this.exchangedPrice = receipt.getExchangedPrice().toString();
+        this.exchangeRate = receipt.getExchangeRate();
     }
 
     public Receipt toDomain(List<Product> products) {
@@ -61,7 +65,7 @@ public class ReceiptEntity extends TimeBaseEntity {
             Product product = getMatchedProduct(receiptProductEntity, products);
             receiptProducts.add(receiptProductEntity.toDomain(product));
         }
-        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice), new BigDecimal(exchangedPrice));
+        return new Receipt(id, userId, receiptProducts, new BigInteger(totalPrice), new BigDecimal(exchangedPrice), exchangeRate);
     }
 
     private Product getMatchedProduct(ReceiptProductEntity receiptProductEntity, List<Product> products) {
@@ -75,10 +79,6 @@ public class ReceiptEntity extends TimeBaseEntity {
 
     public Long getId() {
         return id;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public List<ReceiptProductEntity> getReceiptProductEntities() {

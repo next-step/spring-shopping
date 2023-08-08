@@ -8,15 +8,18 @@ public final class ReceiptDetailResponse {
     private List<ReceiptDetailProductResponse> receiptDetailProducts;
     private String totalPrice;
     private String exchangedPrice;
+    private double exchangeRate;
 
     public ReceiptDetailResponse() {
     }
 
-    public ReceiptDetailResponse(Long id, List<ReceiptDetailProductResponse> receiptDetailProducts, String totalPrice, String exchangedPrice) {
+    public ReceiptDetailResponse(Long id, List<ReceiptDetailProductResponse> receiptDetailProducts, String totalPrice,
+            String exchangedPrice, double exchangeRate) {
         this.id = id;
         this.receiptDetailProducts = receiptDetailProducts;
         this.totalPrice = totalPrice;
         this.exchangedPrice = exchangedPrice;
+        this.exchangeRate = exchangeRate;
     }
 
     public Long getId() {
@@ -35,4 +38,7 @@ public final class ReceiptDetailResponse {
         return exchangedPrice;
     }
 
+    public double getExchangeRate() {
+        return exchangeRate;
+    }
 }
