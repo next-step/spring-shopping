@@ -1,4 +1,4 @@
-package shopping.mart.app.api.order;
+package shopping.mart.app.api.cart.event;
 
 public final class CartOrderedEvent {
     private final long cartId;

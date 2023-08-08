@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.event.ApplicationEvents;
 import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.mart.app.api.order.CartOrderedEvent;
+import shopping.mart.app.api.cart.event.CartOrderedEvent;
 import shopping.mart.app.spi.CartRepository;
 import shopping.order.app.api.OrderUseCase;
 import shopping.order.app.spi.ReceiptRepository;

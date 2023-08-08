@@ -3,7 +3,7 @@ package shopping.order.service;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.mart.app.api.order.CartOrderedEvent;
+import shopping.mart.app.api.cart.event.CartOrderedEvent;
 import shopping.mart.app.domain.Cart;
 import shopping.mart.app.spi.CartRepository;
 import shopping.order.app.api.OrderUseCase;
