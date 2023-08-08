@@ -1,9 +1,9 @@
 package shopping.order.app.api.receipt;
 
 import java.util.List;
-import shopping.order.app.api.receipt.response.ReceiptResponse;
+import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
 
 public interface ReceiptUseCase {
 
-    List<ReceiptResponse> findAllByUserId(long userId);
+    List<ReceiptDetailResponse> findAllByUserId(long userId);
 }
