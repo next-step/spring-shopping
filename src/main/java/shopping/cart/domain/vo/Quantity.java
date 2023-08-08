@@ -1,5 +1,6 @@
 package shopping.cart.domain.vo;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,28 @@ public class Quantity {
         }
     }
 
+    public Quantity increase() {
+        return new Quantity(this.value + 1);
+    }
+
     public int getValue() {
         return value;
     }
 
-    public Quantity increase() {
-        return new Quantity(this.value + 1);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Quantity quantity = (Quantity) o;
+        return value == quantity.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
