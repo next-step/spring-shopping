@@ -1,6 +1,8 @@
 package shopping.application;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,6 +36,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
             CartItemRepository cartItemRepository, UserRepository userRepository) {
@@ -45,29 +48,26 @@ public class OrderService {
 
     @Transactional
     public Long createOrder(String email) {
-        // TODO: refactor
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
 
         Cart cart = new Cart(cartItems);
-        Order order = orderRepository.save(new Order(user, cart.getTotalPrice()));
-        cartItems.forEach(cartItem -> orderItemRepository.save(new OrderItem(order, cartItem)));
+        Order order = new Order(user, cart.getTotalPrice());
+        cartItems.forEach(cartItem -> order.addOrderItem(new OrderItem(order, cartItem)));
+        orderRepository.save(order);
         cartItemRepository.deleteAll(cartItems);
         return order.getId();
     }
 
     public OrderResponse findOrder(String email, Long orderId) {
-        // TODO: refactor
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId.toString()));
         validateAccess(user, order);
 
-        List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
-
-        return OrderResponse.of(order, orderItems);
+        return OrderResponse.of(order);
     }
 
     private static void validateAccess(User user, Order order) {
@@ -77,15 +77,13 @@ public class OrderService {
     }
 
     public Page<OrderResponse> findAllOrder(String email, Integer pageNumber, Integer pageSize) {
-        // TODO: refactor 1+N?
         int page = validatePageNumber(pageNumber);
         int size = validatePageSize(pageSize);
 
         Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email),
                 PageRequest.of(page - PAGE_START_NUMBER, size, Direction.DESC, ID_COLUMN));
 
-        return orders.map(order ->
-                OrderResponse.of(order, orderItemRepository.findByOrder(order)));
+        return orders.map(OrderResponse::of);
     }
 
 

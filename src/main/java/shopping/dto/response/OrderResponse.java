@@ -27,6 +27,14 @@ public class OrderResponse {
                         .collect(Collectors.toUnmodifiableList()));
     }
 
+    public static OrderResponse of(Order order) {
+        return new OrderResponse(order.getId(),
+                order.getTotalPrice().getPrice(),
+                order.getOrderItems().stream()
+                        .map(OrderItemResponse::of)
+                        .collect(Collectors.toUnmodifiableList()));
+    }
+
     public Long getId() {
         return id;
     }

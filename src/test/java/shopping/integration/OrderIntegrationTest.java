@@ -45,8 +45,10 @@ class OrderIntegrationTest extends IntegrationTest {
     void orderDetailThenGetOrderResponse() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
+        CartItemCreateRequest cartItemCreateRequest2 = new CartItemCreateRequest(2L);
         String accessToken = login();
         createCartItem(cartItemCreateRequest, accessToken);
+        createCartItem(cartItemCreateRequest2, accessToken);
 
         ExtractableResponse<Response> createdResponse = createOrder(accessToken);
         String[] location = createdResponse.header("Location").split("/");
@@ -63,19 +65,23 @@ class OrderIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.as(OrderResponse.class).getOrderItems()).hasSize(1);
+        assertThat(response.as(OrderResponse.class).getOrderItems()).hasSize(2);
     }
 
-    @DisplayName("주문 전체 정보 요청 시 상세 정보 반환")
+    @DisplayName("주문 전체 정보 요청 시 전체 정보 반환")
     @Test
     void orderAllThenGetPageOfOrderResponse() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
+        CartItemCreateRequest cartItemCreateRequest2 = new CartItemCreateRequest(2L);
         String accessToken = login();
 
         createCartItem(cartItemCreateRequest, accessToken);
         createOrder(accessToken);
         createCartItem(cartItemCreateRequest, accessToken);
+        createCartItem(cartItemCreateRequest2, accessToken);
+        createOrder(accessToken);
+        createCartItem(cartItemCreateRequest2, accessToken);
         createOrder(accessToken);
 
         // when
@@ -89,7 +95,7 @@ class OrderIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.jsonPath().getLong("totalElements")).isEqualTo(2L);
+        assertThat(response.jsonPath().getLong("totalElements")).isEqualTo(3L);
     }
 
     private static String login() {
