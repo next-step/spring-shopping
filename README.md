@@ -2,10 +2,13 @@
 
 ## Step5 주문(환율 적용)
 
+- 구현한 이미지
+  ![step5-screenshot.png](src%2Fmain%2Fresources%2Fstatic%2Fassets%2Fstep5-screenshot.png)
+
 ### 요구사항
 
-- [ ] 주문 시점의 실시간 환율 저장
-- [ ] 주문 관련 페이지에 적용 환율, 변환 금액 반영
+- [x] 주문 시점의 실시간 환율 저장
+- [x] 주문 관련 페이지에 적용 환율, 변환 금액 반영
 
 ## Step4 주문
 
