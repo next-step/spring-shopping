@@ -1,8 +1,7 @@
 package shopping.domain;
 
-import org.aspectj.bridge.Message;
-import shopping.exception.CartProductException;
-
+import java.text.MessageFormat;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,8 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.text.MessageFormat;
-import java.util.Objects;
+import shopping.exception.CartProductException;
 
 @Entity
 public class CartProduct {
@@ -21,6 +19,7 @@ public class CartProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_product_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
