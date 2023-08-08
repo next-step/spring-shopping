@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtProvider implements TokenProvider {
@@ -19,7 +21,10 @@ public class JwtProvider implements TokenProvider {
     private long expireLength;
 
     public String create(final String payload) {
-        final Claims claims = Jwts.claims().setSubject(payload);
+        final Map<String, Object> verClaim = new HashMap<>(Map.of("ver", secretKeyVersion));
+        final Claims claims = Jwts.claims(verClaim)
+                .setSubject(payload);
+
         final Date now = new Date();
         final Date expire = new Date(now.getTime() + expireLength);
 
@@ -27,7 +32,6 @@ public class JwtProvider implements TokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expire)
-                .setPayload(secretKeyVersion)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
