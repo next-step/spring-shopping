@@ -63,11 +63,10 @@ class OrderServiceTest {
             OrderResponse result = orderService.order(member.getId());
 
             // then
-            List<Long> expectedProductIds = cartProducts.stream()
-                .map(cartProduct -> cartProduct.getProduct().getId())
-                .collect(Collectors.toList());
-            List<Long> actualProductIds = extractProductIds(result.getOrderItems());
-            assertThat(actualProductIds).isEqualTo(expectedProductIds);
+            long expectedTotalPrice = cartProducts.stream()
+                .mapToLong(cartProduct -> cartProduct.getQuantity() * cartProduct.getProduct().getPrice())
+                .sum();
+            assertThat(result.getTotalPrice()).isEqualTo(expectedTotalPrice);
         }
 
         @DisplayName("사용자 정보가 유효하지 않으면 MemberException 을 던진다.")
@@ -120,6 +119,11 @@ class OrderServiceTest {
             // when
             assertThat(result.getId()).isEqualTo(order.getId());
             assertThat(result.getOrderItems()).hasSize(order.getOrderItems().size());
+            long expectedTotalPrice = order.getOrderItems()
+                .stream()
+                .mapToLong(orderItem -> orderItem.calculateTotalPrice())
+                .sum();
+            assertThat(result.getTotalPrice()).isEqualTo(expectedTotalPrice);
         }
 
         @DisplayName("주문 id 와 일치하는 주문이 없으면 OrderException 을 던진다")

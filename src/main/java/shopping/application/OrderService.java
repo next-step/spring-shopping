@@ -1,5 +1,6 @@
 package shopping.application;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class OrderService {
 
         clearMemberCart(memberId);
 
-        return new OrderResponse(order.getId(), orderItems);
+        return mapToResponse(order.getId(), orderItems);
     }
 
     public OrderResponse getOrder(Long memberId, Long id) {
@@ -47,7 +48,17 @@ public class OrderService {
 
         validateOrderOwner(memberId, order);
 
-        return new OrderResponse(order.getId(), order.getOrderItems());
+        return mapToResponse(order.getId(), order.getOrderItems());
+    }
+
+    private OrderResponse mapToResponse(Long orderId, List<OrderItem> orderItems) {
+        long totalPrice = 0;
+        List<OrderItemResponse> orderItemResponses = new ArrayList<>();
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.calculateTotalPrice();
+            orderItemResponses.add(OrderItemResponse.of(orderItem));
+        }
+        return new OrderResponse(orderId, totalPrice, orderItemResponses);
     }
 
     private static void validateOrderOwner(Long memberId, Order order) {

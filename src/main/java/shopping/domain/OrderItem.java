@@ -59,6 +59,10 @@ public class OrderItem {
         this.imageUrl = imageUrl;
     }
 
+    public long calculateTotalPrice() {
+        return price * quantity;
+    }
+
     public Long getId() {
         return id;
     }
