@@ -2,13 +2,13 @@ package shopping.infrastructure;
 
 import java.util.Map;
 
-public class CurrencyLayerExchangeRateDto {
+public class CurrencyLayerExchangeRateResponse {
     private Map<String, Double> quotes;
 
-    public CurrencyLayerExchangeRateDto() {
+    public CurrencyLayerExchangeRateResponse() {
     }
 
-    public CurrencyLayerExchangeRateDto(Map<String, Double> quotes) {
+    public CurrencyLayerExchangeRateResponse(Map<String, Double> quotes) {
         this.quotes = quotes;
     }
 

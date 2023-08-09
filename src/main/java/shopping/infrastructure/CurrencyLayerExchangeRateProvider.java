@@ -28,6 +28,12 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
     }
 
     public Optional<Double> getExchangeRate() {
+        CurrencyLayerExchangeRateResponse response = getFromApi();
+
+        return Optional.of(response.getQuotes().getOrDefault(SOURCE_CURRENCY + TARGET_CURRENCY, null));
+    }
+
+    public CurrencyLayerExchangeRateResponse getFromApi() {
         WebClient webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -37,9 +43,8 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
                         .queryParam("source", SOURCE_CURRENCY)
                         .queryParam("currencies", TARGET_CURRENCY)
                         .queryParam("access_key", accessKey)
-                        .build()
-                ).retrieve().bodyToMono(CurrencyLayerExchangeRateDto.class)
-                .map(dto -> dto.getQuotes().get(SOURCE_CURRENCY + TARGET_CURRENCY))
-                .blockOptional();
+                        .build())
+                .retrieve()
+                .bodyToMono(CurrencyLayerExchangeRateResponse.class).block();
     }
 }
