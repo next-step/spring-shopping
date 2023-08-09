@@ -10,6 +10,21 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private Long productId;
+
+    @Column(nullable = false, length = 20)
+    private Name name;
+
+    @Column(nullable = false)
+    private Image image;
+
+    @Column
+    private Price price;
+
+    @Column
+    private Quantity quantity;
+
     protected OrderItem() {
     }
 
@@ -19,7 +34,12 @@ public class OrderItem {
                      final Image image,
                      final Price price,
                      final Quantity quantity) {
-        throw new UnsupportedOperationException();
+        this.id = id;
+        this.productId = productId;
+        this.name = name;
+        this.image = image;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public OrderItem(final Long productId,
@@ -32,5 +52,25 @@ public class OrderItem {
 
     public Long getId() {
         return id;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public Name getName() {
+        return name;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public Price getPrice() {
+        return price;
+    }
+
+    public Quantity getQuantity() {
+        return quantity;
     }
 }
