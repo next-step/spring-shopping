@@ -42,6 +42,8 @@ public class OrderService {
             orderCreationRequest.getCartItemIds()
         );
 
+        validCartItems(productCartItemDtos);
+
         productCartItemDtos.stream()
             .map(ProductCartItemDto::toOrderItem)
             .collect(Collectors.toList())
@@ -55,6 +57,12 @@ public class OrderService {
         );
 
         return order.getId();
+    }
+
+    private void validCartItems(List<ProductCartItemDto> productCartItemDtos) {
+        if (productCartItemDtos.isEmpty()) {
+            throw new WooWaException("장바구니에 상품이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Transactional(readOnly = true)

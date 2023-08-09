@@ -1,5 +1,6 @@
 package shopping.order.service;
 
+import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
 import shopping.cart.domain.vo.Quantity;
 import shopping.cart.repository.CartItemRepository;
+import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.order.domain.Order;
@@ -60,6 +62,19 @@ class OrderServiceTest {
 
         Order makeOrder = orderRepository.findById(orderId).get();
         assertOrder(member, orderId, makeOrder);
+    }
+
+    @Test
+    @DisplayName("주문을 생성할 때 장바구니가 비어 있다면 예외를 던진다.")
+    void addOrderExceptionWhenCartIsEmpty() {
+        Member member = makeMember();
+        LoggedInMember loggedInMember = new LoggedInMember(member.getId());
+        OrderCreationRequest orderCreationRequest = new OrderCreationRequest(Collections.emptyList());
+
+        Assertions.assertThatThrownBy(
+                () -> orderService.addOrder(loggedInMember, orderCreationRequest)
+            ).isInstanceOf(WooWaException.class)
+            .hasMessage("장바구니에 상품이 없습니다.");
     }
 
     @Test
