@@ -21,4 +21,17 @@ public class OrderProductIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.SC_OK);
     }
 
+    @DisplayName("주문 상세 정보를 조회한다")
+    @Test
+    void findOrder() {
+        // given
+        long orderId = 1L;
+
+        // when
+        ExtractableResponse<Response> response = OrderProductIntegrationSupporter.findOrder(orderId);
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.SC_OK);
+    }
+
 }
