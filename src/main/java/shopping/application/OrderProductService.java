@@ -65,7 +65,7 @@ public class OrderProductService {
         }
     }
 
-    public OrderDetailResponse findOrderProducts(long orderId) {
+    public OrderDetailResponse findOrder(long orderId) {
         Order order = getOrder(orderId);
 
         return OrderDetailResponse.from(order);

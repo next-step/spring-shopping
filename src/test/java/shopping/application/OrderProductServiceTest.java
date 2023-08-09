@@ -113,7 +113,7 @@ class OrderProductServiceTest {
             given(orderRepository.findById(order.getId())).willReturn(Optional.of(order));
 
             // when
-            OrderDetailResponse orderDetail = orderProductService.findOrderProducts(
+            OrderDetailResponse orderDetail = orderProductService.findOrder(
                 order.getId());
 
             // then
@@ -131,7 +131,7 @@ class OrderProductServiceTest {
             given(orderRepository.findById(order.getId())).willReturn(Optional.empty());
 
             // when
-            Exception exception = catchException(() -> orderProductService.findOrderProducts(order.getId()));
+            Exception exception = catchException(() -> orderProductService.findOrder(order.getId()));
 
             // then
             assertThat(exception).isInstanceOf(OrderProductException.class);
