@@ -2,10 +2,10 @@ package shopping.dto;
 
 import org.junit.jupiter.api.Test;
 import shopping.domain.DomainFixture;
-import shopping.domain.cart.Quantity;
 import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Quantity;
 
 import java.util.List;
 

@@ -2,9 +2,9 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.domain.cart.Cart;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.CartItemRepository;
-import shopping.domain.cart.CartItems;
 import shopping.domain.product.Product;
 import shopping.domain.product.ProductRepository;
 import shopping.dto.CartCreateRequest;
@@ -31,10 +31,10 @@ public class CartService {
     @Transactional
     public Long addProduct(final CartCreateRequest request, final Long userId) {
         final Product product = findProductById(request.getProductId());
-        final CartItems items = findCartItemsByUserId(userId);
+        final Cart cart = findCartByUserId(userId);
         final CartItem item = new CartItem(userId, product);
 
-        CartItem affectedItem = items.add(item);
+        CartItem affectedItem = cart.add(item);
 
         return cartItemRepository.save(affectedItem).getId();
     }
@@ -55,29 +55,29 @@ public class CartService {
 
     @Transactional
     public void updateQuantity(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
-        final CartItems items = findCartItemsByUserId(userId);
+        final Cart cart = findCartByUserId(userId);
         final CartItem item = findCartItemById(cartItemId);
 
-        validateUserContainsItem(items, item);
+        validateUserContainsItem(cart, item);
 
         item.updateQuantity(request.getQuantity());
     }
 
     @Transactional
     public void delete(final Long cartItemId, final Long userId) {
-        final CartItems items = findCartItemsByUserId(userId);
+        final Cart cart = findCartByUserId(userId);
         final CartItem item = findCartItemById(cartItemId);
 
-        validateUserContainsItem(items, item);
+        validateUserContainsItem(cart, item);
 
         cartItemRepository.delete(item);
     }
 
-    private CartItems findCartItemsByUserId(final Long userId) {
-        return new CartItems(cartItemRepository.findAllByUserId(userId));
+    private Cart findCartByUserId(final Long userId) {
+        return new Cart(cartItemRepository.findAllByUserId(userId), userId);
     }
 
-    private void validateUserContainsItem(final CartItems items, final CartItem item) {
+    private void validateUserContainsItem(final Cart items, final CartItem item) {
         if (!items.contains(item)) {
             throw new ShoppingException(ErrorType.USER_NOT_CONTAINS_ITEM, item.getId());
         }

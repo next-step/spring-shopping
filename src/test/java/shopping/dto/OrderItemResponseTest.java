@@ -2,9 +2,9 @@ package shopping.dto;
 
 import org.junit.jupiter.api.Test;
 import shopping.domain.DomainFixture;
-import shopping.domain.cart.Quantity;
 import shopping.domain.order.OrderItem;
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Quantity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,9 +21,9 @@ class OrderItemResponseTest {
         OrderItemResponse response = OrderItemResponse.from(orderItem);
 
         // then
-        assertThat(response.getName()).isEqualTo(product.getName());
-        assertThat(response.getImage()).isEqualTo(product.getImage());
-        assertThat(response.getPrice()).isEqualTo(product.getPrice());
+        assertThat(response.getName()).isEqualTo(product.getName().getName());
+        assertThat(response.getImage()).isEqualTo(product.getImage().getImage());
+        assertThat(response.getPrice()).isEqualTo(product.getPrice().getPrice());
         assertThat(response.getQuantity()).isEqualTo(orderItem.getQuantity().getQuantity());
     }
 }

@@ -41,6 +41,8 @@ CREATE TABLE order_items
     name       varchar(20)  not null,
     image      varchar(255) not null,
     price      int          not null,
-    quantity   int          not null
+    quantity   int          not null,
+    item_index bigint
 );
+
 

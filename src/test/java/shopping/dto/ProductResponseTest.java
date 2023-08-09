@@ -2,10 +2,10 @@ package shopping.dto;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.domain.product.Image;
-import shopping.domain.product.Name;
-import shopping.domain.product.Price;
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Image;
+import shopping.domain.wrapper.Name;
+import shopping.domain.wrapper.Price;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,8 +22,8 @@ class ProductResponseTest {
 
         // then
         assertThat(response.getId()).isEqualTo(product.getId());
-        assertThat(response.getName()).isEqualTo(product.getName());
-        assertThat(response.getImage()).isEqualTo(product.getImage());
-        assertThat(response.getPrice()).isEqualTo(product.getPrice());
+        assertThat(response.getName()).isEqualTo(product.getName().getName());
+        assertThat(response.getImage()).isEqualTo(product.getImage().getImage());
+        assertThat(response.getPrice()).isEqualTo(product.getPrice().getPrice());
     }
 }

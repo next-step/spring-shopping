@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Order {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+    @OrderColumn(name = "item_index")
     private List<OrderItem> orderItems;
 
     @Column(name = "total_price")
@@ -37,7 +39,7 @@ public class Order {
 
     }
 
-    public Order(Long id, Long userId, List<OrderItem> orderItems, Long totalPrice) {
+    public Order(final Long id, final Long userId, final List<OrderItem> orderItems, final Long totalPrice) {
         validateNotEmpty(orderItems);
 
         this.id = id;
@@ -46,13 +48,13 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    private void validateNotEmpty(List<OrderItem> orderItems) {
+    private void validateNotEmpty(final List<OrderItem> orderItems) {
         if (orderItems.isEmpty()) {
             throw new ShoppingException(ErrorType.CART_NO_ITEM);
         }
     }
 
-    public Order(Long userId, List<OrderItem> orderItems, Long totalPrice) {
+    public Order(final Long userId, final List<OrderItem> orderItems, final Long totalPrice) {
         this(null, userId, orderItems, totalPrice);
     }
 

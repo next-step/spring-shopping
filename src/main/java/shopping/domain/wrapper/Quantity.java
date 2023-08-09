@@ -1,4 +1,4 @@
-package shopping.domain.cart;
+package shopping.domain.wrapper;
 
 
 import shopping.exception.ErrorType;

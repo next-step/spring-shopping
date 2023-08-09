@@ -1,6 +1,9 @@
 package shopping.domain.order;
 
-import shopping.domain.cart.Quantity;
+import shopping.domain.wrapper.Image;
+import shopping.domain.wrapper.Name;
+import shopping.domain.wrapper.Price;
+import shopping.domain.wrapper.Quantity;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,13 +14,13 @@ public class OrderItem {
 
     private Long productId;
     @Column(name = "name")
-    private String name;
+    private Name name;
 
     @Column(name = "image")
-    private String image;
+    private Image image;
 
     @Column(name = "price")
-    private int price;
+    private Price price;
 
     @Embedded
     @Column(name = "quantity")
@@ -27,7 +30,11 @@ public class OrderItem {
 
     }
 
-    public OrderItem(Long productId, String name, String image, int price, Quantity quantity) {
+    public OrderItem(final Long productId,
+                     final Name name,
+                     final Image image,
+                     final Price price,
+                     final Quantity quantity) {
         this.productId = productId;
         this.name = name;
         this.image = image;
@@ -39,15 +46,15 @@ public class OrderItem {
         return productId;
     }
 
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
-    public String getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public int getPrice() {
+    public Price getPrice() {
         return price;
     }
 

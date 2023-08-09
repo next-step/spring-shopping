@@ -1,9 +1,11 @@
-package shopping.domain.product;
+package shopping.domain.wrapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import shopping.domain.product.Product;
+import shopping.domain.product.ProductRepository;
 import shopping.exception.ShoppingException;
 
 import java.util.List;

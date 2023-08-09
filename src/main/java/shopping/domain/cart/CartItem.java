@@ -1,6 +1,7 @@
 package shopping.domain.cart;
 
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Quantity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,7 +61,7 @@ public class CartItem {
     }
 
     public long calculateTotalPrice() {
-        return (long) product.getPrice() * quantity.getQuantity();
+        return (long) product.getPrice().getPrice() * quantity.getQuantity();
     }
 
     public Long getId() {
@@ -75,7 +76,7 @@ public class CartItem {
         return product;
     }
 
-    public int getQuantity() {
-        return quantity.getQuantity();
+    public Quantity getQuantity() {
+        return quantity;
     }
 }

@@ -4,13 +4,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.domain.DomainFixture;
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Quantity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CartItemsTest {
+class CartTest {
 
     @Test
     @DisplayName("장바구니에 상품을 추가한다.")
@@ -18,7 +19,7 @@ class CartItemsTest {
         // given
         Product product = DomainFixture.createProduct();
         CartItem item = new CartItem(1L, product);
-        CartItems items = new CartItems(new ArrayList<>());
+        Cart items = new Cart(new ArrayList<>(), 1L);
         // when
         items.add(item);
 
@@ -32,7 +33,7 @@ class CartItemsTest {
         // given
         Product product = DomainFixture.createProduct();
         CartItem item = new CartItem(1L, product);
-        CartItems items = new CartItems(new ArrayList<>());
+        Cart items = new Cart(new ArrayList<>(), 1L);
 
         // when
         items.add(item);
@@ -40,7 +41,7 @@ class CartItemsTest {
 
         // then
         assertThat(items.getItems()).hasSize(1);
-        assertThat(items.getItems().get(0).getQuantity()).isEqualTo(2);
+        assertThat(items.getItems().get(0).getQuantity().getQuantity()).isEqualTo(2);
     }
 
     @Test
@@ -49,8 +50,7 @@ class CartItemsTest {
         // given
         Product product = DomainFixture.createProduct();
         CartItem item = new CartItem(1L, 1L, product, new Quantity(1));
-        CartItems items = new CartItems(new ArrayList<>(List.of(item)));
-
+        Cart items = new Cart(new ArrayList<>(List.of(item)), 1L);
 
         // when, then
         assertThat(items.contains(item)).isTrue();
@@ -62,7 +62,7 @@ class CartItemsTest {
         // given
         Product product = DomainFixture.createProduct();
         CartItem item = new CartItem(1L, 1L, product, new Quantity(1));
-        CartItems items = new CartItems(new ArrayList<>());
+        Cart items = new Cart(new ArrayList<>(), 1L);
 
 
         // when, then
@@ -75,7 +75,7 @@ class CartItemsTest {
         // given
         Product product = DomainFixture.createProduct();
         CartItem item = new CartItem(1L, 1L, product, new Quantity(3));
-        CartItems items = new CartItems(new ArrayList<>(List.of(item)));
+        Cart items = new Cart(new ArrayList<>(List.of(item)), 1L);
 
         // when
         assertThat(items.calculateTotalPrice()).isEqualTo(60000);

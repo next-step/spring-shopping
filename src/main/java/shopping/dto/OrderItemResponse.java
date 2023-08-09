@@ -43,9 +43,9 @@ public class OrderItemResponse {
 
     public static OrderItemResponse from(OrderItem orderItem) {
         return new OrderItemResponse(orderItem.getProductId(),
-                orderItem.getName(),
-                orderItem.getImage(),
-                orderItem.getPrice(),
+                orderItem.getName().getName(),
+                orderItem.getImage().getImage(),
+                orderItem.getPrice().getPrice(),
                 orderItem.getQuantity().getQuantity());
     }
 }

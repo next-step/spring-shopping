@@ -1,12 +1,12 @@
 package shopping.domain;
 
-import shopping.domain.product.Image;
-import shopping.domain.product.Name;
-import shopping.domain.product.Price;
 import shopping.domain.product.Product;
 import shopping.domain.user.Email;
 import shopping.domain.user.Password;
 import shopping.domain.user.User;
+import shopping.domain.wrapper.Image;
+import shopping.domain.wrapper.Name;
+import shopping.domain.wrapper.Price;
 
 public class DomainFixture {
     public static User createUser() {
