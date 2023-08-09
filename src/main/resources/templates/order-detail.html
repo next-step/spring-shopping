@@ -51,8 +51,7 @@
 
         const orderId = [[${orderId}]];
 
-        // TODO: [4단계] 주문 상세 조회 스펙에 맞게 변경
-        fetch(`/order/${orderId}`, {
+        fetch(`/api/order-detail/${orderId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${credentials}`,

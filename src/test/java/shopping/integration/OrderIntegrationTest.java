@@ -50,7 +50,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void findMemberOrderById() {
         // given
         ExtractableResponse<Response> order = OrderIntegrationSupporter.order();
-        String orderId = order.header("Location").split("/")[2];
+        String orderId = order.header("Location").split("/")[3];
 
         // when
         ExtractableResponse<Response> result = OrderIntegrationSupporter.findOrderById(

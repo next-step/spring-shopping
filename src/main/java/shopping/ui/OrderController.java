@@ -22,21 +22,6 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/order")
-    @ResponseBody
-    public ResponseEntity<Void> order(@Login Long memberId) {
-        OrderResponse response = orderService.order(memberId);
-        return ResponseEntity
-            .created(URI.create("/order-detail/" + response.getId()))
-            .build();
-    }
-
-    @GetMapping("/order/{id}")
-    @ResponseBody
-    public OrderResponse orderDetailById(@Login Long memberId, @PathVariable Long id) {
-        return orderService.getOrder(memberId, id);
-    }
-
     @GetMapping("/order-detail/{id}")
     public String orderDetail(@PathVariable Long id, Model model) {
         model.addAttribute("orderId", id);
@@ -48,7 +33,22 @@ public class OrderController {
         return "order-history";
     }
 
-    @GetMapping("/order-history/member")
+    @PostMapping("/api/order")
+    @ResponseBody
+    public ResponseEntity<Void> order(@Login Long memberId) {
+        OrderResponse response = orderService.order(memberId);
+        return ResponseEntity
+            .created(URI.create("/order-detail/" + response.getId()))
+            .build();
+    }
+
+    @GetMapping("/api/order-detail/{id}")
+    @ResponseBody
+    public OrderResponse orderDetailById(@Login Long memberId, @PathVariable Long id) {
+        return orderService.getOrder(memberId, id);
+    }
+
+    @GetMapping("/api/order-history")
     @ResponseBody
     public List<OrderResponse> orderHistoryByMemberId(@Login Long memberId) {
         return orderService.getOrders(memberId);

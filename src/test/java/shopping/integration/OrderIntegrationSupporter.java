@@ -15,7 +15,7 @@ public class OrderIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/order")
+            .when().post("/api/order")
             .then().log().all().extract();
     }
 
@@ -29,7 +29,7 @@ public class OrderIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/order")
+            .when().post("/api/order")
             .then().log().all().extract();
     }
 
@@ -40,7 +40,7 @@ public class OrderIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/order/{id}", id)
+            .when().get("/api/order-detail/{id}", id)
             .then().log().all().extract();
     }
 
@@ -51,7 +51,7 @@ public class OrderIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/order-history/member")
+            .when().get("/api/order-history")
             .then().log().all().extract();
     }
 
