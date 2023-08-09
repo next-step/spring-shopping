@@ -75,6 +75,10 @@ public class CartProduct {
         return this;
     }
 
+    public long calculatePrice() {
+        return product.getPrice() * quantity;
+    }
+
     public Long getId() {
         return id;
     }

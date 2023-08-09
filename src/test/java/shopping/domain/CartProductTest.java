@@ -80,4 +80,26 @@ class CartProductTest {
             assertThat(exception.getMessage()).contains("product 가 존재하지 않습니다");
         }
     }
+
+    @Nested
+    @DisplayName("calculatePrice 메서드는")
+    class CalculatePrice_Method {
+
+        @Test
+        @DisplayName("수량과 가격을 곱한 값을 반환한다.")
+        void returnPrice() {
+            // given
+            long price = 23000L;
+            Member member = new Member("home@naver.com", "1234");
+            Product product = new Product("치킨", "image", price);
+            int quantity = 15;
+
+            // when
+            CartProduct cartProduct = new CartProduct(member, product, quantity);
+
+            // then
+            assertThat(cartProduct.calculatePrice()).isEqualTo(price * quantity);
+        }
+    }
+
 }
