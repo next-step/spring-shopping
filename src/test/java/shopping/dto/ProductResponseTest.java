@@ -13,7 +13,7 @@ class ProductResponseTest {
 
     @Test
     @DisplayName("Product 엔티티로부터 Response DTO를 생성할 수 있다.")
-    public void createFromEntity() {
+    void createFromEntity() {
         // given
         Product product = new Product(1L, new Name("치킨"), new Image("chicken.png"), new Price(2000));
 
@@ -22,8 +22,8 @@ class ProductResponseTest {
 
         // then
         assertThat(response.getId()).isEqualTo(product.getId());
-        assertThat(response.getName()).isEqualTo(product.getName());
-        assertThat(response.getImage()).isEqualTo(product.getImage());
-        assertThat(response.getPrice()).isEqualTo(product.getPrice());
+        assertThat(response.getName()).isEqualTo(product.getName().getName());
+        assertThat(response.getImage()).isEqualTo(product.getImage().getImage());
+        assertThat(response.getPrice()).isEqualTo(product.getPrice().getPrice());
     }
 }

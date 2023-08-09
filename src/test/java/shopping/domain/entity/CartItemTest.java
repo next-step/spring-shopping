@@ -20,7 +20,7 @@ class CartItemTest {
         cartItem.increaseQuantity();
 
         // then
-        assertThat(cartItem.getQuantity()).isEqualTo(2);
+        assertThat(cartItem.getQuantity().getValue()).isEqualTo(2);
     }
 
     @Test
@@ -35,6 +35,6 @@ class CartItemTest {
         cartItem.updateQuantity(new Quantity(4));
 
         // then
-        assertThat(cartItem.getQuantity()).isEqualTo(4);
+        assertThat(cartItem.getQuantity().getValue()).isEqualTo(4);
     }
 }
