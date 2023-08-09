@@ -16,12 +16,6 @@ public class OrderResponse {
     private OrderResponse() {
     }
 
-    public OrderResponse(Long id, long totalPrice, List<OrderItemResponse> orderItems) {
-        this.id = id;
-        this.totalPrice = totalPrice;
-        this.orderItems = orderItems;
-    }
-
     public OrderResponse(Long id, long totalPrice, List<OrderItemResponse> orderItems, ExchangeRate exchangeRate) {
         this.id = id;
         this.totalPrice = totalPrice;
@@ -43,6 +37,6 @@ public class OrderResponse {
     }
 
     public double getExchangeRate() {
-        return 0;
+        return exchangeRate;
     }
 }

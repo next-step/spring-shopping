@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
+import shopping.domain.ExchangeRate;
 import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
@@ -24,22 +25,25 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final CartProductRepository cartProductRepository;
+    private final ExchangeRateProvider exchangeRateProvider;
 
     public OrderService(OrderRepository orderRepository, MemberRepository memberRepository,
-            CartProductRepository cartProductRepository) {
+            CartProductRepository cartProductRepository, ExchangeRateProvider exchangeRateProvider) {
         this.orderRepository = orderRepository;
         this.memberRepository = memberRepository;
         this.cartProductRepository = cartProductRepository;
+        this.exchangeRateProvider = exchangeRateProvider;
     }
 
     public OrderResponse order(long memberId) {
         Member member = findMember(memberId);
-        Order order = new Order(member);
+        ExchangeRate exchangeRate = exchangeRateProvider.getExchange();
+        Order order = new Order(member, exchangeRate);
         List<OrderItem> orderItems = orderMemberCartItems(member, order);
 
         clearMemberCart(memberId);
 
-        return mapToResponse(order.getId(), orderItems);
+        return mapToResponse(order, orderItems);
     }
 
     public OrderResponse getOrder(Long memberId, Long id) {
@@ -48,24 +52,24 @@ public class OrderService {
 
         validateOrderOwner(memberId, order);
 
-        return mapToResponse(order.getId(), order.getOrderItems());
+        return mapToResponse(order, order.getOrderItems());
     }
 
     public List<OrderResponse> getOrders(Long memberId) {
         List<Order> orders = orderRepository.findByMemberId(memberId);
         return orders.stream()
-            .map(order -> mapToResponse(order.getId(), order.getOrderItems()))
+            .map(order -> mapToResponse(order, order.getOrderItems()))
             .collect(Collectors.toList());
     }
 
-    private OrderResponse mapToResponse(Long orderId, List<OrderItem> orderItems) {
+    private OrderResponse mapToResponse(Order order, List<OrderItem> orderItems) {
         long totalPrice = 0;
         List<OrderItemResponse> orderItemResponses = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.calculateTotalPrice();
             orderItemResponses.add(OrderItemResponse.of(orderItem));
         }
-        return new OrderResponse(orderId, totalPrice, orderItemResponses);
+        return new OrderResponse(order.getId(), totalPrice, orderItemResponses, order.getExchangeRate());
     }
 
     private static void validateOrderOwner(Long memberId, Order order) {
