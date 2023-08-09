@@ -20,7 +20,7 @@ public class OrderEntity {
     @GeneratedValue
     private Long id;
 
-    private Long totalPrice;
+    private int totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -31,7 +31,7 @@ public class OrderEntity {
 
     protected OrderEntity() {};
 
-    public OrderEntity(Long id, Long totalPrice, UserEntity user,
+    public OrderEntity(Long id, int totalPrice, UserEntity user,
         List<OrderItemEntity> orderItems) {
         this.id = id;
         this.totalPrice = totalPrice;
@@ -39,7 +39,7 @@ public class OrderEntity {
         this.orderItems = orderItems;
     }
 
-    public OrderEntity(Long totalPrice, UserEntity user) {
+    public OrderEntity(int totalPrice, UserEntity user) {
         this(null, totalPrice, user, null);
     }
 
@@ -51,7 +51,7 @@ public class OrderEntity {
         return id;
     }
 
-    public Long getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
