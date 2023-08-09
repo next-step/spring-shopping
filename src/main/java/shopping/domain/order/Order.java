@@ -1,5 +1,8 @@
 package shopping.domain.order;
 
+import shopping.exception.ErrorType;
+import shopping.exception.ShoppingException;
+
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -35,10 +38,18 @@ public class Order {
     }
 
     public Order(Long id, Long userId, List<OrderItem> orderItems, Long totalPrice) {
+        validateNotEmpty(orderItems);
+
         this.id = id;
         this.userId = userId;
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
+    }
+
+    private void validateNotEmpty(List<OrderItem> orderItems) {
+        if (orderItems.isEmpty()) {
+            throw new ShoppingException(ErrorType.CART_NO_ITEM);
+        }
     }
 
     public Order(Long userId, List<OrderItem> orderItems, Long totalPrice) {

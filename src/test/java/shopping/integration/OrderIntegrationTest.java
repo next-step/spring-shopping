@@ -39,6 +39,26 @@ public class OrderIntegrationTest {
     }
 
     @Test
+    @DisplayName("장바구니에 상품이 없으면 주문 생성 시 오류를 반환한다.")
+    void createOrderNoItem() {
+        // given
+        String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
+
+        // when
+        ErrorResponse response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/orders")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class);
+
+        // then
+        assertThat(response.getMessage()).isEqualTo("장바구니에 상품이 없습니다.");
+    }
+
+    @Test
     @DisplayName("주문 목록을 조회할 수 있다.")
     void findAll() {
         //given
