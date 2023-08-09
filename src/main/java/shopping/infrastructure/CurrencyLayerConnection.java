@@ -3,7 +3,10 @@ package shopping.infrastructure;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import shopping.dto.response.ExchangeRateErrorResponse;
 import shopping.dto.response.ExchangeRateResponse;
+import shopping.exception.infrastructure.ConnectionFailException;
+import shopping.exception.infrastructure.NoConnectionException;
 
 @Component
 public class CurrencyLayerConnection {
@@ -21,11 +24,11 @@ public class CurrencyLayerConnection {
 
     public Long getExchangeRate(String source, String target) {
         ExchangeRateResponse response = getExchangeRateResponse(source, target);
-        if (response.getSuccess()) {
+        if (response.isSuccess()) {
             return response.getExchangeRates().get(source+target);
         }
-        // TODO: custom exception
-        throw new RuntimeException();
+        ExchangeRateErrorResponse error = response.getError();
+        throw new ConnectionFailException(error.getInformation(), error.getCode());
     }
 
     private ExchangeRateResponse getExchangeRateResponse(String source, String target) {
@@ -44,8 +47,7 @@ public class CurrencyLayerConnection {
 
     private void validateNotNullResponse(ExchangeRateResponse response) {
         if (response == null) {
-            // TODO : custom exception
-            throw new RuntimeException();
+            throw new NoConnectionException();
         }
     }
 }
