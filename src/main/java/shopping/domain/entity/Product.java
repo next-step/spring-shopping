@@ -17,7 +17,7 @@ public class Product {
     @Column(nullable = false)
     private Image image;
 
-    @Column
+    @Column(nullable = false)
     private Price price;
 
     protected Product() {

@@ -19,10 +19,10 @@ public class OrderItem {
     @Column(nullable = false)
     private Image image;
 
-    @Column
+    @Column(nullable = false)
     private Price price;
 
-    @Column
+    @Column(nullable = false)
     private Quantity quantity;
 
     protected OrderItem() {
