@@ -8,6 +8,7 @@ import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderProduct;
+import shopping.dto.OrderDetailResponse;
 import shopping.exception.OrderProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
@@ -38,13 +39,17 @@ public class OrderProductService {
         validateQuantity(cartProducts);
 
         Order order = new Order(member);
+        addOrderProducts(cartProducts, order);
 
+        cartProductRepository.deleteByMemberId(memberId);
+
+        return orderRepository.save(order);
+    }
+
+    private void addOrderProducts(List<CartProduct> cartProducts, Order order) {
         cartProducts.stream()
             .map(cartProduct -> OrderProduct.of(order, cartProduct))
             .forEach(order::addOrderProduct);
-
-        cartProductRepository.deleteByMemberId(memberId);
-        return orderRepository.save(order);
     }
 
     private Member getMember(Long memberId) {
@@ -54,9 +59,23 @@ public class OrderProductService {
             ));
     }
 
-    private static void validateQuantity(List<CartProduct> cartProducts) {
+    private void validateQuantity(List<CartProduct> cartProducts) {
         if (cartProducts.size() < MIN_ORDER_PRODUCT_QUANTITY) {
             throw new OrderProductException("장바구니에 상품이 존재하지 않습니다");
         }
     }
+
+    public OrderDetailResponse findOrderProducts(long orderId) {
+        Order order = getOrder(orderId);
+
+        return OrderDetailResponse.from(order);
+    }
+
+    private Order getOrder(long orderId) {
+        return orderRepository.findById(orderId)
+            .orElseThrow(() -> new OrderProductException(
+                MessageFormat.format("orderId 에 해당하는 order 가 존재하지 않습니다 orderId : {0}", orderId)
+            ));
+    }
+
 }

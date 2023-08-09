@@ -71,6 +71,10 @@ public class OrderProduct {
         }
     }
 
+    public long calculatePrice() {
+        return quantity * product.getPrice();
+    }
+
     public Long getId() {
         return id;
     }

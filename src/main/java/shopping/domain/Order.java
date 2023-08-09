@@ -63,4 +63,14 @@ public class Order {
     public Member getMember() {
         return member;
     }
+
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public long calculateTotalPrice() {
+        return orderProducts.stream()
+            .mapToLong(OrderProduct::calculatePrice)
+            .sum();
+    }
 }

@@ -18,7 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;
+import shopping.domain.OrderProduct;
 import shopping.domain.Product;
+import shopping.dto.OrderDetailResponse;
 import shopping.exception.OrderProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
@@ -83,6 +85,58 @@ class OrderProductServiceTest {
             assertThat(exception.getMessage()).contains("장바구니에 상품이 존재하지 않습니다");
         }
 
+    }
+
+    @Nested
+    @DisplayName("findOrderProducts 메서드는")
+    class FindOrderProducts_Method {
+
+        @Test
+        @DisplayName("orderId 에 해당하는 주문의 상품 정보를 반환한다")
+        void returnOrderDetail() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Order order = new Order(1L, member);
+
+            Product product1 = new Product(1L, "치킨", "image", 23000L);
+            Product product2 = new Product(2L, "떡볶이", "image", 14000L);
+
+            CartProduct cartProduct1 = new CartProduct(member, product1, 1);
+            CartProduct cartProduct2 = new CartProduct(member, product2, 2);
+
+            OrderProduct orderProduct1 = OrderProduct.of(order, cartProduct1);
+            OrderProduct orderProduct2 = OrderProduct.of(order, cartProduct2);
+
+            order.addOrderProduct(orderProduct1);
+            order.addOrderProduct(orderProduct2);
+
+            given(orderRepository.findById(order.getId())).willReturn(Optional.of(order));
+
+            // when
+            OrderDetailResponse orderDetail = orderProductService.findOrderProducts(
+                order.getId());
+
+            // then
+            OrderDetailResponse expected = OrderDetailResponse.from(order);
+            assertThat(orderDetail).usingRecursiveComparison().isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("orderId 에 해당하는 주문이 없을 경우 OrderProductException 을 던진다")
+        void throwOrderProductException_WhenOrderIsNotExist() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+            Order order = new Order(1L, member);
+
+            given(orderRepository.findById(order.getId())).willReturn(Optional.empty());
+
+            // when
+            Exception exception = catchException(() -> orderProductService.findOrderProducts(order.getId()));
+
+            // then
+            assertThat(exception).isInstanceOf(OrderProductException.class);
+            assertThat(exception.getMessage()).contains("orderId 에 해당하는 order 가 존재하지 않습니다");
+        }
     }
 
 }
