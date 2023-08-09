@@ -1,6 +1,8 @@
 package shopping.application;
 
+import java.util.Optional;
+
 public interface ExchangeRateProvider {
 
-    Double getExchangeRate();
+    Optional<Double> getExchangeRate();
 }

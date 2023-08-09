@@ -23,7 +23,8 @@ public enum ErrorType {
     EMAIL_NULL(HttpStatus.BAD_REQUEST, "email은 필수 항목입니다."),
     ORDER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "주문 접근 권한이 없습니다."),
     ORDER_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 주문 번호입니다 : "),
-    DECODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "복호화 실패");
+    DECODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "복호화 실패"),
+    NO_EXCHANGE_RATE(HttpStatus.BAD_REQUEST, "환율 정보를 조회하는데 실패했습니다.");
 
     private final HttpStatus status;
     private final String message;

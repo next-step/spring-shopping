@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import shopping.application.ExchangeRateProvider;
 
+import java.util.Optional;
+
 @Component
 @Profile("!test")
 public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
@@ -25,7 +27,7 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
         this.accessKey = accessKey;
     }
 
-    public Double getExchangeRate() {
+    public Optional<Double> getExchangeRate() {
         WebClient webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -38,6 +40,6 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
                         .build()
                 ).retrieve().bodyToMono(CurrencyLayerExchangeRateDto.class)
                 .map(dto -> dto.getQuotes().get(SOURCE_CURRENCY + TARGET_CURRENCY))
-                .block();
+                .blockOptional();
     }
 }

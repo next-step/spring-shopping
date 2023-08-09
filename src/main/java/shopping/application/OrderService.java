@@ -36,7 +36,8 @@ public class OrderService {
     public Long createFromCart(final Long userId) {
         Cart cart = findCartByUserId(userId);
 
-        Double exchangeRate = exchangeRateProvider.getExchangeRate();
+        double exchangeRate = exchangeRateProvider.getExchangeRate()
+                .orElseThrow(() -> new ShoppingException(ErrorType.NO_EXCHANGE_RATE));
         Order order = orderMapper.mapOrderFrom(cart, exchangeRate);
 
         Long id = orderRepository.save(order).getId();
