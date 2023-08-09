@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.domain.Currency;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.OrderItemEntity;
@@ -16,6 +17,7 @@ import shopping.exception.ShoppingException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.UserRepository;
+import shopping.utils.CurrencyLayer;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,32 +26,37 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
+    private final CurrencyLayer currencyLayer;
 
     public OrderService(
         OrderRepository orderRepository,
         CartItemRepository cartItemRepository,
-        UserRepository userRepository
+        UserRepository userRepository,
+        CurrencyLayer currencyLayer
     ) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
+        this.currencyLayer = currencyLayer;
     }
 
     @Transactional
     public OrderIdResponse orderCartItem(Long userId) {
         UserEntity user = userRepository.getReferenceById(userId);
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
+        Currency currency = currencyLayer.callCurrency();
+        Double USDKRW = currency.getQuotes().get("USDKRW");
 
         int totalPrice = 0;
-        Double totalPriceUSD = 0D;
         for (CartItemEntity cartItem: cartItems) {
             totalPrice += (cartItem.getProduct().getPrice() * cartItem.getQuantity());
         }
+        Double totalPriceUSD = totalPrice / USDKRW;
         OrderEntity order = new OrderEntity(totalPrice, totalPriceUSD, user);
 
         List<OrderItemEntity> orderItems = new ArrayList<>();
         for (CartItemEntity cartItem: cartItems) {
-            orderItems.add(OrderItemEntity.from(cartItem, order));
+            orderItems.add(OrderItemEntity.from(cartItem, order, USDKRW));
         }
         order.addOrderItems(orderItems);
 
