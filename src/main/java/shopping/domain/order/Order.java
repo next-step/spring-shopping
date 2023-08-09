@@ -35,17 +35,25 @@ public class Order {
     @Column(name = "total_price")
     private long totalPrice;
 
+    @Column(name = "exchange_rate")
+    private double exchangeRate;
+
     protected Order() {
 
     }
 
-    public Order(final Long id, final Long userId, final List<OrderItem> orderItems, final Long totalPrice) {
+    public Order(final Long id,
+                 final Long userId,
+                 final List<OrderItem> orderItems,
+                 final long totalPrice,
+                 final double exchangeRate) {
         validateNotEmpty(orderItems);
 
         this.id = id;
         this.userId = userId;
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
+        this.exchangeRate = exchangeRate;
     }
 
     private void validateNotEmpty(final List<OrderItem> orderItems) {
@@ -54,8 +62,8 @@ public class Order {
         }
     }
 
-    public Order(final Long userId, final List<OrderItem> orderItems, final Long totalPrice) {
-        this(null, userId, orderItems, totalPrice);
+    public Order(final Long userId, final List<OrderItem> orderItems, final long totalPrice, final double exchangeRate) {
+        this(null, userId, orderItems, totalPrice, exchangeRate);
     }
 
     public Long getId() {
@@ -72,5 +80,9 @@ public class Order {
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
+    }
+
+    public double getExchangeRate() {
+        return exchangeRate;
     }
 }

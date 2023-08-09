@@ -112,6 +112,7 @@ public class OrderIntegrationTest {
         // then
         assertThat(response.getId()).isEqualTo(orderId);
         assertThat(response.getTotalPrice()).isEqualTo(115000);
+        assertThat(response.getExchangeRate()).isEqualTo(1.0);
     }
 
     @Test

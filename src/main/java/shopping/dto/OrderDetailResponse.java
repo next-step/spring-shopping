@@ -10,14 +10,19 @@ public class OrderDetailResponse {
     private Long id;
     private List<OrderItemResponse> items;
     private long totalPrice;
+    private double exchangeRate;
 
     private OrderDetailResponse() {
     }
 
-    public OrderDetailResponse(Long id, List<OrderItemResponse> orderItems, long totalPrice) {
+    public OrderDetailResponse(final Long id,
+                               final List<OrderItemResponse> orderItems,
+                               final long totalPrice,
+                               final double exchangeRate) {
         this.id = id;
         this.items = orderItems;
         this.totalPrice = totalPrice;
+        this.exchangeRate = exchangeRate;
     }
 
     public Long getId() {
@@ -32,6 +37,10 @@ public class OrderDetailResponse {
         return totalPrice;
     }
 
+    public double getExchangeRate() {
+        return exchangeRate;
+    }
+
     public static OrderDetailResponse from(Order order) {
         return new OrderDetailResponse(
                 order.getId(),
@@ -39,7 +48,8 @@ public class OrderDetailResponse {
                         .stream()
                         .map(OrderItemResponse::from)
                         .collect(Collectors.toList()),
-                order.getTotalPrice()
+                order.getTotalPrice(),
+                order.getExchangeRate()
         );
     }
 }

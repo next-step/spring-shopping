@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
+    public Order mapOrderFrom(final Cart cart, final double exchangeRate) {
 
-    public Order mapOrderFrom(final Cart cart) {
         List<OrderItem> orderItems = cart.getItems()
                 .stream()
                 .map(this::mapOrderItemFrom)
@@ -20,7 +20,7 @@ public class OrderMapper {
 
         long sum = cart.calculateTotalPrice();
 
-        return new Order(cart.getUserId(), orderItems, sum);
+        return new Order(cart.getUserId(), orderItems, sum, exchangeRate);
     }
 
     private OrderItem mapOrderItemFrom(final CartItem item) {

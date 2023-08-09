@@ -21,19 +21,23 @@ public class OrderService {
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final ExchangeRateProvider exchangeRateProvider;
 
     public OrderService(final CartItemRepository cartItemRepository,
                         final OrderRepository orderRepository,
-                        final OrderMapper orderMapper) {
+                        final OrderMapper orderMapper, ExchangeRateProvider exchangeRateProvider) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        this.exchangeRateProvider = exchangeRateProvider;
     }
 
     @Transactional
     public Long createFromCart(final Long userId) {
         Cart cart = findCartByUserId(userId);
-        Order order = orderMapper.mapOrderFrom(cart);
+
+        Double exchangeRate = exchangeRateProvider.getExchangeRate();
+        Order order = orderMapper.mapOrderFrom(cart, exchangeRate);
 
         Long id = orderRepository.save(order).getId();
         cartItemRepository.deleteAll(cart.getItems());

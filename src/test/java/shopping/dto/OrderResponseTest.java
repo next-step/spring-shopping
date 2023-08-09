@@ -23,7 +23,8 @@ class OrderResponseTest {
         Order order = new Order(1L, 1L,
                 List.of(new OrderItem(product.getId(), product.getName(),
                         product.getImage(), product.getPrice(), new Quantity(2))),
-                20000L
+                20000L,
+                1
         );
 
         // when

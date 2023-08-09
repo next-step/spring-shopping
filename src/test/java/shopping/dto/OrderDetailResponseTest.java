@@ -21,7 +21,8 @@ class OrderDetailResponseTest {
         Order order = new Order(1L, 1L,
                 List.of(new OrderItem(product.getId(), product.getName(),
                         product.getImage(), product.getPrice(), new Quantity(2))),
-                20000L
+                20000L,
+                1
         );
 
         // when
@@ -31,5 +32,6 @@ class OrderDetailResponseTest {
         assertThat(response.getId()).isEqualTo(1L);
         assertThat(response.getItems().get(0).getName()).isEqualTo("치킨");
         assertThat(response.getTotalPrice()).isEqualTo(20000L);
+        assertThat(response.getExchangeRate()).isEqualTo(1);
     }
 }
