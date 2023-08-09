@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.domain.Currency;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.OrderItemEntity;
@@ -25,6 +27,7 @@ import shopping.dto.response.OrderResponse;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.UserRepository;
+import shopping.utils.CurrencyLayer;
 
 @DisplayName("OrderService")
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +39,8 @@ public class OrderServiceTest {
     private CartItemRepository cartItemRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private CurrencyLayer currencyLayer;
     @InjectMocks
     private OrderService orderService;
 
@@ -54,13 +59,17 @@ public class OrderServiceTest {
         when(userRepository.getReferenceById(userId)).thenReturn(user);
         List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
         when(cartItemRepository.findByUserId(userId)).thenReturn(cartItems);
+        HashMap<String, Double> hm = new HashMap<>();
+        hm.put("USDKRW", 1300.111);
+        Currency currency = new Currency(true, "USD", hm);
+        when(currencyLayer.callCurrency()).thenReturn(currency);
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
         OrderEntity order = new OrderEntity(totalPrice, 0D, user);
 
-        OrderItemEntity orderItemChicken = OrderItemEntity.from(cartItemChicken, order);
-        OrderItemEntity orderItemPizza = OrderItemEntity.from(cartItemPizza, order);
+        OrderItemEntity orderItemChicken = OrderItemEntity.from(cartItemChicken, order, 0D);
+        OrderItemEntity orderItemPizza = OrderItemEntity.from(cartItemPizza, order, 0D);
         List<OrderItemEntity> orderItems = List.of(orderItemChicken, orderItemPizza);
         order.addOrderItems(orderItems);
         lenient().when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
@@ -71,6 +80,7 @@ public class OrderServiceTest {
         // then
         verify(userRepository).getReferenceById(userId);
         verify(cartItemRepository).findByUserId(userId);
+        verify(currencyLayer).callCurrency();
         verify(orderRepository).save(any(OrderEntity.class));
     }
 
@@ -113,16 +123,19 @@ public class OrderServiceTest {
             "치킨",
             "fried_chicken.png",
             20000,
+            0D,
             1);
         OrderItemResponse pizzaResponse = new OrderItemResponse(
             2L,
             "피자",
             "pizza.png",
             50000,
+            0D,
             2);
         OrderResponse expectedOrderResponse = new OrderResponse(
             1L,
             70000,
+            0D,
             List.of(chickenResponse, pizzaResponse)
         );
 
