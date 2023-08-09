@@ -1,5 +1,7 @@
 package shopping.product.domain;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class Product {
     @Embedded
     private Image image;
     @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "price"))
     private Money price;
 
     protected Product() {

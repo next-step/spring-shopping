@@ -30,6 +30,10 @@ public class Quantity {
         return new Quantity(this.value + 1);
     }
 
+    private void setValue(int value) { //for hibernate
+        this.value = value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

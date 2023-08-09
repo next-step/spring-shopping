@@ -2,10 +2,10 @@ package shopping.product.domain.vo;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import javax.persistence.Embeddable;
 
-@Embeddable
 public class Money {
+
+    public static final Money ZERO = new Money(BigDecimal.ZERO);
 
     private BigDecimal amount;
 
@@ -14,6 +14,14 @@ public class Money {
 
     public Money(String amount) {
         this.amount = new BigDecimal(amount);
+    }
+
+    public Money(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public Money plus(Money otherMoney) {
+        return new Money(this.amount.add(otherMoney.amount));
     }
 
     public boolean isMoreThan(Money otherMoney) {
@@ -26,6 +34,10 @@ public class Money {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    private void setAmount(BigDecimal amount) { //for hibernate
+        this.amount = amount;
     }
 
     @Override
