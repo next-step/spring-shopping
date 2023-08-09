@@ -8,11 +8,13 @@ public class OrderResponse {
 
     private final Long id;
     private final int totalPrice;
+    private final Double totalPriceUSD;
     private final List<OrderItemResponse> orderItems;
 
-    public OrderResponse(Long id, int totalPrice, List<OrderItemResponse> orderItems) {
+    public OrderResponse(Long id, int totalPrice, Double totalPriceUSD, List<OrderItemResponse> orderItems) {
         this.id = id;
         this.totalPrice = totalPrice;
+        this.totalPriceUSD = totalPriceUSD;
         this.orderItems = orderItems;
     }
 
@@ -20,6 +22,7 @@ public class OrderResponse {
         return new OrderResponse(
             order.getId(),
             order.getTotalPrice(),
+            order.getTotalPriceUSD(),
             order.getOrderItems().stream()
                 .map(OrderItemResponse::from)
                 .collect(Collectors.toUnmodifiableList())
@@ -32,6 +35,10 @@ public class OrderResponse {
 
     public int getTotalPrice() {
         return totalPrice;
+    }
+
+    public Double getTotalPriceUSD() {
+        return totalPriceUSD;
     }
 
     public List<OrderItemResponse> getOrderItems() {

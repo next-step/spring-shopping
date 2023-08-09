@@ -45,13 +45,14 @@ public class OrderItemEntity {
         this.order = order;
     }
 
-    public static OrderItemEntity from(CartItemEntity cartItem, OrderEntity order) {
+    public static OrderItemEntity from(CartItemEntity cartItem, OrderEntity order, Double currency) {
+        int totalPrice = cartItem.getProduct().getPrice() * cartItem.getQuantity();
         return new OrderItemEntity(
             null,
             cartItem.getProduct().getName(),
             cartItem.getProduct().getImageFileName(),
-            cartItem.getProduct().getPrice() * cartItem.getQuantity(),
-            0D,
+            totalPrice,
+            totalPrice / currency,
             cartItem.getQuantity(),
             order
         );
