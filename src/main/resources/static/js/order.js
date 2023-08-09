@@ -17,7 +17,7 @@ const requestOrder = () => {
     // TODO: [4단계] 주문이 성공하면 주문 상세 페이지로 이동 (order.html 사용)
     response.json().then(body => {
       console.log(body);
-      window.location.href = `/order-detail?orderId=${body.id}`;
+      window.location.href = `/order-detail/${body.id}`;
     });
   }).catch((error) => {
     console.error(error);
