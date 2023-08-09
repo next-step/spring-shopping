@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import shopping.domain.Order;
 import shopping.domain.OrderProduct;
 import shopping.domain.Product;
 import shopping.dto.OrderDetailResponse;
+import shopping.dto.OrderResponse;
 import shopping.exception.OrderProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
@@ -136,6 +138,45 @@ class OrderProductServiceTest {
             // then
             assertThat(exception).isInstanceOf(OrderProductException.class);
             assertThat(exception.getMessage()).contains("orderId 에 해당하는 order 가 존재하지 않습니다");
+        }
+    }
+
+    @Nested
+    @DisplayName("findOrders 메서드는")
+    class FindOrders_Method {
+
+        @Test
+        @DisplayName("memberId 에 해당하는 member 의 주문 목록을 반환한다")
+        void returnOrders() {
+            // given
+            Member member = new Member(1L, "home@woowa.com", "1234");
+
+            Order order1 = new Order(1L, member);
+            Order order2 = new Order(2L, member);
+
+            Product product1 = new Product(1L, "치킨", "image", 23000L);
+            Product product2 = new Product(2L, "떡볶이", "image", 14000L);
+
+            CartProduct cartProduct1 = new CartProduct(member, product1, 1);
+            CartProduct cartProduct2 = new CartProduct(member, product2, 2);
+
+            OrderProduct orderProduct1 = OrderProduct.of(order1, cartProduct1);
+            OrderProduct orderProduct2 = OrderProduct.of(order2, cartProduct2);
+
+            order1.addOrderProduct(orderProduct1);
+            order2.addOrderProduct(orderProduct2);
+
+            given(orderRepository.findByMemberId(member.getId())).willReturn(List.of(order1, order2));
+
+            // when
+            List<OrderResponse> orders = orderProductService.findOrders(member.getId());
+
+            // then
+            List<OrderResponse> expected = List.of(order1, order2).stream()
+                                            .map(OrderResponse::from)
+                                            .collect(Collectors.toList());
+
+            assertThat(orders).usingRecursiveComparison().isEqualTo(expected);
         }
     }
 

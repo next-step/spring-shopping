@@ -2,6 +2,7 @@ package shopping.application;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
@@ -9,6 +10,7 @@ import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderProduct;
 import shopping.dto.OrderDetailResponse;
+import shopping.dto.OrderResponse;
 import shopping.exception.OrderProductException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
@@ -78,4 +80,10 @@ public class OrderProductService {
             ));
     }
 
+    public List<OrderResponse> findOrders(long memberId) {
+        return orderRepository.findByMemberId(memberId)
+            .stream()
+            .map(OrderResponse::from)
+            .collect(Collectors.toList());
+    }
 }

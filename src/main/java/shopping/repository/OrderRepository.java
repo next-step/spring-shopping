@@ -1,5 +1,6 @@
 package shopping.repository;
 
+import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,10 @@ public class OrderRepository {
         return Optional.ofNullable(entityManager.find(Order.class, orderId));
     }
 
+    public List<Order> findByMemberId(long memberId) {
+        return entityManager
+            .createQuery("select o from Order o where o.member.id = :memberId", Order.class)
+            .setParameter("memberId", memberId)
+            .getResultList();
+    }
 }
