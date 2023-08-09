@@ -126,7 +126,7 @@ commit type은 아래 목록 중 하나로 함
     - 이미지
     - 수량
 
-- [ ] request : `POST /order`
+- [ ] request : `POST /orders`
 - [ ] response : `201 CREATED`
 - [ ] 삭제 된 물품을 주문 시 주문 실패 메세지 반환
 - [ ] 중복 된 물품을 주문 시 수량을 통합해 주문 성공
@@ -135,13 +135,13 @@ commit type은 아래 목록 중 하나로 함
 
 ### 특정 주문의 상세 정보를 확인
 
-- [ ] request : `GET /order/{id}`
+- [ ] request : `GET /orders/{id}`
 - [ ] response : `200 OK`
 - [ ] 존재하지 않는 주문을 조회 시 조회 실패 메세지 반환
 - [ ] 프론트 연동
 
 ### 사용자 별 주문 목록 확인
 
-- [ ] request : `GET /order`
+- [ ] request : `GET /orders`
 - [ ] response : `200 OK`
 - [ ] 프론트 연동
