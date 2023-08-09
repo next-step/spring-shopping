@@ -36,6 +36,8 @@ public class OrderService {
     public Long createFromCart(final Long userId) {
         Cart cart = findCartByUserId(userId);
 
+        validateCartNotEmpty(cart);
+
         double exchangeRate = exchangeRateProvider.getExchangeRate()
                 .orElseThrow(() -> new ShoppingException(ErrorType.NO_EXCHANGE_RATE));
         Order order = orderMapper.mapOrderFrom(cart, exchangeRate);
@@ -44,6 +46,12 @@ public class OrderService {
         cartItemRepository.deleteAll(cart.getItems());
 
         return id;
+    }
+
+    private void validateCartNotEmpty(Cart cart) {
+        if (cart.getItems().isEmpty()) {
+            throw new ShoppingException(ErrorType.CART_NO_ITEM);
+        }
     }
 
     @Transactional(readOnly = true)
