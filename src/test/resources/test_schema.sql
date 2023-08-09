@@ -26,6 +26,7 @@ create table cart_item (
                            product_id bigint,
                            product_name varchar(255),
                            product_price numeric(19,2),
+                           image_url varchar(255),
                            quantity integer,
                            primary key (id),
                            FOREIGN KEY (member_id) REFERENCES member(id),

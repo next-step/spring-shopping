@@ -29,42 +29,34 @@ public class CartItem {
     private Long memberId;
     private Long productId;
     private String productName;
-
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "product_price"))
     private Money productPrice;
-
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity;
+    private String imageUrl;
 
     protected CartItem() {
     }
 
     public CartItem(Long memberId, Long productId, String productName, Money productPrice,
-        Quantity quantity) {
+        Quantity quantity, String imageUrl) {
         this.memberId = memberId;
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.quantity = quantity;
+        this.imageUrl = imageUrl;
     }
-
-    public CartItem(Long memberId, Long productId, String productName, Money productPrice,
-        int quantity) {
-        this(memberId, productId, productName, productPrice, new Quantity(quantity));
-    }
-
-    public CartItem(Long memberId, Long productId, String productName, Money productPrice) {
-        this.memberId = memberId;
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.quantity = new Quantity(DEFAULT_QUANTITY);
-    }
-
     public CartItem(Product product, Member member) {
-        this(member.getId(), product.getId(), product.getName(), product.getPrice());
+        this(member.getId(),
+             product.getId(),
+             product.getName(),
+             product.getPrice(),
+             new Quantity(DEFAULT_QUANTITY),
+             product.getImage().toUrl()
+        );
     }
 
     public boolean isProductChanged(Product product) {
@@ -109,5 +101,9 @@ public class CartItem {
 
     public Quantity getQuantity() {
         return quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

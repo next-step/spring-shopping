@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.ProductCartItemDto;
-import shopping.product.domain.vo.Image;
 import shopping.common.vo.ImageStoreType;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.product.domain.vo.Image;
 import shopping.product.repository.ProductRepository;
 
 @DataJpaTest
@@ -40,8 +39,8 @@ class CartItemRepositoryTest {
         productRepository.save(newProduct);
         productRepository.save(newProduct2);
 
-        CartItem cartItem = new CartItem(newMember.getId(), newProduct.getId(), "치킨", new Money("10000"), 1);
-        CartItem othersCartItem = new CartItem(otherMember.getId(), newProduct2.getId(), "피자", new Money("100000"), 1);
+        CartItem cartItem = new CartItem(newProduct, newMember);
+        CartItem othersCartItem = new CartItem(newProduct2, otherMember);
 
         cartItemRepository.save(cartItem);
         cartItemRepository.save(othersCartItem);
