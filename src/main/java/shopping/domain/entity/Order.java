@@ -2,6 +2,7 @@ package shopping.domain.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -46,7 +47,7 @@ public class Order {
     }
 
     private static Price calculateTotalPrice(final List<OrderItem> orderItems) {
-        return null;
+        return Price.sum(orderItems, OrderItem::calculateTotalPrice);
     }
 
     public Long getId() {
@@ -58,7 +59,7 @@ public class Order {
     }
 
     public List<OrderItem> getItems() {
-        return items;
+        return Collections.unmodifiableList(items);
     }
 
     public Price getTotalPrice() {

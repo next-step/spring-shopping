@@ -50,6 +50,10 @@ public class OrderItem {
         this(null, productId, name, image, price, quantity);
     }
 
+    public Price calculateTotalPrice() {
+        return price.multiply(quantity.getValue());
+    }
+
     public Long getId() {
         return id;
     }
