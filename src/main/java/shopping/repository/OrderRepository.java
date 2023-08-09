@@ -29,7 +29,7 @@ public class OrderRepository {
 
     public List<Order> findByMemberId(Long memberId) {
         return entityManager.createQuery(
-            "select o from Order o join fetch o.orderItems where o.member.id = :memberId", Order.class
+            "select distinct o from Order o join fetch o.orderItems where o.member.id = :memberId", Order.class
         )
             .setParameter("memberId", memberId)
             .getResultList();
