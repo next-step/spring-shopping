@@ -110,18 +110,18 @@ Authorization: Bearer {jwt_token}
 ```
 #### Request
 ```
-POST /order
+POST /orders
 ```
 #### Response Header
 ```
-Location: /order/{orderId}
+Location: /orders/{orderId}
 ```
 - [x] 장바구니에 담긴 아이템 전체 주문
   - [x] 주문 요청이 성공하면 주문 상세 페이지로 이동
 
 #### Request
 ```
-GET /order/{orderId}
+GET /orders/{orderId}
 ```
 #### Response
 ```
@@ -139,12 +139,12 @@ GET /order/{orderId}
     totalPrice : {totalPrice}
 }
 ```
-- [ ] 주문 상세 조회
+- [x] 주문 상세 조회
   - 주문 정보 : 주문 번호, 주문 아이템 정보 (이름, 가격, 이미지, 수량), 총 결제 금액
 
 #### Request
 ```
-GET /order-history
+GET /orders
 ```
 #### Response
 ```
@@ -164,5 +164,5 @@ GET /order-history
     ...
 ]
 ```
-- [ ] 주문 목록 조회
+- [x] 주문 목록 조회
   - 주문 정보 : 주문 번호, 주문 아이템 정보 (이름, 가격, 이미지, 수량)
