@@ -91,10 +91,14 @@ class OrderIntegrationTest extends IntegrationTest {
     @Test
     @DisplayName("사용자가 주문 목록을 반환한다")
     void findMemberOrders() {
+        // given
+        OrderIntegrationSupporter.order();
+
         // when
         ExtractableResponse<Response> result = OrderIntegrationSupporter.findMemberOrders();
 
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(result.body().as(ArrayList.class)).hasSize(1);
     }
 }

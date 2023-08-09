@@ -1,6 +1,7 @@
 package shopping.ui;
 
 import java.net.URI;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,5 +41,16 @@ public class OrderController {
     public String orderDetail(@PathVariable Long id, Model model) {
         model.addAttribute("orderId", id);
         return "order-detail";
+    }
+
+    @GetMapping("/order-history")
+    public String orderHistory() {
+        return "order-history";
+    }
+
+    @GetMapping("/order-history/member")
+    @ResponseBody
+    public List<OrderResponse> orderHistoryByMemberId(@Login Long memberId) {
+        return orderService.getOrders(memberId);
     }
 }

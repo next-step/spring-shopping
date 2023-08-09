@@ -51,7 +51,7 @@ public class OrderIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/order-history")
+            .when().get("/order-history/member")
             .then().log().all().extract();
     }
 
