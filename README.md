@@ -23,6 +23,7 @@
 - ID
 - Member
 - orderedAt
+- exchangeRate
 
 ### OrderItem
 - ID
@@ -123,7 +124,8 @@ Authorization: Bearer {jwt_token}
 ```
 Location: /order-history/{orderId}
 ```
-- [ ] 주문에 성공하면 Created 를 반환한다.
+- [x] 주문에 성공하면 Created 를 반환한다.
+- [ ] 주문 시점의 실시간 환율을 저장한다.
 
 ### 주문 상세 정보 조회
 
@@ -148,9 +150,11 @@ Authorization: Bearer {jwt_token}
 }
 
 ```
-- [ ] 주문 id 와 일치하는 주문 정보를 반환한다.
-- [ ] 주문자 정보와 요청을 보낸 사용자 정보가 일치하지 않으면 Bad Request 를 반환한다.
-- [ ] 주문 id 와 일치하는 주문 정보가 존재하지 않으면 Bad Request 를 반환한다.
+- [x] 주문 id 와 일치하는 주문 정보를 반환한다.
+- [x] 주문자 정보와 요청을 보낸 사용자 정보가 일치하지 않으면 Bad Request 를 반환한다.
+- [x] 주문 id 와 일치하는 주문 정보가 존재하지 않으면 Bad Request 를 반환한다.
+- [ ] 주문 당시 적용된 환율 정보를 화면에 보여준다.
+- [ ] 총 주문 금액을 미국 달러로 함께 보여준다.
 
 ### 사용자 주문 목록 조회
 
@@ -166,4 +170,4 @@ Authorization: Bearer {jwt_token}
 - 주문 아이템 정보
 ```
 
-- [ ] 사용자 주문 목록 조회에 성공하면 OK 를 반환한다.
+- [x] 사용자 주문 목록 조회에 성공하면 OK 를 반환한다.
