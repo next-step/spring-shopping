@@ -31,7 +31,7 @@ public class OrderService {
     @Transactional
     public Long createFromCart(Long userId) {
         CartItems items = findCartItemsByUserId(userId);
-        Order order = orderMapper.mapFrom(userId, items);
+        Order order = orderMapper.mapOrderFrom(userId, items);
 
         Long id = orderRepository.save(order).getId();
         cartItemRepository.deleteAll(items.getItems());

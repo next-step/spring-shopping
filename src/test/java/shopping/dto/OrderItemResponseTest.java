@@ -14,7 +14,8 @@ class OrderItemResponseTest {
     void createFromEntity() {
         // given
         Product product = DomainFixture.createProduct();
-        OrderItem orderItem = new OrderItem(product, new Quantity(1));
+        OrderItem orderItem = new OrderItem(product.getId(), product.getName(),
+                product.getImage(), product.getPrice(), new Quantity(2));
 
         // when
         OrderItemResponse response = OrderItemResponse.from(orderItem);

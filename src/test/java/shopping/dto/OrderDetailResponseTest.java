@@ -19,7 +19,8 @@ class OrderDetailResponseTest {
         Product product = DomainFixture.createProduct();
 
         Order order = new Order(1L, 1L,
-                List.of(new OrderItem(product, new Quantity(2))),
+                List.of(new OrderItem(product.getId(), product.getName(),
+                        product.getImage(), product.getPrice(), new Quantity(2))),
                 20000L
         );
 

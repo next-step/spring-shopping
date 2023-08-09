@@ -1,19 +1,23 @@
 package shopping.domain.order;
 
 import shopping.domain.cart.Quantity;
-import shopping.domain.product.Product;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
 @Embeddable
 public class OrderItem {
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Product product;
+    private Long productId;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "price")
+    private int price;
 
     @Embedded
     @Column(name = "quantity")
@@ -23,13 +27,28 @@ public class OrderItem {
 
     }
 
-    public OrderItem(Product product, Quantity quantity) {
-        this.product = product;
+    public OrderItem(Long productId, String name, String image, int price, Quantity quantity) {
+        this.productId = productId;
+        this.name = name;
+        this.image = image;
+        this.price = price;
         this.quantity = quantity;
     }
 
-    public Product getProduct() {
-        return product;
+    public Long getProductId() {
+        return productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     public Quantity getQuantity() {

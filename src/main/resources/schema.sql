@@ -36,8 +36,11 @@ CREATE TABLE orders
 
 CREATE TABLE order_items
 (
-    order_id   bigint not null,
-    product_id bigint not null,
-    quantity   int    not null
+    order_id   bigint       not null,
+    product_id bigint       not null,
+    name       varchar(20)  not null,
+    image      varchar(255) not null,
+    price      int          not null,
+    quantity   int          not null
 );
 

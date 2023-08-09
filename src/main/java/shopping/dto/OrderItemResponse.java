@@ -4,6 +4,7 @@ import shopping.domain.order.OrderItem;
 
 public class OrderItemResponse {
 
+    private long productId;
     private String name;
     private String image;
     private int price;
@@ -12,11 +13,16 @@ public class OrderItemResponse {
     private OrderItemResponse() {
     }
 
-    public OrderItemResponse(String name, String image, int price, int quantity) {
+    public OrderItemResponse(Long productId, String name, String image, int price, int quantity) {
+        this.productId = productId;
         this.name = name;
         this.image = image;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public long getProductId() {
+        return productId;
     }
 
     public String getName() {
@@ -36,9 +42,10 @@ public class OrderItemResponse {
     }
 
     public static OrderItemResponse from(OrderItem orderItem) {
-        return new OrderItemResponse(orderItem.getProduct().getName(),
-                orderItem.getProduct().getImage(),
-                orderItem.getProduct().getPrice(),
+        return new OrderItemResponse(orderItem.getProductId(),
+                orderItem.getName(),
+                orderItem.getImage(),
+                orderItem.getPrice(),
                 orderItem.getQuantity().getQuantity());
     }
 }
