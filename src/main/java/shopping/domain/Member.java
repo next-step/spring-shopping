@@ -38,6 +38,10 @@ public class Member {
         }
     }
 
+    public boolean matchId(Long other) {
+        return this.id.equals(other);
+    }
+
     protected Member() {
     }
 

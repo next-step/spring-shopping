@@ -1,6 +1,7 @@
 package shopping.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -39,12 +40,20 @@ public class Order extends BaseTime {
         this.member = member;
     }
 
+    public boolean isOwner(Long memberId) {
+        return this.member.matchId(memberId);
+    }
+
     public Long getId() {
         return id;
     }
 
     public Member getMember() {
         return member;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return Collections.unmodifiableList(orderItems);
     }
 
     public void addOrderItem(OrderItem orderItem) {

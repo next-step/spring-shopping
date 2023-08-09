@@ -39,6 +39,25 @@ public class OrderService {
         return new OrderResponse(order.getId(), orderItemResponses);
     }
 
+    public OrderResponse getOrder(Long memberId, Long id) {
+        Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new OrderException("존재하지 않는 주문 정보입니다"));
+
+        validateOrderOwner(memberId, order);
+
+        List<OrderItemResponse> orderItemResponses = order.getOrderItems()
+            .stream()
+            .map(OrderItemResponse::of)
+            .collect(Collectors.toList());
+        return new OrderResponse(order.getId(), orderItemResponses);
+    }
+
+    private static void validateOrderOwner(Long memberId, Order order) {
+        if (!order.isOwner(memberId)) {
+            throw new OrderException("존재하지 않는 주문 정보입니다");
+        }
+    }
+
     private Member findMember(long memberId) {
         return memberRepository.findById(memberId)
             .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
@@ -73,9 +92,5 @@ public class OrderService {
 
     private void clearMemberCart(long memberId) {
         cartProductRepository.deleteByMemberId(memberId);
-    }
-
-    public OrderResponse getOrder(Long id) {
-        return null;
     }
 }
