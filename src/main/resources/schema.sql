@@ -23,3 +23,21 @@ CREATE TABLE cart_product
     FOREIGN KEY (member_id) REFERENCES member (member_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 );
+
+CREATE TABLE orders
+(
+    order_id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES member (member_id)
+);
+
+CREATE TABLE order_product
+(
+    order_product_id         BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id  BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity   INT    NOT NULL,
+    UNIQUE (order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders (order_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
+);
