@@ -8,7 +8,5 @@ import shopping.order.domain.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Optional<Order> findByMemberIdAndId(final Long memberId, final Long orderId);
-
     List<Order> findByMemberId(final Long memberId);
 }

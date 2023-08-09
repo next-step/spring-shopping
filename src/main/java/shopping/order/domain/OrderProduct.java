@@ -4,14 +4,17 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import shopping.cart.domain.CartProduct;
 import shopping.cart.domain.CartProductWithProduct;
 import shopping.global.vo.Name;
-import shopping.global.vo.Price;
+import shopping.cart.domain.vo.Price;
 import shopping.global.vo.Quantity;
 import shopping.product.domain.Product;
 import shopping.product.domain.ProductImage;
@@ -32,6 +35,10 @@ public class OrderProduct {
     @Embedded
     private Name name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @Column(name = "image")
     @Embedded
     private ProductImage image;
@@ -47,8 +54,13 @@ public class OrderProduct {
     protected OrderProduct() {
     }
 
-    public OrderProduct(Long productId, Name name, ProductImage image, Price price,
-        Quantity quantity) {
+    public OrderProduct(
+        final Long productId,
+        final Name name,
+        final ProductImage image,
+        final Price price,
+        final Quantity quantity
+    ) {
         this.productId = productId;
         this.name = name;
         this.image = image;
@@ -56,31 +68,26 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
-    private OrderProduct(Long productId, String name, String image, int price, int quantity) {
-        this.productId = productId;
-        this.name = new Name(name);
-        this.image = new ProductImage(image);
-        this.price = new Price(price);
-        this.quantity = new Quantity(quantity);
-    }
-
-    private static OrderProduct of(final CartProduct cartProduct, final Product product) {
-        return new OrderProduct(
-            cartProduct.getProductId(),
-            product.getName(),
-            product.getImage(),
-            product.getPrice(),
-            cartProduct.getQuantity()
-        );
-    }
-
     public static OrderProduct from(final CartProductWithProduct cartItem) {
-        return OrderProduct.of(
+        return new OrderProduct(
             cartItem.getCartProduct(),
             cartItem.getProduct()
         );
     }
 
+    private OrderProduct(final CartProduct cartProduct, final Product product) {
+        this(
+            cartProduct.getProductId(),
+            new Name(product.getName()),
+            new ProductImage(product.getImage()),
+            new Price(product.getPrice()),
+            new Quantity(cartProduct.getQuantity())
+        );
+    }
+
+    void addOrder(final Order order) {
+        this.order = order;
+    }
 
     public int calculatePrice() {
         return getPrice() * getQuantity();

@@ -1,5 +1,6 @@
 package shopping.order.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,10 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import shopping.global.vo.Price;
+import shopping.order.domain.vo.Money;
 
 @Entity
 @Table(name = "orders")
@@ -22,13 +22,12 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
-    private List<OrderProduct> orderProducts;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Column(name = "total_price")
     @Embedded
-    private Price totalPrice;
+    private Money totalPrice = new Money(0);
 
     @Column(name = "member_id")
     private Long memberId;
@@ -41,14 +40,27 @@ public class Order {
         final Long memberId
     ) {
         this.orderProducts = orderProducts;
-        this.totalPrice = new Price(calculateTotalPrice());
         this.memberId = memberId;
     }
 
-    private int calculateTotalPrice() {
-        return orderProducts.stream()
-            .mapToInt(OrderProduct::calculatePrice)
-            .sum();
+    public Order(final Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public void addOrderProducts(final List<OrderProduct> orderProducts) {
+        orderProducts.forEach(this::addOrderProduct);
+    }
+
+    private void addOrderProduct(final OrderProduct orderProduct) {
+        getOrderProducts().add(orderProduct);
+        orderProduct.addOrder(this);
+
+        this.totalPrice = totalPrice.addMoney(orderProduct.calculatePrice());
+    }
+
+
+    public boolean matchPersonOrder(final Long memberId) {
+        return this.memberId == memberId;
     }
 
     public Long getId() {
@@ -66,4 +78,5 @@ public class Order {
     public Long getMemberId() {
         return memberId;
     }
+
 }

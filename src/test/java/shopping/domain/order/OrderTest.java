@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.global.vo.Name;
-import shopping.global.vo.Price;
+import shopping.cart.domain.vo.Price;
 import shopping.global.vo.Quantity;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
@@ -22,6 +22,7 @@ public class OrderTest {
         final String name = "치킨";
         final String imageUrl = "image.png";
         final int price = 20000;
+
         // when & then
         assertThatCode(() -> new Order(
                 List.of(new OrderProduct(
@@ -44,6 +45,8 @@ public class OrderTest {
         final String imageUrl = "image.png";
         final int price = 20000;
         final Long memberId = 1L;
+
+        Order order = new Order(memberId);
         OrderProduct orderProduct = new OrderProduct(
             1L,
             new Name(name),
@@ -54,7 +57,8 @@ public class OrderTest {
         List<OrderProduct> orderProducts = List.of(orderProduct, orderProduct);
 
         // when
-        Order order = new Order(orderProducts, memberId);
+        order.addOrderProducts(orderProducts);
+
         // then
         assertThat(order.getTotalPrice()).isEqualTo(400000);
     }

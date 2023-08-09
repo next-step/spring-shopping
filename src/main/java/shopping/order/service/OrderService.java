@@ -29,13 +29,21 @@ public class OrderService {
 
     @Transactional
     public OrderResponse saveOrder(final Long memberId) {
-        List<CartProductWithProduct> cartProducts = cartProductRepository.findAllByMemberId(
-            memberId);
-        List<OrderProduct> orderProducts = convertOrderProduct(cartProducts);
+        List<CartProductWithProduct> cartProducts = cartProductRepository
+            .findAllByMemberId(memberId);
 
-        Order saveOrder = orderRepository.save(new Order(orderProducts, memberId));
+        if (cartProducts.isEmpty()) {
+            throw new ShoppingException("주문하실 상품이 존재하지 않습니다.");
+        }
+
+        Order order = new Order(memberId);
+        orderRepository.save(order);
+
+        List<OrderProduct> orderProducts = convertOrderProduct(cartProducts);
+        order.addOrderProducts(orderProducts);
+
         cartProductRepository.deleteAllByMemberId(memberId);
-        return OrderResponse.from(saveOrder);
+        return OrderResponse.from(order);
     }
 
     private List<OrderProduct> convertOrderProduct(
@@ -46,15 +54,21 @@ public class OrderService {
     }
 
     public OrderResponse getOrder(final Long memberId, final Long orderId) {
-        Order order = orderRepository.findByMemberIdAndId(memberId, orderId)
+
+        Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new ShoppingException("찾으시는 주문이 존재하지 않습니다. 입력 값 : " + orderId));
+
+        if (!order.matchPersonOrder(memberId)) {
+            throw new ShoppingException("주문자가 현재 로그인한 사람이 아닙니다. 입력 값 : " + memberId);
+        }
+
         return OrderResponse.from(order);
     }
 
     public List<OrderResponse> getOrderList(final Long memberId) {
         List<Order> orders = orderRepository.findByMemberId(memberId);
         return orders.stream()
-            .map(order -> OrderResponse.from(order))
+            .map(OrderResponse::from)
             .collect(Collectors.toList());
     }
 }
