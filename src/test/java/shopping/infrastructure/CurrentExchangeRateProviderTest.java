@@ -1,18 +1,21 @@
 package shopping.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.ExchangeRate;
 
+@SpringBootTest
 @DisplayName("CurrentExchangeRateProvider 클래스")
 class CurrentExchangeRateProviderTest {
 
-    ExchangeRateProvider exchangeRateProvider = new CurrentExchangeRateProvider();
+    @Autowired
+    ExchangeRateProvider exchangeRateProvider;
 
     @Nested
     @DisplayName("getExchange 메소드는")
