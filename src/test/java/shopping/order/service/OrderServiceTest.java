@@ -103,6 +103,33 @@ class OrderServiceTest {
     }
 
     @Test
+    @DisplayName("주문 상세 조회시 본인의 주문이 아닌 경우 예외를 던진다.")
+    void findOrderDetailExceptionWhenOrderIsNotMine() {
+        Member member = makeMember();
+        Member otherMember = makeMember();
+
+        Product chicken = makeProduct("치킨", "10000");
+        Product pizza = makeProduct("피자", "15000");
+        Product cola = makeProduct("콜라", "1000");
+
+        LoggedInMember loggedInMember = new LoggedInMember(otherMember.getId());
+
+        Order order = new Order(member.getId());
+
+        makeOrderItem(chicken, 3, order);
+        makeOrderItem(pizza, 2, order);
+        makeOrderItem(cola, 3, order);
+
+        orderRepository.save(order);
+
+        Assertions.assertThatThrownBy(
+                () -> orderService.getOrderDetail(loggedInMember, order.getId())
+            )
+            .isInstanceOf(WooWaException.class)
+            .hasMessage("본인의 주문 정보만 조회할 수 있습니다.");
+    }
+
+    @Test
     @DisplayName("주문 전체 조회 메서드 테스트")
     void findOrders() {
         Member member = makeMember();
