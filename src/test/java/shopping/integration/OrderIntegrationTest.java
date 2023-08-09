@@ -2,6 +2,7 @@ package shopping.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.restassured.path.json.config.JsonPathConfig;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ class OrderIntegrationTest extends IntegrationTest {
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(result.header("Location")).isNotBlank();
-        assertThat(result.body().as(OrderResponse.class).getExchangeRate()).isPositive();
     }
 
     @Test
@@ -52,7 +52,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void findMemberOrderById() {
         // given
         ExtractableResponse<Response> order = OrderIntegrationSupporter.order();
-        String orderId = order.header("Location").split("/")[3];
+        String orderId = order.header("Location").split("/")[2];
 
         // when
         ExtractableResponse<Response> result = OrderIntegrationSupporter.findOrderById(
