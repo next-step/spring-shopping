@@ -36,6 +36,10 @@ public class Money {
         return amount;
     }
 
+    public int intValue(){
+      return amount.intValue();
+    }
+
     private void setAmount(BigDecimal amount) { //for hibernate
         this.amount = amount;
     }

@@ -26,14 +26,16 @@ public class Order {
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "total_price"))
     private Money totalPrice;
+    private Long memberId;
 
-    public Order(List<OrderItem> orderItems, Money totalPrice) {
+    public Order(List<OrderItem> orderItems, Money totalPrice, Long memberId) {
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
+        this.memberId = memberId;
     }
 
-    public Order(List<OrderItem> orderItems) {
-        this(orderItems, calculateTotalMoney(orderItems));
+    public Order(List<OrderItem> orderItems, Long memberId) {
+        this(orderItems, calculateTotalMoney(orderItems), memberId);
     }
 
     protected Order() {
@@ -43,6 +45,10 @@ public class Order {
         return orderItems.stream()
             .map(OrderItem::getPrice)
             .reduce(Money.ZERO, Money::plus);
+    }
+
+    public boolean isOwner(Long memberId) {
+        return this.memberId.equals(memberId);
     }
 
     public Long getId() {

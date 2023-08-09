@@ -14,6 +14,10 @@ public class Cart {
     }
 
     public void validate(List<Product> product) {
+        if (cartItems.isEmpty()) {
+            throw new WooWaException("장바구니에 아이템이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         if (isProductChanged(product)) {
             throw new WooWaException("상품이 변경되었습니다.", HttpStatus.CONFLICT);
         }

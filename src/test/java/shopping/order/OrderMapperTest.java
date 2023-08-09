@@ -26,7 +26,7 @@ class OrderMapperTest {
         Cart cart = new Cart(List.of(new CartItem(product1, member), new CartItem(product2, member)));
 
         // when
-        Order order = orderMapper.mapToOrder(cart);
+        Order order = orderMapper.mapToOrder(member.getId(), cart);
 
         // then
         assertThat(order.getOrderItems()).hasSize(2);

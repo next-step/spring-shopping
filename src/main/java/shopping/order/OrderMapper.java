@@ -10,12 +10,13 @@ import shopping.order.domain.OrderItem;
 
 @Component
 public class OrderMapper {
-    public Order mapToOrder(Cart cart) {
+
+    public Order mapToOrder(Long memberId, Cart cart) {
         List<OrderItem> orderItems = cart.getCartItems().stream()
             .map(this::mapToOrderItem)
             .collect(Collectors.toUnmodifiableList());
 
-        return new Order(orderItems);
+        return new Order(orderItems, memberId);
     }
 
     public OrderItem mapToOrderItem(CartItem cartItem) {
