@@ -21,7 +21,7 @@ public class OrderProductIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/order")
+            .when().post("/orders")
             .then().log().all().extract();
     }
 
@@ -38,8 +38,24 @@ public class OrderProductIntegrationSupporter {
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/order/{orderId}", orderId)
+            .when().get("/orders/{orderId}", orderId)
             .then().log().all().extract();
     }
 
+    public static ExtractableResponse<Response> findOrders() {
+        String email = "woowa1@woowa.com";
+        String password = "1234";
+
+        String accessToken = AuthIntegrationSupporter
+            .login(email, password)
+            .as(LoginResponse.class)
+            .getAccessToken();
+
+        return RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/orders")
+            .then().log().all().extract();
+    }
 }

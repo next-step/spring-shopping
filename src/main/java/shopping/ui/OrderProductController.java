@@ -11,4 +11,9 @@ public class OrderProductController {
     public String findOrder(@PathVariable long orderId) {
         return "order-detail";
     }
+
+    @GetMapping("/order-history")
+    public String findOrders() {
+        return "order-history";
+    }
 }

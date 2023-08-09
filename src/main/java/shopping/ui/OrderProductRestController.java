@@ -1,5 +1,6 @@
 package shopping.ui;
 
+import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,16 +10,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.OrderProductService;
 import shopping.dto.OrderDetailResponse;
+import shopping.dto.OrderResponse;
 import shopping.ui.argumentresolver.Login;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderProductRestController {
 
     private final OrderProductService orderProductService;
 
     public OrderProductRestController(OrderProductService orderProductService) {
         this.orderProductService = orderProductService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> findOrders(@Login Long memberId) {
+        return ResponseEntity.ok().body(orderProductService.findOrders(memberId));
     }
 
     @PostMapping
