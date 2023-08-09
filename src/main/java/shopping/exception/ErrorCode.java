@@ -14,6 +14,7 @@ public enum ErrorCode {
     INVALID_CART_ITEM_QUANTITY(HttpStatus.BAD_REQUEST, "장바구니 상품 수량은 1개 이상 1,000개 이하여야 합니다."),
     INVALID_CART_ITEM(HttpStatus.BAD_REQUEST, "존재하지 않는 장바구니 상품입니다."),
     INVALID_PRODUCT(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다."),
+    INVALID_ORDER(HttpStatus.BAD_REQUEST, "존재하지 않는 주문 목록입니다."),
     ;
 
     private final HttpStatus status;
