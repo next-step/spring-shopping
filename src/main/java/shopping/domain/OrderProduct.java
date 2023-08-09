@@ -46,8 +46,8 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
-    public OrderProduct(Order order, Product product, int quantity) {
-        this(null, order, product, quantity);
+    public static OrderProduct of(Order order, CartProduct cartProduct) {
+        return new OrderProduct(null, order, cartProduct.getProduct(), cartProduct.getQuantity());
     }
 
     private void validateQuantity(int quantity) {
@@ -71,4 +71,23 @@ public class OrderProduct {
         }
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }
