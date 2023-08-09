@@ -31,10 +31,22 @@
                 </div>
                 <hr class="divide-line-thin"/>
                 <div class="order-right-section__bottom">
+
                     <div class="flex justify-between p-20 mt-20">
                         <span class="highlight-text">총 결제금액</span>
                         <span class="highlight-text order-total-price"></span>
                     </div>
+
+                    <div class="flex justify-between p-20 mt-20">
+                        <span class="highlight-text">적용 환율</span>
+                        <span class="highlight-text order-exchange-rate"></span>
+                    </div>
+
+                    <div class="flex justify-between p-20 mt-20">
+                        <span class="highlight-text">변환된 총 주문 금액</span>
+                        <span class="highlight-text order-exchange-price"></span>
+                    </div>
+
                 </div>
             </section>
         </div>
@@ -77,6 +89,8 @@
             });
             document.querySelector('.order-item-list').innerHTML = element;
             document.querySelector('.order-right-section .order-total-price').innerText = `${data.orderPrice} 원`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-exchange-rate').innerText = `${data.exchangeRate} `; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-exchange-price').innerText = `${data.exchangedPrice}`; <!-- 아이템 가격 및 수량 -->
         }).catch((error) => {
             console.error(error);
         });
