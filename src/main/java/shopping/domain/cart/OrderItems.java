@@ -1,22 +1,25 @@
 package shopping.domain.cart;
 
+import shopping.exception.auth.UserNotMatchException;
 import shopping.exception.cart.NoCartItemForOrderException;
 import shopping.exception.cart.NoOrderItemException;
 import shopping.exception.cart.NotSameOrderException;
-import shopping.exception.auth.UserNotMatchException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OrderItems {
 
     private final Long orderId;
     private final Long userId;
+    private final Double exchangeRate;
     private final List<OrderItem> items;
 
-    private OrderItems(Long orderId, Long userId, List<OrderItem> items) {
+    private OrderItems(Long orderId, Long userId, Double exchangeRate, List<OrderItem> items) {
         this.orderId = orderId;
         this.userId = userId;
+        this.exchangeRate = exchangeRate;
         this.items = items;
     }
 
@@ -30,7 +33,7 @@ public class OrderItems {
     public static OrderItems of(List<OrderItem> orderItems) {
         validateNotEmpty(orderItems);
         Order order = reduceOrder(orderItems);
-        return new OrderItems(order.getId(), order.getUserId(), orderItems);
+        return new OrderItems(order.getId(), order.getUserId(), order.getExchangeRate(), orderItems);
     }
 
     private static void validateCartItemExists(List<CartItem> cartItems) {
@@ -63,12 +66,30 @@ public class OrderItems {
         }
     }
 
+    public Price totalPrice() {
+        return items.stream()
+                .map(OrderItem::getProduct)
+                .map(Product::getPrice)
+                .reduce(new Price(0L), Price::sum);
+    }
+
+    public Optional<Double> exchangePrice() {
+        if (exchangeRate == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(totalPrice().divide(exchangeRate));
+    }
+
     public Long getOrderId() {
         return orderId;
     }
 
     public Long getUserId() {
         return userId;
+    }
+
+    public Optional<Double> getExchangeRate() {
+        return Optional.ofNullable(exchangeRate);
     }
 
     public List<OrderItem> getItems() {

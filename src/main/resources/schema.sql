@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `orders`
 (
     id BIGINT AUTO_INCREMENT NOT NULL,
     user_id BIGINT NOT NULL,
+    exchange_rate DOUBLE,
     PRIMARY KEY(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );

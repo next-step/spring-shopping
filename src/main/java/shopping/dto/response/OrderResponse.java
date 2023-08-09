@@ -6,14 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderResponse {
-    private Long id;
-    private List<OrderItemResponse> items;
-    private Long totalPrice;
+    private final Long id;
+    private final List<OrderItemResponse> items;
+    private final Long totalPrice;
+    private final Double exchangePrice;
 
-    private OrderResponse(Long id, List<OrderItemResponse> items, Long totalPrice) {
+    private OrderResponse(Long id, List<OrderItemResponse> items, Long totalPrice, Double exchangePrice) {
         this.id = id;
         this.items = items;
         this.totalPrice = totalPrice;
+        this.exchangePrice = exchangePrice;
     }
 
     public static OrderResponse of(OrderItems orderItems) {
@@ -21,10 +23,9 @@ public class OrderResponse {
                 .stream()
                 .map(OrderItemResponse::of)
                 .collect(Collectors.toList());
-        Long totalPrice = orderItemResponses.stream()
-                .mapToLong(OrderItemResponse::getPrice)
-                .sum();
-        return new OrderResponse(orderItems.getOrderId(), orderItemResponses, totalPrice);
+        Long totalPrice = orderItems.totalPrice().getPrice();
+        Double exchangePrice = orderItems.exchangePrice().orElse(null);
+        return new OrderResponse(orderItems.getOrderId(), orderItemResponses, totalPrice, exchangePrice);
     }
 
     public Long getId() {
@@ -37,5 +38,9 @@ public class OrderResponse {
 
     public Long getTotalPrice() {
         return totalPrice;
+    }
+
+    public Double getExchangePrice() {
+        return exchangePrice;
     }
 }

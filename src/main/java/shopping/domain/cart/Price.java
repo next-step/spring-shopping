@@ -23,9 +23,17 @@ public class Price {
         if (price == null) {
             throw new InvalidRequestException("가격은 null일 수 없습니다.");
         }
-        if (price <= MIN_PRICE) {
-            throw new InvalidRequestException("가격은 0원 이하일 수 없습니다.");
+        if (price < MIN_PRICE) {
+            throw new InvalidRequestException("가격은 0원 미만일 수 없습니다.");
         }
+    }
+
+    public Double divide(Double exchangeRate) {
+        return price / exchangeRate;
+    }
+
+    public static Price sum(Price price, Price other) {
+        return new Price(price.price + other.price);
     }
 
     public Long getPrice() {
