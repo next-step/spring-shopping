@@ -27,6 +27,7 @@
 .justify-end {
   justify-content: end;
 }
+
 .justify-center {
   justify-content: center;
 }
@@ -65,6 +66,10 @@
 
 .gap-15 {
   gap: 15px;
+}
+
+.gap-30 {
+  gap: 30px;
 }
 
 .w-144 {

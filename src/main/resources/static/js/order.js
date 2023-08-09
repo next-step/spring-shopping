@@ -6,7 +6,6 @@ const requestOrder = () => {
         return;
     }
 
-    // TODO: [4단계] 장바구니 아이템 추가 스펙에 맞게 변경
     fetch('/orders', {
         method: 'POST',
         headers: {
