@@ -17,6 +17,7 @@ import shopping.order.domain.Order;
 import shopping.order.domain.OrderItem;
 import shopping.order.dto.request.OrderCreationRequest;
 import shopping.order.dto.response.OrderDetailResponse;
+import shopping.order.dto.response.OrdersResponse;
 import shopping.order.repository.OrderRepository;
 import shopping.product.domain.Product;
 import shopping.product.repository.ProductRepository;
@@ -82,8 +83,36 @@ class OrderServiceTest {
 
         OrderDetailResponse findOrder = orderService.getOrderDetail(loggedInMember, order.getId());
 
-        Assertions.assertThat(findOrder).extracting("id").isEqualTo(order.getId());
+        Assertions.assertThat(findOrder).extracting("orderId").isEqualTo(order.getId());
         Assertions.assertThat(findOrder).extracting("totalPrice").isEqualTo("63000");
+    }
+
+    @Test
+    @DisplayName("주문 전체 조회 메서드 테스트")
+    void findOrders() {
+        Member member = makeMember();
+
+        Product chicken = makeProduct("치킨", "10000");
+        Product pizza = makeProduct("피자", "15000");
+        Product cola = makeProduct("콜라", "1000");
+
+        LoggedInMember loggedInMember = new LoggedInMember(member.getId());
+
+        Order order1 = new Order(member.getId());
+        Order order2 = new Order(member.getId());
+
+        makeOrderItem(chicken, 3, order1);
+        makeOrderItem(pizza, 2, order1);
+        makeOrderItem(cola, 3, order2);
+
+        orderRepository.save(order1);
+        orderRepository.save(order2);
+
+        OrdersResponse orders = orderService.getOrders(loggedInMember);
+
+        Assertions.assertThat(orders.getOrders()).hasSize(2);
+        Assertions.assertThat(orders.getOrders().get(0).getOrderItems()).hasSize(2);
+        Assertions.assertThat(orders.getOrders().get(1).getOrderItems()).hasSize(1);
     }
 
     private void assertOrder(Member member, Long orderId, Order order) {

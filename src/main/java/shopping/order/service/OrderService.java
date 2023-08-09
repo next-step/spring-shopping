@@ -15,6 +15,7 @@ import shopping.member.repository.MemberRepository;
 import shopping.order.domain.Order;
 import shopping.order.dto.request.OrderCreationRequest;
 import shopping.order.dto.response.OrderDetailResponse;
+import shopping.order.dto.response.OrdersResponse;
 import shopping.order.repository.OrderRepository;
 
 @Service
@@ -61,6 +62,12 @@ public class OrderService {
         Order order = getOrderById(orderId);
         validOrder(loggedInMember, order);
         return new OrderDetailResponse(order);
+    }
+
+    @Transactional(readOnly = true)
+    public OrdersResponse getOrders(LoggedInMember loggedInMember) {
+        getMemberById(loggedInMember.getId());
+        return new OrdersResponse(orderRepository.findAllOrderByMemberId(loggedInMember.getId()));
     }
 
     private Order getOrderById(Long orderId) {
