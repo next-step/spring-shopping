@@ -1,5 +1,6 @@
 package shopping.repository;
 
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import shopping.domain.Order;
@@ -15,5 +16,13 @@ public class OrderRepository {
 
     public void save(Order order) {
         entityManager.persist(order);
+    }
+
+    public Optional<Order> findById(Long id) {
+        return entityManager.createQuery(
+                "select o from Order o join fetch o.orderItems where o.id = :id", Order.class)
+            .setParameter("id", id)
+            .getResultStream()
+            .findFirst();
     }
 }
