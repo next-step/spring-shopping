@@ -34,9 +34,11 @@ public class OrderService {
     public OrderResponse order(long memberId) {
         Member member = findMember(memberId);
         Order order = new Order(member);
-        List<OrderItemResponse> orderItemResponses = orderMemberCartItems(member, order);
+        List<OrderItem> orderItems = orderMemberCartItems(member, order);
+
         clearMemberCart(memberId);
-        return new OrderResponse(order.getId(), orderItemResponses);
+
+        return new OrderResponse(order.getId(), orderItems);
     }
 
     public OrderResponse getOrder(Long memberId, Long id) {
@@ -45,11 +47,7 @@ public class OrderService {
 
         validateOrderOwner(memberId, order);
 
-        List<OrderItemResponse> orderItemResponses = order.getOrderItems()
-            .stream()
-            .map(OrderItemResponse::of)
-            .collect(Collectors.toList());
-        return new OrderResponse(order.getId(), orderItemResponses);
+        return new OrderResponse(order.getId(), order.getOrderItems());
     }
 
     private static void validateOrderOwner(Long memberId, Order order) {
@@ -63,14 +61,11 @@ public class OrderService {
             .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
     }
 
-    private List<OrderItemResponse> orderMemberCartItems(Member member, Order order) {
+    private List<OrderItem> orderMemberCartItems(Member member, Order order) {
         List<CartProduct> cartProducts = findMemberCartProducts(member.getId());
         List<OrderItem> orderItems = createOrderItems(order, cartProducts);
         orderRepository.save(order);
-
-        return orderItems.stream()
-            .map(OrderItemResponse::of)
-            .collect(Collectors.toList());
+        return orderItems;
     }
 
     private List<CartProduct> findMemberCartProducts(long memberId){

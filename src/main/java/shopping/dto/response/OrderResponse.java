@@ -1,6 +1,8 @@
 package shopping.dto.response;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import shopping.domain.OrderItem;
 
 public class OrderResponse {
 
@@ -11,9 +13,11 @@ public class OrderResponse {
     private OrderResponse() {
     }
 
-    public OrderResponse(Long id, List<OrderItemResponse> orderItems) {
+    public OrderResponse(Long id, List<OrderItem> orderItems) {
         this.id = id;
-        this.orderItems = orderItems;
+        this.orderItems = orderItems.stream()
+            .map(OrderItemResponse::of)
+            .collect(Collectors.toList());
     }
 
     public Long getId() {
