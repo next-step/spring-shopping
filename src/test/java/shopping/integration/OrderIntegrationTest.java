@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import shopping.dto.response.OrderResponse;
 
 @DisplayName("주문 기능")
 class OrderIntegrationTest extends IntegrationTest {
@@ -21,6 +22,7 @@ class OrderIntegrationTest extends IntegrationTest {
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(result.header("Location")).isNotBlank();
+        assertThat(result.body().as(OrderResponse.class).getExchangeRate()).isPositive();
     }
 
     @Test
@@ -58,6 +60,7 @@ class OrderIntegrationTest extends IntegrationTest {
 
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(result.body().as(OrderResponse.class).getExchangeRate()).isPositive();
     }
 
     @Test

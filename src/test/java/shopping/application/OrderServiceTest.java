@@ -2,7 +2,6 @@ package shopping.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
@@ -17,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
+import shopping.domain.ExchangeRate;
 import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
 import shopping.domain.Product;
-import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.MemberException;
 import shopping.exception.OrderException;
@@ -45,6 +44,9 @@ class OrderServiceTest {
     @Mock
     private CartProductRepository cartProductRepository;
 
+    @Mock
+    private ExchangeRateProvider exchangeRateProvider;
+
     @DisplayName("order 메소드는")
     @Nested
     class findOrder_Method {
@@ -55,9 +57,11 @@ class OrderServiceTest {
             // given
             final Member member = createMember();
             final List<CartProduct> cartProducts = createCartProducts(member);
+            final ExchangeRate exchangeRate = new ExchangeRate(1001.2);
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(cartProducts);
+            given(exchangeRateProvider.getExchange()).willReturn(exchangeRate);
 
             // when
             OrderResponse result = orderService.order(member.getId());
@@ -67,6 +71,7 @@ class OrderServiceTest {
                 .mapToLong(cartProduct -> cartProduct.getQuantity() * cartProduct.getProduct().getPrice())
                 .sum();
             assertThat(result.getTotalPrice()).isEqualTo(expectedTotalPrice);
+            assertThat(result.getExchangeRate()).isEqualTo(exchangeRate.getValue());
         }
 
         @DisplayName("사용자 정보가 유효하지 않으면 MemberException 을 던진다.")
@@ -196,7 +201,7 @@ class OrderServiceTest {
     }
 
     private Order createOrder(Member member) {
-        Order order = new Order(1L, member);
+        Order order = new Order(1L, member, new ExchangeRate(1002.2));
         Product product = new Product(1L, "chicken", "url", 10000);
         OrderItem chicken = new OrderItem(order, product, "chicken", 20000, 2, "img");
         order.addOrderItem(chicken);
