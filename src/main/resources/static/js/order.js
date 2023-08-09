@@ -6,7 +6,7 @@ const requestOrder = () => {
         return;
     }
 
-    fetch('/order', {
+    fetch('/orders', {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${credentials}`,

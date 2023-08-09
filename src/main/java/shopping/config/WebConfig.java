@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor(memberRepository, tokenManager))
             .addPathPatterns("/cart/products/**")
-            .addPathPatterns("/order/**");
+            .addPathPatterns("/orders/**");
     }
 
     @Override
