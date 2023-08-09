@@ -1,6 +1,7 @@
 package shopping.order.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.order.domain.Order;
 import shopping.order.dto.request.OrderCreationRequest;
+import shopping.order.dto.response.OrderDetailResponse;
 import shopping.order.repository.OrderRepository;
 
 @Service
@@ -52,6 +54,24 @@ public class OrderService {
         );
 
         return order.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderDetailResponse getOrderDetail(LoggedInMember loggedInMember, Long orderId) {
+        Order order = getOrderById(orderId);
+        validOrder(loggedInMember, order);
+        return new OrderDetailResponse(order);
+    }
+
+    private Order getOrderById(Long orderId) {
+        return orderRepository.findOrderByIdWithFetchJoinOrderItem(orderId)
+            .orElseThrow(() -> new WooWaException("존재하지 않은 주문 정보입니다.", HttpStatus.BAD_REQUEST));
+    }
+
+    private void validOrder(LoggedInMember loggedInMember, Order order) {
+        if (!Objects.equals(order.getMemberId(), loggedInMember.getId())) {
+            throw new WooWaException("본인의 주문 정보만 조회할 수 있습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     private Member getMemberById(Long memberId) {
