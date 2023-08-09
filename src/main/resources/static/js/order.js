@@ -7,15 +7,17 @@ const requestOrder = () => {
   }
 
   // TODO: [4단계] 장바구니 상품 추가 스펙에 맞게 변경
-  fetch('', {
-    method: '',
+  fetch('/order', {
+    method: 'POST',
     headers: {
       'Authorization': `Bearer ${credentials}`,
       'Content-Type': 'application/json'
     }
   }).then((response) => {
-    // TODO: [4단계] 주문이 성공하면 주문 상세 페이지로 이동 (order.html 사용)
-    window.location.href = '';
+    return response.json();
+  }).then((data) => {
+    console.log(data);
+    window.location.href = '/order-detail/' + data.orderId;
   }).catch((error) => {
     console.error(error);
   });
