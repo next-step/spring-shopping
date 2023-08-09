@@ -1,6 +1,7 @@
 package shopping.order.dto.response;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import shopping.order.domain.Order;
 import shopping.product.domain.vo.Money;
 
@@ -22,6 +23,12 @@ public class OrderResponse {
         return new OrderResponse(order.getId(),
                                  OrderItemResponse.of(order.getOrderItems()),
                                  order.getTotalPrice());
+    }
+
+    public static List<OrderResponse> of(List<Order> orders) {
+        return orders.stream()
+            .map(OrderResponse::from)
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public Long getId() {

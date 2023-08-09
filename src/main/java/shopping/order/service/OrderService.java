@@ -42,10 +42,19 @@ public class OrderService {
         cart.validate(product);
 
         Order order = orderMapper.mapToOrder(loggedInMember.getId(), cart);
+
+        cartItemRepository.deleteAll(cartItems);
         return orderRepository.save(order).getId();
     }
 
-    public OrderResponse findOrder(LoggedInMember loggedInMember, Long orderId) {
+    @Transactional(readOnly = true)
+    public List<OrderResponse> findAllOrder(LoggedInMember loggedInMember) {
+        List<Order> orders = orderRepository.findAllByMemberId(loggedInMember.getId());
+        return OrderResponse.of(orders);
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponse findOrderById(LoggedInMember loggedInMember, Long orderId) {
         Order order = getOrderById(orderId);
         validateOwner(loggedInMember, order);
         return OrderResponse.from(order);
@@ -59,6 +68,6 @@ public class OrderService {
 
     private Order getOrderById(Long orderId) {
         return orderRepository.findById(orderId)
-            .orElseThrow(() -> new WooWaException("존재하지 않는 주문 ID입니다 orderId: " + orderId));
+            .orElseThrow(() -> new WooWaException("해당 주문이 존재하지 않습니다. orderId: " + orderId));
     }
 }
