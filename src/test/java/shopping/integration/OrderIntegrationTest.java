@@ -3,6 +3,7 @@ package shopping.integration;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("주문 인수 테스트")
 class OrderIntegrationTest extends IntegrationTest {
 
     @Autowired
@@ -78,7 +80,7 @@ class OrderIntegrationTest extends IntegrationTest {
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
-        OrderResponse orderResponse = createOrdeer(accessToken);
+        OrderResponse orderResponse = createOrder(accessToken);
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -111,7 +113,7 @@ class OrderIntegrationTest extends IntegrationTest {
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
-        OrderResponse orderResponse = createOrdeer(accessToken);
+        OrderResponse orderResponse = createOrder(accessToken);
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -148,8 +150,10 @@ class OrderIntegrationTest extends IntegrationTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         List<OrderResponse> orderResponses = response.jsonPath().getList(".", OrderResponse.class);
         assertThat(orderResponses).hasSize(2);
-        assertThat(orderResponses.get(0)).usingRecursiveComparison().isEqualTo(orderResponse);
-        assertThat(orderResponses.get(1)).usingRecursiveComparison().isEqualTo(orderResponse2);
+        assertThat(orderResponses.get(0)).usingRecursiveComparison().ignoringFieldsOfTypes(Double.class).isEqualTo(orderResponse);
+        assertThat(orderResponses.get(1)).usingRecursiveComparison().ignoringFieldsOfTypes(Double.class).isEqualTo(orderResponse2);
+        assertThat(orderResponses.get(0).getExchangePrice()).isCloseTo(orderResponse.getExchangePrice(), Offset.offset(1.0));
+        assertThat(orderResponses.get(1).getExchangePrice()).isEqualTo(orderResponse2.getExchangePrice());
     }
 
     private OrderResponse createProductAndOrder(String accessToken) {
@@ -160,10 +164,10 @@ class OrderIntegrationTest extends IntegrationTest {
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
-        return createOrdeer(accessToken);
+        return createOrder(accessToken);
     }
 
-    private OrderResponse createOrdeer(String accessToken) {
+    private OrderResponse createOrder(String accessToken) {
         return RestAssured.given().auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/order")

@@ -16,10 +16,10 @@ class PriceTest {
         assertThatNoException().isThrownBy(() -> new Price(1000L));
     }
 
-    @DisplayName("가격이 0이하이면 예외를 던진다.")
+    @DisplayName("가격이 0미만이면 예외를 던진다.")
     @Test
     void notPositivePrice() {
-        assertThatThrownBy(() -> new Price(0L))
+        assertThatThrownBy(() -> new Price(-1L))
                 .isInstanceOf(InvalidRequestException.class);
     }
 }
