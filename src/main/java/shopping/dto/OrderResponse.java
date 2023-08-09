@@ -8,22 +8,22 @@ import java.util.stream.Collectors;
 public class OrderResponse {
 
     private Long id;
-    private List<OrderItemResponse> orderItems;
+    private List<OrderItemResponse> items;
 
     private OrderResponse() {
     }
 
     public OrderResponse(Long id, List<OrderItemResponse> orderItems) {
         this.id = id;
-        this.orderItems = orderItems;
+        this.items = orderItems;
     }
 
     public Long getId() {
         return id;
     }
 
-    public List<OrderItemResponse> getOrderItems() {
-        return orderItems;
+    public List<OrderItemResponse> getItems() {
+        return items;
     }
 
     public static OrderResponse from(Order order) {

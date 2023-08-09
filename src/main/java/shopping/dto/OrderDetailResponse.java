@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class OrderDetailResponse {
 
     private Long id;
-    private List<OrderItemResponse> orderItems;
+    private List<OrderItemResponse> items;
     private long totalPrice;
 
     private OrderDetailResponse() {
@@ -16,7 +16,7 @@ public class OrderDetailResponse {
 
     public OrderDetailResponse(Long id, List<OrderItemResponse> orderItems, long totalPrice) {
         this.id = id;
-        this.orderItems = orderItems;
+        this.items = orderItems;
         this.totalPrice = totalPrice;
     }
 
@@ -24,8 +24,8 @@ public class OrderDetailResponse {
         return id;
     }
 
-    public List<OrderItemResponse> getOrderItems() {
-        return orderItems;
+    public List<OrderItemResponse> getItems() {
+        return items;
     }
 
     public long getTotalPrice() {

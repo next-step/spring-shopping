@@ -30,6 +30,6 @@ class OrderResponseTest {
 
         // then
         assertThat(response.getId()).isEqualTo(1L);
-        assertThat(response.getOrderItems().get(0).getName()).isEqualTo("치킨");
+        assertThat(response.getItems().get(0).getName()).isEqualTo("치킨");
     }
 }
