@@ -20,7 +20,7 @@ class CartTest {
         Product nameChangedProduct = new Product(1L, "치킨", "imageUrl", "10000");
         Product priceChangedProduct = new Product(1L, "피자", "imageUrl", "9999");
         Member member = new Member(1L, "email", "password");
-        Cart cart = new Cart(List.of(new CartItem(product, member)));
+        Cart cart = new Cart(1L, List.of(new CartItem(product, member)));
 
         assertThatThrownBy(() -> cart.validate(List.of(nameChangedProduct)))
             .isInstanceOf(WooWaException.class)
@@ -34,7 +34,7 @@ class CartTest {
     @Test
     @DisplayName("장바구니에 아이템이 없는 경우 예외를 발생시킨다")
     void validateEmptyCart() {
-        Cart cart = new Cart(List.of());
+        Cart cart = new Cart(1L, List.of());
 
         assertThatThrownBy(() -> cart.validate(List.of()))
             .isInstanceOf(WooWaException.class)

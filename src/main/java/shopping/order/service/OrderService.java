@@ -38,7 +38,7 @@ public class OrderService {
         //todo: login user validation을 계속 해야하나?
         List<Product> product = productRepository.findAll();
         List<CartItem> cartItems = cartItemRepository.findAllByMemberId(loggedInMember.getId());
-        Cart cart = new Cart(cartItems);
+        Cart cart = new Cart(loggedInMember.getId(), cartItems);
         cart.validate(product);
 
         Order order = orderMapper.mapToOrder(loggedInMember.getId(), cart);

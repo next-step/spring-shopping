@@ -18,6 +18,7 @@ public class OrderItem {
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity;
+    private String imageUrl;
 
     public OrderItem(Long productId, String name, Money price, Quantity quantity) {
         this.productId = productId;

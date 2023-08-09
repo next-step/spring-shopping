@@ -7,9 +7,12 @@ import shopping.exception.WooWaException;
 import shopping.product.domain.Product;
 
 public class Cart {
+
+    private Long memberId;
     private List<CartItem> cartItems;
 
-    public Cart(List<CartItem> cartItems) {
+    public Cart(Long memberId, List<CartItem> cartItems) {
+        this.memberId = memberId;
         this.cartItems = cartItems;
     }
 
