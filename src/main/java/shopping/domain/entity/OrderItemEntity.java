@@ -22,6 +22,8 @@ public class OrderItemEntity {
 
     private int totalPrice;
 
+    private Double totalPriceUSD;
+
     private int totalQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,11 +34,12 @@ public class OrderItemEntity {
     protected OrderItemEntity() {
     };
 
-    public OrderItemEntity(Long id, String name, String imageFileName, int totalPrice, int totalQuantity,
+    public OrderItemEntity(Long id, String name, String imageFileName, int totalPrice, Double totalPriceUSD, int totalQuantity,
         OrderEntity order) {
         this.id = id;
         this.name = name;
         this.imageFileName = imageFileName;
+        this.totalPriceUSD = totalPriceUSD;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.order = order;
@@ -48,6 +51,7 @@ public class OrderItemEntity {
             cartItem.getProduct().getName(),
             cartItem.getProduct().getImageFileName(),
             cartItem.getProduct().getPrice() * cartItem.getQuantity(),
+            0D,
             cartItem.getQuantity(),
             order
         );
@@ -67,6 +71,10 @@ public class OrderItemEntity {
 
     public int getTotalPrice() {
         return totalPrice;
+    }
+
+    public Double getTotalPriceUSD() {
+        return totalPriceUSD;
     }
 
     public int getTotalQuantity() {

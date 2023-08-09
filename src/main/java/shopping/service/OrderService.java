@@ -41,10 +41,11 @@ public class OrderService {
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
 
         int totalPrice = 0;
+        Double totalPriceUSD = 0D;
         for (CartItemEntity cartItem: cartItems) {
             totalPrice += (cartItem.getProduct().getPrice() * cartItem.getQuantity());
         }
-        OrderEntity order = new OrderEntity(totalPrice, user);
+        OrderEntity order = new OrderEntity(totalPrice, totalPriceUSD, user);
 
         List<OrderItemEntity> orderItems = new ArrayList<>();
         for (CartItemEntity cartItem: cartItems) {
