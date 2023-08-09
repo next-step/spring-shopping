@@ -45,7 +45,23 @@ public class Order {
         return new Order(userId, orderItems, calculateTotalPrice(orderItems));
     }
 
-    private static Price calculateTotalPrice(final List<OrderItem> items) {
+    private static Price calculateTotalPrice(final List<OrderItem> orderItems) {
         return null;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public List<OrderItem> getItems() {
+        return items;
+    }
+
+    public Price getTotalPrice() {
+        return totalPrice;
     }
 }
