@@ -26,9 +26,10 @@ CREATE TABLE cart_product
 
 CREATE TABLE orders
 (
-    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    member_id  BIGINT    NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id     BIGINT    NOT NULL,
+    created_at    TIMESTAMP NOT NULL,
+    exchange_rate DECIMAL   NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (id)
 );
 

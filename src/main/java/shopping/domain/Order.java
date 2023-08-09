@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,16 +29,20 @@ public class Order extends BaseTime {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private final List<OrderItem> orderItems = new ArrayList<>();
 
+    @Column(nullable = false)
+    private ExchangeRate exchangeRate;
+
     protected Order() {
     }
 
-    public Order(Member member) {
-        this(null, member);
+    public Order(Member member, ExchangeRate exchangeRate) {
+        this(null, member, exchangeRate);
     }
 
-    public Order(Long id, Member member) {
+    public Order(Long id, Member member, ExchangeRate exchangeRate) {
         this.id = id;
         this.member = member;
+        this.exchangeRate = exchangeRate;
     }
 
     public boolean isOwner(Long memberId) {
@@ -50,6 +55,10 @@ public class Order extends BaseTime {
 
     public Member getMember() {
         return member;
+    }
+
+    public ExchangeRate getExchangeRate() {
+        return exchangeRate;
     }
 
     public List<OrderItem> getOrderItems() {

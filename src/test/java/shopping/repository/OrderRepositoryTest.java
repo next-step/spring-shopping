@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import shopping.domain.ExchangeRate;
 import shopping.domain.Member;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
@@ -74,7 +75,8 @@ class OrderRepositoryTest {
     }
 
     private Order createOrder(Member member) {
-        Order order = new Order(member);
+        ExchangeRate exchangeRate = new ExchangeRate(1002.2);
+        Order order = new Order(member, exchangeRate);
         Product chicken = productRepository.findById(1L).get();
         OrderItem chickenItem = new OrderItem(order, chicken, "chicken", 2000, 1, "image");
         order.addOrderItem(chickenItem);
