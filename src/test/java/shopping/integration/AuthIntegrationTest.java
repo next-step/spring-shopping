@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.config.interceptor.TokenConsumer;
 import shopping.dto.ErrorResponse;
 import shopping.dto.LoginResponse;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
+import shopping.ui.config.TokenConsumer;
 
 import java.util.HashMap;
 import java.util.Map;

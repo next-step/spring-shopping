@@ -1,4 +1,4 @@
-package shopping.config.argumentresolver;
+package shopping.ui.config;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

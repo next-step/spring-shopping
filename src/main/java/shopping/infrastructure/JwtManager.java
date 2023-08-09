@@ -8,7 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shopping.application.TokenProvider;
-import shopping.config.interceptor.TokenConsumer;
+import shopping.ui.config.TokenConsumer;
 
 import java.util.Date;
 
