@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -17,7 +16,7 @@ public class CartEntity extends TimeBaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "user_id")
+    @Column(name = "user_id", unique = true)
     private Long userId;
 
     protected CartEntity() {

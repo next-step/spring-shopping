@@ -40,9 +40,7 @@ public class CartRepository {
     }
 
     public Cart newCart(long userId) {
-        if (cartJpaRepository.findByUserIdWithLock(userId).isEmpty()) {
-            cartJpaRepository.save(new CartEntity(null, userId));
-        }
+        cartJpaRepository.save(new CartEntity(null, userId));
 
         return getEmptyCart(userId);
     }

@@ -1,12 +1,14 @@
 package shopping.mart.persist;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.core.entity.CartEntity;
 import shopping.core.entity.CartProductEntity;
@@ -54,6 +56,36 @@ class CartRepositoryTest extends JpaTest {
     private Product productEntityToDomain(ProductEntity productEntity) {
         return new Product(productEntity.getId(), productEntity.getName(), productEntity.getImageUrl(),
                 productEntity.getPrice());
+    }
+
+    @Nested
+    @DisplayName("newCart 메소드는")
+    class newCart_method {
+
+        @Test
+        @DisplayName("새로운 비어 있는 Cart를 반환한다.")
+        void return_new_empty_cart() {
+            // given
+            UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
+
+            // when
+            Cart newEmptyCart = cartRepository.newCart(userEntity.getId());
+
+            // then
+            assertCart(newEmptyCart, Map.of());
+        }
+
+        @Test
+        @DisplayName("이미 Cart가 존재할 경우 예외를 던진다.")
+        void throw_StatusCodeException_when_exists_cart() {
+            // given
+            UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
+            cartRepository.newCart(userEntity.getId());
+
+            // when & then
+            assertThatThrownBy(() -> cartRepository.newCart(userEntity.getId())).isExactlyInstanceOf(
+                    DataIntegrityViolationException.class);
+        }
     }
 
     @Nested
