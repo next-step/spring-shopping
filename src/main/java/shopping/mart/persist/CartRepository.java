@@ -9,6 +9,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.CartEntity;
 import shopping.core.entity.CartProductEntity;
@@ -83,14 +84,15 @@ public class CartRepository {
                         MessageFormat.format("cartId\"{0}\" 에 해당하는 Cart를 찾을 수 없습니다.", cart.getCartId())));
         List<CartProductEntity> cartProductEntities = cartProductJpaRepository.findAllByCartEntity(cartEntity);
 
+        updateCount(cart, cartProductEntities);
+        cartProductJpaRepository.deleteAllInBatch(getDeletedProducts(cart, cartProductEntities));
+    }
+
+    private void updateCount(Cart cart, List<CartProductEntity> cartProductEntities) {
         Map<Long, CartProductEntity> idIndexedCartProductEntities = cartProductEntities.stream()
                 .collect(toMap(CartProductEntity::getProductId, identity()));
 
         cart.getProductCounts().forEach((key, value) -> idIndexedCartProductEntities.get(key.getId()).setCount(value));
-
-        List<CartProductEntity> deleteCartProductEntities = getDeletedProducts(cart, cartProductEntities);
-
-        cartProductJpaRepository.deleteAllInBatch(deleteCartProductEntities);
     }
 
     private List<CartProductEntity> getDeletedProducts(Cart cart, List<CartProductEntity> cartProductEntities) {
