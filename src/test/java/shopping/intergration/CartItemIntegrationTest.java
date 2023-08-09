@@ -20,6 +20,7 @@ import static shopping.intergration.helper.LogInHelper.login;
 import static shopping.intergration.helper.RestAssuredHelper.extractObject;
 import static shopping.intergration.utils.LoginUtils.*;
 
+@DisplayName("장바구니 아이템 테스트")
 class CartItemIntegrationTest extends IntegrationTest {
 
     @Autowired

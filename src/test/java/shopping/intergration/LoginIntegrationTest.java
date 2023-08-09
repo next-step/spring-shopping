@@ -16,6 +16,7 @@ import static shopping.intergration.helper.RestAssuredHelper.extractObject;
 import static shopping.intergration.utils.LoginUtils.EMAIL;
 import static shopping.intergration.utils.LoginUtils.PASSWORD;
 
+@DisplayName("로그인 테스트")
 class LoginIntegrationTest extends IntegrationTest {
 
     @Autowired
