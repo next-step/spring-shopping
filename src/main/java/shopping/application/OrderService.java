@@ -74,4 +74,8 @@ public class OrderService {
     private void clearMemberCart(long memberId) {
         cartProductRepository.deleteByMemberId(memberId);
     }
+
+    public OrderResponse getOrder(Long id) {
+        return null;
+    }
 }

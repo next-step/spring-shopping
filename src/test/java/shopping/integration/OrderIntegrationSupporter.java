@@ -33,14 +33,14 @@ public class OrderIntegrationSupporter {
             .then().log().all().extract();
     }
 
-    static ExtractableResponse<Response> findMemberOrderById(final long id) {
+    static ExtractableResponse<Response> findOrderById(final long id) {
         final String accessToken = getAccessToken();
 
         return RestAssured
             .given().log().all()
             .auth().oauth2(accessToken)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/order-history/{id}", id)
+            .when().get("/order/{id}", id)
             .then().log().all().extract();
     }
 

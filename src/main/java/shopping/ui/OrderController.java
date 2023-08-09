@@ -30,6 +30,12 @@ public class OrderController {
             .build();
     }
 
+    @GetMapping("/order/{id}")
+    @ResponseBody
+    public OrderResponse orderDetailById(@PathVariable Long id) {
+        return orderService.getOrder(id);
+    }
+
     @GetMapping("/order-detail/{id}")
     public String orderDetail(@PathVariable Long id, Model model) {
         model.addAttribute("orderId", id);

@@ -1,11 +1,9 @@
 package shopping.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.LIST;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +52,7 @@ class OrderIntegrationTest extends IntegrationTest {
         long orderId = 1;
 
         // when
-        ExtractableResponse<Response> result = OrderIntegrationSupporter.findMemberOrderById(
+        ExtractableResponse<Response> result = OrderIntegrationSupporter.findOrderById(
             orderId);
 
         // then
@@ -68,7 +66,7 @@ class OrderIntegrationTest extends IntegrationTest {
         long notMatchOrderId = 2;
 
         // when
-        ExtractableResponse<Response> result = OrderIntegrationSupporter.findMemberOrderById(
+        ExtractableResponse<Response> result = OrderIntegrationSupporter.findOrderById(
             notMatchOrderId);
 
         // then
@@ -82,7 +80,7 @@ class OrderIntegrationTest extends IntegrationTest {
         long notExistOrderId = 10;
 
         // when
-        ExtractableResponse<Response> result = OrderIntegrationSupporter.findMemberOrderById(
+        ExtractableResponse<Response> result = OrderIntegrationSupporter.findOrderById(
             notExistOrderId);
 
         // then
