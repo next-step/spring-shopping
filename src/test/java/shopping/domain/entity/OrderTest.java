@@ -3,7 +3,7 @@ package shopping.domain.entity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -14,10 +14,9 @@ class OrderTest {
     void createOrder() {
         // given
         final long userId = 1;
-        final Set<OrderItem> items = Set.of();
-        final Price totalPrice = new Price(1000);
+        final List<OrderItem> items = List.of();
 
         // when & then
-        assertThatNoException().isThrownBy(() -> new Order(userId, items, totalPrice));
+        assertThatNoException().isThrownBy(() -> Order.of(userId, items));
     }
 }

@@ -1,8 +1,8 @@
 package shopping.domain.entity;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -17,7 +17,7 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private Set<OrderItem> items = new HashSet<>();
+    private List<OrderItem> items = new ArrayList<>();
 
     @Column(nullable = false)
     private Price totalPrice;
@@ -25,19 +25,27 @@ public class Order {
     protected Order() {
     }
 
-    public Order(final Long id,
-                 final Long userId,
-                 final Set<OrderItem> items,
-                 final Price totalPrice) {
+    private Order(final Long id,
+                  final Long userId,
+                  final List<OrderItem> items,
+                  final Price totalPrice) {
         this.id = id;
         this.userId = userId;
         this.items = items;
         this.totalPrice = totalPrice;
     }
 
-    public Order(final Long userId,
-                 final Set<OrderItem> items,
-                 final Price totalPrice) {
+    private Order(final Long userId,
+                  final List<OrderItem> items,
+                  final Price totalPrice) {
         this(null, userId, items, totalPrice);
+    }
+
+    public static Order of(final Long userId, final List<OrderItem> orderItems) {
+        return new Order(userId, orderItems, calculateTotalPrice(orderItems));
+    }
+
+    private static Price calculateTotalPrice(final List<OrderItem> items) {
+        return null;
     }
 }
