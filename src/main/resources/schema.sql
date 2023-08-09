@@ -36,7 +36,7 @@ CREATE TABLE orders_item
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_id   BIGINT       NOT NULL,
-    name       VARCHAR(25)  NOT NULL UNIQUE,
+    name       VARCHAR(25)  NOT NULL,
     image_url  VARCHAR(255) NOT NULL,
     price      BIGINT       NOT NULL,
     quantity   INT          NOT NULL,
