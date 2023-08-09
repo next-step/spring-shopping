@@ -19,7 +19,7 @@ class CurrencyLayerConnectionTest {
     @Test
     void getExchangeRate() {
         assertThat(connection.getExchangeRate("USD", "KRW"))
-                .isCloseTo(1300, Offset.offset(100L));
+                .isCloseTo(1300.0, Offset.offset(100.0));
     }
 
     @DisplayName("응답 처리 불가시 예외 발생")

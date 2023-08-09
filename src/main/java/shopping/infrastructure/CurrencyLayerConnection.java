@@ -22,7 +22,7 @@ public class CurrencyLayerConnection {
         this.client = WebClient.create(BASE_URL);
     }
 
-    public Long getExchangeRate(String source, String target) {
+    public Double getExchangeRate(String source, String target) {
         ExchangeRateResponse response = getExchangeRateResponse(source, target);
         if (response.isSuccess()) {
             return response.getExchangeRates().get(source+target);

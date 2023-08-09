@@ -9,13 +9,13 @@ public class ExchangeRateResponse {
 
     private final boolean success;
     private final String source;
-    private final Map<String, Long> exchangeRates;
+    private final Map<String, Double> exchangeRates;
     private final ExchangeRateErrorResponse error;
 
     @JsonCreator
     public ExchangeRateResponse(@JsonProperty("success") boolean success,
                                 @JsonProperty("source") String source,
-                                @JsonProperty("quotes") Map<String, Long> exchangeRates,
+                                @JsonProperty("quotes") Map<String, Double> exchangeRates,
                                 @JsonProperty("error") ExchangeRateErrorResponse error) {
         this.success = success;
         this.source = source;
@@ -31,7 +31,7 @@ public class ExchangeRateResponse {
         return source;
     }
 
-    public Map<String, Long> getExchangeRates() {
+    public Map<String, Double> getExchangeRates() {
         return exchangeRates;
     }
 
