@@ -54,6 +54,11 @@ public class Product {
         this(name, new Image(ImageStoreType.NONE, imageUrl), new Money(price));
     }
 
+    public Product(Long id, String name, String image, String price) {
+        this(name, image, price);
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

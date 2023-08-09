@@ -1,5 +1,6 @@
 package shopping.cart.domain;
 
+import java.util.Collections;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import shopping.exception.WooWaException;
@@ -18,7 +19,7 @@ public class Cart {
         }
     }
 
-    public boolean isProductChanged(List<Product> products) {
+    private boolean isProductChanged(List<Product> products) {
         return products.stream()
             .anyMatch(this::containChangedCartItem);
     }
@@ -30,6 +31,6 @@ public class Cart {
     }
 
     public List<CartItem> getCartItems() {
-        return cartItems;
+        return Collections.unmodifiableList(cartItems);
     }
 }
