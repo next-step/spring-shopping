@@ -48,4 +48,10 @@ public class CartProductRepository {
                 .executeUpdate();
 
     }
+
+    public void deleteByMemberId(Long memberId) {
+        entityManager.createQuery("delete from CartProduct c where c.member.id = :memberId")
+            .setParameter("memberId", memberId)
+            .executeUpdate();
+    }
 }

@@ -27,7 +27,7 @@ import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.ProductRepository;
 
-@DisplayName("CartService 클래스")
+@DisplayName("CartProductService 클래스")
 @ExtendWith(MockitoExtension.class)
 public class CartProductServiceTest {
 
