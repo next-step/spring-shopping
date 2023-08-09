@@ -20,11 +20,12 @@ public class OrderItem {
     private Quantity quantity;
     private String imageUrl;
 
-    public OrderItem(Long productId, String name, Money price, Quantity quantity) {
+    public OrderItem(Long productId, String name, Money price, Quantity quantity, String imageUrl) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.imageUrl = imageUrl;
     }
 
     protected OrderItem() {
@@ -44,5 +45,9 @@ public class OrderItem {
 
     public Quantity getQuantity() {
         return quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

@@ -23,6 +23,7 @@ public class OrderMapper {
         return new OrderItem(cartItem.getProductId(),
                              cartItem.getProductName(),
                              cartItem.getProductPrice(),
-                             cartItem.getQuantity());
+                             cartItem.getQuantity(),
+                             cartItem.getImageUrl());
     }
 }
