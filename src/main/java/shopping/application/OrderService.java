@@ -51,6 +51,13 @@ public class OrderService {
         return mapToResponse(order.getId(), order.getOrderItems());
     }
 
+    public List<OrderResponse> getOrders(Long memberId) {
+        List<Order> orders = orderRepository.findByMemberId(memberId);
+        return orders.stream()
+            .map(order -> mapToResponse(order.getId(), order.getOrderItems()))
+            .collect(Collectors.toList());
+    }
+
     private OrderResponse mapToResponse(Long orderId, List<OrderItem> orderItems) {
         long totalPrice = 0;
         List<OrderItemResponse> orderItemResponses = new ArrayList<>();

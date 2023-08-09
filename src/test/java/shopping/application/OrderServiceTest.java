@@ -158,6 +158,28 @@ class OrderServiceTest {
         }
     }
 
+    @DisplayName("getOrders 메소드는")
+    @Nested
+    class getOrders_Method {
+
+        @DisplayName("사용자가 주문한 주문 목록을 가져온다")
+        @Test
+        void getOrders() {
+            // given
+            Member member = createMember();
+            Order order = createOrder(member);
+
+            given(orderRepository.findByMemberId(member.getId())).willReturn(List.of(order));
+
+            // when
+            List<OrderResponse> result = orderService.getOrders(member.getId());
+
+            // when
+            assertThat(result).hasSize(1);
+            assertThat(result.get(0).getId()).isEqualTo(order.getId());
+        }
+    }
+
     private List<CartProduct> createCartProducts(Member member) {
         List<Product> products = List.of(
             new Product(1L, "상품1", "url", 10),
@@ -166,12 +188,6 @@ class OrderServiceTest {
         );
         return products.stream()
             .map(product -> new CartProduct(product.getId(), member, product, 5))
-            .collect(Collectors.toList());
-    }
-
-    private List<Long> extractProductIds(List<OrderItemResponse> responses) {
-        return responses.stream()
-            .map(OrderItemResponse::getProductId)
             .collect(Collectors.toList());
     }
 
