@@ -38,6 +38,6 @@ public class Order {
     public Order(final Long userId,
                  final Set<OrderItem> items,
                  final Price totalPrice) {
-        throw new UnsupportedOperationException();
+        this(null, userId, items, totalPrice);
     }
 }
