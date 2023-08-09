@@ -22,6 +22,8 @@ public class OrderEntity {
 
     private int totalPrice;
 
+    private Double totalPriceUSD;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
@@ -31,16 +33,17 @@ public class OrderEntity {
 
     protected OrderEntity() {};
 
-    public OrderEntity(Long id, int totalPrice, UserEntity user,
+    public OrderEntity(Long id, int totalPrice, Double totalPriceUSD,UserEntity user,
         List<OrderItemEntity> orderItems) {
         this.id = id;
         this.totalPrice = totalPrice;
+        this.totalPriceUSD = totalPriceUSD;
         this.user = user;
         this.orderItems = orderItems;
     }
 
-    public OrderEntity(int totalPrice, UserEntity user) {
-        this(null, totalPrice, user, null);
+    public OrderEntity(int totalPrice, Double totalPriceUSD, UserEntity user) {
+        this(null, totalPrice, totalPriceUSD, user, null);
     }
 
     public void addOrderItems(List<OrderItemEntity> orderItems) {
@@ -53,6 +56,10 @@ public class OrderEntity {
 
     public int getTotalPrice() {
         return totalPrice;
+    }
+
+    public Double getTotalPriceUSD() {
+        return totalPriceUSD;
     }
 
     public UserEntity getUser() {

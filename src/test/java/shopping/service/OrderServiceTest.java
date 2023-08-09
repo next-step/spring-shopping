@@ -57,7 +57,7 @@ public class OrderServiceTest {
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
-        OrderEntity order = new OrderEntity(totalPrice, user);
+        OrderEntity order = new OrderEntity(totalPrice, 0D, user);
 
         OrderItemEntity orderItemChicken = OrderItemEntity.from(cartItemChicken, order);
         OrderItemEntity orderItemPizza = OrderItemEntity.from(cartItemPizza, order);
@@ -86,12 +86,13 @@ public class OrderServiceTest {
         CartItemEntity cartItemPizza = new CartItemEntity(2L, user, pizza, 2);
 
         int totalPrice = 70000;
-        OrderEntity order = new OrderEntity(1L, totalPrice, user, new ArrayList<OrderItemEntity>());
+        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<OrderItemEntity>());
         OrderItemEntity orderItemChicken = new OrderItemEntity(
             1L,
             cartItemChicken.getProduct().getName(),
             cartItemChicken.getProduct().getImageFileName(),
             cartItemChicken.getProduct().getPrice() * cartItemChicken.getQuantity(),
+            0D,
             cartItemChicken.getQuantity(),
             order
         );
@@ -100,6 +101,7 @@ public class OrderServiceTest {
             cartItemPizza.getProduct().getName(),
             cartItemPizza.getProduct().getImageFileName(),
             cartItemPizza.getProduct().getPrice() * cartItemPizza.getQuantity(),
+            0D,
             cartItemPizza.getQuantity(),
             order
         );
@@ -150,12 +152,13 @@ public class OrderServiceTest {
         CartItemEntity cartItemPizza = new CartItemEntity(2L, user, pizza, 2);
 
         int totalPrice = 70000;
-        OrderEntity order = new OrderEntity(1L, totalPrice, user, new ArrayList<OrderItemEntity>());
+        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<OrderItemEntity>());
         OrderItemEntity orderItemChicken = new OrderItemEntity(
             1L,
             cartItemChicken.getProduct().getName(),
             cartItemChicken.getProduct().getImageFileName(),
             cartItemChicken.getProduct().getPrice() * cartItemChicken.getQuantity(),
+            0D,
             cartItemChicken.getQuantity(),
             order
         );
@@ -164,6 +167,7 @@ public class OrderServiceTest {
             cartItemPizza.getProduct().getName(),
             cartItemPizza.getProduct().getImageFileName(),
             cartItemPizza.getProduct().getPrice() * cartItemPizza.getQuantity(),
+            0D,
             cartItemPizza.getQuantity(),
             order
         );
