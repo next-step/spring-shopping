@@ -32,8 +32,8 @@ public class OrderController {
 
     @GetMapping("/order/{id}")
     @ResponseBody
-    public OrderResponse orderDetailById(@PathVariable Long id) {
-        return orderService.getOrder(id);
+    public OrderResponse orderDetailById(@Login Long memberId, @PathVariable Long id) {
+        return orderService.getOrder(memberId, id);
     }
 
     @GetMapping("/order-detail/{id}")

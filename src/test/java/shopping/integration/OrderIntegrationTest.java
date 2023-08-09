@@ -49,11 +49,12 @@ class OrderIntegrationTest extends IntegrationTest {
     @DisplayName("주문 상세 정보를 조회한다")
     void findMemberOrderById() {
         // given
-        long orderId = 1;
+        ExtractableResponse<Response> order = OrderIntegrationSupporter.order();
+        String orderId = order.header("Location").split("/")[2];
 
         // when
         ExtractableResponse<Response> result = OrderIntegrationSupporter.findOrderById(
-            orderId);
+            Long.parseLong(orderId));
 
         // then
         assertThat(result.statusCode()).isEqualTo(HttpStatus.OK.value());
