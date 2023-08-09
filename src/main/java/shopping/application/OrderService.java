@@ -1,11 +1,16 @@
 package shopping.application;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Order;
 import shopping.domain.cart.OrderItems;
 import shopping.dto.response.OrderResponse;
+import shopping.exception.infrastructure.ConnectionFailException;
+import shopping.exception.infrastructure.NoConnectionException;
+import shopping.infrastructure.CurrencyLayerConnection;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
@@ -17,27 +22,46 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
+    private static final String SOURCE = "USD";
+    private static final String TARGET = "KRW";
+
+    private final Logger log = LoggerFactory.getLogger(OrderService.class);
+
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final CurrencyLayerConnection currencyLayerConnection;
 
     public OrderService(CartItemRepository cartItemRepository, OrderRepository orderRepository,
-                        OrderItemRepository orderItemRepository) {
+                        OrderItemRepository orderItemRepository, CurrencyLayerConnection currencyLayerConnection) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.currencyLayerConnection = currencyLayerConnection;
     }
 
     @Transactional
     public OrderResponse createOrder(Long userId) {
         List<CartItem> cartItems = cartItemRepository.findAllByUserId(userId);
 
-        Order order = orderRepository.save(new Order(userId));
+        Order order = orderRepository.save(orderWithExchangeRate(userId));
         OrderItems orderItems = OrderItems.from(cartItems, order);
 
         OrderItems savedItems = OrderItems.of(orderItemRepository.saveAll(orderItems.getItems()));
         cartItemRepository.deleteAll(cartItems);
         return OrderResponse.of(savedItems);
+    }
+
+    private Order orderWithExchangeRate(Long userId) {
+        try {
+            double exchangeRate = currencyLayerConnection.getExchangeRate(SOURCE, TARGET);
+            return new Order(userId, exchangeRate);
+        } catch (ConnectionFailException e) {
+            log.error("code: {}, info: {}", e.getErrorCode(), e.getMessage());
+        } catch (NoConnectionException e) {
+            log.error(e.getMessage());
+        }
+        return new Order(userId);
     }
 
     public OrderResponse findOrderById(Long userId, Long orderId) {

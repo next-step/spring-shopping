@@ -1,6 +1,6 @@
 package shopping.exception.infrastructure;
 
-public class ConnectionFailException extends RuntimeException {
+public class ConnectionFailException extends Exception {
 
     private final int errorCode;
 

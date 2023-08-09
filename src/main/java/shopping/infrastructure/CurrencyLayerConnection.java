@@ -22,7 +22,7 @@ public class CurrencyLayerConnection {
         this.client = WebClient.create(BASE_URL);
     }
 
-    public Double getExchangeRate(String source, String target) {
+    public Double getExchangeRate(String source, String target) throws ConnectionFailException, NoConnectionException {
         ExchangeRateResponse response = getExchangeRateResponse(source, target);
         if (response.isSuccess()) {
             return response.getExchangeRates().get(source+target);
@@ -31,7 +31,7 @@ public class CurrencyLayerConnection {
         throw new ConnectionFailException(error.getInformation(), error.getCode());
     }
 
-    private ExchangeRateResponse getExchangeRateResponse(String source, String target) {
+    private ExchangeRateResponse getExchangeRateResponse(String source, String target) throws NoConnectionException {
         ExchangeRateResponse response = client.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("access_key", accessKey)
@@ -45,7 +45,7 @@ public class CurrencyLayerConnection {
         return response;
     }
 
-    private void validateNotNullResponse(ExchangeRateResponse response) {
+    private void validateNotNullResponse(ExchangeRateResponse response) throws NoConnectionException {
         if (response == null) {
             throw new NoConnectionException();
         }

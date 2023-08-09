@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import shopping.exception.infrastructure.ConnectionFailException;
+import shopping.exception.infrastructure.NoConnectionException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -17,7 +18,7 @@ class CurrencyLayerConnectionTest {
 
     @DisplayName("정상 조회 시 환율 반환")
     @Test
-    void getExchangeRate() {
+    void getExchangeRate() throws NoConnectionException, ConnectionFailException {
         assertThat(connection.getExchangeRate("USD", "KRW"))
                 .isCloseTo(1300.0, Offset.offset(100.0));
     }
