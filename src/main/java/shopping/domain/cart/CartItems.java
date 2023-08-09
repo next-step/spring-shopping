@@ -38,4 +38,10 @@ public class CartItems {
     public List<CartItem> getItems() {
         return Collections.unmodifiableList(items);
     }
+
+    public long calculateTotalPrice() {
+        return items.stream()
+                .mapToLong(CartItem::calculateTotalPrice)
+                .sum();
+    }
 }

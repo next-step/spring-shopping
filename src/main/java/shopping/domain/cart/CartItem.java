@@ -59,6 +59,10 @@ public class CartItem {
         return this.product.equals(other.product);
     }
 
+    public long calculateTotalPrice() {
+        return (long) product.getPrice() * quantity.getQuantity();
+    }
+
     public Long getId() {
         return id;
     }

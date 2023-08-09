@@ -36,4 +36,16 @@ class CartItemTest {
         // then
         assertThat(cartItem.getQuantity()).isEqualTo(4);
     }
+
+    @Test
+    @DisplayName("장바구니 항목 총 금액을 계산한다.")
+    void calculateTotalPrice() {
+        // given
+        Product product = DomainFixture.createProduct();
+        CartItem cartItem = new CartItem(1L, product, new Quantity(1_000_000));
+
+        // when
+        assertThat(cartItem.calculateTotalPrice()).isEqualTo(20_000_000_000L);
+
+    }
 }

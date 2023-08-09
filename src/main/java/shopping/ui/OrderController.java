@@ -25,7 +25,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Void> create(@AuthenticationPrincipal Long userId) {
-        Long orderId = orderService.create(userId);
+        Long orderId = orderService.createFromCart(userId);
         return ResponseEntity.created(URI.create("/order/" + orderId)).build();
     }
 

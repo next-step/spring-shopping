@@ -4,9 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItemRepository;
 import shopping.domain.cart.CartItems;
-import shopping.domain.cart.Quantity;
 import shopping.domain.order.Order;
-import shopping.domain.order.OrderItem;
 import shopping.domain.order.OrderRepository;
 import shopping.dto.OrderDetailResponse;
 import shopping.dto.OrderResponse;
@@ -22,31 +20,23 @@ public class OrderService {
 
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
 
-    public OrderService(CartItemRepository cartItemRepository, OrderRepository orderRepository) {
+    public OrderService(CartItemRepository cartItemRepository, OrderRepository orderRepository, OrderMapper orderMapper) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
+        this.orderMapper = orderMapper;
     }
 
     @Transactional
-    public Long create(Long userId) {
+    public Long createFromCart(Long userId) {
         CartItems items = findCartItemsByUserId(userId);
+        Order order = orderMapper.mapFrom(userId, items);
 
-        List<OrderItem> orderItems = items.getItems()
-                .stream()
-                .map(item -> new OrderItem(item.getProduct(), new Quantity(item.getQuantity())))
-                .collect(Collectors.toList());
-
-        long sum = items.getItems()
-                .stream()
-                .mapToInt(item -> item.getProduct().getPrice() * item.getQuantity())
-                .sum();
-
-        Order order = new Order(userId, orderItems, sum);
-
+        Long id = orderRepository.save(order).getId();
         cartItemRepository.deleteAll(items.getItems());
 
-        return orderRepository.save(order).getId();
+        return id;
     }
 
     @Transactional(readOnly = true)

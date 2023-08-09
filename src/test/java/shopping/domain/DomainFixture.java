@@ -14,6 +14,6 @@ public class DomainFixture {
     }
 
     public static Product createProduct() {
-        return new Product(1L, new Name("치킨"), new Image("chicken.png"), new Price(2000));
+        return new Product(1L, new Name("치킨"), new Image("chicken.png"), new Price(20000));
     }
 }

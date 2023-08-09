@@ -68,4 +68,16 @@ class CartItemsTest {
         // when, then
         assertThat(items.contains(item)).isFalse();
     }
+
+    @Test
+    @DisplayName("장바구니 상품의 총 금액을 계산한다.")
+    void calculateTotalPrice() {
+        // given
+        Product product = DomainFixture.createProduct();
+        CartItem item = new CartItem(1L, 1L, product, new Quantity(3));
+        CartItems items = new CartItems(new ArrayList<>(List.of(item)));
+
+        // when
+        assertThat(items.calculateTotalPrice()).isEqualTo(60000);
+    }
 }
