@@ -37,7 +37,7 @@ public class OrderService {
 
     public OrderResponse order(long memberId) {
         Member member = findMember(memberId);
-        ExchangeRate exchangeRate = exchangeRateProvider.getExchange();
+        ExchangeRate exchangeRate = exchangeRateProvider.getExchange("USDKRW");
         Order order = new Order(member, exchangeRate);
         List<OrderItem> orderItems = orderMemberCartItems(member, order);
 

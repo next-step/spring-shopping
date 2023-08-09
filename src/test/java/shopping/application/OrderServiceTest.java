@@ -61,7 +61,7 @@ class OrderServiceTest {
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(cartProducts);
-            given(exchangeRateProvider.getExchange()).willReturn(exchangeRate);
+            given(exchangeRateProvider.getExchange("USDKRW")).willReturn(exchangeRate);
 
             // when
             OrderResponse result = orderService.order(member.getId());
