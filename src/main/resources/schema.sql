@@ -38,6 +38,7 @@ create table if not exists ORDERS
     order_id bigint auto_increment not null,
     member_id bigint not null,
     order_price bigint not null,
+    exchange_rate DECIMAL(15,7) not null,
     primary key(order_id),
     foreign key (member_id) references MEMBER(member_id)
 );
