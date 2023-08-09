@@ -16,43 +16,64 @@ public class OrderItemEntity {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
+    private String imageFileName;
+
+    private int totalPrice;
+
+    private int totalQuantity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_product_id")
-    private OrderProductEntity orderProduct;
-
-    private int quantity;
 
     protected OrderItemEntity() {
     };
 
-    public OrderItemEntity(Long id, OrderEntity order, OrderProductEntity orderProduct, int quantity) {
+    public OrderItemEntity(Long id, String name, String imageFileName, int totalPrice, int totalQuantity,
+        OrderEntity order) {
         this.id = id;
+        this.name = name;
+        this.imageFileName = imageFileName;
+        this.totalPrice = totalPrice;
+        this.totalQuantity = totalQuantity;
         this.order = order;
-        this.orderProduct = orderProduct;
-        this.quantity = quantity;
     }
 
-    public OrderItemEntity(OrderEntity order, OrderProductEntity orderProduct, int quantity) {
-        this(null, order, orderProduct, quantity);
+    public static OrderItemEntity from(CartItemEntity cartItem, OrderEntity order) {
+        return new OrderItemEntity(
+            null,
+            cartItem.getProduct().getName(),
+            cartItem.getProduct().getImageFileName(),
+            cartItem.getProduct().getPrice() * cartItem.getQuantity(),
+            cartItem.getQuantity(),
+            order
+        );
     }
 
     public Long getId() {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
     public OrderEntity getOrder() {
         return order;
-    }
-
-    public OrderProductEntity getOrderProduct() {
-        return orderProduct;
-    }
-
-    public int getQuantity() {
-        return quantity;
     }
 }
