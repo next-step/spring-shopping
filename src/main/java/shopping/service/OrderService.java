@@ -44,16 +44,33 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderCreateResponse createOrder(final Long memberId) {
+    public OrderCreateResponse createOrder(final Long memberId, final double exchangeRate) {
         final Member member = getMemberById(memberId);
-        final Order persistOrder = orderRepository.save(new Order(member));
-        final List<CartItem> cartItems = cartItemRepository.findAllByMemberId(memberId);
+        final Order persistOrder = saveOrder(member, exchangeRate);
+        deleteCartItems(member);
+
+        return OrderCreateResponse.from(persistOrder.getId());
+    }
+
+    private Order saveOrder(final Member member, final double exchangeRate) {
+        final Order persistOrder = orderRepository.save(new Order(member, exchangeRate));
+        final List<CartItem> cartItems = cartItemRepository.findAllByMemberId(member.getId());
+        validateOrder(cartItems);
         orderItemRepository.saveAll(cartItems.stream()
                 .map(convertCartItemToOrderItem(persistOrder))
                 .collect(toList()));
-        cartItemRepository.deleteAllByMember(member);
 
-        return OrderCreateResponse.from(persistOrder.getId());
+        return persistOrder;
+    }
+
+    private void validateOrder(final List<CartItem> cartItems) {
+        if (cartItems.isEmpty()) {
+            throw new ShoppingException(ErrorCode.EMPTY_CART_ITEM);
+        }
+    }
+
+    private void deleteCartItems(final Member member) {
+        cartItemRepository.deleteAllByMember(member);
     }
 
     @Transactional(readOnly = true)
@@ -66,6 +83,7 @@ public class OrderService {
         return OrderResponse.of(
                 order.getId(),
                 order.getOrderPrice(),
+                order.getExchangeRate(),
                 orderItemResponses
         );
     }
@@ -78,10 +96,6 @@ public class OrderService {
                 .collect(toList());
 
         return OrderResponses.from(response);
-    }
-
-    private Order getOrderById(final Long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_ORDER_ID));
     }
 
     private Function<CartItem, OrderItem> convertCartItemToOrderItem(final Order order) {
@@ -99,5 +113,10 @@ public class OrderService {
     private Member getMemberById(final Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_MEMBER_ID));
+    }
+
+    private Order getOrderById(final Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new ShoppingException(ErrorCode.NOT_FOUND_ORDER_ID));
     }
 }

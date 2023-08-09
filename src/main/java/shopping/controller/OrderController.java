@@ -5,15 +5,18 @@ import org.springframework.web.bind.annotation.*;
 import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.dto.response.OrderResponses;
+import shopping.infrastructure.ExchangeRateApi;
 import shopping.service.OrderService;
 
 @RestController
 public class OrderController {
 
     private final OrderService orderService;
+    private final ExchangeRateApi exchangeRateApi;
 
-    public OrderController(final OrderService orderService) {
+    public OrderController(final OrderService orderService, final ExchangeRateApi exchangeRateApi) {
         this.orderService = orderService;
+        this.exchangeRateApi = exchangeRateApi;
     }
 
     @GetMapping("/orders/{orderId}")
@@ -32,7 +35,8 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<OrderCreateResponse> createOrder(@RequestAttribute final Long loginMemberId) {
-        final OrderCreateResponse orderCreateResponse = orderService.createOrder(loginMemberId);
+        final double exchangeRate = exchangeRateApi.getRealTimeExchangeRate();
+        final OrderCreateResponse orderCreateResponse = orderService.createOrder(loginMemberId, exchangeRate);
 
         return ResponseEntity.ok(orderCreateResponse);
     }

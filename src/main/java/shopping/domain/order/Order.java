@@ -22,15 +22,20 @@ public class Order {
     @Embedded
     private OrderPrice orderPrice;
 
+    @Embedded
+    private ExchangeRate exchangeRate;
+
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
+
 
     protected Order() {
     }
 
-    public Order(final Member member) {
+    public Order(final Member member, final double exchangeRate) {
         this.member = member;
         this.orderPrice = OrderPrice.defaultValue();
+        this.exchangeRate = ExchangeRate.from(exchangeRate);
     }
 
     public void addOrderItem(final OrderItem orderItem) {
@@ -48,6 +53,10 @@ public class Order {
 
     public Member getMember() {
         return member;
+    }
+
+    public double getExchangeRate() {
+        return exchangeRate.getValue();
     }
 
     public List<OrderItem> getOrderItems() {

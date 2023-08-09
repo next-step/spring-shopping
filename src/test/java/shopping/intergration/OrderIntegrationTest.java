@@ -2,20 +2,44 @@ package shopping.intergration;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import shopping.dto.response.OrderCreateResponse;
+import shopping.exception.ApiExceptionResponse;
+import shopping.repository.CartItemRepository;
+import shopping.repository.OrderItemRepository;
+import shopping.repository.OrderRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static shopping.intergration.helper.CartItemHelper.addCartItem;
 import static shopping.intergration.helper.LogInHelper.login;
 import static shopping.intergration.helper.OrderHelper.*;
+import static shopping.intergration.helper.RestAssuredHelper.extractObject;
 import static shopping.intergration.utils.LoginUtils.EMAIL;
 import static shopping.intergration.utils.LoginUtils.PASSWORD;
 
+
 @DisplayName("주문 테스트")
 class OrderIntegrationTest extends IntegrationTest {
+
+    @Autowired
+    CartItemRepository cartItemRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @AfterEach
+    void tearDown() {
+        cartItemRepository.deleteAllInBatch();
+        orderItemRepository.deleteAllInBatch();
+        orderRepository.deleteAllInBatch();
+    }
 
     @Test
     @DisplayName("장바구니에 담긴 아이템을 주문한다.")
@@ -58,5 +82,16 @@ class OrderIntegrationTest extends IntegrationTest {
         final ExtractableResponse<Response> response = readOrdersRequest(accessToken);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    @DisplayName("장바구니에 등록한 아이템이 없으면 주문에 실패한다.")
+    void ifEmptyCartFailCreateOrder() {
+        final String accessToken = login(EMAIL, PASSWORD).getToken();
+
+        final ExtractableResponse<Response> response = createOrderRequest(accessToken);
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(extractObject(response, ApiExceptionResponse.class).getMessage()).isEqualTo("해당 장바구니가 비어있습니다.");
     }
 }
