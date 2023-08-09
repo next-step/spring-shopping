@@ -13,7 +13,11 @@ const requestOrder = () => {
             'Content-Type': 'application/json'
         }
     }).then((response) => {
-        window.location.href = response.headers.get("Location");
+        if (response.ok) {
+            window.location.href = response.headers.get("Location");
+        } else {
+            alert("주문에 실패하였습니다.")
+        }
     }).catch((error) => {
         console.error(error);
     });
