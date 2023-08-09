@@ -38,5 +38,4 @@ class CartItemTest {
         CartItem cartItem = new CartItem(user.getId(), product);
         assertThatThrownBy(() -> cartItem.updateQuantity(0)).isInstanceOf(InvalidRequestException.class);
     }
-
 }

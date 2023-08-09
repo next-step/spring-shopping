@@ -22,5 +22,4 @@ class QuantityTest {
         assertThatThrownBy(() -> new Quantity(0))
                 .isInstanceOf(InvalidRequestException.class);
     }
-
 }
