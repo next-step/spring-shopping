@@ -8,14 +8,16 @@ public class OrderItemResponse {
     private final String name;
     private final String imageFileName;
     private final int totalPrice;
+    private final Double totalPriceUSD;
     private final int totalQuantity;
 
     public OrderItemResponse(Long id, String name, String imageFileName, int totalPrice,
-        int totalQuantity) {
+        Double totalPriceUSD, int totalQuantity) {
         this.id = id;
         this.name = name;
         this.imageFileName = imageFileName;
         this.totalPrice = totalPrice;
+        this.totalPriceUSD = totalPriceUSD;
         this.totalQuantity = totalQuantity;
     }
 
@@ -25,6 +27,7 @@ public class OrderItemResponse {
             orderItem.getName(),
             orderItem.getImageFileName(),
             orderItem.getTotalPrice(),
+            orderItem.getTotalPriceUSD(),
             orderItem.getTotalQuantity()
         );
     }
@@ -43,6 +46,10 @@ public class OrderItemResponse {
 
     public int getTotalPrice() {
         return totalPrice;
+    }
+
+    public Double getTotalPriceUSD() {
+        return totalPriceUSD;
     }
 
     public int getTotalQuantity() {
