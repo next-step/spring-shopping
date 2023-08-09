@@ -1,6 +1,6 @@
 package shopping.domain.user;
 
-import shopping.exception.PasswordNotMatchException;
+import shopping.exception.auth.PasswordNotMatchException;
 
 import javax.persistence.*;
 

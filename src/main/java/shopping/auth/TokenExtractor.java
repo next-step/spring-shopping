@@ -1,7 +1,7 @@
 package shopping.auth;
 
 import org.springframework.stereotype.Component;
-import shopping.exception.AuthException;
+import shopping.exception.auth.AuthException;
 
 import javax.servlet.http.HttpServletRequest;
 

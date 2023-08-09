@@ -1,4 +1,4 @@
-package shopping.exception;
+package shopping.exception.general;
 
 public class InvalidRequestException extends ShoppingBaseException{
 

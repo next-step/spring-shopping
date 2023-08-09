@@ -9,6 +9,8 @@ import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import shopping.dto.response.ErrorResponse;
+import shopping.exception.auth.AuthException;
+import shopping.exception.general.ShoppingBaseException;
 
 @ControllerAdvice
 public class ExceptionHandlers {

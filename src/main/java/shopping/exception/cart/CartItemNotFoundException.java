@@ -1,4 +1,6 @@
-package shopping.exception;
+package shopping.exception.cart;
+
+import shopping.exception.general.ShoppingBaseException;
 
 public class CartItemNotFoundException extends ShoppingBaseException {
 

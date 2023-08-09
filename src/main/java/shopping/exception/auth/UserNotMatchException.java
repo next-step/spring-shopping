@@ -1,4 +1,6 @@
-package shopping.exception;
+package shopping.exception.auth;
+
+import shopping.exception.general.ShoppingBaseException;
 
 public class UserNotMatchException extends ShoppingBaseException {
 

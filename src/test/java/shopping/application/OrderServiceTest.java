@@ -8,8 +8,8 @@ import shopping.domain.cart.Order;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
 import shopping.dto.response.OrderResponse;
-import shopping.exception.NoCartItemForOrderException;
-import shopping.exception.UserNotMatchException;
+import shopping.exception.cart.NoCartItemForOrderException;
+import shopping.exception.auth.UserNotMatchException;
 import shopping.repository.*;
 
 import java.util.Optional;

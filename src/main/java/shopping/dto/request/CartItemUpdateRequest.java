@@ -2,7 +2,7 @@ package shopping.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import shopping.exception.InvalidRequestException;
+import shopping.exception.general.InvalidRequestException;
 
 public class CartItemUpdateRequest {
 

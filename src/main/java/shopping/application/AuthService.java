@@ -7,7 +7,7 @@ import shopping.domain.user.Email;
 import shopping.domain.user.User;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
-import shopping.exception.UserNotFoundException;
+import shopping.exception.auth.UserNotFoundException;
 import shopping.repository.UserRepository;
 
 @Transactional(readOnly = true)

@@ -1,9 +1,9 @@
 package shopping.domain.cart;
 
-import shopping.exception.NoCartItemForOrderException;
-import shopping.exception.NoOrderItemException;
-import shopping.exception.NotSameOrderException;
-import shopping.exception.UserNotMatchException;
+import shopping.exception.cart.NoCartItemForOrderException;
+import shopping.exception.cart.NoOrderItemException;
+import shopping.exception.cart.NotSameOrderException;
+import shopping.exception.auth.UserNotMatchException;
 
 import java.util.List;
 import java.util.stream.Collectors;

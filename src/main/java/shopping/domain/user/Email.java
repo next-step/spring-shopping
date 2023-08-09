@@ -1,6 +1,6 @@
 package shopping.domain.user;
 
-import shopping.exception.InvalidRequestException;
+import shopping.exception.general.InvalidRequestException;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package shopping.auth;
 
-import shopping.exception.PasswordNotHashException;
+import shopping.exception.auth.PasswordNotHashException;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

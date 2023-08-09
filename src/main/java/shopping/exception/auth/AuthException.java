@@ -1,4 +1,4 @@
-package shopping.exception;
+package shopping.exception.auth;
 
 public class AuthException extends RuntimeException {
 

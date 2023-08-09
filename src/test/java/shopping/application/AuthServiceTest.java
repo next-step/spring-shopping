@@ -7,8 +7,8 @@ import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
-import shopping.exception.PasswordNotMatchException;
-import shopping.exception.UserNotFoundException;
+import shopping.exception.auth.PasswordNotMatchException;
+import shopping.exception.auth.UserNotFoundException;
 import shopping.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;

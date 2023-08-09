@@ -1,6 +1,6 @@
 package shopping.domain.cart;
 
-import shopping.exception.InvalidRequestException;
+import shopping.exception.general.InvalidRequestException;
 
 import javax.persistence.Embeddable;
 

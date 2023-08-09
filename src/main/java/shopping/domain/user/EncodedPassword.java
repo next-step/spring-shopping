@@ -2,7 +2,7 @@ package shopping.domain.user;
 
 import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
-import shopping.exception.InvalidRequestException;
+import shopping.exception.general.InvalidRequestException;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
