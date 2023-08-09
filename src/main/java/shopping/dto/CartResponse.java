@@ -3,6 +3,7 @@ package shopping.dto;
 import shopping.domain.entity.CartItem;
 
 public class CartResponse {
+
     private Long id;
     private String name;
     private String image;
@@ -23,10 +24,10 @@ public class CartResponse {
     public static CartResponse from(final CartItem cartItem) {
         return new CartResponse(
                 cartItem.getId(),
-                cartItem.getProduct().getName(),
-                cartItem.getProduct().getImage(),
-                cartItem.getProduct().getPrice(),
-                cartItem.getQuantity()
+                cartItem.getProduct().getName().getName(),
+                cartItem.getProduct().getImage().getImage(),
+                cartItem.getProduct().getPrice().getPrice(),
+                cartItem.getQuantity().getValue()
         );
     }
 

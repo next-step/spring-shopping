@@ -34,16 +34,16 @@ public class Product {
         return id;
     }
 
-    public String getName() {
-        return name.getName();
+    public Name getName() {
+        return name;
     }
 
-    public String getImage() {
-        return image.getImage();
+    public Image getImage() {
+        return image;
     }
 
-    public int getPrice() {
-        return price.getPrice();
+    public Price getPrice() {
+        return price;
     }
 
     @Override
@@ -57,9 +57,5 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public boolean equalsById(final long id) {
-        return Objects.equals(this.id, id);
     }
 }

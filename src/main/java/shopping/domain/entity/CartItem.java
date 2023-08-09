@@ -57,8 +57,8 @@ public class CartItem {
         return product;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
     }
 
     public boolean equalsById(final long id) {
