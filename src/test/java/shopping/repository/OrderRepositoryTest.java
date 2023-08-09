@@ -2,6 +2,7 @@ package shopping.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,7 +33,7 @@ class OrderRepositoryTest {
 
     @Nested
     @DisplayName("findById 메소드는")
-    class FindByEmail {
+    class FindById {
 
         @Test
         @DisplayName("id에 해당하는 Order 와 OrderItem 리스트를 함께 반환한다.")
@@ -48,6 +49,27 @@ class OrderRepositoryTest {
             assertThat(result).isPresent();
             assertThat(result.get().getId()).isEqualTo(order.getId());
             assertThat(result.get().getOrderItems()).isNotEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("findByMemberId 메소드는")
+    class FindByMemberId {
+
+        @Test
+        @DisplayName("memberId에 해당하는 Order 와 OrderItem 리스트를 함께 반환한다.")
+        void returnOrderByMemberId() {
+            // given
+            Member member = memberRepository.findById(1L).get();
+            Order order = createOrder(member);
+
+            // when
+            List<Order> result = orderRepository.findByMemberId(member.getId());
+
+            // then
+            assertThat(result)
+                .hasSize(1)
+                .contains(order);
         }
     }
 
