@@ -2,8 +2,8 @@ package shopping.auth.repository;
 
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import shopping.auth.app.domain.User;
-import shopping.auth.app.spi.UserRepository;
+import shopping.auth.domain.User;
+import shopping.auth.domain.repository.UserRepository;
 import shopping.auth.repository.entity.UserEntity;
 
 @Repository

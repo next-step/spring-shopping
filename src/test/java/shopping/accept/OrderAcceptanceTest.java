@@ -5,11 +5,11 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.auth.app.api.request.LoginRequest;
-import shopping.auth.app.api.response.TokenResponse;
-import shopping.mart.app.api.cart.request.CartAddRequest;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.api.product.response.ProductResponse;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
 
 @DisplayName("order 인수테스트")
 class OrderAcceptanceTest extends AcceptanceTest {

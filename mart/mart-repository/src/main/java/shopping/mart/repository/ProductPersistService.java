@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
-import shopping.mart.app.domain.Product;
-import shopping.mart.app.spi.ProductRepository;
+import shopping.mart.domain.Product;
+import shopping.mart.domain.repository.ProductRepository;
 import shopping.mart.repository.entity.ProductEntity;
 
 @Repository

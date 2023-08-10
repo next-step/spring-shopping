@@ -9,12 +9,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.accept.AssertHelper.Http;
 import shopping.accept.UrlHelper.Cart;
-import shopping.auth.app.api.request.LoginRequest;
-import shopping.auth.app.api.response.TokenResponse;
-import shopping.mart.app.api.cart.request.CartAddRequest;
-import shopping.mart.app.api.cart.request.CartUpdateRequest;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.api.product.response.ProductResponse;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
 
 @DisplayName("Cart 인수테스트")
 class CartAcceptanceTest extends AcceptanceTest {

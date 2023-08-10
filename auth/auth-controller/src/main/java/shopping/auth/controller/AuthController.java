@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.app.api.AuthUseCase;
-import shopping.auth.app.api.request.LoginRequest;
-import shopping.auth.app.api.response.TokenResponse;
-import shopping.auth.app.exception.AlreadyExistUserException;
-import shopping.auth.app.exception.DoesNotExistUserException;
-import shopping.auth.app.exception.InvalidEmailException;
-import shopping.auth.app.exception.InvalidPasswordException;
+import shopping.auth.domain.usecase.AuthUseCase;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.auth.domain.exception.AlreadyExistUserException;
+import shopping.auth.domain.exception.DoesNotExistUserException;
+import shopping.auth.domain.exception.InvalidEmailException;
+import shopping.auth.domain.exception.InvalidPasswordException;
 import shopping.core.util.ErrorTemplate;
 
 @RestController

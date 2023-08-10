@@ -3,12 +3,12 @@ package shopping.auth.service;
 import java.text.MessageFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.auth.app.api.AuthUseCase;
-import shopping.auth.app.api.request.LoginRequest;
-import shopping.auth.app.api.response.TokenResponse;
-import shopping.auth.app.domain.User;
-import shopping.auth.app.exception.DoesNotExistUserException;
-import shopping.auth.app.spi.UserRepository;
+import shopping.auth.domain.usecase.AuthUseCase;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.auth.domain.User;
+import shopping.auth.domain.exception.DoesNotExistUserException;
+import shopping.auth.domain.repository.UserRepository;
 import shopping.auth.service.infra.JwtUtils;
 
 @Service

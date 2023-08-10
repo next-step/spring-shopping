@@ -6,11 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import shopping.core.util.ErrorTemplate;
-import shopping.mart.app.api.product.ProductUseCase;
-import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.mart.app.exception.AlreadyExistProductException;
-import shopping.mart.app.exception.InvalidPriceException;
-import shopping.mart.app.exception.InvalidProductNameException;
+import shopping.mart.domain.usecase.product.ProductUseCase;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
+import shopping.mart.domain.exception.AlreadyExistProductException;
+import shopping.mart.domain.exception.InvalidPriceException;
+import shopping.mart.domain.exception.InvalidProductNameException;
 
 @Controller
 public class ProductViewController {

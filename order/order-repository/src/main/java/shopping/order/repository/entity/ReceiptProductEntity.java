@@ -8,8 +8,8 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import shopping.mart.app.domain.Product;
-import shopping.order.app.domain.ReceiptProduct;
+import shopping.mart.domain.Product;
+import shopping.order.domain.ReceiptProduct;
 
 @Entity
 @IdClass(ReceiptProductId.class)

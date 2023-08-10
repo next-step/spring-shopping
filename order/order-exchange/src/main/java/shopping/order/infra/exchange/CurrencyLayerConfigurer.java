@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestTemplate;
-import shopping.order.app.spi.ExchangeVendor;
+import shopping.order.domain.infra.ExchangeVendor;
 
 @Configuration
 @Profile("production")

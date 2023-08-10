@@ -5,16 +5,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.api.cart.response.CartResponse.ProductResponse;
-import shopping.order.app.api.order.OrderUseCase;
-import shopping.order.app.api.order.request.OrderRequest;
-import shopping.order.app.domain.Order;
-import shopping.order.app.domain.Product;
-import shopping.order.app.domain.Receipt;
-import shopping.order.app.spi.ExchangeVendor;
-import shopping.order.app.spi.ReceiptRepository;
+import shopping.mart.domain.usecase.cart.CartUseCase;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.usecase.cart.response.CartResponse.ProductResponse;
+import shopping.order.domain.usecase.order.OrderUseCase;
+import shopping.order.domain.usecase.order.request.OrderRequest;
+import shopping.order.domain.Order;
+import shopping.order.domain.Product;
+import shopping.order.domain.Receipt;
+import shopping.order.domain.infra.ExchangeVendor;
+import shopping.order.domain.repository.ReceiptRepository;
 
 @Service
 @Transactional(readOnly = true)

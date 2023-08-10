@@ -11,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.TestDefaultLocation;
-import shopping.mart.app.api.product.response.ProductResponse;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
 import shopping.mart.service.ProductService;
 
 @ContextConfiguration(classes = TestDefaultLocation.class)

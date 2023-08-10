@@ -3,8 +3,8 @@ package shopping.mart.repository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
-import shopping.mart.app.domain.Cart;
-import shopping.mart.app.spi.CartRepository;
+import shopping.mart.domain.Cart;
+import shopping.mart.domain.repository.CartRepository;
 import shopping.mart.repository.entity.CartEntity;
 import shopping.mart.repository.entity.ProductEntity;
 

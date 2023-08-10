@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
-import shopping.mart.app.api.product.ProductUseCase;
-import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.mart.app.domain.Product;
-import shopping.order.app.domain.Receipt;
-import shopping.order.app.spi.ReceiptRepository;
+import shopping.mart.domain.usecase.product.ProductUseCase;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
+import shopping.mart.domain.Product;
+import shopping.order.domain.Receipt;
+import shopping.order.domain.repository.ReceiptRepository;
 import shopping.order.repository.entity.ReceiptEntity;
 import shopping.order.repository.entity.ReceiptProductEntity;
 

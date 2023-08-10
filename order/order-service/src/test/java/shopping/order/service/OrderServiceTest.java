@@ -15,14 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.api.cart.response.CartResponse.ProductResponse;
-import shopping.order.app.api.order.OrderUseCase;
-import shopping.order.app.api.order.request.OrderRequest;
-import shopping.order.app.domain.Exchange;
-import shopping.order.app.spi.ExchangeVendor;
-import shopping.order.app.spi.ReceiptRepository;
+import shopping.mart.domain.usecase.cart.CartUseCase;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.usecase.cart.response.CartResponse.ProductResponse;
+import shopping.order.domain.usecase.order.OrderUseCase;
+import shopping.order.domain.usecase.order.request.OrderRequest;
+import shopping.order.domain.Exchange;
+import shopping.order.domain.infra.ExchangeVendor;
+import shopping.order.domain.repository.ReceiptRepository;
 
 @DisplayName("OrderService 클래스")
 @ExtendWith(SpringExtension.class)

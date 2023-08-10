@@ -16,9 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import shopping.mart.app.domain.Product;
-import shopping.order.app.domain.Receipt;
-import shopping.order.app.domain.ReceiptProduct;
+import shopping.mart.domain.Product;
+import shopping.order.domain.Receipt;
+import shopping.order.domain.ReceiptProduct;
 
 @Entity
 @Table(name = "receipt")

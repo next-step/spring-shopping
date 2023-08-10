@@ -4,15 +4,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.order.app.api.receipt.ReceiptUseCase;
-import shopping.order.app.api.receipt.response.ReceiptDetailProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
-import shopping.order.app.api.receipt.response.ReceiptProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptResponse;
-import shopping.order.app.domain.Receipt;
-import shopping.order.app.domain.ReceiptProduct;
-import shopping.order.app.exception.DoesNotFindReceiptException;
-import shopping.order.app.spi.ReceiptRepository;
+import shopping.order.domain.usecase.receipt.ReceiptUseCase;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptResponse;
+import shopping.order.domain.Receipt;
+import shopping.order.domain.ReceiptProduct;
+import shopping.order.domain.exception.DoesNotFindReceiptException;
+import shopping.order.domain.repository.ReceiptRepository;
 
 @Service
 @Transactional(readOnly = true)

@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.mart.app.api.product.ProductUseCase;
-import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.mart.app.domain.Product;
-import shopping.mart.app.spi.ProductRepository;
+import shopping.mart.domain.usecase.product.ProductUseCase;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
+import shopping.mart.domain.Product;
+import shopping.mart.domain.repository.ProductRepository;
 
 @Service
 @Transactional(readOnly = true)

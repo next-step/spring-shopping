@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.app.api.Token;
+import shopping.auth.domain.usecase.Token;
 import shopping.core.util.ErrorTemplate;
-import shopping.order.app.api.receipt.ReceiptUseCase;
-import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
-import shopping.order.app.api.receipt.response.ReceiptResponse;
-import shopping.order.app.exception.DoesNotFindReceiptException;
+import shopping.order.domain.usecase.receipt.ReceiptUseCase;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptResponse;
+import shopping.order.domain.exception.DoesNotFindReceiptException;
 
 @RestController
 @RequestMapping("/receipts")

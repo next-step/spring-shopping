@@ -13,13 +13,13 @@ import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.SoftAssertions;
 import org.hamcrest.Matchers;
-import shopping.auth.app.api.response.TokenResponse;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.api.cart.response.CartResponse.ProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptDetailProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
-import shopping.order.app.api.receipt.response.ReceiptProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptResponse;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.usecase.cart.response.CartResponse.ProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptResponse;
 
 class AssertHelper {
 

@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.request.CartAddRequest;
-import shopping.mart.app.api.cart.request.CartUpdateRequest;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.domain.Cart;
-import shopping.mart.app.domain.Product;
-import shopping.mart.app.exception.DoesNotExistProductException;
-import shopping.mart.app.spi.CartRepository;
-import shopping.mart.app.spi.ProductRepository;
+import shopping.mart.domain.usecase.cart.CartUseCase;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.Cart;
+import shopping.mart.domain.Product;
+import shopping.mart.domain.exception.DoesNotExistProductException;
+import shopping.mart.domain.repository.CartRepository;
+import shopping.mart.domain.repository.ProductRepository;
 
 @Service
 @Transactional(readOnly = true)

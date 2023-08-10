@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.auth.app.api.request.LoginRequest;
-import shopping.auth.app.api.response.TokenResponse;
-import shopping.mart.app.api.cart.request.CartAddRequest;
-import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptDetailProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
-import shopping.order.app.api.receipt.response.ReceiptProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptResponse;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptResponse;
 
 @DisplayName("Receipt 인수테스트")
 class ReceiptAcceptanceTest extends AcceptanceTest {

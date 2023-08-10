@@ -3,8 +3,8 @@ package shopping.config;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import shopping.auth.app.domain.User;
-import shopping.auth.app.spi.UserRepository;
+import shopping.auth.domain.User;
+import shopping.auth.domain.repository.UserRepository;
 
 @Component
 final class UserConfigurer {

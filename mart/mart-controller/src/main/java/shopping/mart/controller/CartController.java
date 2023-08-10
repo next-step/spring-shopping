@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.app.api.Token;
+import shopping.auth.domain.usecase.Token;
 import shopping.core.util.ErrorTemplate;
-import shopping.mart.app.api.cart.CartUseCase;
-import shopping.mart.app.api.cart.request.CartAddRequest;
-import shopping.mart.app.api.cart.request.CartUpdateRequest;
-import shopping.mart.app.api.cart.response.CartResponse;
-import shopping.mart.app.exception.AlreadyExistProductException;
-import shopping.mart.app.exception.DoesNotExistProductException;
-import shopping.mart.app.exception.NegativeProductCountException;
+import shopping.mart.domain.usecase.cart.CartUseCase;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.exception.AlreadyExistProductException;
+import shopping.mart.domain.exception.DoesNotExistProductException;
+import shopping.mart.domain.exception.NegativeProductCountException;
 
 @RestController
 @RequestMapping("/carts")

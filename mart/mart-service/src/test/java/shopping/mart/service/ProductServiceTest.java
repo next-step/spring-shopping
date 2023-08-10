@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.mart.app.api.product.response.ProductResponse;
-import shopping.mart.app.domain.Product;
-import shopping.mart.app.spi.ProductRepository;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
+import shopping.mart.domain.Product;
+import shopping.mart.domain.repository.ProductRepository;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("ProductService 클래스")

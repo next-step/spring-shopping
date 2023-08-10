@@ -7,9 +7,9 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import shopping.auth.app.api.request.LoginRequest;
-import shopping.mart.app.api.cart.request.CartAddRequest;
-import shopping.mart.app.api.cart.request.CartUpdateRequest;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
 
 class UrlHelper {
 

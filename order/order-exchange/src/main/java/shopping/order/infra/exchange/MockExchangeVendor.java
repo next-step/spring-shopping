@@ -2,8 +2,8 @@ package shopping.order.infra.exchange;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import shopping.order.app.domain.Exchange;
-import shopping.order.app.spi.ExchangeVendor;
+import shopping.order.domain.Exchange;
+import shopping.order.domain.infra.ExchangeVendor;
 
 @Service
 @Profile("test")

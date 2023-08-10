@@ -2,7 +2,7 @@ package shopping.auth.service.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
-import shopping.auth.app.api.Token;
+import shopping.auth.domain.usecase.Token;
 
 @Component
 @RequestScope

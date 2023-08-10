@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import shopping.mart.app.domain.Cart;
-import shopping.mart.app.domain.Product;
+import shopping.mart.domain.Cart;
+import shopping.mart.domain.Product;
 import shopping.mart.repository.entity.ProductEntity;
 
 @DisplayName("cartPersistService 클래스")

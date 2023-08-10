@@ -16,15 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.order.app.api.receipt.ReceiptUseCase;
-import shopping.order.app.api.receipt.response.ReceiptDetailProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptDetailResponse;
-import shopping.order.app.api.receipt.response.ReceiptProductResponse;
-import shopping.order.app.api.receipt.response.ReceiptResponse;
-import shopping.order.app.domain.Receipt;
-import shopping.order.app.domain.ReceiptProduct;
-import shopping.order.app.exception.DoesNotFindReceiptException;
-import shopping.order.app.spi.ReceiptRepository;
+import shopping.order.domain.usecase.receipt.ReceiptUseCase;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptDetailResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptProductResponse;
+import shopping.order.domain.usecase.receipt.response.ReceiptResponse;
+import shopping.order.domain.Receipt;
+import shopping.order.domain.ReceiptProduct;
+import shopping.order.domain.exception.DoesNotFindReceiptException;
+import shopping.order.domain.repository.ReceiptRepository;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("ReceiptService 클래스")

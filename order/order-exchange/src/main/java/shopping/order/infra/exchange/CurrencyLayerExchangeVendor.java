@@ -7,8 +7,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
-import shopping.order.app.domain.Exchange;
-import shopping.order.app.spi.ExchangeVendor;
+import shopping.order.domain.Exchange;
+import shopping.order.domain.infra.ExchangeVendor;
 
 public class CurrencyLayerExchangeVendor implements ExchangeVendor {
 

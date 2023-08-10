@@ -1,7 +1,7 @@
 package shopping.mart.controller.config;
 
 import org.springframework.stereotype.Component;
-import shopping.auth.app.spi.AuthorizationPath;
+import shopping.auth.domain.usecase.AuthorizationPath;
 
 @Component
 public class CartAuthorizationPath implements AuthorizationPath {

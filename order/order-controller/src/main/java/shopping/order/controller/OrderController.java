@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import shopping.auth.app.api.Token;
+import shopping.auth.domain.usecase.Token;
 import shopping.core.util.ErrorTemplate;
-import shopping.order.app.api.order.OrderUseCase;
-import shopping.order.app.api.order.request.OrderRequest;
-import shopping.order.app.exception.EmptyOrderException;
+import shopping.order.domain.usecase.order.OrderUseCase;
+import shopping.order.domain.usecase.order.request.OrderRequest;
+import shopping.order.domain.exception.EmptyOrderException;
 
 @RestController
 public class OrderController {

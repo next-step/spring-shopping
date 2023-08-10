@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import shopping.auth.app.domain.User;
+import shopping.auth.domain.User;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {JwtUtils.class})
