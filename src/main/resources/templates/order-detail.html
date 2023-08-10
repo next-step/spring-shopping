@@ -69,7 +69,7 @@
                         <img class="w-144 h-144" src="../assets/${orderItem.imageFileName}"/>
                         <div class="flex-col gap-15">
                           <span class="shopping-name">${orderItem.name}</span> <!-- 상품 이름 -->
-                          <span class="shopping-info">${orderItem.totalPrice} 원 / 수량: ${orderItem.totalQuantity} 개</span> <!-- 상품 가격 및 수량 -->
+                          <span class="shopping-info">${orderItem.totalPrice} 원 ($${orderItem.totalPriceUSD} USD) / 수량: ${orderItem.totalQuantity} 개</span> <!-- 상품 가격 및 수량 -->
                         </div>
                       </div>
                     </div>
@@ -78,7 +78,7 @@
       });
 
       document.querySelector('.order-item-list').innerHTML = element;
-      document.querySelector('.order-right-section .order-total-price').innerText = `${data.totalPrice} 원`; <!-- 상품 가격 및 수량 -->
+      document.querySelector('.order-right-section .order-total-price').innerText = `${data.totalPrice} 원 ($${data.totalPriceUSD} USD)`; <!-- 상품 가격 및 수량 -->
     }).catch((error) => {
       console.error(error);
     });
