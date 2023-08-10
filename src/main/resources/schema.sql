@@ -47,3 +47,6 @@ CREATE TABLE order_items
     quantity   int          not null,
     foreign key (order_id) references orders (id) on delete cascade
 );
+
+ALTER TABLE order_items
+    ADD unique (order_id, product_id);
