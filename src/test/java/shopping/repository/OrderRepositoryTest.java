@@ -19,7 +19,7 @@ class OrderRepositoryTest {
     private OrderRepository orderRepository;
 
     @Test
-    @DisplayName("주문 번호와 유저 번호로 주문을 찾는다")
+    @DisplayName("주문 번호와 유저 번호로 주문을 찾는다.")
     void findByIdAndUserId() {
         // given
         final Long userId = 1L;
@@ -30,6 +30,21 @@ class OrderRepositoryTest {
         final Optional<Order> persistOrder = orderRepository.findByIdAndUserId(id, userId);
 
         // then
-        assertThat(persistOrder.isPresent()).isTrue();
+        assertThat(persistOrder).isPresent();
+    }
+
+    @Test
+    @DisplayName("주문 번호에 해당하는 주문이 없을 때 Optional Empty를 반환한다.")
+    void findNullByIdAndUserId() {
+        // given
+        final Long userId = 1L;
+        final Order order = Order.of(userId, List.of(EntityFixture.createOrderItem()));
+        final Long id = orderRepository.save(order).getId();
+
+        // when
+        final Optional<Order> persistOrder = orderRepository.findByIdAndUserId(id + 1, userId);
+
+        // then
+        assertThat(persistOrder).isEmpty();
     }
 }
