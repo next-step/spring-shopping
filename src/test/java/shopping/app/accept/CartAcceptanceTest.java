@@ -59,8 +59,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /carts API는 product를 찾을 수 없으면, CART-SERVICE-401을 던진다.")
-    void throw_cart_service_401() {
+    @DisplayName("POST /carts API는 product를 찾을 수 없으면, CART-405를 던진다.")
+    void throw_cart_405() {
         // given
         CartAddRequest request = new CartAddRequest(9999999L);
 
@@ -106,7 +106,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, CART-SERVICE-401를 던진다.")
+    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, CART-405를 던진다.")
     void throw_cart_402_when_no_updatable_product() {
         // given
         CartUpdateRequest request = new CartUpdateRequest(999999999L, 100_000);
@@ -152,8 +152,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-SERVICE-401을 던진다.")
-    void throw_cart_401_when_no_product_id() {
+    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-405를 던진다.")
+    void throw_cart_405_when_no_product_id() {
         // given
         long deleteTargetId = 999999999L;
 

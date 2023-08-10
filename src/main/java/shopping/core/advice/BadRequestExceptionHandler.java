@@ -6,15 +6,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import shopping.core.exception.StatusCodeException;
+import shopping.core.exception.BadRequestException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
-class StatusCodeExceptionHandler {
+class BadRequestExceptionHandler {
 
-    @ExceptionHandler(StatusCodeException.class)
+    @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ErrorTemplate handleStatusCodeException(StatusCodeException statusCodeException) {
-        return new ErrorTemplate(statusCodeException.getStatus(), statusCodeException.getMessage());
+    ErrorTemplate handleStatusCodeException(BadRequestException badRequestException) {
+        return new ErrorTemplate(badRequestException.getStatus(), badRequestException.getMessage());
     }
 }

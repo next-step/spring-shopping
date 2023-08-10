@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.auth.infra.JwtUtils;
-import shopping.core.exception.StatusCodeException;
+import shopping.core.exception.BadRequestException;
 
 public class AuthInterceptor implements HandlerInterceptor {
 
@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             String id = jwtUtils.payload(token);
             request.setAttribute("userId", Long.valueOf(id));
         } catch (Exception exception) {
-            throw new StatusCodeException(MessageFormat.format("인증할 수 없는 토큰 \"{0}\" 입니다.", token), INVALID_TOKEN);
+            throw new BadRequestException(MessageFormat.format("인증할 수 없는 토큰 \"{0}\" 입니다.", token), INVALID_TOKEN);
         }
         return true;
     }

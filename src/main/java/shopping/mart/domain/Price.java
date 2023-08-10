@@ -3,7 +3,7 @@ package shopping.mart.domain;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.util.Objects;
-import shopping.core.exception.StatusCodeException;
+import shopping.core.exception.BadRequestException;
 import shopping.mart.domain.status.ProductExceptionStatus;
 
 final class Price {
@@ -24,13 +24,13 @@ final class Price {
         if (price.matches("-?\\d+")) {
             return;
         }
-        throw new StatusCodeException(MessageFormat.format("price \"{0}\"는 정수만 입력할 수 있습니다.", value),
+        throw new BadRequestException(MessageFormat.format("price \"{0}\"는 정수만 입력할 수 있습니다.", value),
                 ProductExceptionStatus.NOT_NUMBER.getStatus());
     }
 
     private void validNegativePrice(final String price) {
         if (Long.parseLong(price) < 0) {
-            throw new StatusCodeException(MessageFormat.format("price \"{0}\"는 0보다 작을 수 없습니다.", value),
+            throw new BadRequestException(MessageFormat.format("price \"{0}\"는 0보다 작을 수 없습니다.", value),
                     ProductExceptionStatus.NEGATIVE_PRICE.getStatus());
         }
     }

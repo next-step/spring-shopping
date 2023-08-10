@@ -1,10 +1,10 @@
 package shopping.core.exception;
 
-public class StatusCodeException extends RuntimeException {
+public class BadRequestException extends RuntimeException {
 
     private final String status;
 
-    public StatusCodeException(String message, String status) {
+    public BadRequestException(String message, String status) {
         super(message);
         this.status = status;
     }

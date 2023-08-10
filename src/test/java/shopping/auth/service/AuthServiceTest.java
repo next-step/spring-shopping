@@ -20,7 +20,7 @@ import shopping.auth.dto.TokenResponse;
 import shopping.auth.dto.UserJoinRequest;
 import shopping.auth.infra.JwtUtils;
 import shopping.auth.persist.UserRepository;
-import shopping.core.exception.StatusCodeException;
+import shopping.core.exception.BadRequestException;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("AuthService 클래스")
@@ -34,8 +34,8 @@ class AuthServiceTest {
     private UserRepository userRepository;
 
     private void assertStatusCodeException(final Exception exception, final String expectedStatus) {
-        assertThat(exception.getClass()).isEqualTo(StatusCodeException.class);
-        assertThat(((StatusCodeException) exception).getStatus()).isEqualTo(expectedStatus);
+        assertThat(exception.getClass()).isEqualTo(BadRequestException.class);
+        assertThat(((BadRequestException) exception).getStatus()).isEqualTo(expectedStatus);
     }
 
     @Nested
@@ -43,7 +43,7 @@ class AuthServiceTest {
     class joinUser_method {
 
         @Test
-        @DisplayName("email이 중복되면, StatusCodeException을 던진다.")
+        @DisplayName("email이 중복되면, BadRequestException을 던진다.")
         void throw_StatusCodeException_when_duplicated_email() {
             // given
             UserJoinRequest request = new UserJoinRequest("hello@hello.world", "hello!123");
@@ -54,7 +54,7 @@ class AuthServiceTest {
             Exception exception = catchException(() -> authService.joinUser(request));
 
             // then
-            assertStatusCodeException(exception, "AUTH-SERVICE-401");
+            assertStatusCodeException(exception, "AUTH-404");
         }
     }
 
@@ -79,7 +79,7 @@ class AuthServiceTest {
         }
 
         @Test
-        @DisplayName("email에 해당하는 유저를 찾을 수 없으면, StatusCodeException을 반환한다.")
+        @DisplayName("email에 해당하는 유저를 찾을 수 없으면, BadRequestException 반환한다.")
         void it_throw_StatusCodeException_when_not_matched_email() {
             // given
             LoginRequest request = new LoginRequest("hello@hello.world", "hello!123");
@@ -90,7 +90,7 @@ class AuthServiceTest {
             Exception exception = catchException(() -> authService.authenticate(request));
 
             // then
-            assertStatusCodeException(exception, "AUTH-SERVICE-402");
+            assertStatusCodeException(exception, "AUTH-405");
         }
     }
 }

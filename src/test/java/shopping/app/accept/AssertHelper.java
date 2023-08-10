@@ -51,7 +51,7 @@ class AssertHelper {
     static final class Cart {
 
         static void assertProductNotFound(final ExtractableResponse<Response> result) {
-            assertThat(result.as(ErrorTemplate.class).getStatusCode()).isEqualTo("CART-SERVICE-401");
+            assertThat(result.as(ErrorTemplate.class).getStatusCode()).isEqualTo("CART-405");
         }
 
         static void assertCart(final ExtractableResponse<Response> result, CartResponse exactlyExpected) {
@@ -77,14 +77,14 @@ class AssertHelper {
             Http.assertIsBadRequest(result);
 
             ErrorTemplate errorTemplate = result.as(ErrorTemplate.class);
-            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-SERVICE-401");
+            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-405");
         }
 
         static void assertUpdatableProductNotFound(ExtractableResponse<Response> result) {
             Http.assertIsBadRequest(result);
 
             ErrorTemplate errorTemplate = result.as(ErrorTemplate.class);
-            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-SERVICE-401");
+            assertThat(errorTemplate.getStatusCode()).isEqualTo("CART-405");
         }
 
         static void assertUpdateCountNotPositive(ExtractableResponse<Response> result) {

@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import shopping.core.exception.StatusCodeException;
+import shopping.core.exception.BadRequestException;
 import shopping.mart.domain.status.CartExceptionStatus;
 
 public final class Cart {
@@ -27,7 +27,7 @@ public final class Cart {
 
     private void validateExistProduct(final Product product) {
         if (productCounts.containsKey(product)) {
-            throw new StatusCodeException(MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
+            throw new BadRequestException(MessageFormat.format("product \"{0}\"가 이미 cart에 존재합니다.", product),
                     CartExceptionStatus.ALREADY_EXIST_PRODUCT.getStatus());
         }
     }
@@ -53,7 +53,7 @@ public final class Cart {
 
     private void validateCount(final int count) {
         if (count <= 0) {
-            throw new StatusCodeException(MessageFormat.format("count\"{0}\"는 0 이하가 될 수 없습니다.", count),
+            throw new BadRequestException(MessageFormat.format("count\"{0}\"는 0 이하가 될 수 없습니다.", count),
                     CartExceptionStatus.UPDATE_COUNT_NOT_POSITIVE.getStatus());
         }
     }
@@ -62,7 +62,7 @@ public final class Cart {
         if (productCounts.containsKey(product)) {
             return;
         }
-        throw new StatusCodeException(MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product),
+        throw new BadRequestException(MessageFormat.format("update할 product\"{0}\"를 찾을 수 없습니다.", product),
                 CartExceptionStatus.NOT_EXIST_UPDATABLE_PRODUCT.getStatus());
     }
 
@@ -70,7 +70,7 @@ public final class Cart {
         if (productCounts.containsKey(product)) {
             return;
         }
-        throw new StatusCodeException(MessageFormat.format("delete할 prodcut\"{0}\"을 찾을 수 없습니다.", product),
+        throw new BadRequestException(MessageFormat.format("delete할 prodcut\"{0}\"을 찾을 수 없습니다.", product),
                 CartExceptionStatus.NOT_EXIST_DELETABLE_PRODUCT.getStatus());
     }
 

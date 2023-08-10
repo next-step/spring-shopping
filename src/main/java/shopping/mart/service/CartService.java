@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.core.exception.StatusCodeException;
+import shopping.core.exception.BadRequestException;
 import shopping.mart.domain.Cart;
 import shopping.mart.domain.Product;
+import shopping.mart.domain.status.CartExceptionStatus;
 import shopping.mart.dto.CartAddRequest;
 import shopping.mart.dto.CartResponse;
 import shopping.mart.dto.CartResponse.ProductResponse;
@@ -17,8 +18,6 @@ import shopping.mart.persist.ProductRepository;
 
 @Service
 public class CartService {
-
-    private static final String PRODUCT_NOT_FOUND = "CART-SERVICE-401";
 
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
@@ -80,8 +79,8 @@ public class CartService {
 
     private Product findProductById(long productId) {
         return productRepository.findById(productId).orElseThrow(
-                () -> new StatusCodeException(
+                () -> new BadRequestException(
                         MessageFormat.format("productId \"{0}\"에 해당하는 Product를 찾을 수 없습니다.", productId),
-                        PRODUCT_NOT_FOUND));
+                        CartExceptionStatus.NOT_FOUND.getStatus()));
     }
 }

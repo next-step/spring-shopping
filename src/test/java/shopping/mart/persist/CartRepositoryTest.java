@@ -77,7 +77,7 @@ class CartRepositoryTest extends JpaTest {
 
         @Test
         @DisplayName("이미 Cart가 존재할 경우 예외를 던진다.")
-        void throw_StatusCodeException_when_exists_cart() {
+        void throw_BadRequestException_when_exists_cart() {
             // given
             UserEntity userEntity = saveUser("hello@hello.world", "hello!123");
             cartRepository.newCart(userEntity.getId());
