@@ -75,13 +75,13 @@
                     <hr class="divide-line-thin mt-10"/>
                     `;
       });
-      let totalMoney = `${data.totalMoney}원`;
+      let totalPrice = `${data.totalPrice}원`;
       if (data.exchangePrice !== null) {
-        totalMoney += ` / $${(data.exchangePrice).toFixed(2)}`;
+        totalPrice += ` / $${(data.exchangePrice).toFixed(2)}`;
       }
 
       document.querySelector('.order-item-list').innerHTML = element;
-      document.querySelector('.order-right-section .order-total-price').innerText = totalMoney; <!-- 아이템 가격 및 수량 -->
+      document.querySelector('.order-right-section .order-total-price').innerText = totalPrice; <!-- 아이템 가격 및 수량 -->
 
     }).catch((error) => {
       console.error(error);
