@@ -1,7 +1,10 @@
 package shopping.exchange;
 
-import util.ExchangeRateApi;
-
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import shopping.util.ExchangeRateApi;
+@Profile("test")
+@Component
 public class MockExchangeRateApi implements ExchangeRateApi {
 
     @Override
