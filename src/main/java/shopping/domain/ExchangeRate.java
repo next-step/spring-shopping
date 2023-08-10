@@ -1,5 +1,7 @@
 package shopping.domain;
 
+import shopping.domain.entity.Price;
+
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
@@ -17,6 +19,10 @@ public class ExchangeRate {
 
     public double getValue() {
         return value;
+    }
+
+    public double apply(final Price price) {
+        return price.getPrice() / value;
     }
 
     @Override

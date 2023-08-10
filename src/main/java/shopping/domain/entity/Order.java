@@ -66,7 +66,7 @@ public class Order {
     }
 
     public double applyExchangeRate() {
-        throw new UnsupportedOperationException();
+        return exchangeRate.apply(totalPrice);
     }
 
     private static Price calculateTotalPrice(final List<OrderItem> orderItems) {
