@@ -1,7 +1,5 @@
 package shopping.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
@@ -12,8 +10,7 @@ public class Currency {
 
     EnumMap<ExchangeCode, Double> codeMap;
 
-    @JsonCreator
-    public Currency(@JsonProperty("quotes") Map<String, Double> quotes) {
+    public Currency(Map<String, Double> quotes) {
         validateQuote(quotes);
         this.codeMap = createExchangeCodeMap(quotes);
     }
