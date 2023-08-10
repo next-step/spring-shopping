@@ -3,14 +3,12 @@ package shopping.infrastructure;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import shopping.exception.infrastructure.ConnectionErrorException;
 import shopping.exception.infrastructure.NullResponseException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 
 @SpringBootTest
 class CurrencyLayerConnectionTest {

@@ -4,7 +4,6 @@ import shopping.exception.general.InvalidRequestException;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;
-import java.util.Optional;
 
 @Embeddable
 public class Price {

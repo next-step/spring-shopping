@@ -7,7 +7,6 @@ import shopping.exception.cart.NoCartItemForOrderException;
 import shopping.exception.cart.NotSameOrderException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
