@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.dto.response.OrderResponse;
+import shopping.fixture.OrderFixture;
 import shopping.repository.OrderRepository;
 
 class OrderIntegrationTest extends IntegrationTest {
@@ -89,6 +90,8 @@ class OrderIntegrationTest extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         final OrderResponse orderResponse = extractObject(response, OrderResponse.class);
+        assertThat(orderResponse.getConvertedTotalPrice()).isEqualTo(
+                orderResponse.getTotalPrice() / OrderFixture.DEFAULT_EXCHANGE_RATE);
         assertThat(orderResponse.getOrderItems()).extracting("name", "image", "price", "quantity")
                 .contains(
                         tuple("Chicken", "/image/Chicken.png", 10_000, 3),

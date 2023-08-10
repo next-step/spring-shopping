@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,12 +32,20 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    @Embedded
+    private ExchangeRate exchangeRate;
+
     protected Order() {
     }
 
     public Order(final Member member, final List<OrderItem> orderItems) {
+        this(member, orderItems, 0.0);
+    }
+
+    public Order(final Member member, final List<OrderItem> orderItems, final double exchangeRate) {
         this.member = member;
         this.setOrderItems(orderItems);
+        this.exchangeRate = ExchangeRate.from(exchangeRate);
     }
 
     private void setOrderItems(final List<OrderItem> orderItems) {
@@ -58,5 +67,14 @@ public class Order {
 
     public long getOrderTotalPrice() {
         return orderItems.stream().mapToLong(OrderItem::getOrderItemTotalPrice).sum();
+    }
+
+    public ExchangeRate getExchangeRate() {
+        return this.exchangeRate;
+    }
+
+    public double getConvertedOrderTotalPrice() {
+        final long orderKRWTotalPrice = this.getOrderTotalPrice();
+        return Math.round(orderKRWTotalPrice / this.exchangeRate.getValue() * 100.0) / 100.0;
     }
 }

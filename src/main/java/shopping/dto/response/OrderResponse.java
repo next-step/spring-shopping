@@ -10,11 +10,18 @@ public class OrderResponse {
     private final Long orderId;
     private final List<OrderItemResponse> orderItems;
     private final long totalPrice;
+    private final double convertedTotalPrice;
 
-    private OrderResponse(final Long orderId, final List<OrderItemResponse> orderItems, final long totalPrice) {
+    private OrderResponse(
+            final Long orderId,
+            final List<OrderItemResponse> orderItems,
+            final long totalPrice,
+            final double convertedTotalPrice
+    ) {
         this.orderId = orderId;
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
+        this.convertedTotalPrice = convertedTotalPrice;
     }
 
     public static OrderResponse from(final Order order) {
@@ -22,7 +29,12 @@ public class OrderResponse {
                 .map(OrderItemResponse::from)
                 .collect(toList());
 
-        return new OrderResponse(order.getId(), orderItems, order.getOrderTotalPrice());
+        return new OrderResponse(
+                order.getId(),
+                orderItems,
+                order.getOrderTotalPrice(),
+                order.getConvertedOrderTotalPrice()
+        );
     }
 
     public Long getOrderId() {
@@ -35,5 +47,9 @@ public class OrderResponse {
 
     public long getTotalPrice() {
         return this.totalPrice;
+    }
+
+    public double getConvertedTotalPrice() {
+        return this.convertedTotalPrice;
     }
 }

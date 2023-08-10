@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.dto.response.OrderResponse;
+import shopping.infra.ExchangeRateApi;
 import shopping.service.OrderService;
 
 @RestController
@@ -18,14 +19,17 @@ import shopping.service.OrderService;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ExchangeRateApi exchangeRateApi;
 
-    public OrderController(final OrderService orderService) {
+    public OrderController(final OrderService orderService, final ExchangeRateApi exchangeRateApi) {
         this.orderService = orderService;
+        this.exchangeRateApi = exchangeRateApi;
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestAttribute final Long loginMemberId) {
-        final OrderResponse orderResponse = orderService.createOrder(loginMemberId);
+        final double currencyWithKRWToUSD = exchangeRateApi.getUSDtoKRWExchangeRate();
+        final OrderResponse orderResponse = orderService.createOrder(loginMemberId, currencyWithKRWToUSD);
 
         return ResponseEntity.created(URI.create("/orders/" + orderResponse.getOrderId())).body(orderResponse);
     }

@@ -18,6 +18,7 @@ public enum ShoppingErrorType {
     NOT_FOUND_CART_ITEM_ID(HttpStatus.NOT_FOUND, "해당 장바구니 아이템을 찾을 수 없습니다."),
     NOT_FOUND_ORDER_ID(HttpStatus.NOT_FOUND, "해당 주문을 찾을 수 없습니다."),
     INVALID_ORDER_REQUEST(HttpStatus.BAD_REQUEST, "장바구니에 상품이 없는 경우 주문할 수 없습니다."),
+    INVALID_EXCHANGE_RATE(HttpStatus.INTERNAL_SERVER_ERROR, "환율에 오류가 발생했습니다."),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
     TOKEN_IS_EMPTY(HttpStatus.BAD_REQUEST, "토큰이 존재하지 않습니다."),
     FORBIDDEN_MODIFY_CART_ITEM(HttpStatus.FORBIDDEN, "해당 장바구니 아이템을 수정할 권한이 없습니다.");

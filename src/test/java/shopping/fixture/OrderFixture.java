@@ -10,6 +10,8 @@ import shopping.domain.order.OrderItem;
 
 public class OrderFixture {
 
+    public static double DEFAULT_EXCHANGE_RATE = 1000.00;
+
     public static OrderItem createOrderItem(final CartItem cartItem, final Long id) {
         final OrderItem orderItem = new OrderItem(cartItem);
         ReflectionTestUtils.setField(orderItem, "id", id);

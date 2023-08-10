@@ -37,7 +37,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse createOrder(final Long memberId) {
+    public OrderResponse createOrder(final Long memberId, final double exchangeRate) {
         final Member member = getMemberById(memberId);
         final List<CartItem> cartItems = cartItemRepository.findAllByMemberId(memberId);
         validateEmptyCartItems(cartItems);
@@ -45,7 +45,7 @@ public class OrderService {
         final List<OrderItem> orderItems = cartItems.stream()
                 .map(OrderItem::new)
                 .collect(toList());
-        final Order order = orderRepository.save(new Order(member, orderItems));
+        final Order order = orderRepository.save(new Order(member, orderItems, exchangeRate));
         cartItemRepository.deleteAllInBatch(cartItems);
 
         return OrderResponse.from(order);
