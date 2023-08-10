@@ -47,7 +47,7 @@ public class OrderService {
     public OrderCreateResponse createOrder(final Long memberId, final double exchangeRate) {
         final Member member = getMemberById(memberId);
         final Order persistOrder = saveOrder(member, exchangeRate);
-        deleteCartItems(member);
+        emptyCartItems(member);
 
         return OrderCreateResponse.from(persistOrder.getId());
     }
@@ -69,7 +69,7 @@ public class OrderService {
         }
     }
 
-    private void deleteCartItems(final Member member) {
+    private void emptyCartItems(final Member member) {
         cartItemRepository.deleteAllByMember(member);
     }
 
