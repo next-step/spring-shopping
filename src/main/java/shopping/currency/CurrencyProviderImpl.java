@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.math.BigDecimal;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -12,13 +13,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import shopping.exception.WooWaException;
 
 @Component
+@Profile("!test")
 public class CurrencyProviderImpl implements CurrencyProvider {
 
     private static final String URL = "http://apilayer.net/api/live";
     private final String accessKey;
     private final RestTemplate restTemplate;
 
-    public CurrencyProviderImpl(@Value("currency.api.key") String accessKey, RestTemplate restTemplate) {
+    public CurrencyProviderImpl(@Value("${currency.api.key}") String accessKey, RestTemplate restTemplate) {
         this.accessKey = accessKey;
         this.restTemplate = restTemplate;
     }
