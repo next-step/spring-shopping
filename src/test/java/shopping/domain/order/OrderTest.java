@@ -6,14 +6,18 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.exchange.MockExchangeRateApi;
 import shopping.global.vo.Name;
 import shopping.cart.domain.vo.Price;
 import shopping.global.vo.Quantity;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.product.domain.ProductImage;
+import shopping.util.ExchangeRateApi;
 
 public class OrderTest {
+
+    private ExchangeRateApi exchangeRateApi = new MockExchangeRateApi();
 
     @Test
     @DisplayName("Order를 생성한다.")
@@ -32,7 +36,7 @@ public class OrderTest {
                         new Price(price),
                         new Quantity(10)
                     )
-                ), 1L
+                ), 1L, exchangeRateApi.callExchangeRate()
             )
         ).doesNotThrowAnyException();
     }
@@ -46,7 +50,7 @@ public class OrderTest {
         final int price = 20000;
         final Long memberId = 1L;
 
-        Order order = new Order(memberId);
+        Order order = new Order(memberId, exchangeRateApi.callExchangeRate());
         OrderProduct orderProduct = new OrderProduct(
             1L,
             new Name(name),

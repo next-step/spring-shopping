@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import shopping.exchange.MockExchangeRateApi;
 import shopping.global.vo.Name;
 import shopping.cart.domain.vo.Price;
 import shopping.global.vo.Quantity;
@@ -35,7 +36,8 @@ public class OrderRepositoryTest {
             new ProductImage(imageUrl),
             new Price(price),
             new Quantity(10));
-        Order order = new Order(List.of(orderProduct), memberId);
+        Order order = new Order(List.of(orderProduct), memberId,
+            new MockExchangeRateApi().callExchangeRate());
         orderRepository.save(order);
 
         // when & then

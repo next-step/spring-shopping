@@ -8,13 +8,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import shopping.cart.repository.CartProductRepository;
+import shopping.exchange.MockExchangeRateApi;
 import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;
 import shopping.order.repository.OrderRepository;
 import shopping.order.service.OrderService;
+import shopping.util.ExchangeRateApi;
 
 @DataJpaTest
+@Import(MockExchangeRateApi.class)
+@ActiveProfiles("test")
 public class OrderServiceTest {
 
     @Autowired
@@ -23,11 +29,14 @@ public class OrderServiceTest {
     @Autowired
     private CartProductRepository cartProductRepository;
 
+    @Autowired
+    private ExchangeRateApi exchangeRateApi;
+
     private OrderService orderService;
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderService(orderRepository, cartProductRepository);
+        orderService = new OrderService(orderRepository, cartProductRepository, exchangeRateApi);
     }
 
     @Test

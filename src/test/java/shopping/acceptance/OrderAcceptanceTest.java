@@ -33,8 +33,7 @@ public class OrderAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> cartProductResponse = RestHelper.get(
             "/api/cartProduct", jwt);
         assertThat(cartProductResponse.body().as(new TypeRef<List<CartResponse>>() {
-        }))
-            .hasSize(0);
+        })).hasSize(0);
 
     }
 
@@ -52,7 +51,8 @@ public class OrderAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.body().as(OrderResponse.class).getId()).isEqualTo(orderId);
+        OrderResponse orderResponse = response.body().as(OrderResponse.class);
+        assertThat(orderResponse.getId()).isEqualTo(orderId);
     }
 
     @Test

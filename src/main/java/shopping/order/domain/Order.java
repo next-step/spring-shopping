@@ -32,7 +32,7 @@ public class Order {
 
     @Column(name = "exchange_rate")
     @Embedded
-    private ExchangeRate exchangeRate= new ExchangeRate(1.0);
+    private ExchangeRate exchangeRate;
 
     @Column(name = "member_id")
     private Long memberId;
@@ -42,19 +42,18 @@ public class Order {
 
     public Order(
         final List<OrderProduct> orderProducts,
-        final Long memberId) {
+        final Long memberId,
+        final double exchangeRate) {
         this.orderProducts = orderProducts;
         this.memberId = memberId;
-    }
-
-
-    public Order(final Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = new ExchangeRate(exchangeRate);
     }
+
+    public Order(final Long memberId, final double exchangeRate) {
+        this.memberId = memberId;
+        this.exchangeRate = new ExchangeRate(exchangeRate);
+    }
+
 
     public void addOrderProducts(final List<OrderProduct> orderProducts) {
         orderProducts.forEach(this::addOrderProduct);
