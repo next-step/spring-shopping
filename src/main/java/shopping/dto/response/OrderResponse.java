@@ -3,9 +3,11 @@ package shopping.dto.response;
 import java.util.List;
 
 public class OrderResponse {
+    private static final int DECIMAL_PLACE = 3;
+    private static final int BASE = 10;
     private Long orderId;
 
-    private int orderPrice;
+    private long orderPrice;
 
     private double exchangeRate;
 
@@ -17,28 +19,28 @@ public class OrderResponse {
 
     private OrderResponse(
             final Long orderId,
-            final int orderPrice,
+            final long orderPrice,
             final double exchangeRate,
             final List<OrderItemResponse> orderItems
     ) {
         this.orderId = orderId;
         this.orderPrice = orderPrice;
-        this.exchangeRate = calculateDecimalPoint(exchangeRate, 3);
+        this.exchangeRate = calculateDecimalThreePoint(exchangeRate);
         this.orderItems = orderItems;
-        this.exchangedPrice = calculateDecimalPoint(orderPrice / exchangeRate, 3);
+        this.exchangedPrice = calculateDecimalThreePoint(orderPrice / exchangeRate);
     }
 
     public static OrderResponse of(
             final Long orderId,
-            final int orderPrice,
+            final long orderPrice,
             final double exchangeRate,
             final List<OrderItemResponse> orderItems
     ) {
         return new OrderResponse(orderId, orderPrice, exchangeRate, orderItems);
     }
 
-    private double calculateDecimalPoint(final double exchangeRate, final int digits) {
-        final double decimalPoint = Math.pow(10, digits);
+    private double calculateDecimalThreePoint(final double exchangeRate) {
+        final double decimalPoint = Math.pow(BASE, DECIMAL_PLACE);
         return Math.round(exchangeRate * decimalPoint) / decimalPoint;
     }
 
@@ -54,7 +56,7 @@ public class OrderResponse {
         return orderId;
     }
 
-    public int getOrderPrice() {
+    public long getOrderPrice() {
         return orderPrice;
     }
 
