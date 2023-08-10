@@ -3,23 +3,23 @@ package shopping.domain;
 public enum CurrencyCountry {
     USDKRW(CurrencyType.USD, CurrencyType.KRW);
 
-    private final String sourceCountry;
-    private final String targetCountry;
+    private final String sourceCurrency;
+    private final String targetCurrency;
 
-    CurrencyCountry(CurrencyType sourceCountry, CurrencyType targetCountry) {
-        this.sourceCountry = sourceCountry.getType();
-        this.targetCountry = targetCountry.getType();
+    CurrencyCountry(CurrencyType sourceCurrency, CurrencyType targetCurrency) {
+        this.sourceCurrency = sourceCurrency.getType();
+        this.targetCurrency = targetCurrency.getType();
     }
 
     public String getSourceTargetCountry() {
-        return (sourceCountry + targetCountry);
+        return (sourceCurrency + targetCurrency);
     }
 
-    public String getSourceCountry() {
-        return sourceCountry;
+    public String getSourceCurrency() {
+        return sourceCurrency;
     }
 
-    public String getTargetCountry() {
-        return targetCountry;
+    public String getTargetCurrency() {
+        return targetCurrency;
     }
 }

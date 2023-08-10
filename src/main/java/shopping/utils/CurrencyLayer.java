@@ -28,8 +28,8 @@ public class CurrencyLayer implements CurrencyService {
             "{0}?access_key={1}&currencies={2}&source={3}",
             CURRENCY_SOURCE_URL,
             CURRENCY_ACCESS_KEY,
-            currencyCountry.getTargetCountry(),
-            currencyCountry.getSourceCountry()
+            currencyCountry.getTargetCurrency(),
+            currencyCountry.getSourceCurrency()
         );
 
         return restTemplate.getForObject(URL, CurrencyRequest.class);
