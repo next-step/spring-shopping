@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shopping.argumentresolver.annotation.UserId;
 import shopping.domain.CurrencyCountry;
-import shopping.dto.request.CurrencyRequest;
 import shopping.dto.response.OrderIdResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.service.CurrencyService;
@@ -31,8 +30,8 @@ public class OrderController {
     @PostMapping("/order")
     @ResponseBody
     public ResponseEntity<OrderIdResponse> orderCartItem(@UserId Long userId) {
-        CurrencyRequest currencyRequest = currencyService.callCurrency(CurrencyCountry.USDKRW);
-        OrderIdResponse orderIdResponse = orderService.orderCartItem(currencyRequest, userId);
+        Double currency = currencyService.callCurrency(CurrencyCountry.USDKRW);
+        OrderIdResponse orderIdResponse = orderService.orderCartItem(currency, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderIdResponse);
     }
 

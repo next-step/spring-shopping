@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,6 @@ import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
-import shopping.dto.request.CurrencyRequest;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.repository.CartItemRepository;
@@ -56,9 +54,6 @@ public class OrderServiceTest {
         when(userRepository.getReferenceById(userId)).thenReturn(user);
         List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
         when(cartItemRepository.findByUserId(userId)).thenReturn(cartItems);
-        HashMap<String, Double> hm = new HashMap<>();
-        hm.put("USDKRW", 1300D);
-        CurrencyRequest currencyRequest = new CurrencyRequest(true, "USD", hm);
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
@@ -68,7 +63,7 @@ public class OrderServiceTest {
         lenient().when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
 
         // when
-        orderService.orderCartItem(currencyRequest, userId);
+        orderService.orderCartItem(1300D, userId);
 
         // then
         verify(userRepository).getReferenceById(userId);

@@ -4,12 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.domain.CurrencyCountry;
 import shopping.domain.CurrencyPoint;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.UserEntity;
-import shopping.dto.request.CurrencyRequest;
 import shopping.dto.response.OrderIdResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.ErrorCode;
@@ -37,13 +35,12 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderIdResponse orderCartItem(CurrencyRequest currencyRequest, Long userId) {
+    public OrderIdResponse orderCartItem(Double currency, Long userId) {
         UserEntity user = userRepository.getReferenceById(userId);
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
         if (cartItems.isEmpty()) {
             throw new ShoppingException(ErrorCode.INVALID_PURCHASE);
         }
-        Double currencyRatio = currencyRequest.getQuotes().get(CurrencyCountry.USDKRW.getSourceTargetCountry());
 
         OrderEntity order = OrderEntity.by(user);
         order.updatePrices(cartItems, currency, CurrencyPoint.HUNDREDTH);
