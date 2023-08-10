@@ -7,9 +7,9 @@ public class ProductResponse {
     private final Long id;
     private final String name;
     private final String image;
-    private final int price;
+    private final long price;
 
-    public ProductResponse(final Long id, final String name, final String image, final int price) {
+    public ProductResponse(final Long id, final String name, final String image, final long price) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -37,7 +37,7 @@ public class ProductResponse {
         return image;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 }

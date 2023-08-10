@@ -9,7 +9,7 @@ CREATE TABLE products
     id    bigint auto_increment primary key,
     name  varchar(20)  not null,
     image varchar(255) not null,
-    price int          not null
+    price bigint       not null
 );
 
 CREATE TABLE users
@@ -43,7 +43,7 @@ CREATE TABLE order_items
     product_id bigint       not null,
     name       varchar(20)  not null,
     image      varchar(255) not null,
-    price      int          not null,
+    price      bigint       not null,
     quantity   int          not null,
     foreign key (order_id) references orders (id) on delete cascade
 );

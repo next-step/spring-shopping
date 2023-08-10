@@ -21,6 +21,7 @@ public class Order {
     private List<OrderItem> items = new ArrayList<>();
 
     @Column(nullable = false)
+    @AttributeOverride(name = "price", column = @Column(name = "total_price"))
     private Price totalPrice;
 
     protected Order() {

@@ -11,7 +11,7 @@ public class Price {
 
     private static final Price ZERO = new Price();
 
-    private final int price;
+    private final long price;
 
     public static <T> Price sum(final Collection<T> items, final Function<T, Price> function) {
         return items.stream()
@@ -23,7 +23,7 @@ public class Price {
         this.price = 0;
     }
 
-    public Price(final int value) {
+    public Price(final long value) {
         validateIsPositive(value);
 
         this.price = value;
@@ -33,17 +33,17 @@ public class Price {
         return new Price(this.price + price.price);
     }
 
-    public Price multiply(final int value) {
+    public Price multiply(final long value) {
         return new Price(price * value);
     }
 
-    private void validateIsPositive(final int value) {
+    private void validateIsPositive(final long value) {
         if (value <= 0) {
             throw new PriceInvalidException();
         }
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 }

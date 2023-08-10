@@ -7,13 +7,13 @@ public class CartResponse {
     private Long id;
     private String name;
     private String image;
-    private int price;
+    private long price;
     private int quantity;
 
     private CartResponse() {
     }
 
-    public CartResponse(final Long id, final String name, final String image, final int price, final int quantity) {
+    public CartResponse(final Long id, final String name, final String image, final long price, final int quantity) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -43,7 +43,7 @@ public class CartResponse {
         return image;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
