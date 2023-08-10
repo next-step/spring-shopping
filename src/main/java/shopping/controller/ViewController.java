@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import shopping.application.ProductService;
-import shopping.dto.response.ProductResponse;
+import shopping.dto.web.response.ProductResponse;
 
 import java.util.List;
 

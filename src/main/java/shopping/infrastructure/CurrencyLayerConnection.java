@@ -3,10 +3,10 @@ package shopping.infrastructure;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import shopping.dto.response.ExchangeRateErrorResponse;
-import shopping.dto.response.ExchangeRateResponse;
-import shopping.exception.infrastructure.ConnectionFailException;
-import shopping.exception.infrastructure.NoConnectionException;
+import shopping.dto.api.ExchangeRateResponse;
+import shopping.dto.web.response.ExchangeRateErrorResponse;
+import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.NullResponseException;
 
 @Component
 public class CurrencyLayerConnection {
@@ -22,16 +22,16 @@ public class CurrencyLayerConnection {
         this.client = WebClient.create(BASE_URL);
     }
 
-    public Double getExchangeRate(String source, String target) throws ConnectionFailException, NoConnectionException {
+    public Double getExchangeRate(String source, String target) throws ConnectionErrorException, NullResponseException {
         ExchangeRateResponse response = getExchangeRateResponse(source, target);
         if (response.isSuccess()) {
             return response.getExchangeRates().get(source+target);
         }
         ExchangeRateErrorResponse error = response.getError();
-        throw new ConnectionFailException(error.getInformation(), error.getCode());
+        throw new ConnectionErrorException(error.getInformation(), error.getCode());
     }
 
-    private ExchangeRateResponse getExchangeRateResponse(String source, String target) throws NoConnectionException {
+    private ExchangeRateResponse getExchangeRateResponse(String source, String target) throws NullResponseException {
         ExchangeRateResponse response = client.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("access_key", accessKey)
@@ -45,9 +45,9 @@ public class CurrencyLayerConnection {
         return response;
     }
 
-    private void validateNotNullResponse(ExchangeRateResponse response) throws NoConnectionException {
+    private void validateNotNullResponse(ExchangeRateResponse response) throws NullResponseException {
         if (response == null) {
-            throw new NoConnectionException();
+            throw new NullResponseException();
         }
     }
 }

@@ -12,10 +12,10 @@ import org.springframework.http.MediaType;
 import shopping.domain.cart.Price;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
-import shopping.dto.request.CartItemCreateRequest;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.OrderItemResponse;
-import shopping.dto.response.OrderResponse;
+import shopping.dto.web.request.CartItemCreateRequest;
+import shopping.dto.web.request.LoginRequest;
+import shopping.dto.web.response.OrderItemResponse;
+import shopping.dto.web.response.OrderResponse;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
 

@@ -2,7 +2,7 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.dto.response.ProductResponse;
+import shopping.dto.web.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;

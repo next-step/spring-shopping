@@ -1,4 +1,4 @@
-package shopping.dto.request;
+package shopping.dto.web.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

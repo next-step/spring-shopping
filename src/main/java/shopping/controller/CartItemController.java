@@ -4,9 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shopping.application.CartItemService;
 import shopping.auth.UserIdPrincipal;
-import shopping.dto.request.CartItemCreateRequest;
-import shopping.dto.request.CartItemUpdateRequest;
-import shopping.dto.response.CartItemResponse;
+import shopping.dto.web.request.CartItemCreateRequest;
+import shopping.dto.web.request.CartItemUpdateRequest;
+import shopping.dto.web.response.CartItemResponse;
 
 import java.net.URI;
 import java.util.List;

@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Order;
 import shopping.domain.cart.OrderItems;
-import shopping.dto.response.OrderResponse;
-import shopping.exception.infrastructure.ConnectionFailException;
-import shopping.exception.infrastructure.NoConnectionException;
+import shopping.dto.web.response.OrderResponse;
+import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.NullResponseException;
 import shopping.infrastructure.CurrencyLayerConnection;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
+    // TODO: MoneyType으로 바꾸고, DB에 Price -> Money에 Money타입 저장 + Money 타입을 Double로 전환하고 Response에서 Long으로 변환
     private static final String SOURCE = "USD";
     private static final String TARGET = "KRW";
 
@@ -56,9 +57,9 @@ public class OrderService {
         try {
             double exchangeRate = currencyLayerConnection.getExchangeRate(SOURCE, TARGET);
             return new Order(userId, exchangeRate);
-        } catch (ConnectionFailException e) {
+        } catch (ConnectionErrorException e) {
             log.error("code: {}, info: {}", e.getErrorCode(), e.getMessage());
-        } catch (NoConnectionException e) {
+        } catch (NullResponseException e) {
             log.error(e.getMessage());
         }
         return new Order(userId);

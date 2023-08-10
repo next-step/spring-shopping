@@ -10,6 +10,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // TODO: Product를 참조하지 않고 그냥 가져옴
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.client.WebClient;
-import shopping.dto.response.ExchangeRateResponse;
+import shopping.dto.api.ExchangeRateResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

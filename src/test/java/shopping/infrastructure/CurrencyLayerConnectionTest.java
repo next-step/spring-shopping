@@ -5,8 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import shopping.exception.infrastructure.ConnectionFailException;
-import shopping.exception.infrastructure.NoConnectionException;
+import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.NullResponseException;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -18,7 +18,7 @@ class CurrencyLayerConnectionTest {
 
     @DisplayName("정상 조회 시 환율 반환")
     @Test
-    void getExchangeRate() throws NoConnectionException, ConnectionFailException {
+    void getExchangeRate() throws NullResponseException, ConnectionErrorException {
         assertThat(connection.getExchangeRate("USD", "KRW"))
                 .isCloseTo(1300.0, Offset.offset(100.0));
     }
@@ -27,7 +27,7 @@ class CurrencyLayerConnectionTest {
     @Test
     void cannotGet() {
         assertThatThrownBy(() -> connection.getExchangeRate("KRW", "USD"))
-                .isInstanceOf(ConnectionFailException.class);
+                .isInstanceOf(ConnectionErrorException.class);
     }
 
     @DisplayName("응답 처리 불가시 예외 코드 및 메시지 전달")
@@ -35,9 +35,9 @@ class CurrencyLayerConnectionTest {
     void errorGet() {
 
         Exception exception = catchException(() -> connection.getExchangeRate("KRW", "USD"));
-        ConnectionFailException connectionFailException = (ConnectionFailException) exception;
+        ConnectionErrorException connectionErrorException = (ConnectionErrorException) exception;
 
-        assertThat(connectionFailException.getErrorCode()).isEqualTo(105);
-        assertThat(connectionFailException.getMessage()).isEqualTo("Access Restricted - Your current Subscription Plan does not support Source Currency Switching.");
+        assertThat(connectionErrorException.getErrorCode()).isEqualTo(105);
+        assertThat(connectionErrorException.getMessage()).isEqualTo("Access Restricted - Your current Subscription Plan does not support Source Currency Switching.");
     }
 }

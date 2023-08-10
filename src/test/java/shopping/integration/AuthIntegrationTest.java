@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
-import shopping.dto.request.LoginRequest;
+import shopping.dto.web.request.LoginRequest;
 import shopping.repository.UserRepository;
 
 import java.util.HashMap;

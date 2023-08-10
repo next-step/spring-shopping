@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import shopping.domain.cart.Product;
-import shopping.dto.response.ProductResponse;
+import shopping.dto.web.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;

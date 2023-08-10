@@ -7,10 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.request.CartItemCreateRequest;
-import shopping.dto.request.CartItemUpdateRequest;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.CartItemResponse;
+import shopping.dto.web.request.CartItemCreateRequest;
+import shopping.dto.web.request.CartItemUpdateRequest;
+import shopping.dto.web.request.LoginRequest;
+import shopping.dto.web.response.CartItemResponse;
 
 import java.util.HashMap;
 import java.util.List;

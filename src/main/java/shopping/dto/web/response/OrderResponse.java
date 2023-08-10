@@ -1,4 +1,4 @@
-package shopping.dto.response;
+package shopping.dto.web.response;
 
 import shopping.domain.cart.OrderItems;
 

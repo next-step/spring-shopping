@@ -1,7 +1,8 @@
-package shopping.dto.response;
+package shopping.dto.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import shopping.dto.web.response.ExchangeRateErrorResponse;
 
 import java.util.Map;
 

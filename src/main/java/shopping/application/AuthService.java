@@ -5,8 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.Email;
 import shopping.domain.user.User;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.LoginResponse;
+import shopping.dto.web.request.LoginRequest;
+import shopping.dto.web.response.LoginResponse;
 import shopping.exception.auth.UserNotFoundException;
 import shopping.repository.UserRepository;
 

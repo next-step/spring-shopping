@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.OrderService;
 import shopping.auth.UserIdPrincipal;
-import shopping.dto.response.OrderResponse;
+import shopping.dto.web.response.OrderResponse;
 
 import java.net.URI;
 import java.util.List;
