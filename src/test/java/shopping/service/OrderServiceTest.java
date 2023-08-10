@@ -27,7 +27,6 @@ import shopping.dto.response.OrderResponse;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.UserRepository;
-import shopping.utils.CurrencyLayer;
 
 @DisplayName("OrderService")
 @ExtendWith(MockitoExtension.class)
@@ -39,8 +38,6 @@ public class OrderServiceTest {
     private CartItemRepository cartItemRepository;
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private CurrencyLayer currencyLayer;
     @InjectMocks
     private OrderService orderService;
 
@@ -67,10 +64,7 @@ public class OrderServiceTest {
         int totalPrice = 70000;
         OrderEntity order = new OrderEntity(totalPrice, 0D, user);
 
-        OrderItemEntity orderItemChicken = OrderItemEntity.from(cartItemChicken, order, 0D);
-        OrderItemEntity orderItemPizza = OrderItemEntity.from(cartItemPizza, order, 0D);
-        List<OrderItemEntity> orderItems = List.of(orderItemChicken, orderItemPizza);
-        order.addOrderItems(orderItems);
+        order.addOrderItems(cartItems, 1300D);
         lenient().when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
 
         // when
@@ -92,29 +86,11 @@ public class OrderServiceTest {
         ProductEntity pizza = new ProductEntity(2L, "피자", "pizza.png", 25000);
         CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
         CartItemEntity cartItemPizza = new CartItemEntity(2L, user, pizza, 2);
+        List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
 
         int totalPrice = 70000;
-        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<OrderItemEntity>());
-        OrderItemEntity orderItemChicken = new OrderItemEntity(
-            1L,
-            cartItemChicken.getProduct().getName(),
-            cartItemChicken.getProduct().getImageFileName(),
-            cartItemChicken.getProduct().getPrice() * cartItemChicken.getQuantity(),
-            0D,
-            cartItemChicken.getQuantity(),
-            order
-        );
-        OrderItemEntity orderItemPizza = new OrderItemEntity(
-            2L,
-            cartItemPizza.getProduct().getName(),
-            cartItemPizza.getProduct().getImageFileName(),
-            cartItemPizza.getProduct().getPrice() * cartItemPizza.getQuantity(),
-            0D,
-            cartItemPizza.getQuantity(),
-            order
-        );
-        List<OrderItemEntity> orderItems = List.of(orderItemChicken, orderItemPizza);
-        order.addOrderItems(orderItems);
+        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<>());
+        order.addOrderItems(cartItems, 1300D);
 
         OrderItemResponse chickenResponse = new OrderItemResponse(
             1L,
@@ -161,32 +137,13 @@ public class OrderServiceTest {
         ProductEntity pizza = new ProductEntity(2L, "피자", "pizza.png", 25000);
         CartItemEntity cartItemChicken = new CartItemEntity(1L, user, chicken, 1);
         CartItemEntity cartItemPizza = new CartItemEntity(2L, user, pizza, 2);
+        List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
 
         int totalPrice = 70000;
-        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<OrderItemEntity>());
-        OrderItemEntity orderItemChicken = new OrderItemEntity(
-            1L,
-            cartItemChicken.getProduct().getName(),
-            cartItemChicken.getProduct().getImageFileName(),
-            cartItemChicken.getProduct().getPrice() * cartItemChicken.getQuantity(),
-            0D,
-            cartItemChicken.getQuantity(),
-            order
-        );
-        OrderItemEntity orderItemPizza = new OrderItemEntity(
-            2L,
-            cartItemPizza.getProduct().getName(),
-            cartItemPizza.getProduct().getImageFileName(),
-            cartItemPizza.getProduct().getPrice() * cartItemPizza.getQuantity(),
-            0D,
-            cartItemPizza.getQuantity(),
-            order
-        );
-        List<OrderItemEntity> orderItems = List.of(orderItemChicken, orderItemPizza);
-        order.addOrderItems(orderItems);
+        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<>());
+        order.addOrderItems(cartItems, 1300D);
 
         // when
-        Long orderId = 1L;
         when(orderRepository.findAllByUserId(userId)).thenReturn(List.of(order));
         List<OrderResponse> orderResponses = orderService.findOrders(userId);
 

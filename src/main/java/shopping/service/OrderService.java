@@ -1,6 +1,5 @@
 package shopping.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -8,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CurrencyCountry;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
-import shopping.domain.entity.OrderItemEntity;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.CurrencyRequest;
 import shopping.dto.response.OrderIdResponse;
@@ -41,23 +39,15 @@ public class OrderService {
     public OrderIdResponse orderCartItem(CurrencyRequest currencyRequest, Long userId) {
         UserEntity user = userRepository.getReferenceById(userId);
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
+        if (cartItems.isEmpty()) {
+            throw new ShoppingException(ErrorCode.INVALID_PURCHASE);
+        }
         Double currencyRatio = currencyRequest.getQuotes().get(CurrencyCountry.USDKRW.getSourceTargetCountry());
 
-        int totalPrice = 0;
-        for (CartItemEntity cartItem: cartItems) {
-            totalPrice += (cartItem.getProduct().getPrice() * cartItem.getQuantity());
-        }
-        Double totalPriceUSD = totalPrice / currencyRatio;
-        OrderEntity order = new OrderEntity(totalPrice, totalPriceUSD, user);
+        OrderEntity order = OrderEntity.from(user, cartItems, currencyRatio);
+        order.addOrderItems(cartItems, currencyRatio);
 
-        List<OrderItemEntity> orderItems = new ArrayList<>();
-        for (CartItemEntity cartItem: cartItems) {
-            orderItems.add(OrderItemEntity.from(cartItem, order, currencyRatio));
-        }
-        order.addOrderItems(orderItems);
-
-        OrderEntity orderEntity = orderRepository.save(order);
-        return new OrderIdResponse(orderEntity.getId());
+        return new OrderIdResponse(orderRepository.save(order).getId());
     }
 
     public OrderResponse findOrder(Long orderId, Long userId) {
