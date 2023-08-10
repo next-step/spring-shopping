@@ -34,8 +34,12 @@ public class Money {
         return new Money(this.amount.add(otherMoney.amount));
     }
 
+    public Money multiply(BigDecimal multiplyNumber) {
+        return new Money(this.amount.multiply(multiplyNumber));
+    }
+
     public Money multiply(int count) {
-        return new Money(this.amount.multiply(new BigDecimal(count)));
+        return multiply(new BigDecimal(count));
     }
 
     public BigDecimal getAmount() {

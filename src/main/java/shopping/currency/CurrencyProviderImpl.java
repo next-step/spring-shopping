@@ -15,12 +15,11 @@ import shopping.exception.WooWaException;
 public class CurrencyProviderImpl implements CurrencyProvider {
 
     private static final String URL = "http://apilayer.net/api/live";
-    @Value("${currency.api.key}")
-    private String accessKey;
+    private final String accessKey;
     private final RestTemplate restTemplate;
 
-
-    public CurrencyProviderImpl(RestTemplate restTemplate) {
+    public CurrencyProviderImpl(@Value("currency.api.key") String accessKey, RestTemplate restTemplate) {
+        this.accessKey = accessKey;
         this.restTemplate = restTemplate;
     }
 

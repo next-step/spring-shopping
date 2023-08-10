@@ -1,25 +1,22 @@
 package shopping.config;
 
+import java.time.Duration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class AppConfig {
 
-    private static final int TIMEOUT = 5000;
+    private static final long TIMEOUT = 5;
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate(getHttpTimeoutRequestFactory());
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+        return restTemplateBuilder
+            .setConnectTimeout(Duration.ofSeconds(TIMEOUT))
+            .setReadTimeout(Duration.ofSeconds(TIMEOUT))
+            .build();
     }
 
-    private ClientHttpRequestFactory getHttpTimeoutRequestFactory() {
-        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory
-            = new HttpComponentsClientHttpRequestFactory();
-        clientHttpRequestFactory.setConnectTimeout(TIMEOUT);
-        return clientHttpRequestFactory;
-    }
 }

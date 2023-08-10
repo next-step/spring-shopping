@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.dto.ProductCartItemDto;
 import shopping.cart.repository.CartItemRepository;
+import shopping.currency.CurrencyProvider;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
@@ -25,24 +26,26 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
+    private final CurrencyProvider currencyProvider;
 
     public OrderService(OrderRepository orderRepository, CartItemRepository cartItemRepository,
-        MemberRepository memberRepository) {
+        MemberRepository memberRepository, CurrencyProvider currencyProvider) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.memberRepository = memberRepository;
+        this.currencyProvider = currencyProvider;
     }
 
     public Long addOrder(LoggedInMember loggedInMember, OrderCreationRequest orderCreationRequest) {
         getMemberById(loggedInMember.getId());
-
-        Order order = new Order(loggedInMember.getId());
 
         List<ProductCartItemDto> productCartItemDtos = cartItemRepository.findAllDtoByCartItemIds(
             orderCreationRequest.getCartItemIds()
         );
 
         validCartItems(productCartItemDtos);
+
+        Order order = new Order(loggedInMember.getId(), currencyProvider.findUsdKrwCurrency());
 
         productCartItemDtos.stream()
             .map(ProductCartItemDto::toOrderItem)

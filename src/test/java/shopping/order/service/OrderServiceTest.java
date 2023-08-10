@@ -1,17 +1,21 @@
 package shopping.order.service;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
 import shopping.cart.domain.vo.Quantity;
 import shopping.cart.repository.CartItemRepository;
+import shopping.currency.CurrencyProvider;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
@@ -36,12 +40,15 @@ class OrderServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private ProductRepository productRepository;
+    @MockBean
+    private CurrencyProvider currencyProvider;
     @Autowired
     private OrderService orderService;
 
     @Test
     @DisplayName("주문 생성 메서드 테스트")
     void addOrder() {
+        Mockito.when(currencyProvider.findUsdKrwCurrency()).thenReturn(new BigDecimal("1300"));
         Member member = makeMember();
 
         Product chicken = makeProduct("치킨", "10000");
@@ -88,7 +95,7 @@ class OrderServiceTest {
 
         LoggedInMember loggedInMember = new LoggedInMember(member.getId());
 
-        Order order = new Order(member.getId());
+        Order order = new Order(member.getId(), new BigDecimal("1300"));
 
         makeOrderItem(chicken, 3, order);
         makeOrderItem(pizza, 2, order);
@@ -99,7 +106,7 @@ class OrderServiceTest {
         OrderDetailResponse findOrder = orderService.getOrderDetail(loggedInMember, order.getId());
 
         Assertions.assertThat(findOrder).extracting("orderId").isEqualTo(order.getId());
-        Assertions.assertThat(findOrder).extracting("totalPrice").isEqualTo("63000");
+        Assertions.assertThat(findOrder).extracting("totalPrice").isEqualTo(new BigDecimal("63000"));
     }
 
     @Test
