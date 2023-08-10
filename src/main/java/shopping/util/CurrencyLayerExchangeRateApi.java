@@ -31,8 +31,16 @@ public class CurrencyLayerExchangeRateApi implements ExchangeRateApi {
         this.restTemplate = restTemplate;
     }
 
+    @Override
+    public double callExchangeRate() {
+        JsonNode quotes = getJsonNode()
+            .get(sourceCountry + targetCountry);
+        validateExchangeRate(quotes);
+        return quotes.asDouble();
+    }
+
     private JsonNode getJsonNode() {
-        JsonNode jsonNode = restTemplate.getForObject(url, JsonNode.class);
+        JsonNode jsonNode = restTemplate.getForObject(url, JsonNode.class).get("quotes");
         validateJsonNode(jsonNode);
         return jsonNode;
     }
@@ -41,16 +49,6 @@ public class CurrencyLayerExchangeRateApi implements ExchangeRateApi {
         if (jsonNode == null) {
             throw new ShoppingException("ExchangeAPI json가 존재하지 않습니다.");
         }
-    }
-
-    @Override
-    public double callExchangeRate() {
-        JsonNode quotes = getJsonNode()
-            .get("quotes")
-            .get(sourceCountry + targetCountry);
-        validateExchangeRate(quotes);
-        return quotes.asDouble();
-
     }
 
     private void validateExchangeRate(final JsonNode quotes) {
