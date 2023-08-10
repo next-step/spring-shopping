@@ -61,6 +61,7 @@
             return response.json();
         }).then((data) => {
             let element = '<hr class="divide-line-gray mt-10" />';
+            const exchangeRate = data.exchangeRate;
             data.orderProducts.forEach(orderItem => {
                 element += `
                     <div class="cart-container">
@@ -68,7 +69,7 @@
                         <img class="w-144 h-144" src="${orderItem.imageUrl}"/> <!-- 아이템 이미지 -->
                         <div class="flex-col gap-15">
                           <span class="cart-name">${orderItem.name}</span> <!-- 아이템 이름 -->
-                          <span class="cart-info">${orderItem.price}원 / 수량: ${orderItem.quantity}개</span> <!-- 아이템 가격 및 수량 -->
+                          <span class="cart-info">${orderItem.price}원(${(orderItem.price / exchangeRate).toFixed(2)}$) / 수량: ${orderItem.quantity}개</span> <!-- 아이템 가격 및 수량 -->
                         </div>
                       </div>
                     </div>
@@ -77,7 +78,7 @@
             });
 
             document.querySelector('.order-item-list').innerHTML = element;
-            document.querySelector('.order-right-section .order-total-price').innerText = `${data.totalPrice} 원`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-total-price').innerText = `${data.totalPrice}원(${(data.totalPrice / exchangeRate).toFixed(2)}$)`; <!-- 아이템 가격 및 수량 -->
         }).catch((error) => {
             console.error(error);
         });

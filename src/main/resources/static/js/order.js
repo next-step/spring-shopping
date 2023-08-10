@@ -13,6 +13,9 @@ const requestOrder = () => {
             'Content-Type': 'application/json'
         }
     }).then((response) => {
+        if (!response.ok) {
+            throw new Error;
+        }
         window.location.href = response.headers.get("Location");
     }).catch((error) => {
         console.error(error);
