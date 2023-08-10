@@ -10,7 +10,7 @@ import shopping.domain.cart.OrderItems;
 import shopping.dto.web.response.OrderResponse;
 import shopping.exception.infrastructure.ConnectionErrorException;
 import shopping.exception.infrastructure.NullResponseException;
-import shopping.infrastructure.CurrencyLayerConnection;
+import shopping.infrastructure.ExchangeRateFetcher;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
@@ -31,14 +31,14 @@ public class OrderService {
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
-    private final CurrencyLayerConnection currencyLayerConnection;
+    private final ExchangeRateFetcher exchangeRateFetcher;
 
     public OrderService(CartItemRepository cartItemRepository, OrderRepository orderRepository,
-                        OrderItemRepository orderItemRepository, CurrencyLayerConnection currencyLayerConnection) {
+                        OrderItemRepository orderItemRepository, ExchangeRateFetcher exchangeRateFetcher) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
-        this.currencyLayerConnection = currencyLayerConnection;
+        this.exchangeRateFetcher = exchangeRateFetcher;
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class OrderService {
 
     private Order orderWithExchangeRate(Long userId) {
         try {
-            double exchangeRate = currencyLayerConnection.getExchangeRate(SOURCE, TARGET);
+            double exchangeRate = exchangeRateFetcher.getExchangeRate(SOURCE, TARGET);
             return new Order(userId, exchangeRate);
         } catch (ConnectionErrorException e) {
             log.error("code: {}, info: {}", e.getErrorCode(), e.getMessage());

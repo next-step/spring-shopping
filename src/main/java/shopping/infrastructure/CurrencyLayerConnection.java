@@ -9,17 +9,15 @@ import shopping.exception.infrastructure.ConnectionErrorException;
 import shopping.exception.infrastructure.NullResponseException;
 
 @Component
-public class CurrencyLayerConnection {
-
-    private static final String BASE_URL = "http://apilayer.net/api/live";
+public class CurrencyLayerConnection implements ExchangeRateFetcher {
 
     @Value("${security.currency-layer.access-key}")
     private String accessKey;
 
-    private final WebClient client;
+    private final WebClient webClient;
 
-    public CurrencyLayerConnection() {
-        this.client = WebClient.create(BASE_URL);
+    public CurrencyLayerConnection(WebClient webClient) {
+        this.webClient = webClient;
     }
 
     public Double getExchangeRate(String source, String target) throws ConnectionErrorException, NullResponseException {
@@ -32,7 +30,7 @@ public class CurrencyLayerConnection {
     }
 
     private ExchangeRateResponse getExchangeRateResponse(String source, String target) throws NullResponseException {
-        ExchangeRateResponse response = client.get()
+        ExchangeRateResponse response = webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .queryParam("access_key", accessKey)
                         .queryParam("currencies", target)
