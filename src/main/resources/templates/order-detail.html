@@ -87,8 +87,8 @@
 
             document.querySelector('.order-item-list').innerHTML = element;
             document.querySelector('.order-right-section .order-total-price').innerText = `${data.totalPrice}원`; <!-- 아이템 가격 및 수량 -->
-            document.querySelector('.order-right-section .order-exchange-rate').innerText = `${data.exchangeRate.toFixed(2)}원`; <!-- 아이템 가격 및 수량 -->
-            document.querySelector('.order-right-section .order-total-exchanged-price').innerText = `${(data.totalPrice / data.exchangeRate).toFixed(2)}달러`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-exchange-rate').innerText = `${data.exchangeRate}원`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-total-exchanged-price').innerText = `${(parseFloat(data.totalPrice) / parseFloat(data.exchangeRate)).toFixed(2)}달러`; <!-- 아이템 가격 및 수량 -->
         }).catch((error) => {
             console.error(error);
         });
