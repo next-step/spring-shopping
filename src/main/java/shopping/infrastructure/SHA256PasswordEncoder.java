@@ -19,7 +19,7 @@ public class SHA256PasswordEncoder implements PasswordEncoder {
 
             return bytesToHex(messageDigest.digest());
         } catch (final NoSuchAlgorithmException exception) {
-            throw new IllegalStateException(ErrorType.DECODING_FAIL.getMessage());
+            throw new IllegalStateException(ErrorType.SERVER_ERROR.getMessage());
         }
     }
 

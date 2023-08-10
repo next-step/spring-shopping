@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
 
     private static String getRootMessage(final HttpMessageNotReadableException exception) {
         if (exception.getRootCause() == null) {
-            return ErrorType.JSON_PARSING_FAIL.getMessage();
+            return ErrorType.SERVER_ERROR.getMessage();
         }
         return exception.getRootCause().getMessage();
     }

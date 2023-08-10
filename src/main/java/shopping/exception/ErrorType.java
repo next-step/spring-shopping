@@ -19,8 +19,7 @@ public enum ErrorType {
     PRODUCT_NULL("productId는 필수 항목입니다"),
     PASSWORD_NULL("password는 필수 항목입니다"),
     EMAIL_NULL("email은 필수 항목입니다"),
-    DECODING_FAIL("복호화에 실패했습니다"),
-    JSON_PARSING_FAIL("요청을 파싱하는 데 실패했습니다");
+    SERVER_ERROR("서버에 에러가 발생했습니다");
 
     private final String message;
 
