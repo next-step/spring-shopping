@@ -34,7 +34,10 @@
           <div class="flex justify-between p-20 mt-20">
             <span class="highlight-text">총 결제금액</span>
             <span class="highlight-text order-total-price"></span>
-            <span class="highlight-text order-total-converted-price"></span>
+            <br>
+            <span class="order-total-converted-price"></span>
+            <br>
+            <span class="exchange-rate"></span>
           </div>
         </div>
       </section>
@@ -82,6 +85,8 @@
                     '.order-right-section .order-total-price').innerText = `${data.totalPrice} 원`; <!-- 아이템 가격 및 수량 -->
             document.querySelector(
                     '.order-right-section .order-total-converted-price').innerText = `${data.convertedTotalPrice} 달러`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector(
+                    '.order-right-section .exchange-rate').innerText = `환율 ${data.exchangeRate} 원/달러`; <!-- 아이템 가격 및 수량 -->
         }).catch((error) => {
             console.error(error);
         });

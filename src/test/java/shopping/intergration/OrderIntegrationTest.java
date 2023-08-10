@@ -90,6 +90,7 @@ class OrderIntegrationTest extends IntegrationTest {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         final OrderResponse orderResponse = extractObject(response, OrderResponse.class);
+        assertThat(orderResponse.getExchangeRate()).isEqualTo(OrderFixture.DEFAULT_EXCHANGE_RATE);
         assertThat(orderResponse.getConvertedTotalPrice()).isEqualTo(
                 orderResponse.getTotalPrice() / OrderFixture.DEFAULT_EXCHANGE_RATE);
         assertThat(orderResponse.getOrderItems()).extracting("name", "image", "price", "quantity")

@@ -65,16 +65,20 @@ public class Order {
         return this.orderItems;
     }
 
+    public double getExchangeRate() {
+        return round(this.exchangeRate.getValue());
+    }
+
     public long getOrderTotalPrice() {
         return orderItems.stream().mapToLong(OrderItem::getOrderItemTotalPrice).sum();
     }
 
-    public ExchangeRate getExchangeRate() {
-        return this.exchangeRate;
-    }
-
     public double getConvertedOrderTotalPrice() {
         final long orderKRWTotalPrice = this.getOrderTotalPrice();
-        return Math.round(orderKRWTotalPrice / this.exchangeRate.getValue() * 100.0) / 100.0;
+        return round(orderKRWTotalPrice / this.getExchangeRate());
+    }
+
+    private double round(final double origin) {
+        return Math.round(origin * 100.0) / 100.0;
     }
 }

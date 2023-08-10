@@ -10,17 +10,20 @@ public class OrderResponse {
     private final Long orderId;
     private final List<OrderItemResponse> orderItems;
     private final long totalPrice;
+    private final double exchangeRate;
     private final double convertedTotalPrice;
 
     private OrderResponse(
             final Long orderId,
             final List<OrderItemResponse> orderItems,
             final long totalPrice,
+            final double exchangeRate,
             final double convertedTotalPrice
     ) {
         this.orderId = orderId;
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
+        this.exchangeRate = exchangeRate;
         this.convertedTotalPrice = convertedTotalPrice;
     }
 
@@ -33,6 +36,7 @@ public class OrderResponse {
                 order.getId(),
                 orderItems,
                 order.getOrderTotalPrice(),
+                order.getExchangeRate(),
                 order.getConvertedOrderTotalPrice()
         );
     }
@@ -47,6 +51,10 @@ public class OrderResponse {
 
     public long getTotalPrice() {
         return this.totalPrice;
+    }
+
+    public double getExchangeRate() {
+        return this.exchangeRate;
     }
 
     public double getConvertedTotalPrice() {
