@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.CartProduct;
+import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 import shopping.domain.Member;
 import shopping.domain.Order;
@@ -61,7 +62,7 @@ class OrderServiceTest {
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(cartProducts);
-            given(exchangeRateProvider.getExchange("USDKRW")).willReturn(exchangeRate);
+            given(exchangeRateProvider.getExchange(ExchangeCode.USDKRW)).willReturn(exchangeRate);
 
             // when
             OrderResponse result = orderService.order(member.getId());

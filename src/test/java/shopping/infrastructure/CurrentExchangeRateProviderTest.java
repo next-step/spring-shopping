@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import shopping.application.ExchangeRateProvider;
+import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 import shopping.exception.CurrencyException;
 import shopping.exception.InfraException;
@@ -29,10 +30,10 @@ class CurrentExchangeRateProviderTest {
         @Test
         void getExchange() {
             // given
-            String quote = "USDKRW";
+            ExchangeCode code = ExchangeCode.USDKRW;
 
             // when
-            ExchangeRate exchange = exchangeRateProvider.getExchange(quote);
+            ExchangeRate exchange = exchangeRateProvider.getExchange(code);
 
             // then
             assertThat(exchange.getValue()).isPositive();
@@ -42,11 +43,11 @@ class CurrentExchangeRateProviderTest {
         @Test
         void throwInfraException_whenQuoteIsInvalid() {
             // given
-            String invalidQuote = "invalide";
+            ExchangeCode invalidCode = null;
 
             // when & then
-            assertThatThrownBy(() -> exchangeRateProvider.getExchange(invalidQuote))
-                .hasMessage("지원하지 않는 국가 코드입니다")
+            assertThatThrownBy(() -> exchangeRateProvider.getExchange(invalidCode))
+                .hasMessage("지원하지 않는 환율 코드입니다")
                 .isInstanceOf(InfraException.class);
         }
     }

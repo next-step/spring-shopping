@@ -3,6 +3,7 @@ package shopping.infrastructure;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shopping.application.ExchangeRateProvider;
+import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 import shopping.domain.Currency;
 import shopping.exception.CurrencyException;
@@ -20,10 +21,10 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     }
 
     @Override
-    public ExchangeRate getExchange(String quote) {
+    public ExchangeRate getExchange(ExchangeCode code) {
         try {
             Currency currency = initializeCurrency();
-            double usdCurrency = currency.getByQuote(quote);
+            double usdCurrency = currency.getByCode(code);
             return new ExchangeRate(usdCurrency);
         } catch (CurrencyException exception) {
             throw new InfraException(exception.getMessage());

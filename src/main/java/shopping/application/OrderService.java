@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
+import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 import shopping.domain.Member;
 import shopping.domain.Order;
@@ -22,6 +23,8 @@ import shopping.repository.OrderRepository;
 @Transactional
 public class OrderService {
 
+    private static final ExchangeCode exchangeCode = ExchangeCode.USDKRW;
+
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final CartProductRepository cartProductRepository;
@@ -37,7 +40,7 @@ public class OrderService {
 
     public OrderResponse order(long memberId) {
         Member member = findMember(memberId);
-        ExchangeRate exchangeRate = exchangeRateProvider.getExchange("USDKRW");
+        ExchangeRate exchangeRate = exchangeRateProvider.getExchange(exchangeCode);
         Order order = new Order(member, exchangeRate);
         List<OrderItem> orderItems = orderMemberCartItems(member, order);
 

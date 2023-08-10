@@ -1,8 +1,9 @@
 package shopping.application;
 
+import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 
 public interface ExchangeRateProvider {
 
-    ExchangeRate getExchange(String quote);
+    ExchangeRate getExchange(ExchangeCode code);
 }

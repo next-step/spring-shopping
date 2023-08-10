@@ -2,29 +2,38 @@ package shopping.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import shopping.exception.CurrencyException;
 
 public class Currency {
 
-    Map<String, Double> quotes;
+    EnumMap<ExchangeCode, Double> codeMap;
 
     @JsonCreator
     public Currency(@JsonProperty("quotes") Map<String, Double> quotes) {
         validateQuote(quotes);
-        this.quotes = quotes;
+        this.codeMap = createExchangeCodeMap(quotes);
     }
 
-    public boolean isValidQuote(String quote) {
-        return quotes.containsKey(quote);
-    }
-
-    public double getByQuote(String quote) {
-        if (!isValidQuote(quote)) {
-            throw new CurrencyException("지원하지 않는 국가 코드입니다");
+    private void validateCode(ExchangeCode code) {
+        if (Objects.isNull(code) || !codeMap.containsKey(code)) {
+            throw new CurrencyException("지원하지 않는 환율 코드입니다");
         }
-        return quotes.get(quote);
+    }
+
+    public double getByCode(ExchangeCode code) {
+        validateCode(code);
+        return codeMap.get(code);
+    }
+
+    private EnumMap<ExchangeCode, Double> createExchangeCodeMap(Map<String, Double> original) {
+        EnumMap<ExchangeCode, Double> codeMap = new EnumMap<>(ExchangeCode.class);
+        Arrays.stream(ExchangeCode.values())
+            .forEach(code -> codeMap.put(code, original.getOrDefault(code.name(), null)));
+        return codeMap;
     }
 
     private void validateQuote(Map<String, Double> quotes) {
