@@ -1,8 +1,8 @@
-package shopping.domain;
+package shopping.dto.request;
 
 import java.util.Map;
 
-public class Currency {
+public class CurrencyRequest {
 
     private boolean success;
 
@@ -10,10 +10,10 @@ public class Currency {
 
     private Map<String, Double> quotes;
 
-    private Currency() {
+    private CurrencyRequest() {
     }
 
-    public Currency(boolean success, String source, Map<String, Double> quotes) {
+    public CurrencyRequest(boolean success, String source, Map<String, Double> quotes) {
         this.success = success;
         this.source = source;
         this.quotes = quotes;
@@ -31,12 +31,4 @@ public class Currency {
         return quotes;
     }
 
-    @Override
-    public String toString() {
-        return "Currency{" +
-            "success=" + success +
-            ", source='" + source + '\'' +
-            ", quotes=" + quotes +
-            '}';
-    }
 }

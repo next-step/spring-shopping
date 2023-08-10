@@ -2,13 +2,14 @@ package shopping.utils;
 
 import java.text.MessageFormat;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import shopping.domain.Currency;
 import shopping.domain.CurrencyCountry;
+import shopping.dto.request.CurrencyRequest;
+import shopping.service.CurrencyService;
 
-@Component
-public class CurrencyLayer {
+@Service
+public class CurrencyLayer implements CurrencyService {
 
     @Value("${currency.access-key}")
     private String CURRENCY_ACCESS_KEY;
@@ -21,7 +22,8 @@ public class CurrencyLayer {
         restTemplate = new RestTemplate();
     }
 
-    public Currency callCurrency(CurrencyCountry currencyCountry) {
+    @Override
+    public CurrencyRequest callCurrency(CurrencyCountry currencyCountry) {
         String URL = MessageFormat.format(
             "{0}?access_key={1}&currencies={2}&source={3}",
             CURRENCY_SOURCE_URL,
@@ -30,9 +32,8 @@ public class CurrencyLayer {
             currencyCountry.getSourceCountry()
         );
 
-        Currency currency = restTemplate.getForObject(URL, Currency.class);
-        System.out.println("currency = " + currency);
-        return currency;
+        CurrencyRequest currencyRequest = restTemplate.getForObject(URL, CurrencyRequest.class);
+        return currencyRequest;
     }
 
 }

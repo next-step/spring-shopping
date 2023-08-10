@@ -16,13 +16,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.Currency;
-import shopping.domain.CurrencyCountry;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.OrderItemEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
+import shopping.dto.request.CurrencyRequest;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.repository.CartItemRepository;
@@ -61,9 +60,8 @@ public class OrderServiceTest {
         List<CartItemEntity> cartItems = List.of(cartItemChicken, cartItemPizza);
         when(cartItemRepository.findByUserId(userId)).thenReturn(cartItems);
         HashMap<String, Double> hm = new HashMap<>();
-        hm.put("USDKRW", 1300.111);
-        Currency currency = new Currency(true, "USD", hm);
-        when(currencyLayer.callCurrency(CurrencyCountry.USDKRW)).thenReturn(currency);
+        hm.put("USDKRW", 1300D);
+        CurrencyRequest currencyRequest = new CurrencyRequest(true, "USD", hm);
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
@@ -76,12 +74,11 @@ public class OrderServiceTest {
         lenient().when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
 
         // when
-        orderService.orderCartItem(userId);
+        orderService.orderCartItem(currencyRequest, userId);
 
         // then
         verify(userRepository).getReferenceById(userId);
         verify(cartItemRepository).findByUserId(userId);
-        verify(currencyLayer).callCurrency(CurrencyCountry.USDKRW);
         verify(orderRepository).save(any(OrderEntity.class));
     }
 
