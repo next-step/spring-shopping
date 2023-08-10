@@ -37,4 +37,24 @@ public class Order {
 
     protected Order() {
     }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public Long getMemberId() {
+        return this.memberId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public OrderStatus getStatus() {
+        return this.status;
+    }
+
+    public List<OrderProduct> getOrderProducts() {
+        return this.orderProducts;
+    }
 }
