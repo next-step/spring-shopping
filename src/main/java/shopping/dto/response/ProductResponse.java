@@ -19,9 +19,9 @@ public class ProductResponse {
     public static ProductResponse from(final Product product) {
         return new ProductResponse(
                 product.getId(),
-                product.getImage(),
-                product.getName(),
-                product.getPrice()
+                product.getImage().getValue(),
+                product.getName().getValue(),
+                product.getPrice().getValue()
         );
     }
 

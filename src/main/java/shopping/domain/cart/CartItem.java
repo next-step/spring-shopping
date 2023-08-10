@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import shopping.domain.member.Member;
+import shopping.domain.product.Price;
 import shopping.domain.product.Product;
+import shopping.domain.product.ProductImage;
+import shopping.domain.product.ProductName;
 import shopping.exception.ShoppingException;
 
 @Entity
@@ -52,7 +55,7 @@ public class CartItem {
     }
 
     public void plusQuantity() {
-        this.quantity = Quantity.from(this.getQuantity() + 1);
+        this.quantity = this.quantity.plus(1);
     }
 
     public boolean validateMember(final Member member) {
@@ -74,8 +77,20 @@ public class CartItem {
         return this.product;
     }
 
-    public int getQuantity() {
-        return this.quantity.getValue();
+    public Quantity getQuantity() {
+        return this.quantity;
+    }
+
+    public ProductName getName() {
+        return this.product.getName();
+    }
+
+    public ProductImage getImage() {
+        return this.product.getImage();
+    }
+
+    public Price getPrice() {
+        return this.product.getPrice();
     }
 
 }

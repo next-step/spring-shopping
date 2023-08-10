@@ -38,6 +38,10 @@ public class Quantity {
         return new Quantity(MIN_QUANTITY);
     }
 
+    public Quantity plus(final int value) {
+        return new Quantity(this.value + value);
+    }
+
     public int getValue() {
         return this.value;
     }
