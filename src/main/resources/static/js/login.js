@@ -30,7 +30,7 @@ form.addEventListener('submit', (event) => {
         sessionStorage.setItem('accessToken', token);
         window.location.href = '/';
     }).catch((error) => {
-        alert(error);
+        alert(error.message);
     });
 
 });

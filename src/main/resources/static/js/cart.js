@@ -22,7 +22,7 @@ const addCartItem = (productId) => {
         }
         alert('장바구니에 담았습니다.');
     }).catch((error) => {
-        alert(error);
+        alert(error.message);
     });
 }
 
@@ -50,7 +50,7 @@ const updateCartItemQuantity = (id, quantity) => {
         }
         window.location.reload();
     }).catch((error) => {
-        alert(error);
+        alert(error.message);
     });
 }
 
@@ -77,6 +77,6 @@ const removeCartItem = (id) => {
         }
         window.location.reload();
     }).catch((error) => {
-        alert(error);
+        alert(error.message);
     });
 }
