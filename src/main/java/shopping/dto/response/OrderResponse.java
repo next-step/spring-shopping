@@ -1,5 +1,6 @@
 package shopping.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +24,16 @@ public class OrderResponse {
         this.totalPrice = totalPrice;
         this.ratio = ratio;
         this.createdDate = DATE_TIME_FORMATTER.format(createdDate);
+        this.orderItems = orderItems;
+    }
+
+    @JsonCreator
+    protected OrderResponse(Long id, Long totalPrice, Double ratio, String createdDate,
+            List<OrderItemResponse> orderItems) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.ratio = ratio;
+        this.createdDate = createdDate;
         this.orderItems = orderItems;
     }
 
