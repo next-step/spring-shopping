@@ -1,12 +1,12 @@
 -- product table
 INSERT INTO product(name, image_url, price) VALUES('치킨', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('피자', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('마라샹궈', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('햄버거', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('만두', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('제육볶음', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('서브웨이', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
-INSERT INTO product(name, image_url, price) VALUES('돈까스', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 18000);
+INSERT INTO product(name, image_url, price) VALUES('피자', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 10000);
+INSERT INTO product(name, image_url, price) VALUES('마라샹궈', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 12000);
+INSERT INTO product(name, image_url, price) VALUES('햄버거', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 38000);
+INSERT INTO product(name, image_url, price) VALUES('만두', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 48000);
+INSERT INTO product(name, image_url, price) VALUES('제육볶음', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 8000);
+INSERT INTO product(name, image_url, price) VALUES('서브웨이', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 9000);
+INSERT INTO product(name, image_url, price) VALUES('돈까스', 'https://cdn.011st.com/11dims/resize/600x600/quality/75/11src/product/3904681644/B.jpg?452000000', 2000);
 
 -- member table
 INSERT INTO member(email, password) VALUES('woowa1@woowa.com', '1234');
@@ -18,8 +18,8 @@ INSERT INTO cart_product(member_id, product_id, quantity) VALUES (1L, 2L, 5);
 INSERT INTO cart_product(member_id, product_id, quantity) VALUES (1L, 3L, 5);
 
 -- order table
-INSERT INTO orders(member_id) VALUES (1L);
-INSERT INTO orders(member_id) VALUES (1L);
+INSERT INTO orders(member_id, exchange_rate) VALUES (1L, 1300);
+INSERT INTO orders(member_id, exchange_rate) VALUES (1L, 1200);
 
 -- order product table
 INSERT INTO order_product(order_id, product_id, quantity) VALUES (1L, 1L, 3);

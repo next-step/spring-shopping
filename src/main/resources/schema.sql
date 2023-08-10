@@ -28,6 +28,7 @@ CREATE TABLE orders
 (
     order_id         BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id BIGINT NOT NULL,
+    exchange_rate DOUBLE NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (member_id)
 );
 

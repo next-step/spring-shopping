@@ -8,10 +8,13 @@ public class OrderResponse {
 
     private final long orderId;
     private final List<OrderProductResponse> orderProducts;
+    private final double exchangeRate;
 
-    private OrderResponse(long orderId, List<OrderProductResponse> orderProducts) {
+    private OrderResponse(long orderId, List<OrderProductResponse> orderProducts,
+        double exchangeRate) {
         this.orderId = orderId;
         this.orderProducts = orderProducts;
+        this.exchangeRate = exchangeRate;
     }
 
     public static OrderResponse from(Order order) {
@@ -20,8 +23,8 @@ public class OrderResponse {
             order.getOrderProducts()
                 .stream()
                 .map(OrderProductResponse::from)
-                .collect(Collectors.toList())
-        );
+                .collect(Collectors.toList()),
+            order.getExchangeRate());
     }
 
     public long getOrderId() {
@@ -30,5 +33,9 @@ public class OrderResponse {
 
     public List<OrderProductResponse> getOrderProducts() {
         return orderProducts;
+    }
+
+    public double getExchangeRate() {
+        return exchangeRate;
     }
 }

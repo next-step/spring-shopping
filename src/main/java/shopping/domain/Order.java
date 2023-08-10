@@ -32,17 +32,21 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
+    @Column(nullable = false)
+    private Double exchangeRate;
+
     protected Order() {
     }
 
-    public Order(Long id, Member member) {
+    public Order(Long id, Member member, Double exchangeRate) {
         validateMember(member);
         this.id = id;
         this.member = member;
+        this.exchangeRate = exchangeRate;
     }
 
-    public Order(Member member) {
-        this(null, member);
+    public Order(Member member, Double exchangeRate) {
+        this(null, member, exchangeRate);
     }
 
     private void validateMember(Member member) {
@@ -66,6 +70,10 @@ public class Order {
 
     public List<OrderProduct> getOrderProducts() {
         return orderProducts;
+    }
+
+    public Double getExchangeRate() {
+        return exchangeRate;
     }
 
     public long calculateTotalPrice() {

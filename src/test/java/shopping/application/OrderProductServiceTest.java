@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.currency.CurrencyManager;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;
@@ -34,6 +35,9 @@ class OrderProductServiceTest {
 
     @InjectMocks
     private OrderProductService orderProductService;
+
+    @Mock
+    private CurrencyManager currencyManager;
 
     @Mock
     private MemberRepository memberRepository;
@@ -61,6 +65,7 @@ class OrderProductServiceTest {
 
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(List.of(cartProduct1, cartProduct2));
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
+            given(currencyManager.getExchangeRate("USD", "KRW")).willReturn(1300.0);
 
             // when
             orderProductService.orderProduct(member.getId());
@@ -98,7 +103,7 @@ class OrderProductServiceTest {
         void returnOrderDetail() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
-            Order order = new Order(1L, member);
+            Order order = new Order(1L, member, 1300.0);
 
             Product product1 = new Product(1L, "치킨", "image", 23000L);
             Product product2 = new Product(2L, "떡볶이", "image", 14000L);
@@ -128,7 +133,7 @@ class OrderProductServiceTest {
         void throwOrderProductException_WhenOrderIsNotExist() {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
-            Order order = new Order(1L, member);
+            Order order = new Order(1L, member, 1300.0);
 
             given(orderRepository.findById(order.getId())).willReturn(Optional.empty());
 
@@ -151,8 +156,8 @@ class OrderProductServiceTest {
             // given
             Member member = new Member(1L, "home@woowa.com", "1234");
 
-            Order order1 = new Order(1L, member);
-            Order order2 = new Order(2L, member);
+            Order order1 = new Order(1L, member, 1300.0);
+            Order order2 = new Order(2L, member, 1300.0);
 
             Product product1 = new Product(1L, "치킨", "image", 23000L);
             Product product2 = new Product(2L, "떡볶이", "image", 14000L);

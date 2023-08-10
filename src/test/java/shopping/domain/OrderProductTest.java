@@ -20,7 +20,7 @@ public class OrderProductTest {
         void createOrderProduct() {
             // given
             Member member = new Member("home@naver.com", "1234");
-            Order order = new Order(member);
+            Order order = new Order(member, 1300.0);
             Product product = new Product("치킨", "image", 23000L);
             int quantity = 10;
             CartProduct cartProduct = new CartProduct(member, product, quantity);

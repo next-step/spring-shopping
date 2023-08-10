@@ -23,7 +23,7 @@ public class OrderTest {
             Member member = new Member("home@naver.com", "1234");
 
             // when
-            Exception exception = catchException(() -> new Order(member));
+            Exception exception = catchException(() -> new Order(member, 1300.0));
 
             // then
             assertThat(exception).isNull();
@@ -36,7 +36,7 @@ public class OrderTest {
             Member member = null;
 
             // when
-            Exception exception = catchException(() -> new Order(member));
+            Exception exception = catchException(() -> new Order(member, 1300.0));
 
             // then
             assertThat(exception).isInstanceOf(OrderException.class);

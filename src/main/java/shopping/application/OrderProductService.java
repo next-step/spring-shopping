@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.currency.CurrencyManager;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;
@@ -21,17 +22,21 @@ import shopping.repository.OrderRepository;
 public class OrderProductService {
 
     public static final int MIN_ORDER_PRODUCT_QUANTITY = 1;
+    public static final String CURRENCY_BASE = "USD";
+    public static final String CURRENCY_TARGET = "KRW";
 
     private final MemberRepository memberRepository;
     private final OrderRepository orderRepository;
     private final CartProductRepository cartProductRepository;
+    private final CurrencyManager currencyLayerManager;
 
     public OrderProductService(
-        MemberRepository memberRepository, OrderRepository orderRepository, CartProductRepository cartProductRepository
-    ) {
+        MemberRepository memberRepository, OrderRepository orderRepository, CartProductRepository cartProductRepository,
+        CurrencyManager currencyLayer) {
         this.memberRepository = memberRepository;
         this.orderRepository = orderRepository;
         this.cartProductRepository = cartProductRepository;
+        this.currencyLayerManager = currencyLayer;
     }
 
     public long orderProduct(Long memberId) {
@@ -40,12 +45,16 @@ public class OrderProductService {
         List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(member.getId());
         validateQuantity(cartProducts);
 
-        Order order = new Order(member);
+        Order order = new Order(member, getExchangeRate());
         addOrderProducts(cartProducts, order);
 
         cartProductRepository.deleteByMemberId(memberId);
 
         return orderRepository.save(order);
+    }
+
+    private Double getExchangeRate() {
+        return currencyLayerManager.getExchangeRate(CURRENCY_BASE, CURRENCY_TARGET);
     }
 
     private void addOrderProducts(List<CartProduct> cartProducts, Order order) {
