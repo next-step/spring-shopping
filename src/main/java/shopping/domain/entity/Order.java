@@ -43,6 +43,10 @@ public class Order {
         this(null, userId, items, totalPrice);
     }
 
+    public static Order of(final Long id, final Long userId, final List<OrderItem> orderItems) {
+        return new Order(id, userId, orderItems, calculateTotalPrice(orderItems));
+    }
+
     public static Order of(final Long userId, final List<OrderItem> orderItems) {
         return new Order(userId, orderItems, calculateTotalPrice(orderItems));
     }

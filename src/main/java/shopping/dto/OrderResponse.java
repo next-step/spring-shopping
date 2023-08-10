@@ -1,8 +1,10 @@
 package shopping.dto;
 
 import shopping.domain.entity.Order;
+import shopping.domain.entity.OrderItem;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderResponse {
 
@@ -18,34 +20,55 @@ public class OrderResponse {
         this.items = items;
     }
 
-    public OrderResponse(final Order order) {
-        throw new UnsupportedOperationException();
+    public static OrderResponse from(final Order order) {
+        final List<OrderItemResponse> itemResponses = convert(order);
+        return new OrderResponse(
+                order.getId(),
+                order.getUserId(),
+                order.getTotalPrice().getPrice(),
+                itemResponses
+        );
+    }
+
+    private static List<OrderItemResponse> convert(final Order order) {
+        return order.getItems()
+                .stream()
+                .map(OrderItemResponse::from)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private static class OrderItemResponse {
 
         private final long id;
-        private final long orderId;
         private final long productId;
         private final String name;
         private final long price;
         private final String image;
         private final int quantity;
 
-        public OrderItemResponse(final long id,
-                                 final long orderId,
-                                 final long productId,
-                                 final String name,
-                                 final long price,
-                                 final String image,
-                                 final int quantity) {
+        private OrderItemResponse(final long id,
+                                  final long productId,
+                                  final String name,
+                                  final long price,
+                                  final String image,
+                                  final int quantity) {
             this.id = id;
-            this.orderId = orderId;
             this.productId = productId;
             this.name = name;
             this.price = price;
             this.image = image;
             this.quantity = quantity;
+        }
+
+        private static OrderItemResponse from(final OrderItem orderItem) {
+            return new OrderItemResponse(
+                    orderItem.getId(),
+                    orderItem.getProductId(),
+                    orderItem.getName().getName(),
+                    orderItem.getPrice().getPrice(),
+                    orderItem.getImage().getImage(),
+                    orderItem.getQuantity().getValue()
+            );
         }
     }
 }

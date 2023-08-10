@@ -13,9 +13,9 @@ class OrderResponseTest {
     @DisplayName("Order로 OrderResponse를 생성한다.")
     void createOrderResponse() {
         // given
-        final Order order = EntityFixture.createOrder();
+        final Order order = EntityFixture.createOrderWithId();
 
         // when & then
-        assertThatNoException().isThrownBy(() -> new OrderResponse(order));
+        assertThatNoException().isThrownBy(() -> OrderResponse.from(order));
     }
 }
