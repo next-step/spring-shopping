@@ -59,7 +59,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -80,7 +80,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -101,7 +101,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -122,7 +122,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -143,7 +143,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -164,7 +164,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -185,7 +185,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -206,7 +206,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -227,7 +227,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -241,7 +241,7 @@ class AuthIntegrationTest extends IntegrationTest {
         RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .body(
                         containsString("login")
@@ -262,7 +262,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
 

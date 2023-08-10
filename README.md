@@ -38,19 +38,19 @@
 - 쇼핑 주문과 관련된 아래 기능을 구현합니다.
   - [x] 장바구니에 담긴 아이템 전체 주문
     ```
-    POST /order HTTP/1.1
+    POST /api/order HTTP/1.1
     content-type: application/json
     host: localhost:8080
     ```
   - [x] 특정 주문의 상세 정보를 확인
     ```
-    GET /order/{id} HTTP/1.1
+    GET /api/order/{id} HTTP/1.1
     content-type: application/json
     host: localhost:8080
     ```
   - [x] 사용자 별 주문 목록 확인
     ```
-    GET /order HTTP/1.1
+    GET /api/order HTTP/1.1
     content-type: application/json
     host: localhost:8080
     ```
@@ -96,7 +96,7 @@
 - 장바구니와 관련된 아래 기능을 구현합니다.
     - [x] 장바구니에 상품 아이템 추가
         ```
-        POST /cart/items HTTP/1.1
+        POST /api/cart/items HTTP/1.1
         content-type: application/json
         host: localhost:8080
         
@@ -106,12 +106,12 @@
         ```
     - [x] 장바구니에 담긴 아이템 목록 조회
         ```
-        GET /cart/items HTTP/1.1
+        GET /api/cart/items HTTP/1.1
         host: localhost:8080
         ```
     - [x] 장바구니에 담긴 아이템 수량 변경
         ```
-        PATCH /cart/items/1 HTTP/1.1
+        PATCH /api/cart/items/1 HTTP/1.1
         content-type: application/json
         host: localhost:8080
         
@@ -121,7 +121,7 @@
         ```
     - [x] 장바구니에 담긴 아이템 제거
         ```
-        DELETE /cart/items/1 HTTP/1.1
+        DELETE /api/cart/items/1 HTTP/1.1
         content-type: application/json
         host: localhost:8080
         ```
@@ -175,7 +175,7 @@
 
 ```
 Request
-POST /login/token HTTP/1.1
+POST /api/login/token HTTP/1.1
 content-type: application/json
 host: localhost:8080
 

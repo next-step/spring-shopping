@@ -35,7 +35,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(cartItemCreateRequest)
-                .when().post("/cart/items")
+                .when().post("/api/cart/items")
                 .then().log().all()
                 .extract();
 
@@ -76,7 +76,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CartItemUpdateRequest(3))
-                .when().patch("/cart/items/{:id}", cartItemIds.get(0))
+                .when().patch("/api/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
@@ -85,7 +85,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
         List<CartItemResponse> cartItemResponses = result.jsonPath()
@@ -112,7 +112,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().patch("/cart/items/{:id}", cartItemIds.get(0))
+                .when().patch("/api/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
@@ -131,7 +131,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/cart/items/{:id}", cartItemIds.get(0))
+                .when().delete("/api/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
 
@@ -140,7 +140,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
         int length = result.jsonPath()
@@ -155,7 +155,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .body(new LoginRequest("admin@example.com", "123456789"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract().jsonPath().getString("accessToken");
     }
@@ -166,7 +166,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(cartItemCreateRequest)
-                .when().post("/cart/items")
+                .when().post("/api/cart/items")
                 .then().log().all();
     }
 
@@ -175,7 +175,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
         return response.jsonPath()

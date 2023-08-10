@@ -20,20 +20,20 @@ public class CartItemController {
         this.cartItemService = cartItemService;
     }
 
-    @PostMapping("/cart/items")
+    @PostMapping("/api/cart/items")
     public ResponseEntity<CartItemResponse> createCartItem(@UserIdPrincipal Long userId,
             @RequestBody CartItemCreateRequest cartItemCreateRequest) {
         CartItemResponse cartItemResponse = cartItemService.createCartItem(userId, cartItemCreateRequest);
-        return ResponseEntity.created(URI.create("/cart/items/" + cartItemResponse.getId())).body(cartItemResponse);
+        return ResponseEntity.created(URI.create("/api/cart/items/" + cartItemResponse.getId())).body(cartItemResponse);
     }
 
-    @GetMapping("/cart/items")
+    @GetMapping("/api/cart/items")
     public ResponseEntity<List<CartItemResponse>> getCartItems(@UserIdPrincipal Long userId) {
         List<CartItemResponse> cartItems = cartItemService.findAllByUserId(userId);
         return ResponseEntity.ok().body(cartItems);
     }
 
-    @PatchMapping("/cart/items/{id}")
+    @PatchMapping("/api/cart/items/{id}")
     public ResponseEntity<CartItemResponse> updateCartItemQuantity(
             @UserIdPrincipal Long userId,
             @PathVariable Long id,
@@ -42,7 +42,7 @@ public class CartItemController {
         return ResponseEntity.ok().body(cartItemResponse);
     }
 
-    @DeleteMapping("/cart/items/{id}")
+    @DeleteMapping("/api/cart/items/{id}")
     public ResponseEntity<Void> deleteCartItem(
             @UserIdPrincipal Long userId,
             @PathVariable Long id) {

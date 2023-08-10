@@ -51,7 +51,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/order")
+                .when().post("/api/order")
                 .then().log().all()
                 .extract();
 
@@ -87,7 +87,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/order/{:id}", orderResponse.getId())
+                .when().get("/api/order/{:id}", orderResponse.getId())
                 .then().log().all()
                 .extract();
 
@@ -120,7 +120,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(otherAccess)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/order/{:id}", orderResponse.getId())
+                .when().get("/api/order/{:id}", orderResponse.getId())
                 .then().log().all()
                 .extract();
 
@@ -142,7 +142,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/order/")
+                .when().get("/api/order/")
                 .then().log().all()
                 .extract();
 
@@ -170,7 +170,7 @@ class OrderIntegrationTest extends IntegrationTest {
     private OrderResponse createOrder(String accessToken) {
         return RestAssured.given().auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/order")
+                .when().post("/api/order")
                 .then().extract().as(OrderResponse.class);
     }
 
@@ -180,7 +180,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .body(new LoginRequest("admin@example.com", "123456789"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then()
                 .extract().jsonPath().getString("accessToken");
     }
@@ -195,7 +195,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .body(new LoginRequest(email, password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then()
                 .extract().jsonPath().getString("accessToken");
     }
@@ -206,7 +206,7 @@ class OrderIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(cartItemCreateRequest)
-                .when().post("/cart/items")
+                .when().post("/api/cart/items")
                 .then();
     }
 }

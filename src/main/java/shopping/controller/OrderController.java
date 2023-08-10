@@ -21,19 +21,19 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/order")
+    @PostMapping("/api/order")
     public ResponseEntity<OrderResponse> createOrder(@UserIdPrincipal Long userId) {
         OrderResponse orderResponse = orderService.createOrder(userId);
-        return ResponseEntity.created(URI.create("/order/" + orderResponse.getId())).body(orderResponse);
+        return ResponseEntity.created(URI.create("/api/order/" + orderResponse.getId())).body(orderResponse);
     }
 
-    @GetMapping("/order")
+    @GetMapping("/api/order")
     public ResponseEntity<List<OrderResponse>> getOrder(@UserIdPrincipal Long userId) {
         List<OrderResponse> orderResponses = orderService.findAllByUserId(userId);
         return ResponseEntity.ok().body(orderResponses);
     }
 
-    @GetMapping("/order/{id}")
+    @GetMapping("/api/order/{id}")
     public ResponseEntity<OrderResponse> getOrderDetail(@UserIdPrincipal Long userId, @PathVariable Long id) {
         OrderResponse orderResponse = orderService.findOrderById(userId, id);
         return ResponseEntity.ok().body(orderResponse);
