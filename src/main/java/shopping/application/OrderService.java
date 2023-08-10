@@ -6,12 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.api.CurrencyCaller;
 import shopping.domain.Cart;
 import shopping.domain.CartItem;
 import shopping.domain.Email;
 import shopping.domain.Order;
 import shopping.domain.User;
+import shopping.dto.request.ExchangeRate;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.OrderNotFoundException;
 import shopping.exception.UserNotFoundException;
@@ -32,29 +32,32 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
-    private final CurrencyCaller currencyCaller;
 
     public OrderService(OrderRepository orderRepository, CartItemRepository cartItemRepository,
-            UserRepository userRepository, CurrencyCaller currencyCaller) {
+            UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
-        this.currencyCaller = currencyCaller;
     }
 
     @Transactional
-    public Long createOrder(String email) {
-        Double ratio = currencyCaller.getCurrency();
+    public Long createOrder(String email, ExchangeRate rate) {
         User user = userRepository.findByEmail(new Email(email))
                 .orElseThrow(() -> new UserNotFoundException(email));
         List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
 
-        Cart cart = new Cart(cartItems, user);
-        Order order = cart.toOrder(ratio);
-        orderRepository.save(order);
-        cartItemRepository.deleteAll(cartItems);
+        Order order = createOrder(rate, user, cartItems);
         return order.getId();
     }
+
+    private Order createOrder(ExchangeRate rate, User user, List<CartItem> cartItems) {
+        Cart cart = new Cart(cartItems, user);
+        Order order = cart.toOrderWithRatio(rate.toDomain());
+        orderRepository.save(order);
+        cartItemRepository.deleteAll(cartItems);
+        return order;
+    }
+
 
     public OrderResponse findOrder(String email, Long orderId) {
         User user = userRepository.findByEmail(new Email(email))

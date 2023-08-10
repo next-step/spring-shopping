@@ -5,22 +5,23 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.api.CurrencyCaller;
+import shopping.api.ExchangeRateAPICaller;
 import shopping.domain.CartItem;
 import shopping.domain.Email;
 import shopping.domain.Order;
 import shopping.domain.OrderItem;
 import shopping.domain.Product;
 import shopping.domain.User;
+import shopping.dto.request.ExchangeRate;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.EmptyCartException;
@@ -38,11 +39,13 @@ import shopping.repository.UserRepository;
 @DisplayName("주문 서비스 통합 테스트")
 class OrderServiceTest {
 
+    private static ExchangeRate exchangeRate;
+
     @Autowired
     private OrderService orderService;
 
     @MockBean
-    private CurrencyCaller currencyCaller;
+    private ExchangeRateAPICaller currencyCaller;
 
     @Autowired
     private UserRepository userRepository;
@@ -59,6 +62,11 @@ class OrderServiceTest {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @BeforeEach
+    void setUp() {
+        exchangeRate = new ExchangeRate(1300.0);
+    }
+
     @Nested
     @DisplayName("주문 생성 서비스 테스트")
     class WhenCreateOrder {
@@ -68,10 +76,9 @@ class OrderServiceTest {
         void givenNoUserThenThrow() {
             // given
             String email = "test1@testing.com";
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
 
             // when, then
-            assertThatCode(() -> orderService.createOrder(email))
+            assertThatCode(() -> orderService.createOrder(email, exchangeRate))
                     .isInstanceOf(UserNotFoundException.class);
         }
 
@@ -80,11 +87,10 @@ class OrderServiceTest {
         void givenEmptyCartThenThrow() {
             // given
             String email = "test1@testing.com";
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
             userRepository.save(new User(email, "userpasswordisthis"));
 
             // when, then
-            assertThatCode(() -> orderService.createOrder(email))
+            assertThatCode(() -> orderService.createOrder(email, exchangeRate))
                     .isInstanceOf(EmptyCartException.class);
         }
 
@@ -97,10 +103,9 @@ class OrderServiceTest {
             Product savedProduct1 = productRepository.save(
                     new Product(9871L, "chicken1", "/chicken.jpg", 10_000L));
             CartItem cartItem1 = cartItemRepository.save(new CartItem(savedUser, savedProduct1));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
 
             // when
-            Long orderId = orderService.createOrder(email);
+            Long orderId = orderService.createOrder(email, exchangeRate);
 
             // then
             Order order = orderRepository.findById(orderId).orElseThrow();
@@ -139,10 +144,9 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-
+            
             // when
-            Long orderId = orderService.createOrder(email);
+            Long orderId = orderService.createOrder(email, exchangeRate);
 
             // then
             Order order = orderRepository.findById(orderId).orElseThrow();
@@ -197,8 +201,8 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-            Long orderId = orderService.createOrder(email);
+
+            Long orderId = orderService.createOrder(email, exchangeRate);
 
             // when
             OrderResponse orderResponse = orderService.findOrder(email, orderId);
@@ -241,8 +245,8 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-            Long orderId = orderService.createOrder(email);
+
+            Long orderId = orderService.createOrder(email, exchangeRate);
 
             // when, then
             assertThatCode(() -> orderService.findOrder("wrongemail@email.com", orderId))
@@ -262,8 +266,8 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-            Long orderId = orderService.createOrder(email);
+
+            Long orderId = orderService.createOrder(email, exchangeRate);
 
             // when, then
             assertThatCode(() -> orderService.findOrder(email, orderId + 1L))
@@ -285,8 +289,8 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-            Long orderId = orderService.createOrder(email);
+
+            Long orderId = orderService.createOrder(email, exchangeRate);
 
             // when, then
             assertThatCode(() -> orderService.findOrder(otherEmail, orderId))
@@ -311,11 +315,11 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-            orderService.createOrder(email);
+
+            orderService.createOrder(email, exchangeRate);
             cartItemRepository.save(new CartItem(savedUser, savedProduct1));
-            Mockito.when(currencyCaller.getCurrency()).thenReturn(1300.0);
-            orderService.createOrder(email);
+
+            orderService.createOrder(email, exchangeRate);
 
             // when
             Page<OrderResponse> page = orderService.findAllOrder(email, 1, 12);

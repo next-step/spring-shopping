@@ -36,8 +36,8 @@ public class Cart {
         return cartItems;
     }
 
-    public Order toOrder(double ratio) {
-        Order order = new Order(user, getTotalPrice(), new Ratio(ratio));
+    public Order toOrderWithRatio(Ratio ratio) {
+        Order order = new Order(user, getTotalPrice(), ratio);
         cartItems.forEach(cartItem -> order.addOrderItem(new OrderItem(order, cartItem)));
         return order;
     }

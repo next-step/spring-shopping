@@ -6,10 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import shopping.dto.request.ExchangeRate;
 import shopping.exception.CurrencyApiFailException;
 
 @Component
-public class CurrencyAPICaller implements CurrencyCaller {
+public class WebClientExchangeRateAPICaller implements ExchangeRateAPICaller {
 
     private static final String QUOTES = "quotes";
     private static final String USDKRW = "USDKRW";
@@ -18,26 +19,26 @@ public class CurrencyAPICaller implements CurrencyCaller {
 
     private final WebClient webClient;
 
-    public CurrencyAPICaller(WebClient webClient) {
+    public WebClientExchangeRateAPICaller(WebClient webClient) {
         this.webClient = webClient;
     }
 
     @Override
-    public Double getCurrency() {
+    public ExchangeRate getCurrencyRatio() {
         try {
             JsonNode response = webClient.get()
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
                     .bodyToMono(JsonNode.class)
                     .block();
-            return extractCurrency(response);
+            return new ExchangeRate(extractExchangeRate(response));
         } catch (Exception e) {
             log.error("환율 API 통신 실패", e);
             throw new CurrencyApiFailException();
         }
     }
 
-    private static double extractCurrency(JsonNode response) {
+    private static double extractExchangeRate(JsonNode response) {
         return response
                 .get(QUOTES)
                 .get(USDKRW)
