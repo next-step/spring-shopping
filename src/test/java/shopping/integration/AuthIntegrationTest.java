@@ -17,9 +17,11 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static shopping.integration.util.AuthUtil.LOGIN_API_URL;
+import static shopping.integration.util.CartUtil.CART_API_URL;
 
 @IntegrationTest
-public class AuthIntegrationTest {
+class AuthIntegrationTest {
 
     @Autowired
     TokenProvider tokenProvider;
@@ -83,7 +85,7 @@ public class AuthIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
+                .when().post(LOGIN_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -106,7 +108,7 @@ public class AuthIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
+                .when().post(LOGIN_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -121,7 +123,7 @@ public class AuthIntegrationTest {
         ErrorResponse response = RestAssured
                 .given().log().all()
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/carts")
+                .when().get(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -136,7 +138,7 @@ public class AuthIntegrationTest {
                 .given().log().all()
                 .header("Authorization", "abcd aaaa")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/carts")
+                .when().get(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -151,7 +153,7 @@ public class AuthIntegrationTest {
                 .given().log().all()
                 .auth().oauth2("abcd")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/carts")
+                .when().get(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);

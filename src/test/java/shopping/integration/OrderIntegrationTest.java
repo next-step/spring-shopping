@@ -12,6 +12,8 @@ import shopping.integration.util.CartUtil;
 @IntegrationTest
 class OrderIntegrationTest {
 
+    private static final String ORDER_API_URL = "/api/orders";
+
     @Test
     @DisplayName("주문에 성공한다")
     void createOrder() {
@@ -27,9 +29,9 @@ class OrderIntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/orders")
+                .when().post(ORDER_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .header("Location", "/orders/1");
+                .header("Location", ORDER_API_URL + "/1");
     }
 }

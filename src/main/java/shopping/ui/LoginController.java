@@ -11,7 +11,7 @@ import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LoginController {
 
     private final AuthService authService;

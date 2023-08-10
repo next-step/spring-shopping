@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class AuthUtil {
 
+    public static final String LOGIN_API_URL = "/api/login/token";
     private static final String TEST_EMAIL = "test@gmail.com";
     private static final String TEST_PASSWORD = "test1234";
 
@@ -28,7 +29,7 @@ public class AuthUtil {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
+                .when().post(LOGIN_API_URL)
                 .then().log().all().extract();
     }
 
