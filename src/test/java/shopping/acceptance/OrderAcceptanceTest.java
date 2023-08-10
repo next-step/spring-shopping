@@ -28,8 +28,8 @@ class OrderAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestHelper.post("/api/order", jwt);
 
         /* then */
-        // TODO: Created, location
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        assertThat(response.header("Location")).isEqualTo("/order-detail/3");
         assertThat(response.body().as(OrderCreateResponse.class).getOrderId()).isEqualTo(3L);
     }
 

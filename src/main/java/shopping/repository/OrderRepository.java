@@ -11,7 +11,7 @@ import shopping.domain.order.Order;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select o from Order o join fetch o.orderProducts where o.memberId = ?1 and o.id = ?2")
-    Optional<Order> findByIdAndMemberIdWithOrderProduct(final Long memberId, final Long orderId);
+    Optional<Order> findByIdAndMemberIdWithOrderProduct(final Long orderId, final Long memberId);
 
     List<Order> findAllByMemberId(final Long memberId);
 }

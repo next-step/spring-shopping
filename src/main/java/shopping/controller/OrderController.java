@@ -1,5 +1,6 @@
 package shopping.controller;
 
+import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,10 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderCreateResponse> createOrder(@LoginUser final Long memberId) {
-        return ResponseEntity.ok().body(orderService.createOrder(memberId));
+        final OrderCreateResponse response = orderService.createOrder(memberId);
+
+        return ResponseEntity.created(URI.create("/order-detail/" + response.getOrderId()))
+            .body(response);
     }
 
     @GetMapping

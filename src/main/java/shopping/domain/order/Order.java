@@ -3,6 +3,7 @@ package shopping.domain.order;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -32,7 +33,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.ORDERED;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     protected Order() {
@@ -41,6 +42,13 @@ public class Order {
     public Order(final Long memberId, final List<OrderProduct> orderProducts) {
         this.memberId = memberId;
         this.orderProducts = orderProducts;
+        orderProducts.forEach(orderProduct -> orderProduct.updateOrder(this));
+    }
+
+    public long computeTotalPrice() {
+        return this.orderProducts.stream()
+            .mapToLong(OrderProduct::computeTotalPrice)
+            .sum();
     }
 
     public Long getId() {

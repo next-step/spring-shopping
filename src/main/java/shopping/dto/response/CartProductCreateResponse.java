@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.response;
 
 import shopping.domain.cart.CartProduct;
 

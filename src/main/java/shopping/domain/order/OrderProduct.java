@@ -62,6 +62,10 @@ public class OrderProduct {
         this.quantity = new OrderProductQuantity(quantity);
     }
 
+    public long computeTotalPrice() {
+        return (long) this.orderedPrice.getPrice() * this.quantity.getQuantity();
+    }
+
     public String getOrderedImage() {
         return this.orderedImage.getImage();
     }
@@ -76,5 +80,9 @@ public class OrderProduct {
 
     public int getQuantity() {
         return this.quantity.getQuantity();
+    }
+
+    public void updateOrder(final Order order) {
+        this.order = order;
     }
 }
