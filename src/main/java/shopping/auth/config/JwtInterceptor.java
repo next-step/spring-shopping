@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.auth.util.BearerExtractor;
 import shopping.auth.util.JwtHelper;
-import shopping.auth.exception.ShoppingAuthenticationException;
+import shopping.global.exception.ShoppingAuthenticationException;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {

@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import shopping.cart.domain.CartProduct;
 import shopping.cart.domain.CartProductWithProduct;
 import shopping.global.vo.Name;
-import shopping.cart.domain.vo.Price;
+import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
 import shopping.product.domain.Product;
 import shopping.product.domain.ProductImage;

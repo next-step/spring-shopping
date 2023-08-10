@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import shopping.cart.domain.vo.Price;
+import shopping.global.vo.Price;
 import shopping.global.exception.ShoppingException;
 
 @DisplayName("상품 가격 테스트")

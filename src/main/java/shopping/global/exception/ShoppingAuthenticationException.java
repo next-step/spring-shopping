@@ -1,6 +1,4 @@
-package shopping.auth.exception;
-
-import shopping.global.exception.ShoppingException;
+package shopping.global.exception;
 
 public class ShoppingAuthenticationException extends ShoppingException {
 

@@ -1,4 +1,4 @@
-package shopping.cart.domain.vo;
+package shopping.global.vo;
 
 import java.util.Objects;
 import javax.persistence.Embeddable;

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.exchange.MockExchangeRateApi;
 import shopping.global.vo.Name;
-import shopping.cart.domain.vo.Price;
+import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
