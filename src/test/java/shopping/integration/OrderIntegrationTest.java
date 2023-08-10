@@ -63,4 +63,20 @@ class OrderIntegrationTest {
         // then
         assertThat(orderResponse.getItems()).hasSize(2);
     }
+
+    @Test
+    @DisplayName("존재하지 않는 주문의 상세 정보를 조회할 때 실패한다.")
+    void findOrderNotExist() {
+        // given
+        final String accessToken = AuthUtil.accessToken();
+
+        // when & then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get(ORDER_API_URL + "/1")
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }
