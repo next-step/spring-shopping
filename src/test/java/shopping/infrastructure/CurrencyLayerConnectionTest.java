@@ -4,6 +4,7 @@ import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import shopping.domain.cart.CurrencyType;
 import shopping.exception.infrastructure.ConnectionErrorException;
 import shopping.exception.infrastructure.NullResponseException;
 
@@ -18,7 +19,7 @@ class CurrencyLayerConnectionTest {
     @DisplayName("정상 조회 시 환율 반환")
     @Test
     void getExchangeRate() throws NullResponseException, ConnectionErrorException {
-        assertThat(mockFetcher.getExchangeRate("USD", "KRW"))
+        assertThat(mockFetcher.getExchangeRate(CurrencyType.USD, CurrencyType.KRW))
                 .isCloseTo(1300.0, Offset.offset(100.0));
     }
 
@@ -26,7 +27,7 @@ class CurrencyLayerConnectionTest {
     @Test
     void errorGet() {
 
-        Exception exception = catchException(() -> mockFetcher.getExchangeRate("KRW", "USD"));
+        Exception exception = catchException(() -> mockFetcher.getExchangeRate(CurrencyType.KRW, CurrencyType.USD));
         ConnectionErrorException connectionErrorException = (ConnectionErrorException) exception;
 
         assertThat(connectionErrorException.getErrorCode()).isEqualTo(105);

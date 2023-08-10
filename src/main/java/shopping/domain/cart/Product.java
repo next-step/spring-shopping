@@ -17,16 +17,17 @@ public class Product {
     private String imageUrl;
 
     @Embedded
-    @AttributeOverrides(@AttributeOverride(name = "price", column = @Column(name = "price", nullable = false)))
-    private Price price;
+    @AttributeOverride(name = "price", column = @Column(name = "price", nullable = false))
+    @AttributeOverride(name = "type", column = @Column(name = "type", nullable = false))
+    private Money price;
 
-    public Product(String name, String imageUrl, Long price) {
+    public Product(String name, String imageUrl, Double price) {
         this.name = name;
         this.imageUrl = imageUrl;
-        this.price = new Price(price);
+        this.price = new Money(price);
     }
 
-    public Product(Long id, String name, String imageUrl, Long price) {
+    public Product(Long id, String name, String imageUrl, Double price) {
         this(name, imageUrl, price);
         this.id = id;
     }
@@ -47,7 +48,7 @@ public class Product {
         return imageUrl;
     }
 
-    public Price getPrice() {
+    public Money getPrice() {
         return price;
     }
 }

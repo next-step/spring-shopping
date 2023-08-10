@@ -22,7 +22,7 @@ public class OrderItemResponse {
                 orderItem.getId(),
                 orderItem.getProduct().getName(),
                 orderItem.getProduct().getImageUrl(),
-                orderItem.getProduct().getPrice().getPrice(),
+                orderItem.getProduct().getPrice().getPrice().longValue(),
                 orderItem.getQuantity().getQuantity()
         );
     }

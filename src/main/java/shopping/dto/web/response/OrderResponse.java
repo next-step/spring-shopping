@@ -1,5 +1,6 @@
 package shopping.dto.web.response;
 
+import shopping.domain.cart.Money;
 import shopping.domain.cart.OrderItems;
 
 import java.util.List;
@@ -23,8 +24,8 @@ public class OrderResponse {
                 .stream()
                 .map(OrderItemResponse::of)
                 .collect(Collectors.toList());
-        Long totalPrice = orderItems.totalPrice().getPrice();
-        Double exchangePrice = orderItems.exchangePrice();
+        Long totalPrice = orderItems.totalPrice().getPrice().longValue();
+        Double exchangePrice = orderItems.exchangePrice().map(Money::getPrice).orElse(null);
         return new OrderResponse(orderItems.getOrderId(), orderItemResponses, totalPrice, exchangePrice);
     }
 

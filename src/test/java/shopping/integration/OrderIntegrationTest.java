@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
-import shopping.domain.cart.Price;
+import shopping.domain.cart.Money;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
 import shopping.dto.web.request.CartItemCreateRequest;
@@ -41,9 +41,9 @@ class OrderIntegrationTest extends IntegrationTest {
         String accessToken = login();
 
         List<Product> productList = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
@@ -60,9 +60,9 @@ class OrderIntegrationTest extends IntegrationTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.as(OrderResponse.class).getTotalPrice())
-                .isEqualTo(productList.stream()
+                .isEqualTo((long) productList.stream()
                         .map(Product::getPrice)
-                        .mapToLong(Price::getPrice)
+                        .mapToDouble(Money::getPrice)
                         .sum());
         assertThat(response.as(OrderResponse.class).getItems())
                 .extracting(OrderItemResponse::getName)
@@ -76,9 +76,9 @@ class OrderIntegrationTest extends IntegrationTest {
         String accessToken = login();
 
         List<Product> productList = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
@@ -109,9 +109,9 @@ class OrderIntegrationTest extends IntegrationTest {
         String otherAccess = otherLogin();
 
         List<Product> productList = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));
@@ -160,9 +160,9 @@ class OrderIntegrationTest extends IntegrationTest {
 
     private OrderResponse createProductAndOrder(String accessToken) {
         List<Product> productList = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
         savedProducts.forEach(product -> addCartItem(new CartItemCreateRequest(product.getId()), accessToken));

@@ -19,7 +19,7 @@ class CartItemTest {
     @Test
     void addQuantity() {
         User user = new User("admin@example.com", "1234", encoder);
-        Product product = new Product("치킨", "/chicken.jpg", 10_000L);
+        Product product = new Product("치킨", "/chicken.jpg", 10_000.0);
         CartItem cartItem = new CartItem(user.getId(), product);
         Quantity quantity = cartItem.getQuantity();
         assertThat(cartItem.addQuantity().getQuantity().getQuantity()).isEqualTo(quantity.getQuantity() + 1);
@@ -29,7 +29,7 @@ class CartItemTest {
     @Test
     void updateQuantity() {
         User user = new User("admin@example.com", "1234", encoder);
-        Product product = new Product("치킨", "/chicken.jpg", 10_000L);
+        Product product = new Product("치킨", "/chicken.jpg", 10_000.0);
         CartItem cartItem = new CartItem(user.getId(), product);
         assertThat(cartItem.updateQuantity(5).getQuantity().getQuantity()).isEqualTo(5);
     }
@@ -38,7 +38,7 @@ class CartItemTest {
     @Test
     void notPositiveQuantity() {
         User user = new User("admin@example.com", "1234", encoder);
-        Product product = new Product("치킨", "/chicken.jpg", 10_000L);
+        Product product = new Product("치킨", "/chicken.jpg", 10_000.0);
         CartItem cartItem = new CartItem(user.getId(), product);
         assertThatThrownBy(() -> cartItem.updateQuantity(0)).isInstanceOf(InvalidRequestException.class);
     }

@@ -20,7 +20,7 @@ class ProductIntegrationTest extends IntegrationTest {
     @Test
     void getAllProduct() {
         // given
-        Product chicken = new Product("치킨", "/chicken.jpg", 12300L);
+        Product chicken = new Product("치킨", "/chicken.jpg", 12300.0);
 
         productRepository.save(chicken);
 

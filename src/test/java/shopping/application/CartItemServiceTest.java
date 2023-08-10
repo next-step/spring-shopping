@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
-import shopping.domain.cart.Price;
+import shopping.domain.cart.Money;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
 import shopping.dto.web.request.CartItemCreateRequest;
@@ -56,9 +56,9 @@ class CartItemServiceTest extends ServiceTest {
             String password = "1234";
             User savedUser = saveUser(email, password);
 
-            Product chicken = new Product("치킨", "/chicken.jpg", 10_000L);
-            Product pizza = new Product("피자", "/pizza.jpg", 20_000L);
-            Product salad = new Product("샐러드", "/salad.jpg", 5_000L);
+            Product chicken = new Product("치킨", "/chicken.jpg", 10_000.0);
+            Product pizza = new Product("피자", "/pizza.jpg", 20_000.0);
+            Product salad = new Product("샐러드", "/salad.jpg", 5_000.0);
             List<Product> productList = List.of(chicken, pizza, salad);
             productRepository.saveAll(productList);
 
@@ -95,7 +95,7 @@ class CartItemServiceTest extends ServiceTest {
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             Product savedProduct = productRepository.save(product);
@@ -111,7 +111,7 @@ class CartItemServiceTest extends ServiceTest {
             CartItem cartItem = cartItems.get(0);
             assertThat(cartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
-                    .containsExactly(name, imageUrl, new Price(price));
+                    .containsExactly(name, imageUrl, new Money(price));
             assertThat(cartItem.getUserId()).isEqualTo(savedUser.getId());
 
         }
@@ -142,7 +142,7 @@ class CartItemServiceTest extends ServiceTest {
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             Product savedProduct = productRepository.save(product);
@@ -163,7 +163,7 @@ class CartItemServiceTest extends ServiceTest {
             assertThat(updatedCartItem.getQuantity().getQuantity()).isEqualTo(quantity + 1);
             assertThat(updatedCartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
-                    .containsExactly(name, imageUrl, new Price(price));
+                    .containsExactly(name, imageUrl, new Money(price));
             assertThat(updatedCartItem.getUserId()).isEqualTo(savedUser.getId());
         }
 
@@ -182,7 +182,7 @@ class CartItemServiceTest extends ServiceTest {
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -236,7 +236,7 @@ class CartItemServiceTest extends ServiceTest {
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -269,7 +269,7 @@ class CartItemServiceTest extends ServiceTest {
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -315,7 +315,7 @@ class CartItemServiceTest extends ServiceTest {
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);

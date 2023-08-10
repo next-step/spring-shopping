@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.domain.cart.CartItem;
-import shopping.domain.cart.Order;
-import shopping.domain.cart.OrderItems;
+import shopping.domain.cart.*;
 import shopping.dto.web.response.OrderResponse;
 import shopping.exception.infrastructure.ConnectionErrorException;
 import shopping.exception.infrastructure.NullResponseException;
@@ -22,9 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    // TODO: MoneyType으로 바꾸고, DB에 Price -> Money에 Money타입 저장 + Money 타입을 Double로 전환하고 Response에서 Long으로 변환
-    private static final String SOURCE = "USD";
-    private static final String TARGET = "KRW";
+    // TODO: DB에 Price -> Money에 Money타입 저장 + Money 타입을 Double로 전환하고 Response에서 Long으로 변환
 
     private final Logger log = LoggerFactory.getLogger(OrderService.class);
 
@@ -55,8 +51,8 @@ public class OrderService {
 
     private Order orderWithExchangeRate(Long userId) {
         try {
-            double exchangeRate = exchangeRateFetcher.getExchangeRate(SOURCE, TARGET);
-            return new Order(userId, exchangeRate);
+            double exchangeRate = exchangeRateFetcher.getExchangeRate(CurrencyType.USD, CurrencyType.KRW);
+            return new Order(userId, new ExchangeRate(exchangeRate, CurrencyType.USD, CurrencyType.KRW));
         } catch (ConnectionErrorException e) {
             log.error("code: {}, info: {}", e.getErrorCode(), e.getMessage());
         } catch (NullResponseException e) {

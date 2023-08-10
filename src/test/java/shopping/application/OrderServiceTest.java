@@ -53,7 +53,7 @@ class OrderServiceTest extends ServiceTest {
 
         String name = "치킨";
         String imageUrl = "/chicken.jpg";
-        Long price = 10_000L;
+        Double price = 10_000.0;
         Product product = new Product(name, imageUrl, price);
         productRepository.save(product);
 
@@ -67,7 +67,7 @@ class OrderServiceTest extends ServiceTest {
         // then
         assertThat(order).isPresent();
         assertThat(orderResponse.getId()).isEqualTo(order.get().getId());
-        assertThat(orderResponse.getTotalPrice()).isEqualTo(price);
+        assertThat(orderResponse.getTotalPrice()).isEqualTo(price.longValue());
         assertThat(cartItemRepository.findAllByUserId(userId)).isEmpty();
     }
 
@@ -96,7 +96,7 @@ class OrderServiceTest extends ServiceTest {
 
         String name = "치킨";
         String imageUrl = "/chicken.jpg";
-        Long price = 10_000L;
+        Double price = 10_000.0;
         Product product = new Product(name, imageUrl, price);
         productRepository.save(product);
 
@@ -128,7 +128,7 @@ class OrderServiceTest extends ServiceTest {
 
         String name = "치킨";
         String imageUrl = "/chicken.jpg";
-        Long price = 10_000L;
+        Double price = 10_000.0;
         Product product = new Product(name, imageUrl, price);
         productRepository.save(product);
 

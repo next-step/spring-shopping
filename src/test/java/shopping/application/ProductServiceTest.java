@@ -26,9 +26,9 @@ class ProductServiceTest extends ServiceTest {
     void findAll() {
         // given
         List<Product> productList = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
 

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.util.retry.Retry;
+import shopping.domain.cart.CurrencyType;
 import shopping.dto.api.ExchangeRateResponse;
 import shopping.dto.web.response.ExchangeRateErrorResponse;
 import shopping.exception.infrastructure.ConnectionErrorException;
@@ -26,10 +27,11 @@ public class CurrencyLayerConnection implements ExchangeRateFetcher {
         this.webClient = webClient;
     }
 
-    public Double getExchangeRate(String source, String target) throws ConnectionErrorException, NullResponseException {
-        ExchangeRateResponse response = getExchangeRateResponse(source, target);
+    @Override
+    public Double getExchangeRate(CurrencyType source, CurrencyType target) throws ConnectionErrorException, NullResponseException {
+        ExchangeRateResponse response = getExchangeRateResponse(source.getType(), target.getType());
         if (response.isSuccess()) {
-            return response.getExchangeRates().get(source+target);
+            return response.getExchangeRates().get(source.getType()+target.getType());
         }
         ExchangeRateErrorResponse error = response.getError();
         throw new ConnectionErrorException(error.getInformation(), error.getCode());

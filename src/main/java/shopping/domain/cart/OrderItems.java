@@ -13,10 +13,10 @@ public class OrderItems {
 
     private final Long orderId;
     private final Long userId;
-    private final Double exchangeRate;
+    private final ExchangeRate exchangeRate;
     private final List<OrderItem> items;
 
-    private OrderItems(Long orderId, Long userId, Double exchangeRate, List<OrderItem> items) {
+    private OrderItems(Long orderId, Long userId, ExchangeRate exchangeRate, List<OrderItem> items) {
         this.orderId = orderId;
         this.userId = userId;
         this.exchangeRate = exchangeRate;
@@ -66,18 +66,18 @@ public class OrderItems {
         }
     }
 
-    public Price totalPrice() {
+    public Money totalPrice() {
         return items.stream()
                 .map(OrderItem::getProduct)
                 .map(Product::getPrice)
-                .reduce(new Price(0L), Price::sum);
+                .reduce(new Money(0.0), Money::sum);
     }
 
-    public Double exchangePrice() {
+    public Optional<Money> exchangePrice() {
         if (exchangeRate == null) {
-            return null;
+            return Optional.empty();
         }
-        return totalPrice().divide(exchangeRate);
+        return Optional.ofNullable(totalPrice().exchange(exchangeRate));
     }
 
     public Long getOrderId() {
@@ -88,7 +88,7 @@ public class OrderItems {
         return userId;
     }
 
-    public Optional<Double> getExchangeRate() {
+    public Optional<ExchangeRate> getExchangeRate() {
         return Optional.ofNullable(exchangeRate);
     }
 

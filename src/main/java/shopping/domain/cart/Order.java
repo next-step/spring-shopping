@@ -1,9 +1,6 @@
 package shopping.domain.cart;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "orders")
 public class Order {
@@ -14,12 +11,16 @@ public class Order {
 
     private Long userId;
 
-    private Double exchangeRate;
+    @Embedded
+    @AttributeOverride(name = "rate", column = @Column(name = "exchange_rate"))
+    @AttributeOverride(name = "source", column = @Column(name = "source"))
+    @AttributeOverride(name = "target", column = @Column(name = "target"))
+    private ExchangeRate exchangeRate;
 
     protected Order() {
     }
 
-    private Order(Long id, Long userId, Double exchangeRate) {
+    private Order(Long id, Long userId, ExchangeRate exchangeRate) {
         this.id = id;
         this.userId = userId;
         this.exchangeRate = exchangeRate;
@@ -29,7 +30,7 @@ public class Order {
         this(null, userId, null);
     }
 
-    public Order(Long userId, Double exchangeRate) {
+    public Order(Long userId, ExchangeRate exchangeRate) {
         this(null, userId, exchangeRate);
     }
 
@@ -41,7 +42,7 @@ public class Order {
         return userId;
     }
 
-    public Double getExchangeRate() {
+    public ExchangeRate getExchangeRate() {
         return exchangeRate;
     }
 }

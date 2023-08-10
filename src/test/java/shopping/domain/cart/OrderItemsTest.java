@@ -9,6 +9,7 @@ import shopping.exception.cart.NoCartItemForOrderException;
 import shopping.exception.cart.NotSameOrderException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
@@ -23,9 +24,9 @@ class OrderItemsTest {
     void createFromCartItems() {
         // given
         List<Product> products = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
@@ -55,9 +56,9 @@ class OrderItemsTest {
     void createOfOrderItem() {
         // given
         List<Product> products = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
@@ -77,9 +78,9 @@ class OrderItemsTest {
     void notSameOrder() {
         // given
         List<Product> products = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(1L, product))
@@ -102,24 +103,24 @@ class OrderItemsTest {
     void totalPrice() {
         // given
         List<Product> products = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(user.getId(), product))
                 .collect(Collectors.toList());
 
-        double exchangeRate = 1200.0;
+        ExchangeRate exchangeRate = new ExchangeRate(1200.0, CurrencyType.USD, CurrencyType.KRW);
         Order order = new Order(user.getId(), exchangeRate);
         OrderItems orderItems = OrderItems.from(cartItems, order);
 
         // when
-        Price totalPrice = orderItems.totalPrice();
+        Money totalMoney = orderItems.totalPrice();
 
         // then
-        assertThat(totalPrice).isEqualTo(new Price(35000L));
+        assertThat(totalMoney).isEqualTo(new Money(35000.0));
     }
 
     @DisplayName("환율 기반 총합 계산")
@@ -127,23 +128,23 @@ class OrderItemsTest {
     void exchangePrice() {
         // given
         List<Product> products = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(user.getId(), product))
                 .collect(Collectors.toList());
 
-        double exchangeRate = 1200.0;
+        ExchangeRate exchangeRate = new ExchangeRate(1200.0, CurrencyType.USD, CurrencyType.KRW);
         Order order = new Order(user.getId(), exchangeRate);
         OrderItems orderItems = OrderItems.from(cartItems, order);
 
         // when
-        Double exchangePrice = orderItems.exchangePrice();
+        Optional<Money> exchangePrice = orderItems.exchangePrice();
 
         // then
-        assertThat(exchangePrice).isNotNull().isEqualTo(35000 / exchangeRate);
+        assertThat(exchangePrice).isPresent().get().isEqualTo(new Money(35000 / exchangeRate.getRate(), CurrencyType.USD));
     }
 }
