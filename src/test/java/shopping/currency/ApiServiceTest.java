@@ -16,6 +16,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
+import shopping.dto.CurrencyLayerResponse;
+import shopping.infrastructure.ApiService;
 
 @ExtendWith(SpringExtension.class)
 @RestClientTest(ApiService.class)

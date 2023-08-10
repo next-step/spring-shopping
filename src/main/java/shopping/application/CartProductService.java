@@ -35,21 +35,30 @@ public class CartProductService {
     }
 
     public void addProduct(Long memberId, Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductException(
-                        MessageFormat.format("상품Id에 해당하는 상품 존재하지 않습니다 id : {0}", productId)
-                ));
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberException(
-                        MessageFormat.format("회원Id에 해당하는 회원이 존재하지 않습니다 id : {0}", memberId)
-                ));
+        Product product = getProduct(productId);
+        Member member = getMember(memberId);
 
         CartProduct cartProduct = cartProductRepository.findOneByMemberIdAndProductId(memberId, productId)
                 .map(CartProduct::increaseQuantity)
                 .orElseGet(() -> new CartProduct(member, product, DEFAULT_PRODUCT_QUANTITY));
 
         cartProductRepository.save(cartProduct);
+    }
+
+    private Member getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberException(
+                        MessageFormat.format("회원Id에 해당하는 회원이 존재하지 않습니다 id : {0}", memberId)
+                ));
+        return member;
+    }
+
+    private Product getProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductException(
+                        MessageFormat.format("상품Id에 해당하는 상품 존재하지 않습니다 id : {0}", productId)
+                ));
+        return product;
     }
 
     public List<CartProductResponse> findCartProducts(Long memberId) {

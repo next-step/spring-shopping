@@ -16,7 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.currency.CurrencyManager;
+import shopping.infrastructure.CurrencyManager;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;

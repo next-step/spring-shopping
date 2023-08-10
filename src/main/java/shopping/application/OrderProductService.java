@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.currency.CurrencyManager;
+import shopping.infrastructure.CurrencyManager;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;

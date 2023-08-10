@@ -15,7 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.dto.CurrencyLayerResponse;
 import shopping.exception.CurrencyLayerException;
+import shopping.infrastructure.ApiService;
+import shopping.infrastructure.CurrencyManager;
 
 @DisplayName("CurrencyManager 클래스")
 @ExtendWith(MockitoExtension.class)

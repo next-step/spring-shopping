@@ -1,4 +1,4 @@
-package shopping.currency;
+package shopping.dto;
 
 import java.util.Map;
 

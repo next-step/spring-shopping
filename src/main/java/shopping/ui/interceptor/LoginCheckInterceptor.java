@@ -2,7 +2,7 @@ package shopping.ui.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
+import shopping.infrastructure.TokenManager;
 import shopping.repository.MemberRepository;
 
 import javax.servlet.http.HttpServletRequest;

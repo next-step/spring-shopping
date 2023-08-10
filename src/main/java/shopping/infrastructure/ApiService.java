@@ -1,4 +1,4 @@
-package shopping.currency;
+package shopping.infrastructure;
 
 import java.time.Duration;
 import org.springframework.boot.web.client.RestTemplateBuilder;

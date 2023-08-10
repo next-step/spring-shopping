@@ -1,4 +1,4 @@
-package shopping.jwt;
+package shopping.infrastructure;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
