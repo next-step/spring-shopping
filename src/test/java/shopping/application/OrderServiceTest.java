@@ -33,9 +33,6 @@ class OrderServiceTest extends ServiceTest {
     private CartItemRepository cartItemRepository;
 
     @Autowired
-    private OrderItemRepository orderItemRepository;
-
-    @Autowired
     private OrderRepository orderRepository;
 
     @DisplayName("정상 주문 생성 요청")
