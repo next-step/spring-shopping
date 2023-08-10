@@ -3,11 +3,14 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.application.mapper.OrderMapper;
+import shopping.domain.ExchangeRate;
 import shopping.domain.entity.CartItem;
 import shopping.domain.entity.Order;
 import shopping.domain.entity.OrderItem;
 import shopping.dto.OrderResponse;
 import shopping.exception.OrderNotFoundException;
+import shopping.infrastructure.CurrencyCountry;
+import shopping.infrastructure.ExchangeRateProvider;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 
@@ -21,13 +24,16 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderMapper orderMapper;
+    private final ExchangeRateProvider exchangeRateProvider;
 
     public OrderService(final OrderRepository orderRepository,
                         final CartItemRepository cartItemRepository,
-                        final OrderMapper orderMapper) {
+                        final OrderMapper orderMapper,
+                        final ExchangeRateProvider exchangeRateProvider) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.orderMapper = orderMapper;
+        this.exchangeRateProvider = exchangeRateProvider;
     }
 
     public Long create(final Long userId) {
@@ -35,7 +41,8 @@ public class OrderService {
         final List<OrderItem> orderItems = createOrderItemsFrom(cartItems);
         cartItemRepository.deleteAllInBatch(cartItems);
 
-        final Order order = Order.of(userId, orderItems);
+        final ExchangeRate exchangeRate = new ExchangeRate(exchangeRateProvider.getFrom(CurrencyCountry.USA));
+        final Order order = Order.of(userId, orderItems, exchangeRate);
         return orderRepository.save(order).getId();
     }
 
