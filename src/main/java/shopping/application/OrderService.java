@@ -46,15 +46,15 @@ public class OrderService {
                 .orElseThrow(() -> new UserNotFoundException(email));
         List<CartItem> cartItems = cartItemRepository.findAllByUserEmail(new Email(email));
 
-        Order order = createOrder(rate, user, cartItems);
+        Order order = saveOrder(rate, user, cartItems);
+        cartItemRepository.deleteAll(cartItems);
         return order.getId();
     }
 
-    private Order createOrder(ExchangeRate rate, User user, List<CartItem> cartItems) {
+    private Order saveOrder(ExchangeRate rate, User user, List<CartItem> cartItems) {
         Cart cart = new Cart(cartItems, user);
         Order order = cart.toOrderWithRatio(rate.toDomain());
         orderRepository.save(order);
-        cartItemRepository.deleteAll(cartItems);
         return order;
     }
 
