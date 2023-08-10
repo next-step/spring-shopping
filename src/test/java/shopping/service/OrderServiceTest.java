@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import shopping.config.TestConfig;
 import shopping.domain.cart.CartItem;
 import shopping.domain.member.Member;
@@ -25,7 +24,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.groups.Tuple.tuple;
 
-@ActiveProfiles("test")
 @DataJpaTest
 @Import({OrderService.class, TestConfig.class})
 class OrderServiceTest {
