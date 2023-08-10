@@ -1,5 +1,5 @@
 dependencies {
     implementation project(':core')
 
-    implementation project(':auth:auth-app')
+    implementation project(':auth:auth-domain')
 }

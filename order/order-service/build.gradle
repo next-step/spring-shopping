@@ -1,4 +1,4 @@
 dependencies {
-    implementation project(':order:order-app')
-    implementation project(':mart:mart-app')
+    implementation project(':order:order-domain')
+    implementation project(':mart:mart-domain')
 }
