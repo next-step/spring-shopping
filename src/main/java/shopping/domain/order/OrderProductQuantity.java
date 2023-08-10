@@ -24,7 +24,7 @@ public class OrderProductQuantity {
 
     private void validateValueIsNotLessThanOne(final int value) {
         if (value < MIN_QUANTITY) {
-            throw new ShoppingException(OrderExceptionType.INVALID_QUANTITY_SIZE);
+            throw new ShoppingException(OrderExceptionType.INVALID_QUANTITY_SIZE, value);
         }
     }
 
