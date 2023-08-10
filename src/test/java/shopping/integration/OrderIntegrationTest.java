@@ -28,6 +28,16 @@ class OrderIntegrationTest {
     }
 
     @Test
+    @DisplayName("사용자 주문 페이지 접속 테스트.")
+    void userOrdersPage() {
+        RestAssured.given().log().all()
+                .contentType(MediaType.TEXT_HTML_VALUE)
+                .when().get("/order-history")
+                .then().statusCode(HttpStatus.OK.value())
+                .log().all();
+    }
+
+    @Test
     @DisplayName("주문에 성공한다.")
     void createOrder() {
         // given
