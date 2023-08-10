@@ -79,7 +79,7 @@ public class Order {
         return orderProducts;
     }
 
-    public int getTotalPrice() {
+    public long getTotalPrice() {
         return totalPrice.getPrice();
     }
 
@@ -88,6 +88,6 @@ public class Order {
     }
 
     public double getExchangeRate() {
-        return exchangeRate.getRate();
+        return exchangeRate.getExchangeRate();
     }
 }

@@ -49,7 +49,7 @@ public class OrderProduct {
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "quantity"))
-    private Quantity quantity = new Quantity(1);
+    private Quantity quantity;
 
     protected OrderProduct() {
     }
@@ -89,7 +89,7 @@ public class OrderProduct {
         this.order = order;
     }
 
-    public int calculatePrice() {
+    public long calculatePrice() {
         return getPrice() * getQuantity();
     }
 
@@ -109,7 +109,7 @@ public class OrderProduct {
         return image.getImage();
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price.getPrice();
     }
 

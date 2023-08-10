@@ -15,11 +15,11 @@ public class ExchangeRateApiConfig {
     private static final int READ_TIME_OUT = 5000;
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
+    public RestTemplate restTemplate(final RestTemplateBuilder restTemplateBuilder) {
 
         return restTemplateBuilder
-            .requestFactory(() -> new BufferingClientHttpRequestFactory(
-                new SimpleClientHttpRequestFactory()))
+            .requestFactory(
+                () -> new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()))
             .setConnectTimeout(Duration.ofMillis(CONNECTION_TIME_OUT))
             .setReadTimeout(Duration.ofMillis(READ_TIME_OUT))
             .build();

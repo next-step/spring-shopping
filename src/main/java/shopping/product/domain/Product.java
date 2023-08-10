@@ -56,7 +56,7 @@ public class Product {
         return this.image.getImage();
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return this.price.getPrice();
     }
 }

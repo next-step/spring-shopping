@@ -8,13 +8,13 @@ public class OrderResponse {
 
     private Long id;
     private List<OrderProductResponse> items;
-    private int totalPrice;
+    private long totalPrice;
     private double exchangeRate;
 
     public OrderResponse(
         final Long id,
         final List<OrderProductResponse> items,
-        final int totalPrice,
+        final long totalPrice,
         final double exchangeRate
     ) {
         this.id = id;
@@ -27,8 +27,13 @@ public class OrderResponse {
         List<OrderProductResponse> orderProducts = order.getOrderProducts().stream()
             .map(OrderProductResponse::from)
             .collect(Collectors.toList());
-        System.out.println("asdas" + order.getExchangeRate());
-        return new OrderResponse(order.getId(), orderProducts, order.getTotalPrice(), order.getExchangeRate());
+
+        return new OrderResponse(
+            order.getId(),
+            orderProducts,
+            order.getTotalPrice(),
+            order.getExchangeRate()
+        );
     }
 
     public Long getId() {
@@ -39,7 +44,7 @@ public class OrderResponse {
         return items;
     }
 
-    public int getTotalPrice() {
+    public long getTotalPrice() {
         return totalPrice;
     }
 

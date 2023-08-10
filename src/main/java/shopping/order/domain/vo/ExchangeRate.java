@@ -7,24 +7,25 @@ import shopping.global.exception.ShoppingException;
 @Embeddable
 public class ExchangeRate {
 
-    private double rate;
+    private double exchangeRate;
 
     protected ExchangeRate() {
     }
 
-    public ExchangeRate(double rate) {
-        validateRate(rate);
-        this.rate = rate;
+    public ExchangeRate(final double exchangeRate) {
+        validateRate(exchangeRate);
+        this.exchangeRate = exchangeRate;
     }
 
-    private void validateRate(double rate) {
-        if (rate <= 0) {
-            throw new ShoppingException("환율은 0이하이면 안됩니다. 입력값: " + rate);
+    private void validateRate(final double exchangeRate) {
+        if (exchangeRate <= 0) {
+            throw new ShoppingException("환율은 0이하이면 안됩니다. 입력값: " + exchangeRate);
         }
     }
 
-    public double getRate() {
-        return rate;
+
+    public double getExchangeRate() {
+        return exchangeRate;
     }
 
     @Override
@@ -36,18 +37,18 @@ public class ExchangeRate {
             return false;
         }
         ExchangeRate that = (ExchangeRate) o;
-        return Double.compare(that.rate, rate) == 0;
+        return Double.compare(that.exchangeRate, exchangeRate) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rate);
+        return Objects.hash(exchangeRate);
     }
 
     @Override
     public String toString() {
         return "ExchangeRate{" +
-            "rate=" + rate +
+            "exchangeRate=" + exchangeRate +
             '}';
     }
 }

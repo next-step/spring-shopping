@@ -7,27 +7,27 @@ import shopping.global.exception.ShoppingException;
 @Embeddable
 public class Money {
 
-    private int price;
+    private long price;
 
     protected Money() {
     }
 
-    public Money(final int price) {
+    public Money(final long price) {
         validatePriceLessThanEqualZero(price);
         this.price = price;
     }
 
-    private void validatePriceLessThanEqualZero(final int value) {
+    private void validatePriceLessThanEqualZero(final long value) {
         if (value < 0) {
             throw new ShoppingException("주문 가격은 0이하면 안됩니다. 입력값: " + value);
         }
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return this.price;
     }
 
-    public Money addMoney(final int price) {
+    public Money addMoney(final long price) {
         return new Money(this.price + price);
     }
 
