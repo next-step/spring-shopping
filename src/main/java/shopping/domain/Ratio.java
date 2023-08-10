@@ -20,10 +20,10 @@ public class Ratio {
 
     private void validate(Double ratio) {
         if (ratio == null) {
-            throw new ArgumentValidateFailException("가격은 null일 수 없습니다.");
+            throw new ArgumentValidateFailException("환율은 null일 수 없습니다.");
         }
         if (ratio <= MIN_RATIO) {
-            throw new ArgumentValidateFailException("가격은 0원 이하일 수 없습니다.");
+            throw new ArgumentValidateFailException("환율은 0 이하일 수 없습니다.");
         }
     }
 
