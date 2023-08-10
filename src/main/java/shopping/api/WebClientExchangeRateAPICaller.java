@@ -24,7 +24,7 @@ public class WebClientExchangeRateAPICaller implements ExchangeRateAPICaller {
     }
 
     @Override
-    public ExchangeRate getCurrencyRatio() {
+    public ExchangeRate getExchangeRate() {
         try {
             JsonNode response = webClient.get()
                     .accept(MediaType.APPLICATION_JSON)

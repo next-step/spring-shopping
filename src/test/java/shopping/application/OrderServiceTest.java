@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.api.ExchangeRateAPICaller;
 import shopping.domain.CartItem;
 import shopping.domain.Email;
 import shopping.domain.Order;
@@ -43,9 +41,6 @@ class OrderServiceTest {
 
     @Autowired
     private OrderService orderService;
-
-    @MockBean
-    private ExchangeRateAPICaller currencyCaller;
 
     @Autowired
     private UserRepository userRepository;
@@ -144,7 +139,7 @@ class OrderServiceTest {
             Product savedProduct2 = productRepository.save(
                     new Product(9872L, "chicken2", "/chicken.jpg", 30_000L));
             CartItem cartItem2 = cartItemRepository.save(new CartItem(savedUser, savedProduct2));
-            
+
             // when
             Long orderId = orderService.createOrder(email, exchangeRate);
 

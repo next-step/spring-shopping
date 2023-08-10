@@ -4,6 +4,6 @@ import shopping.dto.request.ExchangeRate;
 
 public interface ExchangeRateAPICaller {
 
-    ExchangeRate getCurrencyRatio();
+    ExchangeRate getExchangeRate();
 
 }

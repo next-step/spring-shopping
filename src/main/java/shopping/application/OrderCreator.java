@@ -8,15 +8,15 @@ import shopping.dto.request.ExchangeRate;
 public class OrderCreator {
 
     private final OrderService orderService;
-    private final ExchangeRateAPICaller currencyCaller;
+    private final ExchangeRateAPICaller exchangeRateAPICaller;
 
     public OrderCreator(OrderService orderService, ExchangeRateAPICaller currencyCaller) {
         this.orderService = orderService;
-        this.currencyCaller = currencyCaller;
+        this.exchangeRateAPICaller = currencyCaller;
     }
 
     public Long createOrder(String email) {
-        ExchangeRate exchangeRate = currencyCaller.getCurrencyRatio();
+        ExchangeRate exchangeRate = exchangeRateAPICaller.getExchangeRate();
         return orderService.createOrder(email, exchangeRate);
     }
 }
