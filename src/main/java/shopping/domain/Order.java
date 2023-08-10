@@ -46,7 +46,7 @@ public class Order {
     @Column(name = "created_date")
     private Instant createdDate;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItems;
 
     protected Order() {
