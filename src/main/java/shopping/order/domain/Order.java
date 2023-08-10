@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import shopping.order.domain.vo.ExchangeRate;
 import shopping.order.domain.vo.Money;
 
 @Entity
@@ -29,6 +30,10 @@ public class Order {
     @Embedded
     private Money totalPrice = new Money(0);
 
+    @Column(name = "exchange_rate")
+    @Embedded
+    private ExchangeRate exchangeRate= new ExchangeRate(1.0);
+
     @Column(name = "member_id")
     private Long memberId;
 
@@ -37,14 +42,18 @@ public class Order {
 
     public Order(
         final List<OrderProduct> orderProducts,
-        final Long memberId
-    ) {
+        final Long memberId) {
         this.orderProducts = orderProducts;
         this.memberId = memberId;
     }
 
+
     public Order(final Long memberId) {
         this.memberId = memberId;
+    }
+
+    public void setExchangeRate(double exchangeRate) {
+        this.exchangeRate = new ExchangeRate(exchangeRate);
     }
 
     public void addOrderProducts(final List<OrderProduct> orderProducts) {
@@ -79,4 +88,7 @@ public class Order {
         return memberId;
     }
 
+    public double getExchangeRate() {
+        return exchangeRate.getRate();
+    }
 }
