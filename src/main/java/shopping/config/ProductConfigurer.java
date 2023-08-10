@@ -1,4 +1,4 @@
-package shopping.mart.service.config;
+package shopping.config;
 
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
