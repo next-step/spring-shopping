@@ -1,7 +1,6 @@
 package shopping.dto.response;
 
 import shopping.domain.cart.CartProduct;
-import shopping.domain.product.Product;
 
 public class CartResponse {
 
@@ -21,11 +20,11 @@ public class CartResponse {
         this.cartProductQuantity = cartProductQuantity;
     }
 
-    public static CartResponse of(final CartProduct cartProduct, Product product) {
+    public static CartResponse from(final CartProduct cartProduct) {
         return new CartResponse(
-            cartProduct.getProductId(),
-            product.getImage(),
-            product.getName(),
+            cartProduct.getId(),
+            cartProduct.getProductImage(),
+            cartProduct.getProductName(),
             cartProduct.getQuantity()
         );
     }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.LoginUser;
+import shopping.dto.CartProductCreateResponse;
 import shopping.dto.request.CartProductCreateRequest;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
 import shopping.dto.response.CartResponse;
@@ -34,18 +35,15 @@ public class CartProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createCartProduct(
+    public ResponseEntity<CartProductCreateResponse> createCartProduct(
         @LoginUser Long memberId,
         @RequestBody final CartProductCreateRequest request
     ) {
-        cartProductService.createCartProduct(memberId, request);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(cartProductService.createCartProduct(memberId, request));
     }
 
     @GetMapping
     public ResponseEntity<List<CartResponse>> getAllCartProducts(final @LoginUser Long memberId) {
-
         return ResponseEntity.ok().body(cartService.findAllCartProducts(memberId));
     }
 

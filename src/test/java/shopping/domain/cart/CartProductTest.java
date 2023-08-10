@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.domain.product.Product;
 
 @DisplayName("장바구니 상품 테스트")
 class CartProductTest {
@@ -13,10 +14,10 @@ class CartProductTest {
     void createCartProduct() {
         /* given */
         final Long memberId = 2L;
-        final Long productId = 3L;
+        final Product product = new Product("치킨", "/assets/img/chicken.png", 20000);
 
         /* when */
-        assertThatCode(() -> new CartProduct(memberId, productId))
+        assertThatCode(() -> new CartProduct(memberId, product))
             .doesNotThrowAnyException();
     }
 }

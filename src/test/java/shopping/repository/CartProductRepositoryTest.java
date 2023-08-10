@@ -26,10 +26,10 @@ class CartProductRepositoryTest {
         final Long notExistProductId = 123L;
 
         /* when */
-        final Optional<CartProduct> exist = cartProductRepository.findByMemberIdAndProductId(
-            existMemberId, existProductId);
-        final Optional<CartProduct> notExist = cartProductRepository.findByMemberIdAndProductId(
-            notExistMemberId, notExistProductId);
+        final Optional<CartProduct> exist = cartProductRepository
+            .findByMemberIdAndProduct_Id(existMemberId, existProductId);
+        final Optional<CartProduct> notExist = cartProductRepository.
+            findByMemberIdAndProduct_Id(notExistMemberId, notExistProductId);
 
         /* then */
         assertThat(exist).isPresent();
@@ -46,10 +46,10 @@ class CartProductRepositoryTest {
         final Long notExistMemberId = 2L;
 
         /* when */
-        final Optional<CartProduct> exist = cartProductRepository.findByIdAndMemberId(
-            existCartProductId, existMemberId);
-        final Optional<CartProduct> notExist = cartProductRepository.findByIdAndMemberId(
-            notExistCartProductId, notExistMemberId);
+        final Optional<CartProduct> exist = cartProductRepository
+            .findByIdAndMemberId(existCartProductId, existMemberId);
+        final Optional<CartProduct> notExist = cartProductRepository
+            .findByIdAndMemberId(notExistCartProductId, notExistMemberId);
 
         /* then */
         assertThat(exist).isPresent();
@@ -67,8 +67,8 @@ class CartProductRepositoryTest {
         cartProductRepository.deleteByIdAndMemberId(existCartProductId, existMemberId);
 
         /* then */
-        final Optional<CartProduct> originalCartProduct = cartProductRepository.findByMemberIdAndProductId(
-            existCartProductId, existMemberId);
+        final Optional<CartProduct> originalCartProduct = cartProductRepository
+            .findByMemberIdAndProduct_Id(existMemberId, existCartProductId);
         assertThat(originalCartProduct).isNotPresent();
     }
 }

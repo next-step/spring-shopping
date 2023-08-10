@@ -43,7 +43,7 @@ class CartProductServiceTest {
         given(productRepository.findById(productId)).willReturn(
             Optional.of(new Product("치킨, ", "/asset/img/chicken", 20000))
         );
-        given(cartProductRepository.findByMemberIdAndProductId(memberId, productId)).willReturn(
+        given(cartProductRepository.findByMemberIdAndProduct_Id(memberId, productId)).willReturn(
             Optional.empty()
         );
 
@@ -53,7 +53,7 @@ class CartProductServiceTest {
         /* then */
         verify(productRepository, atLeast(1)).findById(productId);
         verify(cartProductRepository, atLeast(1))
-            .findByMemberIdAndProductId(memberId, productId);
+            .findByMemberIdAndProduct_Id(memberId, productId);
     }
 
     @Test
@@ -74,7 +74,7 @@ class CartProductServiceTest {
 
         verify(productRepository, times(1)).findById(productId);
         verify(cartProductRepository, times(0))
-            .findByMemberIdAndProductId(memberId, productId);
+            .findByMemberIdAndProduct_Id(memberId, productId);
     }
 
     @Test
@@ -83,23 +83,23 @@ class CartProductServiceTest {
         /* given */
         final Long memberId = 1L;
         final Long productId = 1L;
+        final Product chicken = new Product("치킨, ", "/asset/img/chicken", 20000);
 
-        given(productRepository.findById(productId)).willReturn(
-            Optional.of(new Product("치킨, ", "/asset/img/chicken", 20000))
-        );
-        given(cartProductRepository.findByMemberIdAndProductId(memberId, productId)).willReturn(
-            Optional.of(new CartProduct(memberId, productId))
-        );
+        given(productRepository.findById(productId)).willReturn(Optional.of(chicken));
+        given(cartProductRepository.findByMemberIdAndProduct_Id(memberId, productId))
+            .willReturn(Optional.of(new CartProduct(memberId, chicken)));
 
         /* when & then */
         assertThatCode(
-            () -> cartProductService.createCartProduct(memberId,
-                new CartProductCreateRequest(productId))
+            () -> cartProductService.createCartProduct(
+                memberId,
+                new CartProductCreateRequest(productId)
+            )
         ).isInstanceOf(ShoppingException.class)
             .hasMessage("이미 장바구니에 담긴 상품입니다.");
 
         verify(productRepository, times(1)).findById(productId);
         verify(cartProductRepository, times(1))
-            .findByMemberIdAndProductId(memberId, productId);
+            .findByMemberIdAndProduct_Id(memberId, productId);
     }
 }

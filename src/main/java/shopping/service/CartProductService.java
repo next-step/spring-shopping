@@ -1,12 +1,15 @@
 package shopping.service;
 
+import static shopping.exception.ProductExceptionType.NOT_FOUND_PRODUCT;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartProduct;
+import shopping.domain.product.Product;
+import shopping.dto.CartProductCreateResponse;
 import shopping.dto.request.CartProductCreateRequest;
 import shopping.dto.request.CartProductQuantityUpdateRequest;
 import shopping.exception.CartExceptionType;
-import shopping.exception.ProductExceptionType;
 import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.ProductRepository;
@@ -27,25 +30,18 @@ public class CartProductService {
     }
 
     @Transactional
-    public CartProduct createCartProduct(
+    public CartProductCreateResponse createCartProduct(
         final Long memberId,
         final CartProductCreateRequest cartProductCreateRequest
     ) {
         final Long productId = cartProductCreateRequest.getProductId();
+        validateDuplicateCartProduct(memberId, productId);
 
-        productRepository.findById(productId)
-            .orElseThrow(
-                () -> new ShoppingException(ProductExceptionType.NOT_FOUND_PRODUCT, productId)
-            );
+        final Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new ShoppingException(NOT_FOUND_PRODUCT, productId));
 
-        cartProductRepository.findByMemberIdAndProductId(memberId, productId)
-            .ifPresent(cartProduct -> {
-                throw new ShoppingException(
-                    CartExceptionType.DUPLICATED_CART_PRODUCT, cartProduct.getProductId()
-                );
-            });
-
-        return cartProductRepository.save(new CartProduct(memberId, productId));
+        return CartProductCreateResponse.from(
+            cartProductRepository.save(new CartProduct(memberId, product)));
     }
 
     @Transactional
@@ -73,5 +69,14 @@ public class CartProductService {
     @Transactional
     public void deleteCartProduct(final Long cartProductId, final Long memberId) {
         cartProductRepository.deleteByIdAndMemberId(cartProductId, memberId);
+    }
+
+    private void validateDuplicateCartProduct(final Long memberId, final Long productId) {
+        cartProductRepository.findByMemberIdAndProduct_Id(memberId, productId)
+            .ifPresent(cartProduct -> {
+                throw new ShoppingException(
+                    CartExceptionType.DUPLICATED_CART_PRODUCT,
+                    cartProduct.getProductId());
+            });
     }
 }
