@@ -6,6 +6,7 @@ import shopping.application.ExchangeRateProvider;
 import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 import shopping.domain.Currency;
+import shopping.dto.response.ExchangeResponse;
 import shopping.exception.CurrencyException;
 import shopping.exception.InfraException;
 
@@ -33,6 +34,7 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
 
     private Currency initializeCurrency() {
         CustomRestTemplate customRestTemplate = new CustomRestTemplate();
-        return customRestTemplate.getResult(apiUrl + apiAccessKey, Currency.class);
+        ExchangeResponse response = customRestTemplate.getResult(apiUrl + apiAccessKey, ExchangeResponse.class);
+        return new Currency(response.getQuotes());
     }
 }
