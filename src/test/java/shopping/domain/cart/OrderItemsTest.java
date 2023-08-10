@@ -138,9 +138,9 @@ class OrderItemsTest {
         OrderItems orderItems = OrderItems.from(cartItems, order);
 
         // when
-        Optional<Double> exchangePrice = orderItems.exchangePrice();
+        Double exchangePrice = orderItems.exchangePrice();
 
         // then
-        assertThat(exchangePrice).isPresent().contains(35000 / exchangeRate);
+        assertThat(exchangePrice).isNotNull().isEqualTo(35000 / exchangeRate);
     }
 }

@@ -24,7 +24,7 @@ public class OrderResponse {
                 .map(OrderItemResponse::of)
                 .collect(Collectors.toList());
         Long totalPrice = orderItems.totalPrice().getPrice();
-        Double exchangePrice = orderItems.exchangePrice().orElse(null);
+        Double exchangePrice = orderItems.exchangePrice();
         return new OrderResponse(orderItems.getOrderId(), orderItemResponses, totalPrice, exchangePrice);
     }
 

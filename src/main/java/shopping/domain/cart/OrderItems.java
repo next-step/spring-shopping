@@ -73,11 +73,11 @@ public class OrderItems {
                 .reduce(new Price(0L), Price::sum);
     }
 
-    public Optional<Double> exchangePrice() {
+    public Double exchangePrice() {
         if (exchangeRate == null) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.ofNullable(totalPrice().divide(exchangeRate));
+        return totalPrice().divide(exchangeRate);
     }
 
     public Long getOrderId() {
