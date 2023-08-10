@@ -33,7 +33,7 @@ public class OrderEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> orderItems = new ArrayList<>();
 
-    protected OrderEntity() {};
+    protected OrderEntity() {}
 
     public OrderEntity(Long id, int totalPrice, Double totalPriceUSD,UserEntity user,
         List<OrderItemEntity> orderItems) {
@@ -65,7 +65,7 @@ public class OrderEntity {
     private void calculateTotalPrice(List<CartItemEntity> cartItems) {
         this.totalPrice = cartItems.stream()
             .map(CartItemEntity::calculatePrice)
-            .reduce((i1, i2) -> i1 + i2)
+            .reduce(Integer::sum)
             .get();
     }
 

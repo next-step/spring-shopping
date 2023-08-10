@@ -33,7 +33,7 @@ public class OrderItemEntity {
 
 
     protected OrderItemEntity() {
-    };
+    }
 
     public OrderItemEntity(Long id, String name, String imageFileName, int totalPrice, Double totalPriceUSD, int totalQuantity,
         OrderEntity order) {
