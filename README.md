@@ -129,13 +129,6 @@
             - request
                 ```http request
                 POST /api/order
-              
-                {
-                  "cartProductIds": [
-                    "1",
-                    "2"
-                  ]
-                }
                 ``` 
             - response
                 ```http request
