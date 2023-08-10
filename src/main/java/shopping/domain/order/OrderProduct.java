@@ -24,6 +24,7 @@ public class OrderProduct {
     @Column(name = "id")
     private Long id;
 
+    // TODO: 양방향 필요?
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
@@ -59,5 +60,21 @@ public class OrderProduct {
         this.orderedName = new ProductName(orderedName);
         this.orderedPrice = new ProductPrice(orderedPrice);
         this.quantity = new OrderProductQuantity(quantity);
+    }
+
+    public String getOrderedImage() {
+        return this.orderedImage.getImage();
+    }
+
+    public String getOrderedName() {
+        return this.orderedName.getName();
+    }
+
+    public int getOrderedPrice() {
+        return this.orderedPrice.getPrice();
+    }
+
+    public int getQuantity() {
+        return this.quantity.getQuantity();
     }
 }

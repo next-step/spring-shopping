@@ -141,9 +141,74 @@
                 ```
         - [x] 장바구니의 모든 상품만 주문할 수 있다. (개별 구매 X)
         - [x] 주문에 성공할 경우 장바구니의 상품을 모두 삭제한다.
-    - [ ] 회원은 주문 내역을 조회할 수 있다.
+    - [ ] 회원은 주문 내역들을 조회할 수 있다.
         - [ ] 본인의 주문 내역만 확인할 수 있다.
-    - [ ] 회원은 주문 목록 중 개별의 주문 상세 내역을 확인할 수 있다.
+            - [x] end-point
+                - request
+                    ```http request
+                    GET /api/order
+                    ``` 
+                - response
+                    ```http request
+                    [
+                        {
+                          "orderId": 1,
+                          "orderProducts": [
+                            {
+                            "orderedImage": "/assets/img/hamburger.jpeg",
+                            "orderedName": "햄버거",
+                            "orderedPrice": 10000,
+                            "quantity": 3
+                            }
+                          ]
+                        },
+                        {
+                          "orderId": 2,
+                          "orderProducts": [
+                            {
+                            "orderedImage": "/assets/img/hamburger.jpeg",
+                            "orderedName": "햄버거",
+                            "orderedPrice": 10000,
+                            "quantity": 3
+                            }
+                          ]
+                        }
+                    ]
+                   ```
+    - [x] 회원은 주문 목록 중 개별의 주문 상세 내역을 확인할 수 있다.
+        - [x] 본인의 주문 목록만 확인할 수 있다.
+        - [x] endpoint
+            * request
+              ```http request
+              GET /api/order/{orderId}
+              ```
+            * response
+              ```http request
+              {
+                "orderId": 1,
+                "orderProducts": [
+                  {
+                    "orderedImage": "/assets/img/chicken.png",
+                    "orderedName": "치킨",
+                    "orderedPrice": 20000,
+                    "quantity": 3
+                  },
+                  {
+                    "orderedImage": "/assets/img/hamburger.jpeg",
+                    "orderedName": "햄버거",
+                    "orderedPrice": 10000,
+                    "quantity": 1
+                  },
+                  {
+                    "orderedImage": "/assets/img/pizza.jpg",
+                    "orderedName": "피자",
+                    "orderedPrice": 20000,
+                    "quantity": 2
+                  }
+                ],
+                "totalPrice": 50000
+              }
+              ```
 - [ ] 웹 페이지와 연동한다.
     - [ ] 주문 목록 페이지로 이동할 수 있다.
         - [ ] 각각의 주문에 대하여 상세 정보를 확인할 수 있다.

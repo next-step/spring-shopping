@@ -1,11 +1,16 @@
 package shopping.controller;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.LoginUser;
 import shopping.dto.response.OrderCreateResponse;
+import shopping.dto.response.OrderDetailResponse;
+import shopping.dto.response.OrderHistoryResponse;
 import shopping.service.OrderService;
 
 @RestController
@@ -21,5 +26,21 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<OrderCreateResponse> createOrder(@LoginUser final Long memberId) {
         return ResponseEntity.ok().body(orderService.createOrder(memberId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderHistoryResponse>> findOrderHistory(
+        @LoginUser final Long memberId
+    ) {
+        return ResponseEntity.ok().body(orderService.findOrderHistory(memberId));
+    }
+
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDetailResponse> findOrderDetail(
+        @LoginUser final Long memberId,
+        @PathVariable Long orderId
+    ) {
+        return ResponseEntity.ok().body(orderService.findOrderDetail(memberId, orderId));
     }
 }

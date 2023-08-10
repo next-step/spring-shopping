@@ -1,10 +1,16 @@
 package shopping.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.Cart;
 import shopping.domain.order.Order;
 import shopping.dto.response.OrderCreateResponse;
+import shopping.dto.response.OrderDetailResponse;
+import shopping.dto.response.OrderHistoryResponse;
+import shopping.exception.OrderExceptionType;
+import shopping.exception.ShoppingException;
 import shopping.repository.CartProductRepository;
 import shopping.repository.OrderRepository;
 
@@ -33,5 +39,22 @@ public class OrderService {
         cartProductRepository.deleteAllByMemberId(memberId);
 
         return OrderCreateResponse.from(order);
+    }
+
+    @Transactional(readOnly = true)
+    public OrderDetailResponse findOrderDetail(final Long memberId, final Long orderId) {
+        final Order order = orderRepository.findByIdAndMemberIdWithOrderProduct(orderId, memberId)
+            .orElseThrow(() -> new ShoppingException(OrderExceptionType.NOT_FOUND_ORDER, orderId));
+
+        return OrderDetailResponse.from(order);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderHistoryResponse> findOrderHistory(final Long memberId) {
+        final List<Order> orders = orderRepository.findAllByMemberId(memberId);
+
+        return orders.stream()
+            .map(OrderHistoryResponse::from)
+            .collect(Collectors.toList());
     }
 }

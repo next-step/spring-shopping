@@ -37,11 +37,24 @@ class OrderIntegrationTest {
     @DisplayName("장바구니에 상품이 없을 경우 주문을 생성 시 ShoppingException을 던진다.")
     void createOrderFailWithEmptyCart() {
         /* given */
-        final Long memberId = 2L;
+        final Long memberId = 777L;
 
         /* when & then */
         assertThatThrownBy(() -> orderService.createOrder(memberId))
             .isExactlyInstanceOf(ShoppingException.class)
             .hasMessage("장바구니가 비어있습니다.");
+    }
+
+    @Test
+    @DisplayName("본인의 주문 정보가 아닌 것은 확인할 수 없다.")
+    void findOrderFailWithNotOwn() {
+        /* given */
+        final Long memberId = 777L;
+        final Long orderId = 1L;
+
+        /* when & then */
+        assertThatThrownBy(() -> orderService.findOrderDetail(memberId, orderId))
+            .isExactlyInstanceOf(ShoppingException.class)
+            .hasMessage("주문 정보를 찾을 수 없습니다.");
     }
 }
