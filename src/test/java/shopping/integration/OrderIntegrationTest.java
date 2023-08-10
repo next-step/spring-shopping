@@ -18,6 +18,16 @@ import static shopping.integration.util.OrderUtil.ORDER_API_URL;
 class OrderIntegrationTest {
 
     @Test
+    @DisplayName("주문 상세 페이지 접속 테스트.")
+    void orderPage() {
+        RestAssured.given().log().all()
+                .contentType(MediaType.TEXT_HTML_VALUE)
+                .when().get("/order-detail/1")
+                .then().statusCode(HttpStatus.OK.value())
+                .log().all();
+    }
+
+    @Test
     @DisplayName("주문에 성공한다.")
     void createOrder() {
         // given
