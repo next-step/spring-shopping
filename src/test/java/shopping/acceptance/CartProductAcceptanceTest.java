@@ -72,12 +72,10 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void createCartProductBadRequestWithExistCartProduct() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        final CartProductCreateRequest request = new CartProductCreateRequest(3L);
-        CartProductHelper.createCartProduct(jwt, request);
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
-            request);
+        final ExtractableResponse<Response> response = CartProductHelper.createCartProduct(jwt, 3L);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -91,7 +89,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void getAllCartProducts() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper.get("/api/cartProduct", jwt);
@@ -107,7 +105,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void updateCartProductQuantity() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1L;
         final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(2);
@@ -126,7 +124,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* given */
         final int quantity = -1;
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1L;
         final CartProductQuantityUpdateRequest request =
@@ -148,7 +146,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void deleteCartProduct() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 3L;
 
@@ -165,7 +163,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void updateCartProductQuantityWithZeroQuantity() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1L;
         final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(0);
@@ -187,7 +185,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void updateCartProductQuantityWithNotFoundCartProduct() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1234L;
         final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(2);
