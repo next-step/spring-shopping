@@ -12,6 +12,6 @@ insert into cart_products(member_id, product_id, quantity)
 values (1, 1, 3),
     (1, 2, 1),
     (2, 3 ,1);
-insert into orders(rate, member_id, price) values (1.0, 2,60000);
+insert into orders(exchange_rate, member_id, price) values (1.0, 2,60000);
 insert into order_products(image, name, price, product_id, quantity, order_id)
 values ('/assets/img/pizza.jpg','피자', 20000, 3L, 3, 1L);
