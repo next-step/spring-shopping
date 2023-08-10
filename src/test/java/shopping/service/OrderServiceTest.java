@@ -113,8 +113,8 @@ class OrderServiceTest {
         assertThat(orderResponses.getOrders()).hasSize(2)
                 .extracting("orderId", "orderPrice")
                 .contains(
-                        tuple(firstOrder.getOrderId(), anyProduct.getPrice()),
-                        tuple(secondOrder.getOrderId(), anyProduct.getPrice())
+                        tuple(firstOrder.getOrderId(), (long) anyProduct.getPrice()),
+                        tuple(secondOrder.getOrderId(), (long) anyProduct.getPrice())
                 );
     }
 

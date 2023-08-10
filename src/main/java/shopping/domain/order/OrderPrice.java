@@ -1,23 +1,28 @@
 package shopping.domain.order;
 
+import shopping.exception.ErrorCode;
+import shopping.exception.ShoppingException;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
 public class OrderPrice {
-    public static final int DEFAULT_VALUE = 0;
+    public static final long DEFAULT_VALUE = 0;
+    public static final long MAX_ORDER_PRICE = 1_000L * 1_000_000_000L;
     @Column(name = "order_price")
-    private int value;
+    private long value;
 
     protected OrderPrice() {
     }
 
-    private OrderPrice(final int value) {
+    private OrderPrice(final long value) {
+        validate(value);
         this.value = value;
     }
 
-    public static OrderPrice from(final int value) {
+    public static OrderPrice from(final long value) {
         return new OrderPrice(value);
     }
 
@@ -25,11 +30,17 @@ public class OrderPrice {
         return new OrderPrice(DEFAULT_VALUE);
     }
 
-    public OrderPrice plusPrice(final int orderPrice) {
+    private void validate(final long value) {
+        if (value < 0 || value > MAX_ORDER_PRICE) {
+            throw new ShoppingException(ErrorCode.ORDER_PRICE_INVALID);
+        }
+    }
+
+    public OrderPrice plusPrice(final long orderPrice) {
         return new OrderPrice(this.value + orderPrice);
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 

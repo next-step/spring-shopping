@@ -43,7 +43,7 @@ public class Order {
         orderPrice = orderPrice.plusPrice(orderItem.getTotalPrice());
     }
 
-    public int getOrderPrice() {
+    public long getOrderPrice() {
         return orderPrice.getValue();
     }
 

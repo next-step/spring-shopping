@@ -43,8 +43,8 @@ public class OrderItem {
         order.addOrderItem(this);
     }
 
-    public int getTotalPrice() {
-        return getOrderItemPrice() * getOrderItemQuantity();
+    public long getTotalPrice() {
+        return (long) getOrderItemPrice() * getOrderItemQuantity();
     }
 
     public Long getId() {

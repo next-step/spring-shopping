@@ -1,11 +1,6 @@
 package shopping.domain.product;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Product {
@@ -22,7 +17,7 @@ public class Product {
     private ProductName name;
 
     @Embedded
-    private Price price;
+    private ProductPrice productPrice;
 
     protected Product() {
     }
@@ -30,7 +25,7 @@ public class Product {
     public Product(final String image, final String name, final int price) {
         this.image = ProductImage.from(image);
         this.name = ProductName.from(name);
-        this.price = Price.from(price);
+        this.productPrice = ProductPrice.from(price);
     }
 
     public Long getId() {
@@ -46,6 +41,6 @@ public class Product {
     }
 
     public int getPrice() {
-        return this.price.getValue();
+        return this.productPrice.getValue();
     }
 }

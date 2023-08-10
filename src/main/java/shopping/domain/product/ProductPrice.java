@@ -1,4 +1,4 @@
-package shopping.domain.order;
+package shopping.domain.product;
 
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
@@ -8,24 +8,23 @@ import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class OrderItemPrice {
+public class ProductPrice {
+
     public static final int DEFAULT_VALUE = 0;
-
     public static final int MAX_PRICE = 1_000_000_000;
-
-    @Column(name = "order_item_price", nullable = false)
+    @Column(name = "product_price", nullable = false)
     private int value;
 
-    protected OrderItemPrice() {
+    protected ProductPrice() {
     }
 
-    private OrderItemPrice(final int value) {
+    private ProductPrice(final int value) {
         validate(value);
         this.value = value;
     }
 
-    public static OrderItemPrice from(final int value) {
-        return new OrderItemPrice(value);
+    public static ProductPrice from(int value) {
+        return new ProductPrice(value);
     }
 
     private void validate(final int value) {
@@ -35,15 +34,19 @@ public class OrderItemPrice {
     }
 
     public int getValue() {
-        return value;
+        return this.value;
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final OrderItemPrice that = (OrderItemPrice) o;
-        return Objects.equals(value, that.value);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final ProductPrice productPrice = (ProductPrice) o;
+        return value == productPrice.value;
     }
 
     @Override

@@ -130,7 +130,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, moreThanMaxQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.CART_ITEM_QUANTITY_INVALID.getMessage());
     }
 
     @Test
@@ -145,7 +145,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, lessThanMinQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.CART_ITEM_QUANTITY_INVALID.getMessage());
     }
 
     @Test
