@@ -41,7 +41,7 @@
         }
 
         // TODO: [4단계] 장바구니 아이템 목록 조회 스펙에 맞게 변경
-        fetch('/cart', {
+        fetch('/api/carts', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${credentials}`,

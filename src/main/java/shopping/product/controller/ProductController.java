@@ -35,14 +35,14 @@ public class ProductController {
         return "index";
     }
 
-    @GetMapping("/products/{productId}")
+    @GetMapping("/api/products/{productId}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse findProduct(@PathVariable Long productId) {
         return productService.readProduct(productId);
     }
 
-    @PostMapping("/products")
+    @PostMapping("/api/products")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public void createProduct(@RequestBody ProductCreationRequest productCreationRequest) {
@@ -56,7 +56,7 @@ public class ProductController {
         validNotEmpty(productCreationRequest.getPrice());
     }
 
-    @PutMapping("/products/{productId}")
+    @PutMapping("/api/products/{productId}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public void updateProduct(
@@ -73,7 +73,7 @@ public class ProductController {
         validNotEmpty(productUpdateRequest.getImageUrl());
     }
 
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("/api/products/{productId}")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public void updateProduct(@PathVariable Long productId) {

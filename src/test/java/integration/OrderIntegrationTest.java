@@ -30,7 +30,7 @@ class OrderIntegrationTest extends IntegrationTest {
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
 
         // when
-        ExtractableResponse<Response> response = post("/api/order",
+        ExtractableResponse<Response> response = post("/api/orders",
             new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
 
         // then
@@ -44,10 +44,10 @@ class OrderIntegrationTest extends IntegrationTest {
         // member -> data.sql
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
-        post("/api/order", new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
+        post("/api/orders", new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
 
         // when
-        ExtractableResponse<Response> response = get("/api/order/{orderId}", 1L, DEFAULT_TOKEN);
+        ExtractableResponse<Response> response = get("/api/orders/{orderId}", 1L, DEFAULT_TOKEN);
 
         // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -64,10 +64,10 @@ class OrderIntegrationTest extends IntegrationTest {
         ).body().as(LoginResponse.class);
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
-        post("/api/order", new OrderCreationRequest(List.of(1L)), loginResponse.getAccessToken());
+        post("/api/orders", new OrderCreationRequest(List.of(1L)), loginResponse.getAccessToken());
 
         // when
-        ExtractableResponse<Response> response = get("/api/order/{orderId}", 1L, DEFAULT_TOKEN);
+        ExtractableResponse<Response> response = get("/api/orders/{orderId}", 1L, DEFAULT_TOKEN);
 
         // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -80,10 +80,10 @@ class OrderIntegrationTest extends IntegrationTest {
         // member -> data.sql
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
-        post("/api/order", new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
+        post("/api/orders", new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
 
         // when
-        ExtractableResponse<Response> response = get("/api/order", DEFAULT_TOKEN);
+        ExtractableResponse<Response> response = get("/api/orders", DEFAULT_TOKEN);
 
         // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());

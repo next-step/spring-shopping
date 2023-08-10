@@ -20,7 +20,7 @@ import shopping.cart.dto.response.AllCartItemsResponse;
 import shopping.cart.service.CartService;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/carts")
 public class CartController {
 
     private final CartService cartService;
@@ -31,8 +31,10 @@ public class CartController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCartItem(@AuthMember LoggedInMember loggedInMember,
-        @RequestBody CartItemCreationRequest cartItemCreationRequest) {
+    public void addCartItem(
+        @AuthMember LoggedInMember loggedInMember,
+        @RequestBody CartItemCreationRequest cartItemCreationRequest
+    ) {
         validNotNull(cartItemCreationRequest.getProductId());
         cartService.addCartItem(loggedInMember, cartItemCreationRequest);
     }

@@ -50,7 +50,7 @@ class ProductIntegrationTest extends IntegrationTest {
 
         // when
         ExtractableResponse<Response> response = CommonRestAssuredUtils.get(
-            "/products/{productId}",
+            "/api/products/{productId}",
             1
         );
 
@@ -76,13 +76,13 @@ class ProductIntegrationTest extends IntegrationTest {
     void updateOneProduct() {
         // given
         CommonRestAssuredUtils.post(
-            "/products",
+            "/api/products",
             new ProductCreationRequest("name", "10000", "imageUrl")
         );
 
         // when
         CommonRestAssuredUtils.put(
-            "/products/1",
+            "/api/products/1",
             new ProductUpdateRequest("updatedName", "100000", "updatedImageUrl")
         );
 
@@ -98,16 +98,16 @@ class ProductIntegrationTest extends IntegrationTest {
     void deleteOneProduct() {
         // given
         CommonRestAssuredUtils.post(
-            "/products",
+            "/api/products",
             new ProductCreationRequest("name", "10000", "imageUrl")
         );
 
         // when
-        CommonRestAssuredUtils.delete("/products/{productId}", 1L);
+        CommonRestAssuredUtils.delete("/api/products/{productId}", 1L);
 
         // then
         ExtractableResponse<Response> response = CommonRestAssuredUtils.get(
-            "/products/{productId}",
+            "/api/products/{productId}",
             1L
         );
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -115,7 +115,7 @@ class ProductIntegrationTest extends IntegrationTest {
 
     private static ProductResponse getProductResponse(Long productId) {
         return CommonRestAssuredUtils.get(
-            "/products/{productId}",
+            "/api/products/{productId}",
             productId
         ).body().as(ProductResponse.class);
     }

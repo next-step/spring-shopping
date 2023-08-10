@@ -13,7 +13,7 @@ public class CartHelper {
         CartItemCreationRequest cartItemCreationRequest
     ) {
         return CommonRestAssuredUtils.post(
-            "/cart",
+            "/api/carts",
             cartItemCreationRequest,
             CommonRestAssuredUtils.DEFAULT_TOKEN
         );

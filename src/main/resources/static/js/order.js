@@ -7,7 +7,7 @@ const requestOrder = (cartItemIds) => {
     }
 
     // TODO: [4단계] 장바구니 아이템 추가 스펙에 맞게 변경
-    fetch('/api/order', {
+    fetch('/api/orders', {
         method: 'post',
         headers: {
             'Authorization': `Bearer ${credentials}`,
