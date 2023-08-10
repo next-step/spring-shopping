@@ -32,8 +32,8 @@ public class ProductService {
         return ProductResponse.listOf(productRepository.findAll());
     }
 
-    public void createProduct(ProductCreationRequest productCreationRequest) {
-        productRepository.save(productCreationRequest.toEntity());
+    public ProductResponse createProduct(ProductCreationRequest productCreationRequest) {
+        return ProductResponse.from(productRepository.save(productCreationRequest.toEntity()));
     }
 
     public void updateProduct(ProductUpdateRequest productUpdateRequest, Long productId) {
