@@ -24,6 +24,10 @@ public class Money {
         return new Money(this.amount.add(otherMoney.amount));
     }
 
+    public Money multiply(int multiplicand) {
+        return new Money(this.amount.multiply(BigDecimal.valueOf(multiplicand)));
+    }
+
     public boolean isMoreThan(Money otherMoney) {
         return this.amount.compareTo(otherMoney.amount) > 0;
     }

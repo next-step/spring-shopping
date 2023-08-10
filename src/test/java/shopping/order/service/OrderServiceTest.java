@@ -45,11 +45,12 @@ class OrderServiceTest {
         LoggedInMember loggedInMember = new LoggedInMember(memberId);
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId));
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId2));
+        cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId2));
 
         Long orderId = orderService.createOrder(loggedInMember).getId();
 
         Order order = orderRepository.findById(orderId).orElseThrow();
-        assertThat(order.getTotalPrice()).isEqualTo(new Money("30000"));
+        assertThat(order.getTotalPrice()).isEqualTo(new Money("50000"));
     }
 
     @Test

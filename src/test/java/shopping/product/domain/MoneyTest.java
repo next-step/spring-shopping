@@ -27,4 +27,13 @@ class MoneyTest {
         Assertions.assertThat(smallMoney.isSmallerThan(bigMoney)).isTrue();
         Assertions.assertThat(bigMoney.isSmallerThan(smallMoney)).isFalse();
     }
+
+    @Test
+    @DisplayName("두 Money를 합한다")
+    void plusMoney() {
+        Money money1 = new Money("1");
+        Money money2 = new Money("2");
+
+        Assertions.assertThat(money1.plus(money2)).isEqualTo(new Money("3"));
+    }
 }

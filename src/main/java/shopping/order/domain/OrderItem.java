@@ -31,6 +31,10 @@ public class OrderItem {
     protected OrderItem() {
     }
 
+    public Money getTotalPrice() {
+        return price.multiply(quantity.getValue());
+    }
+
     public Long getProductId() {
         return productId;
     }

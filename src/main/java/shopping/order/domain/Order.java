@@ -43,7 +43,7 @@ public class Order {
 
     private static Money calculateTotalMoney(List<OrderItem> orderItems) {
         return orderItems.stream()
-            .map(OrderItem::getPrice)
+            .map(OrderItem::getTotalPrice)
             .reduce(Money.ZERO, Money::plus);
     }
 

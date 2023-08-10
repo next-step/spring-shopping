@@ -23,13 +23,13 @@ class OrderMapperTest {
         Product product1 = new Product(1L, "피자", "imageUrl", "10000");
         Product product2 = new Product(2L, "치킨", "imageUrl", "20000");
         Member member = new Member(1L, "email", "password");
-        Cart cart = new Cart(1L, List.of(new CartItem(product1, member), new CartItem(product2, member)));
+        Cart cart = new Cart(1L, List.of(new CartItem(product1, member, 2), new CartItem(product2, member)));
 
         // when
         Order order = orderMapper.mapToOrder(member.getId(), cart);
 
         // then
         assertThat(order.getOrderItems()).hasSize(2);
-        assertThat(order.getTotalPrice()).isEqualTo(new Money("30000"));
+        assertThat(order.getTotalPrice()).isEqualTo(new Money("40000"));
     }
 }

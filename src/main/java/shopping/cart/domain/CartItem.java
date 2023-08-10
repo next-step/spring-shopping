@@ -49,6 +49,16 @@ public class CartItem {
         this.quantity = quantity;
         this.imageUrl = imageUrl;
     }
+    public CartItem(Product product, Member member, int quantity) {
+        this(member.getId(),
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                new Quantity(quantity),
+                product.getImage().toUrl()
+        );
+    }
+
     public CartItem(Product product, Member member) {
         this(member.getId(),
              product.getId(),
