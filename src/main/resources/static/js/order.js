@@ -6,20 +6,19 @@ const requestOrder = () => {
         return;
     }
 
-    fetch('/orders', {
+    fetch('/api/orders', {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
         }
     }).then((response) => {
-        if (response.ok) {
-            // 주문이 성공적으로 생성되었을 경우, 주문 상세 페이지로 이동
-            window.location.href = '/order.html'; // Replace with your actual order detail page URL
-        } else {
-            // 주문 생성에 실패한 경우
+        if (!response.ok) {
             console.error('Failed to create order.');
         }
+        return response.json();
+    }).then(data =>  {
+        window.location.href = '/orders/' + data.id;
     }).catch((error) => {
         console.error('An error occurred:', error);
     });

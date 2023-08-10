@@ -58,4 +58,8 @@ public class OrderItemResponse {
     public int getQuantity() {
         return quantity;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
