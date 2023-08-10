@@ -1,10 +1,13 @@
 package shopping.domain.entity;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import shopping.exception.ErrorCode;
+import shopping.exception.ShoppingException;
 
 @Entity
 @Table(name = "users")
@@ -27,6 +30,12 @@ public class UserEntity {
 
     public UserEntity(final String email, final String password) {
         this(null, email, password);
+    }
+
+    public void matchPassword(final String password) {
+        if (!Objects.equals(this.password, password)) {
+            throw new ShoppingException(ErrorCode.INVALID_PASSWORD);
+        }
     }
 
     public Long getId() {
