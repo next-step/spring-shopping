@@ -3,10 +3,10 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import shopping.domain.Email;
 import shopping.domain.Member;
+import shopping.domain.TokenProvider;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
 
 
@@ -14,9 +14,9 @@ import shopping.repository.MemberRepository;
 public class AuthService {
 
     private final MemberRepository memberRepository;
-    private final TokenManager tokenProvider;
+    private final TokenProvider tokenProvider;
 
-    public AuthService(MemberRepository memberRepository, TokenManager tokenProvider) {
+    public AuthService(MemberRepository memberRepository, TokenProvider tokenProvider) {
         this.memberRepository = memberRepository;
         this.tokenProvider = tokenProvider;
     }

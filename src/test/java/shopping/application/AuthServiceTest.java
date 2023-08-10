@@ -9,10 +9,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Email;
 import shopping.domain.Member;
+import shopping.domain.TokenProvider;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
+import shopping.infrastructure.JwtTokenProvider;
 import shopping.repository.MemberRepository;
 
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class AuthServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
-    private TokenManager tokenProvider;
+    private TokenProvider tokenProvider;
 
     @Nested
     @DisplayName("login 메소드는")

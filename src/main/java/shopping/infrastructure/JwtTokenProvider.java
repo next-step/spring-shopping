@@ -1,23 +1,24 @@
-package shopping.jwt;
+package shopping.infrastructure;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import shopping.domain.TokenProvider;
 import shopping.exception.TokenException;
 
 import java.util.Date;
 
 @Component
-public class TokenManager {
+public class JwtTokenProvider implements TokenProvider {
 
     private static final long TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
     public static final String MEMBER_ID_KEY = "memberId";
 
     private final String secretKey;
 
-    public TokenManager(@Value("${shopping.token.secretKey}") String secretKey) {
+    public JwtTokenProvider(@Value("${shopping.token.secretKey}") String secretKey) {
         this.secretKey = secretKey;
     }
 

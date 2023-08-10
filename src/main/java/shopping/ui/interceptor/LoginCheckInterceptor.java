@@ -1,32 +1,31 @@
 package shopping.ui.interceptor;
 
-import org.springframework.web.servlet.HandlerInterceptor;
-import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
-import shopping.repository.MemberRepository;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.HandlerInterceptor;
+import shopping.domain.TokenProvider;
+import shopping.exception.AuthException;
+import shopping.repository.MemberRepository;
 
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
     private final MemberRepository memberRepository;
 
-    public LoginCheckInterceptor(MemberRepository memberRepository, TokenManager tokenManager) {
+    public LoginCheckInterceptor(MemberRepository memberRepository, TokenProvider tokenProvider) {
         this.memberRepository = memberRepository;
-        this.tokenManager = tokenManager;
+        this.tokenProvider = tokenProvider;
     }
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    private final TokenManager tokenManager;
+    private final TokenProvider tokenProvider;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String authorization = request.getHeader(AUTHORIZATION_HEADER);
         if (authorization != null && authorization.startsWith(BEARER_PREFIX)) {
-            Long memberId = tokenManager.decodeToken(authorization.substring(BEARER_PREFIX.length()));
+            Long memberId = tokenProvider.decodeToken(authorization.substring(BEARER_PREFIX.length()));
 
             memberRepository.findById(memberId)
                     .orElseThrow(() -> new AuthException("memberId에 해당하는 회원이 존재하지 않습니다"));

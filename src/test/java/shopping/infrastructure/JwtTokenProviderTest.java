@@ -1,4 +1,4 @@
-package shopping.jwt;
+package shopping.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
@@ -9,15 +9,16 @@ import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import shopping.domain.TokenProvider;
 import shopping.exception.TokenException;
 
-@DisplayName("TokenManager 클래스")
-class TokenManagerTest {
+@DisplayName("JwtTokenProvider 클래스")
+class JwtTokenProviderTest {
 
     private static final String TEST_SECRET_KEY = "this is test secret key";
     private static final int TEST_TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
 
-    private TokenManager tokenManager = new TokenManager(TEST_SECRET_KEY);
+    private final TokenProvider tokenProvider = new JwtTokenProvider(TEST_SECRET_KEY);
 
     @DisplayName("createToken 메서드는")
     @Nested
@@ -30,7 +31,7 @@ class TokenManagerTest {
             Long memberId = 1L;
 
             // when
-            String jwt = tokenManager.createToken(memberId);
+            String jwt = tokenProvider.createToken(memberId);
 
             // then
             assertThat(jwt).isNotBlank();
@@ -46,10 +47,10 @@ class TokenManagerTest {
         void returnMemberIdFromJwt() {
             // given
             Long memberId = 1L;
-            String jwt = tokenManager.createToken(memberId);
+            String jwt = tokenProvider.createToken(memberId);
 
             // when
-            Long decodedMemberId = tokenManager.decodeToken(jwt);
+            Long decodedMemberId = tokenProvider.decodeToken(jwt);
 
             // then
             assertThat(decodedMemberId).isEqualTo(memberId);
@@ -62,7 +63,7 @@ class TokenManagerTest {
             String jwt = "malformed jwt token";
 
             // when
-            Exception exception = catchException(() -> tokenManager.decodeToken(jwt));
+            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
@@ -76,7 +77,7 @@ class TokenManagerTest {
             String jwt = null;
 
             // when
-            Exception exception = catchException(() -> tokenManager.decodeToken(jwt));
+            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
@@ -92,7 +93,7 @@ class TokenManagerTest {
             String jwt = createTestToken(differentSecretKey, new Date(), memberId);
 
             // when
-            Exception exception = catchException(() -> tokenManager.decodeToken(jwt));
+            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
@@ -108,7 +109,7 @@ class TokenManagerTest {
             String jwt = createTestToken(TEST_SECRET_KEY, expiredDate, memberId);
 
             // when
-            Exception exception = catchException(() -> tokenManager.decodeToken(jwt));
+            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
