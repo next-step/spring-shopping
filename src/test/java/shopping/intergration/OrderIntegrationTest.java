@@ -8,12 +8,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import shopping.dto.response.OrderCreateResponse;
+import shopping.dto.response.OrderResponse;
+import shopping.dto.response.OrderResponses;
 import shopping.exception.ApiExceptionResponse;
+import shopping.exception.ErrorCode;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static shopping.intergration.helper.CartItemHelper.addCartItem;
 import static shopping.intergration.helper.LogInHelper.login;
 import static shopping.intergration.helper.OrderHelper.*;
@@ -64,7 +67,21 @@ class OrderIntegrationTest extends IntegrationTest {
 
         final ExtractableResponse<Response> response = readOrderRequest(accessToken, orders);
 
+
+        final OrderResponse orderResponse = extractObject(response, OrderResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(orderResponse.getOrderId()).isNotNull();
+        assertThat(orderResponse.getOrderPrice()).isEqualTo(23000);
+        assertThat(orderResponse.getExchangeRate()).isCloseTo(1300.0, within(0.001));
+        assertThat(orderResponse.getExchangedPrice()).isCloseTo(23000 / 1300.0, within(0.001));
+        assertThat(orderResponse.getOrderItems())
+                .hasSize(2)
+                .extracting("image", "name", "price", "quantity")
+                .contains(
+                        tuple("/image/Chicken.png", "Chicken", 10000, 1),
+                        tuple("/image/Pizza.png", "Pizza", 13000, 1)
+                );
+
     }
 
 
@@ -75,13 +92,21 @@ class OrderIntegrationTest extends IntegrationTest {
         addCartItem(accessToken, 1L);
         addCartItem(accessToken, 2L);
         createOrders(accessToken);
-        addCartItem(accessToken, 1L);
+        addCartItem(accessToken, 2L);
         addCartItem(accessToken, 2L);
         createOrders(accessToken);
 
         final ExtractableResponse<Response> response = readOrdersRequest(accessToken);
 
+        final OrderResponses orderResponses = extractObject(response, OrderResponses.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(orderResponses.getOrders())
+                .hasSize(2)
+                .extracting("orderPrice", "exchangedPrice")
+                .contains(
+                        tuple(23000L, Math.round((23000 / 1300.0) * 1000) / 1000.0),
+                        tuple(26000L, Math.round((26000 / 1300.0) * 1000) / 1000.0)
+                );
     }
 
     @Test
@@ -92,6 +117,7 @@ class OrderIntegrationTest extends IntegrationTest {
         final ExtractableResponse<Response> response = createOrderRequest(accessToken);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(extractObject(response, ApiExceptionResponse.class).getMessage()).isEqualTo("해당 장바구니가 비어있습니다.");
+        assertThat(extractObject(response, ApiExceptionResponse.class).getMessage())
+                .isEqualTo(ErrorCode.EMPTY_CART_ITEM.getMessage());
     }
 }
