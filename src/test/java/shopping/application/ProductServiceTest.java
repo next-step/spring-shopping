@@ -43,7 +43,7 @@ class ProductServiceTest {
             List<ProductResponse> result = productService.findAll();
 
             // then
-            assertThat(result).extracting("name").containsExactlyInAnyOrder("치킨", "피자");
+            assertThat(result).extracting("name").containsExactlyInAnyOrder("productName", "productName");
 
         }
     }

@@ -1,27 +1,9 @@
 package shopping.repository;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import shopping.domain.Product;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-@Repository
-public class ProductRepository {
-
-    private final EntityManager entityManager;
-
-    public ProductRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    public List<Product> findAll() {
-        return entityManager.createQuery("select p from Product p", Product.class)
-                .getResultList();
-    }
-
-    public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(entityManager.find(Product.class, id));
-    }
 }
+

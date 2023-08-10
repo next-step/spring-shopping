@@ -5,7 +5,7 @@ import shopping.domain.Product;
 
 public class DomainFixture {
 
-    private final static String EMAIL = "email";
+    private final static String EMAIL = "woowa@woowa.com";
     private final static String PASSWORD = "password";
     public static final String PRODUCT_NAME = "productName";
     public static final String IMAGE_URL = "imageUrl";

@@ -39,7 +39,7 @@ public class OrderProductService {
         this.currencyLayerManager = currencyLayer;
     }
 
-    public long orderProduct(Long memberId) {
+    public Order orderProduct(Long memberId) {
         Member member = getMember(memberId);
 
         List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(member.getId());

@@ -183,7 +183,7 @@ public class CartProductServiceTest {
             cartProductService.updateCartProduct(cartProduct.getId(), updateRequest);
 
             // then
-            verify(cartProductRepository).updateById(cartProduct.getId(), updateRequest.getQuantity());
+            verify(cartProductRepository).findById(cartProduct.getId());
         }
 
         @Test

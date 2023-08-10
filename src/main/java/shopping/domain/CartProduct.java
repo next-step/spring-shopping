@@ -79,6 +79,10 @@ public class CartProduct {
         return product.getPrice() * quantity;
     }
 
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }
@@ -94,4 +98,6 @@ public class CartProduct {
     public int getQuantity() {
         return quantity;
     }
+
+
 }

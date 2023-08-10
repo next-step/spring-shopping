@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.OrderProductService;
+import shopping.domain.Order;
 import shopping.dto.OrderDetailResponse;
 import shopping.dto.OrderResponse;
 import shopping.ui.argumentresolver.Login;
@@ -30,9 +31,9 @@ public class OrderProductRestController {
 
     @PostMapping
     public ResponseEntity<Void> orderProduct(@Login Long memberId) {
-        long orderId = orderProductService.orderProduct(memberId);
+        Order order = orderProductService.orderProduct(memberId);
         return ResponseEntity.ok()
-            .header(HttpHeaders.LOCATION, "/order-detail/" + orderId)
+            .header(HttpHeaders.LOCATION, "/order-detail/" + order.getId())
             .build();
     }
 
