@@ -22,7 +22,7 @@ public class ExchangeRate {
 
     private void validate(final double value) {
         if (Double.isInfinite(value)) {
-            throw new ShoppingException(ShoppingErrorType.INVALID_EXCHANGE_RATE);
+            throw new ShoppingException(ShoppingErrorType.ERROR_EXCHANGE_RATE);
         }
     }
 
