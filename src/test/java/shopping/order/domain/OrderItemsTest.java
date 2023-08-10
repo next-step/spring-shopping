@@ -13,9 +13,9 @@ class OrderItemsTest {
     @DisplayName("주문 상품들의 전체 price를 반환한다.")
     void getAllPrice() {
         OrderItems orderItems = new OrderItems();
-        orderItems.add(new OrderItem(1L, "테스트 상품1", new Money("1000.00"), new Image("image") , new Quantity(3), null));
-        orderItems.add(new OrderItem(1L, "테스트 상품2", new Money("2000.00"), new Image("image"), new Quantity(2), null));
-        orderItems.add(new OrderItem(1L, "테스트 상품3", new Money("500.00"), new Image("image"), new Quantity(10), null));
+        orderItems.add(new OrderItem(1L, "테스트 상품1", new Money("1000.00"), new Image("image") , new Quantity(3)));
+        orderItems.add(new OrderItem(1L, "테스트 상품2", new Money("2000.00"), new Image("image"), new Quantity(2)));
+        orderItems.add(new OrderItem(1L, "테스트 상품3", new Money("500.00"), new Image("image"), new Quantity(10)));
 
         Money allOrderMoney = orderItems.getAllOrderMoney();
 

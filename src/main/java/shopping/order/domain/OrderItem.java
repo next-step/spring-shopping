@@ -35,19 +35,18 @@ public class OrderItem {
     }
 
     public OrderItem(Long productId, String productName, Money productPrice, Image productImage,
-        Quantity quantity, Order order) {
+        Quantity quantity) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.quantity = quantity;
-        this.order = order;
     }
 
     public OrderItem(Long productId, String productName, String productPrice, String productImage,
-        int quantity, Order order) {
+        int quantity) {
         this(productId, productName, new Money(productPrice), new Image(productImage),
-            new Quantity(quantity), order);
+            new Quantity(quantity));
     }
 
     void updateOrder(Order order) {

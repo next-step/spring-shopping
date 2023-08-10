@@ -196,7 +196,7 @@ class OrderServiceTest {
 
     private void makeOrderItem(Product product, int quantity, Order order) {
         OrderItem chickenOrderItem = new OrderItem(product.getId(), product.getName(), product.getPrice(), product.getImage(), new Quantity(
-            quantity), null);
+            quantity));
         order.addOrderItem(chickenOrderItem);
     }
 }

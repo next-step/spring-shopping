@@ -33,7 +33,7 @@ class OrderRepositoryTest {
         productRepository.save(product);
         Order order = new Order(member.getId());
         OrderItem orderItem = new OrderItem(product.getId(), product.getName(), product.getPrice(),
-            product.getImage(), new Quantity(3), null);
+            product.getImage(), new Quantity(3));
         order.addOrderItem(orderItem);
 
         orderRepository.save(order);
@@ -60,7 +60,6 @@ class OrderRepositoryTest {
 
         List<Order> allOrders = orderRepository.findAllOrderByMemberId(member.getId());
 
-        Assertions.assertThat(allOrders).hasSize(3);
-        Assertions.assertThat(allOrders).containsExactly(order1, order2, order3);
+        Assertions.assertThat(allOrders).hasSize(3).containsExactly(order1, order2, order3);
     }
 }

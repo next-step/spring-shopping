@@ -20,8 +20,7 @@ public class ProductCartItemDto {
             product.getName(),
             product.getPrice(),
             product.getImage(),
-            cartItem.getQuantity(),
-            null
+            cartItem.getQuantity()
         );
     }
 
