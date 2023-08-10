@@ -36,6 +36,10 @@ public class OrderItem {
         return new OrderItem(cartItem.getId(), cartItem.getProduct(), cartItem.getQuantity(), order);
     }
 
+    public Money totalPrice() {
+        return product.getPrice().multiply(quantity);
+    }
+
     public Long getId() {
         return id;
     }

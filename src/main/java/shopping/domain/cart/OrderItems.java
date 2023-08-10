@@ -68,8 +68,7 @@ public class OrderItems {
 
     public Money totalPrice() {
         return items.stream()
-                .map(OrderItem::getProduct)
-                .map(Product::getPrice)
+                .map(OrderItem::totalPrice)
                 .reduce(new Money(0.0), Money::sum);
     }
 

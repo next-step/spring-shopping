@@ -109,7 +109,7 @@ class OrderItemsTest {
         );
         User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
-                .map(product -> new CartItem(user.getId(), product))
+                .map(product -> new CartItem(user.getId(), product).updateQuantity(2))
                 .collect(Collectors.toList());
 
         ExchangeRate exchangeRate = new ExchangeRate(1200.0, CurrencyType.USD, CurrencyType.KRW);
@@ -117,10 +117,10 @@ class OrderItemsTest {
         OrderItems orderItems = OrderItems.from(cartItems, order);
 
         // when
-        Money totalMoney = orderItems.totalPrice();
+        Money totalPrice = orderItems.totalPrice();
 
         // then
-        assertThat(totalMoney).isEqualTo(new Money(35000.0));
+        assertThat(totalPrice).isEqualTo(new Money(70000.0));
     }
 
     @DisplayName("환율 기반 총합 계산")

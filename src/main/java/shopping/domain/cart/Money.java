@@ -44,6 +44,10 @@ public class Money {
         return new Money(price / exchangeRate.getRate(), exchangeRate.getSource());
     }
 
+    public Money multiply(Quantity quantity) {
+        return new Money(price * quantity.getQuantity(), type);
+    }
+
     public static Money sum(Money price, Money other) {
         return new Money(price.price + other.price);
     }
