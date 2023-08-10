@@ -84,10 +84,10 @@ public class CartService implements CartUseCase {
     }
 
     private Cart getCartByUserId(long userId) {
-        if (!cartRepository.existCartByUserId(userId)) {
-            cartRepository.newCart(userId);
+        if (cartRepository.existCartByUserId(userId)) {
+            return cartRepository.getByUserId(userId);
         }
-        return cartRepository.getByUserId(userId);
+        return cartRepository.newCart(userId);
     }
 
     private Product getProductById(long productId) {
