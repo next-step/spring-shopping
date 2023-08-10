@@ -1,9 +1,11 @@
 package shopping.domain.cart;
 
 import java.util.Objects;
+import javax.persistence.Embeddable;
 import shopping.exception.CartExceptionType;
 import shopping.exception.ShoppingException;
 
+@Embeddable
 public class CartProductQuantity {
 
     private final int value;
