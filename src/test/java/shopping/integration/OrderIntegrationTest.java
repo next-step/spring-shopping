@@ -8,11 +8,12 @@ import org.springframework.http.MediaType;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
+import shopping.integration.util.OrderUtil;
+
+import static shopping.integration.util.OrderUtil.ORDER_API_URL;
 
 @IntegrationTest
 class OrderIntegrationTest {
-
-    private static final String ORDER_API_URL = "/api/orders";
 
     @Test
     @DisplayName("주문에 성공한다")
@@ -33,5 +34,27 @@ class OrderIntegrationTest {
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
                 .header("Location", ORDER_API_URL + "/1");
+    }
+
+    @Test
+    @DisplayName("주문의 상세 정보를 조회한다")
+    void findOrder() {
+        // given
+        final String accessToken = AuthUtil.accessToken();
+
+        CartUtil.createCartItem(accessToken, 1L);
+        CartUtil.createCartItem(accessToken, 1L);
+        CartUtil.createCartItem(accessToken, 2L);
+
+        final String url = OrderUtil.createOrder(accessToken).header("Location");
+
+        // when & then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get(url)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
     }
 }
