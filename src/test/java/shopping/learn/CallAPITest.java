@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Disabled
 @SpringBootTest
-@DisplayName("외부 API 사용 테스트")
+@DisplayName("외부 API 사용 학습 테스트")
 class CallAPITest {
 
     @Value("${secret.currency.access_key}")
@@ -25,7 +25,7 @@ class CallAPITest {
 
     @DisplayName("환율 api 통신 실험")
     @Test
-    void test() {
+    void currencyApiLearnTest() {
         // given
         String location =
                 "http://api.currencylayer.com/live?currencies=KRW&access_key=" + ACCESS_KEY;
@@ -42,9 +42,9 @@ class CallAPITest {
         System.out.println(response.get("quotes").get("USDKRW"));
     }
 
-    @DisplayName("")
+    @DisplayName("웹 클라이언트 빈 생성 후 환율 api 테스트")
     @Test
-    void test2() {
+    void currencyApiLearnTestWithBean() {
         // given
 
         // when
