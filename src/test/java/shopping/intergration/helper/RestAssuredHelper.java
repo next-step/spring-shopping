@@ -21,7 +21,7 @@ public class RestAssuredHelper {
                 .body(new LoginRequest(email, password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login")
+                .when().post("/api/login")
                 .then().log().all().extract(), LoginResponse.class);
     }
 
