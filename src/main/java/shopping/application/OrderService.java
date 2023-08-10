@@ -69,7 +69,10 @@ public class OrderService {
             totalPrice += orderItem.calculateTotalPrice();
             orderItemResponses.add(OrderItemResponse.of(orderItem));
         }
-        return new OrderResponse(order.getId(), totalPrice, orderItemResponses, order.getExchangeRate());
+
+        final ExchangeRate exchangeRate = order.getExchangeRate();
+        final double dollarPrice = exchangeRate.exchange(totalPrice);
+        return new OrderResponse(order.getId(), totalPrice, orderItemResponses, order.getExchangeRate(), dollarPrice);
     }
 
     private static void validateOrderOwner(Long memberId, Order order) {

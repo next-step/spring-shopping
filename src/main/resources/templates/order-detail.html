@@ -88,7 +88,7 @@
             document.querySelector('.order-item-list').innerHTML = element;
             document.querySelector('.order-exchange-rate').innerText = `${data.exchangeRate}`; <!-- 환율 -->
             document.querySelector('.order-total-price').innerText = `${data.totalPrice} 원`; <!-- 아이템 가격 및 수량 -->
-            document.querySelector('.order-usd-total-price').innerText = `${(data.totalPrice / data.exchangeRate).toFixed(2)} Dollar`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-usd-total-price').innerText = `${data.dollarPrice} Dollar`; <!-- 아이템 가격 및 수량 -->
         }).catch((error) => {
             console.error(error);
             alert('잘못된 접근입니다.')

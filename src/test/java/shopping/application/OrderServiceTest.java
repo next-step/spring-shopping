@@ -72,6 +72,8 @@ class OrderServiceTest {
                 .sum();
             assertThat(result.getTotalPrice()).isEqualTo(expectedTotalPrice);
             assertThat(result.getExchangeRate()).isEqualTo(exchangeRate.getValue());
+            assertThat(result.getExchangeRate()).isPositive();
+            assertThat(result.getDollarPrice()).isPositive();
         }
 
         @DisplayName("사용자 정보가 유효하지 않으면 MemberException 을 던진다.")
@@ -129,6 +131,8 @@ class OrderServiceTest {
                 .mapToLong(orderItem -> orderItem.calculateTotalPrice())
                 .sum();
             assertThat(result.getTotalPrice()).isEqualTo(expectedTotalPrice);
+            assertThat(result.getExchangeRate()).isPositive();
+            assertThat(result.getDollarPrice()).isPositive();
         }
 
         @DisplayName("주문 id 와 일치하는 주문이 없으면 OrderException 을 던진다")

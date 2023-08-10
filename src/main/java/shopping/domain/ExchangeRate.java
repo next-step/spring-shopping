@@ -19,4 +19,9 @@ public class ExchangeRate {
     public double getValue() {
         return value;
     }
+
+    public double exchange(long totalPrice) {
+        final double result = totalPrice / value;
+        return Math.round(result * 100) / 100.0;
+    }
 }

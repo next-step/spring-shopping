@@ -13,14 +13,18 @@ public class OrderResponse {
 
     private double exchangeRate;
 
+    private double dollarPrice;
+
     private OrderResponse() {
     }
 
-    public OrderResponse(Long id, long totalPrice, List<OrderItemResponse> orderItems, ExchangeRate exchangeRate) {
+    public OrderResponse(Long id, long totalPrice, List<OrderItemResponse> orderItemResponses,
+        ExchangeRate exchangeRate, double dollarPrice) {
         this.id = id;
         this.totalPrice = totalPrice;
-        this.orderItems = orderItems;
+        this.orderItems = orderItemResponses;
         this.exchangeRate = exchangeRate.getValue();
+        this.dollarPrice = dollarPrice;
     }
 
     public Long getId() {
@@ -38,5 +42,9 @@ public class OrderResponse {
 
     public double getExchangeRate() {
         return exchangeRate;
+    }
+
+    public double getDollarPrice() {
+        return dollarPrice;
     }
 }
