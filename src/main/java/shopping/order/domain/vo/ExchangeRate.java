@@ -21,6 +21,10 @@ public class ExchangeRate {
         this.value = new BigDecimal(String.valueOf(value));
     }
 
+    public ExchangeRate(String value) {
+        this(new BigDecimal(value));
+    }
+
     private void validateExchangeRate(BigDecimal exchangeRate) {
         if (exchangeRate.compareTo(new BigDecimal("0")) < 0) {
             throw new WooWaException("환율이 음수일 수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);

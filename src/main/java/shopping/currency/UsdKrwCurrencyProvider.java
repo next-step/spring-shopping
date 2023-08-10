@@ -1,7 +1,6 @@
 package shopping.currency;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import java.math.BigDecimal;
 import java.net.URI;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -11,24 +10,25 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shopping.exception.WooWaException;
+import shopping.order.domain.vo.ExchangeRate;
 
 @Component
 @Profile("!test")
-public class CurrencyProviderImpl implements CurrencyProvider {
+public class UsdKrwCurrencyProvider implements CurrencyProvider {
 
     private static final String URL = "http://apilayer.net/api/live";
     private final String accessKey;
     private final RestTemplate restTemplate;
 
-    public CurrencyProviderImpl(@Value("${currency.api.key}") String accessKey, RestTemplate restTemplate) {
+    public UsdKrwCurrencyProvider(@Value("${currency.api.key}") String accessKey, RestTemplate restTemplate) {
         this.accessKey = accessKey;
         this.restTemplate = restTemplate;
     }
 
-    public BigDecimal findUsdKrwCurrency() {
+    public ExchangeRate findUsdKrwCurrency() {
         ResponseEntity<JsonNode> response = restTemplate.getForEntity(makeUrl(), JsonNode.class);
         validResponseHttpStatus(response);
-        return new BigDecimal(parseResponseBodyUsdKrw(response));
+        return new ExchangeRate(parseResponseBodyUsdKrw(response));
     }
 
     private void validResponseHttpStatus(ResponseEntity<JsonNode> response) {

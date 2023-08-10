@@ -49,7 +49,7 @@ public class OrderService {
 
         validCartItems(productCartItemDtos);
 
-        Order order = new Order(loggedInMember.getId(), currencyProvider.findUsdKrwCurrency());
+        Order order = new Order(loggedInMember.getId(), currencyProvider.findUsdKrwCurrency().getValue());
 
         productCartItemDtos.stream()
             .map(ProductCartItemDto::toOrderItem)

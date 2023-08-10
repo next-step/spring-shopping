@@ -1,8 +1,8 @@
 package shopping.currency;
 
-import java.math.BigDecimal;
+import shopping.order.domain.vo.ExchangeRate;
 
 public interface CurrencyProvider {
 
-    BigDecimal findUsdKrwCurrency();
+    ExchangeRate findUsdKrwCurrency();
 }

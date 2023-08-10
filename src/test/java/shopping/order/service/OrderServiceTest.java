@@ -21,6 +21,7 @@ import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderItem;
+import shopping.order.domain.vo.ExchangeRate;
 import shopping.order.dto.request.OrderCreationRequest;
 import shopping.order.dto.response.OrderDetailResponse;
 import shopping.order.dto.response.OrdersResponse;
@@ -48,7 +49,7 @@ class OrderServiceTest {
     @Test
     @DisplayName("주문 생성 메서드 테스트")
     void addOrder() {
-        Mockito.when(currencyProvider.findUsdKrwCurrency()).thenReturn(new BigDecimal("1300"));
+        Mockito.when(currencyProvider.findUsdKrwCurrency()).thenReturn(new ExchangeRate("1300"));
         Member member = makeMember();
 
         Product chicken = makeProduct("치킨", "10000");
@@ -106,7 +107,7 @@ class OrderServiceTest {
         OrderDetailResponse findOrder = orderService.getOrderDetail(loggedInMember, order.getId());
 
         Assertions.assertThat(findOrder).extracting("orderId").isEqualTo(order.getId());
-        Assertions.assertThat(findOrder).extracting("totalPrice").isEqualTo(new BigDecimal("63000"));
+        Assertions.assertThat(findOrder).extracting("totalPrice").isEqualTo("63000");
     }
 
     @Test
