@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ProductRepositoryTest {
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Test
     @DisplayName("모든 상품을 조회한다.")

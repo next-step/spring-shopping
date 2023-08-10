@@ -21,4 +21,8 @@ public class EntityFixture {
                 new Quantity(quantity)
         );
     }
+
+    public static OrderItem createOrderItem() {
+        return createOrderItem(1, 1, 1);
+    }
 }

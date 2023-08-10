@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserRepositoryTest {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("아이디와 비밀번호가 일치하면 User를 반환한다.")
