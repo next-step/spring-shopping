@@ -1,5 +1,6 @@
 package shopping.domain.entity.fixture;
 
+import shopping.domain.ExchangeRate;
 import shopping.domain.entity.*;
 
 import java.util.List;
@@ -43,7 +44,11 @@ public class EntityFixture {
         return createOrderItemWithId(1, 1, 1);
     }
 
+    public static Order createOrder(final long userId) {
+        return Order.of(userId, List.of(createOrderItem()), new ExchangeRate(1.0));
+    }
+
     public static Order createOrderWithId() {
-        return Order.of(1L, 1L, List.of(createOrderItemWithId()));
+        return Order.of(1L, 1L, List.of(createOrderItemWithId()), new ExchangeRate(1.0));
     }
 }

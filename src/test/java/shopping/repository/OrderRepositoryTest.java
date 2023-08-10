@@ -23,8 +23,8 @@ class OrderRepositoryTest {
     @DisplayName("주문 번호와 유저 번호로 주문을 찾는다.")
     void findByIdAndUserId() {
         // given
-        final Long userId = 1L;
-        final Order order = Order.of(userId, List.of(EntityFixture.createOrderItem()));
+        final long userId = 1L;
+        final Order order = EntityFixture.createOrder(userId);
         final Long id = orderRepository.save(order).getId();
 
         // when
@@ -38,8 +38,8 @@ class OrderRepositoryTest {
     @DisplayName("주문 번호에 해당하는 주문이 없을 때 Optional Empty를 반환한다.")
     void findNullByIdAndUserId() {
         // given
-        final Long userId = 1L;
-        final Order order = Order.of(userId, List.of(EntityFixture.createOrderItem()));
+        final long userId = 1L;
+        final Order order = EntityFixture.createOrder(userId);
         final Long id = orderRepository.save(order).getId();
 
         // when
@@ -53,9 +53,9 @@ class OrderRepositoryTest {
     @DisplayName("유저 번호로 주문을 찾는다.")
     void findAllByUserId() {
         // given
-        final Long userId = 1L;
+        final long userId = 1L;
         final List<OrderItem> orderItems = List.of(EntityFixture.createOrderItem());
-        final Order order = Order.of(userId, orderItems);
+        final Order order = EntityFixture.createOrder(userId);
         orderRepository.save(order);
 
         // when

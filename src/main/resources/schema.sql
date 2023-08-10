@@ -30,9 +30,10 @@ CREATE TABLE cart_items
 
 CREATE TABLE orders
 (
-    id          bigint auto_increment primary key,
-    user_id     bigint not null,
-    total_price bigint not null,
+    id            bigint auto_increment primary key,
+    user_id       bigint not null,
+    total_price   bigint not null,
+    exchange_rate double not null,
     foreign key (user_id) references users (id) on delete cascade
 );
 

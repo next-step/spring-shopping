@@ -1,5 +1,7 @@
 package shopping.domain.entity;
 
+import shopping.domain.ExchangeRate;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,31 +26,47 @@ public class Order {
     @AttributeOverride(name = "price", column = @Column(name = "total_price"))
     private Price totalPrice;
 
+    @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "exchange_rate"))
+    private ExchangeRate exchangeRate;
+
     protected Order() {
     }
 
     private Order(final Long id,
                   final Long userId,
                   final List<OrderItem> items,
-                  final Price totalPrice) {
+                  final Price totalPrice,
+                  final ExchangeRate exchangeRate) {
         this.id = id;
         this.userId = userId;
         this.items = items;
         this.totalPrice = totalPrice;
+        this.exchangeRate = exchangeRate;
     }
 
     private Order(final Long userId,
                   final List<OrderItem> items,
-                  final Price totalPrice) {
-        this(null, userId, items, totalPrice);
+                  final Price totalPrice,
+                  final ExchangeRate exchangeRate) {
+        this(null, userId, items, totalPrice, exchangeRate);
     }
 
-    public static Order of(final Long id, final Long userId, final List<OrderItem> orderItems) {
-        return new Order(id, userId, orderItems, calculateTotalPrice(orderItems));
+    public static Order of(final Long id,
+                           final Long userId,
+                           final List<OrderItem> orderItems,
+                           final ExchangeRate exchangeRate) {
+        return new Order(id, userId, orderItems, calculateTotalPrice(orderItems), exchangeRate);
     }
 
-    public static Order of(final Long userId, final List<OrderItem> orderItems) {
-        return new Order(userId, orderItems, calculateTotalPrice(orderItems));
+    public static Order of(final Long userId,
+                           final List<OrderItem> orderItems,
+                           final ExchangeRate exchangeRate) {
+        return new Order(userId, orderItems, calculateTotalPrice(orderItems), exchangeRate);
+    }
+
+    public double applyExchangeRate() {
+        throw new UnsupportedOperationException();
     }
 
     private static Price calculateTotalPrice(final List<OrderItem> orderItems) {
@@ -69,5 +87,9 @@ public class Order {
 
     public Price getTotalPrice() {
         return totalPrice;
+    }
+
+    public ExchangeRate getExchangeRate() {
+        return exchangeRate;
     }
 }

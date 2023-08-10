@@ -1,10 +1,15 @@
 package shopping.domain;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class ExchangeRate {
 
-    private final double value;
+    private double value;
+
+    protected ExchangeRate() {
+    }
 
     public ExchangeRate(final double value) {
         this.value = value;
