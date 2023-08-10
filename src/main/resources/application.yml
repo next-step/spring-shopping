@@ -9,10 +9,5 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
-
-security:
-  jwt:
-    secret-key: 57aaefa3f13fcbdf27b6a06b21a9383bba4d03c6c2d1074c806513b8c8dd1fb0
-    expiration: 3600000
-  currency-layer:
-    access-key: 958a83fd584c6dc55821aac88d7db2c5
+  config:
+    import: security.yml
