@@ -78,10 +78,6 @@ public final class Cart {
         return productCounts;
     }
 
-    public boolean isEmptyCart() {
-        return productCounts.isEmpty();
-    }
-
     public void deleteAllProducts() {
         productCounts.clear();
     }

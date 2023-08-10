@@ -11,7 +11,7 @@ import shopping.auth.app.api.Token;
 import shopping.core.util.ErrorTemplate;
 import shopping.order.app.api.order.OrderUseCase;
 import shopping.order.app.api.order.request.OrderRequest;
-import shopping.order.app.exception.EmptyCartException;
+import shopping.order.app.exception.EmptyOrderException;
 
 @RestController
 public class OrderController {
@@ -35,9 +35,9 @@ public class OrderController {
                 .build();
     }
 
-    @ExceptionHandler(EmptyCartException.class)
+    @ExceptionHandler(EmptyOrderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ErrorTemplate handleEmptyCartException(EmptyCartException emptyCartException) {
+    ErrorTemplate handleEmptyCartException(EmptyOrderException emptyCartException) {
         return new ErrorTemplate(emptyCartException.getMessage());
     }
 

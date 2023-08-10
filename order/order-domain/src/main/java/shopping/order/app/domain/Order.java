@@ -5,58 +5,48 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import shopping.mart.app.domain.Cart;
-import shopping.mart.app.domain.Product;
-import shopping.order.app.exception.EmptyCartException;
+import shopping.order.app.exception.EmptyOrderException;
 
 public final class Order {
 
     private final BigInteger totalPrice;
     private final long userId;
-    private final Map<Product, Integer> products;
+    private final Map<Product, Integer> productsAmount;
 
-    public Order(Cart cart) {
-        validCart(cart);
-        this.userId = cart.getUserId();
-        this.products = cart.getProductCounts();
+    public Order(long userId, Map<Product, Integer> productsAmount) {
+        validCart(productsAmount);
+        this.userId = userId;
+        this.productsAmount = productsAmount;
         this.totalPrice = calculatePrice();
     }
 
-    private void validCart(Cart cart) {
-        if (cart == null || cart.isEmptyCart()) {
-            throw new EmptyCartException();
+    private void validCart(Map<Product, Integer> productsAmount) {
+        if (productsAmount == null || productsAmount.isEmpty()) {
+            throw new EmptyOrderException();
         }
     }
 
     public BigInteger calculatePrice() {
         BigInteger calculate = BigInteger.ZERO;
-        for (Entry<Product, Integer> entry : products.entrySet()) {
-            calculate = calculate.add(
-                    BigInteger.valueOf(Long.parseLong(entry.getKey().getPrice()) * entry.getValue()));
+        for (Entry<Product, Integer> entry : productsAmount.entrySet()) {
+            calculate = calculate.add(entry.getKey().calculate(entry.getValue()));
         }
         return calculate;
     }
 
     public Receipt purchase(Exchange exchange) {
-        List<ReceiptProduct> receiptProducts = products.entrySet()
-                .stream()
-                .map(entry -> new ReceiptProduct(entry.getKey().getId(), entry.getKey().getName(),
-                        new BigInteger(entry.getKey().getPrice()), entry.getKey().getImageUrl(), entry.getValue()))
+        List<ReceiptProduct> receiptProducts = productsAmount.entrySet().stream()
+                .map(entry -> entry.getKey().purchase(entry.getValue()))
                 .collect(Collectors.toList());
 
         return new Receipt(userId, receiptProducts, totalPrice, exchange.calculate(totalPrice), exchange.getRate());
     }
 
-    public String getTotalPrice() {
-        return totalPrice.toString();
-    }
-
-    public Map<Product, Integer> getProducts() {
-        return products;
+    public BigInteger getTotalPrice() {
+        return totalPrice;
     }
 
     public long getUserId() {
         return userId;
     }
-
 }
