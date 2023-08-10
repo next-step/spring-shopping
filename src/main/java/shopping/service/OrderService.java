@@ -46,8 +46,8 @@ public class OrderService {
         Double currencyRatio = currencyRequest.getQuotes().get(CurrencyCountry.USDKRW.getSourceTargetCountry());
 
         OrderEntity order = OrderEntity.by(user);
-        order.calculatePrice(cartItems, currencyRatio, CurrencyPoint.HUNDREDTH);
-        order.addOrderItems(cartItems, currencyRatio, CurrencyPoint.HUNDREDTH);
+        order.updatePrices(cartItems, currency, CurrencyPoint.HUNDREDTH);
+        order.addOrderItems(cartItems, currency, CurrencyPoint.HUNDREDTH);
 
         return new OrderIdResponse(orderRepository.save(order).getId());
     }

@@ -56,20 +56,20 @@ public class OrderEntity {
         );
     }
 
-    public void calculatePrice(List<CartItemEntity> cartItems,
+    public void updatePrices(List<CartItemEntity> cartItems,
         Double currencyRatio, CurrencyPoint currencyPoint) {
-        calculateTotalPrice(cartItems);
-        calculateTotalPriceUSD(currencyRatio, currencyPoint);
+        updateTotalPrice(cartItems);
+        updateTotalPriceUSD(currencyRatio, currencyPoint);
     }
 
-    private void calculateTotalPrice(List<CartItemEntity> cartItems) {
+    private void updateTotalPrice(List<CartItemEntity> cartItems) {
         this.totalPrice = cartItems.stream()
             .map(CartItemEntity::calculatePrice)
             .reduce(Integer::sum)
             .get();
     }
 
-    private void calculateTotalPriceUSD(Double currencyRatio, CurrencyPoint currencyPoint) {
+    private void updateTotalPriceUSD(Double currencyRatio, CurrencyPoint currencyPoint) {
         this.totalPriceUSD = Math.round(currencyPoint.getDigits() * totalPrice / currencyRatio) / currencyPoint.getDigits();
     }
 
