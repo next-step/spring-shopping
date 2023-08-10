@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.cart.domain.CartItem;
 import shopping.cart.dto.ProductCartItemDto;
-import shopping.common.vo.ImageStoreType;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.product.domain.Product;
@@ -31,8 +30,8 @@ class CartItemRepositoryTest {
         // given
         Member newMember = new Member("email", "zz");
         Member otherMember = new Member("other", "zz");
-        Product newProduct = new Product("치킨", new Image(ImageStoreType.NONE, "url"), "10000");
-        Product newProduct2 = new Product("피자", new Image(ImageStoreType.NONE, "url"), "100000");
+        Product newProduct = new Product("치킨", Image.from("url"), "10000");
+        Product newProduct2 = new Product("피자", Image.from("url"), "100000");
 
         memberRepository.save(newMember);
         memberRepository.save(otherMember);

@@ -3,7 +3,6 @@ package shopping.product.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.common.vo.ImageStoreType;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Image;
 
@@ -13,7 +12,7 @@ class ProductTest {
     @Test
     @DisplayName("price가 마이너스면 IllegealException을 반환한다")
     void throwExceptionIfPriceIsMinus() {
-        Image image = createLocalImage();
+        Image image = Image.from("name");
 
         Assertions.assertThatThrownBy(() -> new Product("name", image, "-1"))
             .isInstanceOf(WooWaException.class)
@@ -22,9 +21,5 @@ class ProductTest {
 
         Assertions.assertThatCode(() -> new Product("name", image, "0"))
             .doesNotThrowAnyException();
-    }
-
-    private static Image createLocalImage() {
-        return new Image(ImageStoreType.LOCAL_STATIC, "name");
     }
 }

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import shopping.common.domain.Quantity;
 import shopping.order.domain.OrderItem;
 import shopping.common.domain.Money;
+import shopping.product.domain.vo.Image;
 
 public class OrderItemResponse {
 
@@ -21,12 +22,12 @@ public class OrderItemResponse {
                              String name,
                              Money price,
                              Quantity quantity,
-                             String imageUrl) {
+                             Image image) {
         this.productId = productId;
         this.name = name;
         this.price = price.intValue();
         this.quantity = quantity.getValue();
-        this.imageUrl = imageUrl;
+        this.imageUrl = image.toUrl();
     }
 
     public static OrderItemResponse from(OrderItem orderItem) {
@@ -34,7 +35,7 @@ public class OrderItemResponse {
                                      orderItem.getName(),
                                      orderItem.getPrice(),
                                      orderItem.getQuantity(),
-                                     orderItem.getImageUrl());
+                                     orderItem.getImage());
     }
 
     public static List<OrderItemResponse> of(List<OrderItem> orderItems) {

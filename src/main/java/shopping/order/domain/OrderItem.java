@@ -2,10 +2,12 @@ package shopping.order.domain;
 
 import javax.persistence.*;
 
+import shopping.common.converter.ImageConverter;
 import shopping.common.domain.Quantity;
 import shopping.common.converter.MoneyConverter;
 import shopping.common.converter.QuantityConverter;
 import shopping.common.domain.Money;
+import shopping.product.domain.vo.Image;
 
 @Embeddable
 public class OrderItem {
@@ -16,14 +18,15 @@ public class OrderItem {
     private Money price;
     @Convert(converter = QuantityConverter.class)
     private Quantity quantity;
-    private String imageUrl;
+    @Convert(converter = ImageConverter.class)
+    private Image image;
 
-    public OrderItem(Long productId, String name, Money price, Quantity quantity, String imageUrl) {
+    public OrderItem(Long productId, String name, Money price, Quantity quantity, Image image) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
-        this.imageUrl = imageUrl;
+        this.image = image;
     }
 
     protected OrderItem() {
@@ -49,7 +52,7 @@ public class OrderItem {
         return quantity;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Image getImage() {
+        return image;
     }
 }

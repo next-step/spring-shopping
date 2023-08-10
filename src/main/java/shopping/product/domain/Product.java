@@ -3,8 +3,8 @@ package shopping.product.domain;
 import javax.persistence.*;
 
 import org.springframework.http.HttpStatus;
+import shopping.common.converter.ImageConverter;
 import shopping.common.converter.MoneyConverter;
-import shopping.common.vo.ImageStoreType;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Image;
 import shopping.common.domain.Money;
@@ -16,7 +16,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Embedded
+    @Convert(converter = ImageConverter.class)
     private Image image;
     @Convert(converter = MoneyConverter.class)
     private Money price;
@@ -46,7 +46,7 @@ public class Product {
     }
 
     public Product(String name, String imageUrl, String price) {
-        this(name, new Image(ImageStoreType.NONE, imageUrl), new Money(price));
+        this(name, new Image(imageUrl), new Money(price));
     }
 
     public Product(Long id, String name, String image, String price) {
@@ -73,6 +73,6 @@ public class Product {
     public void updateValues(String name, String price, String imageUrl) {
         this.name = name;
         this.price = new Money(price);
-        this.image = new Image(ImageStoreType.NONE, imageUrl);
+        this.image = new Image(imageUrl);
     }
 }

@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.persistence.*;
 
 import org.springframework.context.annotation.Configuration;
+import shopping.common.converter.ImageConverter;
 import shopping.common.domain.Quantity;
 import shopping.common.converter.MoneyConverter;
 import shopping.common.converter.QuantityConverter;
@@ -13,6 +14,7 @@ import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.product.domain.Product;
 import shopping.common.domain.Money;
+import shopping.product.domain.vo.Image;
 
 @Entity
 @Configuration
@@ -30,19 +32,20 @@ public class CartItem {
     private Money productPrice;
     @Convert(converter = QuantityConverter.class)
     private Quantity quantity;
-    private String imageUrl;
+    @Convert(converter = ImageConverter.class)
+    private Image image;
 
     protected CartItem() {
     }
 
     public CartItem(Long memberId, Long productId, String productName, Money productPrice,
-        Quantity quantity, String imageUrl) {
+        Quantity quantity, Image image) {
         this.memberId = memberId;
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.quantity = quantity;
-        this.imageUrl = imageUrl;
+        this.image = image;
     }
     public CartItem(Product product, Member member, int quantity) {
         this(member.getId(),
@@ -50,7 +53,7 @@ public class CartItem {
                 product.getName(),
                 product.getPrice(),
                 new Quantity(quantity),
-                product.getImage().toUrl()
+                product.getImage()
         );
     }
 
@@ -60,7 +63,7 @@ public class CartItem {
              product.getName(),
              product.getPrice(),
              new Quantity(DEFAULT_QUANTITY),
-             product.getImage().toUrl()
+             product.getImage()
         );
     }
 
@@ -108,7 +111,7 @@ public class CartItem {
         return quantity;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Image getImage() {
+        return image;
     }
 }

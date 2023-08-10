@@ -24,6 +24,6 @@ public class OrderMapper {
                              cartItem.getProductName(),
                              cartItem.getProductPrice(),
                              cartItem.getQuantity(),
-                             cartItem.getImageUrl());
+                             cartItem.getImage());
     }
 }
