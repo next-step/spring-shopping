@@ -10,7 +10,7 @@ import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 @Entity
-@Table(name = "users")
+@Table(name = "member")
 public class UserEntity {
 
     @Id @GeneratedValue
