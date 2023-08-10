@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import shopping.domain.CurrencyPoint;
 
 @Entity
 @Table(name = "orders")
@@ -47,28 +48,38 @@ public class OrderEntity {
         this(null, totalPrice, totalPriceUSD, user, null);
     }
 
-    public static OrderEntity from(UserEntity user,
-        List<CartItemEntity> cartItems,
-        Double currencyRatio
-    ) {
-        int totalPrice = cartItems.stream()
-            .map(CartItemEntity::calculatePrice)
-            .reduce((i1, i2) -> i1 + i2)
-            .get();
-        Double totalPriceUSD = totalPrice / currencyRatio;
+    public static OrderEntity by(UserEntity user) {
         return new OrderEntity(
-            totalPrice,
-            totalPriceUSD,
+            0,
+            0D,
             user
         );
     }
 
+    public void calculatePrice(List<CartItemEntity> cartItems,
+        Double currencyRatio, CurrencyPoint currencyPoint) {
+        calculateTotalPrice(cartItems);
+        calculateTotalPriceUSD(currencyRatio, currencyPoint);
+    }
+
+    private void calculateTotalPrice(List<CartItemEntity> cartItems) {
+        this.totalPrice = cartItems.stream()
+            .map(CartItemEntity::calculatePrice)
+            .reduce((i1, i2) -> i1 + i2)
+            .get();
+    }
+
+    private void calculateTotalPriceUSD(Double currencyRatio, CurrencyPoint currencyPoint) {
+        this.totalPriceUSD = Math.round(currencyPoint.getDigits() * totalPrice / currencyRatio) / currencyPoint.getDigits();
+    }
+
     public void addOrderItems(
         List<CartItemEntity> cartItems,
-        Double currencyRatio
+        Double currencyRatio,
+        CurrencyPoint currencyPoint
     ) {
         this.orderItems = cartItems.stream()
-            .map(cartItem -> OrderItemEntity.from(cartItem, this, currencyRatio))
+            .map(cartItem -> OrderItemEntity.from(cartItem, this, currencyRatio, currencyPoint))
             .collect(Collectors.toUnmodifiableList());
     }
 

@@ -16,9 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shopping.domain.CurrencyPoint;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
-import shopping.domain.entity.OrderItemEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
 import shopping.dto.request.CurrencyRequest;
@@ -64,7 +64,7 @@ public class OrderServiceTest {
         int totalPrice = 70000;
         OrderEntity order = new OrderEntity(totalPrice, 0D, user);
 
-        order.addOrderItems(cartItems, 1300D);
+        order.addOrderItems(cartItems, 1300D, CurrencyPoint.HUNDREDTH);
         lenient().when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
 
         // when
@@ -90,7 +90,7 @@ public class OrderServiceTest {
 
         int totalPrice = 70000;
         OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<>());
-        order.addOrderItems(cartItems, 1300D);
+        order.addOrderItems(cartItems, 1300D, CurrencyPoint.HUNDREDTH);
 
         OrderItemResponse chickenResponse = new OrderItemResponse(
             1L,
@@ -115,13 +115,11 @@ public class OrderServiceTest {
 
         // when
         Long orderId = 1L;
-        when(userRepository.getReferenceById(userId)).thenReturn(user);
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
 
-        OrderResponse orderResponse = orderService.findOrder(orderId, userId);
+        OrderResponse orderResponse = orderService.findOrder(orderId);
 
         // then
-        verify(userRepository).getReferenceById(userId);
         verify(orderRepository).findById(orderId);
         assertThat(orderResponse.getTotalPrice()).isEqualTo(expectedOrderResponse.getTotalPrice());
         assertThat(orderResponse.getOrderItems().size()).isEqualTo(expectedOrderResponse.getOrderItems().size());
@@ -141,7 +139,7 @@ public class OrderServiceTest {
 
         int totalPrice = 70000;
         OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, new ArrayList<>());
-        order.addOrderItems(cartItems, 1300D);
+        order.addOrderItems(cartItems, 1300D, CurrencyPoint.HUNDREDTH);
 
         // when
         when(orderRepository.findAllByUserId(userId)).thenReturn(List.of(order));

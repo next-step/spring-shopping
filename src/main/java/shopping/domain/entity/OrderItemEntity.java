@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import shopping.domain.CurrencyPoint;
 
 @Entity
 @Table(name = "order_item")
@@ -45,14 +46,15 @@ public class OrderItemEntity {
         this.order = order;
     }
 
-    public static OrderItemEntity from(CartItemEntity cartItem, OrderEntity order, Double currency) {
+    public static OrderItemEntity from(CartItemEntity cartItem, OrderEntity order, Double currencyRatio, CurrencyPoint currencyPoint) {
         int totalPrice = cartItem.getProduct().getPrice() * cartItem.getQuantity();
+        Double totalPriceUSD = Math.round(currencyPoint.getDigits() * totalPrice / currencyRatio) / currencyPoint.getDigits();
         return new OrderItemEntity(
             null,
             cartItem.getProduct().getName(),
             cartItem.getProduct().getImageFileName(),
             totalPrice,
-            totalPrice / currency,
+            totalPriceUSD,
             cartItem.getQuantity(),
             order
         );
