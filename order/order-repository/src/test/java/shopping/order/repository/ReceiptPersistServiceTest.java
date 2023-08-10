@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -16,10 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.mart.domain.usecase.product.ProductUseCase;
 import shopping.mart.domain.usecase.product.response.ProductResponse;
-import shopping.mart.domain.Cart;
-import shopping.mart.domain.Product;
 import shopping.order.domain.Exchange;
 import shopping.order.domain.Order;
+import shopping.order.domain.Product;
 import shopping.order.domain.Receipt;
 import shopping.order.domain.ReceiptProduct;
 import shopping.order.repository.entity.ReceiptEntity;
@@ -48,8 +47,10 @@ public class ReceiptPersistServiceTest extends JpaTest {
         @DisplayName("Receipt 도메인을 받아 영속화 한다.")
         void persist_receipt_when_receive_receipt() {
             // given
-            Cart cart = DomainFixture.Cart.defaultCart();
-            Order order = new Order(cart);
+            long userId = 1L;
+            int quantity = 1;
+            Product product = DomainFixture.Product.defaultProduct();
+            Order order = new Order(userId, Map.of(product, quantity));
             Receipt receipt = order.purchase(defaultExchange);
             ReceiptEntity expected = new ReceiptEntity(receipt);
 
@@ -92,18 +93,20 @@ public class ReceiptPersistServiceTest extends JpaTest {
         @DisplayName("userId에 해당하는 user가 구매한 모든 receipt를 반환한다.")
         void return_all_receipt_bought_by_user() {
             // given
-            Cart cart = DomainFixture.Cart.defaultCart();
-            Order order = new Order(cart);
+            long userId = 1L;
+            int quantity = 1;
+            Product product = DomainFixture.Product.defaultProduct();
+            Order order = new Order(userId, Map.of(product, quantity));
             Receipt receipt = order.purchase(defaultExchange);
 
             receiptPersistService.persist(receipt);
             receiptPersistService.persist(receipt);
             receiptPersistService.persist(receipt);
 
-            when(productUseCase.findAllProducts()).thenReturn(defaultProductResponse(cart));
+            when(productUseCase.findAllProducts()).thenReturn(defaultProductResponse(List.of(product)));
 
             // when
-            List<Receipt> result = receiptPersistService.findAllByUserId(cart.getUserId());
+            List<Receipt> result = receiptPersistService.findAllByUserId(userId);
 
             // then
             assertReceipts(result, List.of(receipt, receipt, receipt));
@@ -119,16 +122,18 @@ public class ReceiptPersistServiceTest extends JpaTest {
         @DisplayName("userId와 receiptId 모두 일치하는 Receipt를 반환한다.")
         void return_receipt_matched_user_id_and_receipt_id() {
             // given
-            Cart cart = DomainFixture.Cart.defaultCart();
-            Order order = new Order(cart);
+            long userId = 1L;
+            int quantity = 1;
+            Product product = DomainFixture.Product.defaultProduct();
+            Order order = new Order(userId, Map.of(product, quantity));
             Receipt receipt = order.purchase(defaultExchange);
 
             receiptPersistService.persist(receipt);
 
             long receiptId = receiptJpaRepository.findAll().get(0).getId();
-            long userId = receipt.getUserId();
+            userId = receipt.getUserId();
 
-            when(productUseCase.findAllProducts()).thenReturn(defaultProductResponse(cart));
+            when(productUseCase.findAllProducts()).thenReturn(defaultProductResponse(List.of(product)));
 
             // when
             Optional<Receipt> result = receiptPersistService.findByIdAndUserId(receiptId, userId);
@@ -151,6 +156,7 @@ public class ReceiptPersistServiceTest extends JpaTest {
             // then
             assertThat(result).isEmpty();
         }
+
     }
 
     private void assertReceipts(List<Receipt> result, List<Receipt> expected) {
@@ -185,11 +191,10 @@ public class ReceiptPersistServiceTest extends JpaTest {
         });
     }
 
-    private List<ProductResponse> defaultProductResponse(Cart cart) {
-        Set<Product> products = cart.getProductCounts().keySet();
+    private List<ProductResponse> defaultProductResponse(List<Product> products) {
         return products.stream()
                 .map(product -> new ProductResponse(product.getId(), product.getName(), product.getImageUrl(),
-                        product.getPrice()))
+                        product.getPrice().toString()))
                 .collect(Collectors.toList());
     }
 
