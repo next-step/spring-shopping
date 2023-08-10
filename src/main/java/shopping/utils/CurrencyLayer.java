@@ -21,13 +21,13 @@ public class CurrencyLayer {
         restTemplate = new RestTemplate();
     }
 
-    public Currency callCurrency(CurrencyCountry targetCounty, CurrencyCountry sourceCountry) {
+    public Currency callCurrency(CurrencyCountry currencyCountry) {
         String URL = MessageFormat.format(
             "{0}?access_key={1}&currencies={2}&source={3}",
             CURRENCY_SOURCE_URL,
             CURRENCY_ACCESS_KEY,
-            targetCounty,
-            sourceCountry
+            currencyCountry.getTargetCountry(),
+            currencyCountry.getSourceCountry()
         );
 
         Currency currency = restTemplate.getForObject(URL, Currency.class);

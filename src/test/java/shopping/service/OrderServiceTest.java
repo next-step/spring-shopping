@@ -63,7 +63,7 @@ public class OrderServiceTest {
         HashMap<String, Double> hm = new HashMap<>();
         hm.put("USDKRW", 1300.111);
         Currency currency = new Currency(true, "USD", hm);
-        when(currencyLayer.callCurrency(CurrencyCountry.KRW, CurrencyCountry.USD)).thenReturn(currency);
+        when(currencyLayer.callCurrency(CurrencyCountry.USDKRW)).thenReturn(currency);
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
@@ -81,7 +81,7 @@ public class OrderServiceTest {
         // then
         verify(userRepository).getReferenceById(userId);
         verify(cartItemRepository).findByUserId(userId);
-        verify(currencyLayer).callCurrency(CurrencyCountry.KRW, CurrencyCountry.USD);
+        verify(currencyLayer).callCurrency(CurrencyCountry.USDKRW);
         verify(orderRepository).save(any(OrderEntity.class));
     }
 

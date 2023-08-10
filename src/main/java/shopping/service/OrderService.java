@@ -45,19 +45,19 @@ public class OrderService {
     public OrderIdResponse orderCartItem(Long userId) {
         UserEntity user = userRepository.getReferenceById(userId);
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
-        Currency currency = currencyLayer.callCurrency(CurrencyCountry.KRW, CurrencyCountry.USD);
-        Double USDKRW = currency.getQuotes().get("USDKRW");
+        Currency currency = currencyLayer.callCurrency(CurrencyCountry.USDKRW);
+        Double currencyRate = currency.getQuotes().get(CurrencyCountry.USDKRW.getSourceTargetCountry());
 
         int totalPrice = 0;
         for (CartItemEntity cartItem: cartItems) {
             totalPrice += (cartItem.getProduct().getPrice() * cartItem.getQuantity());
         }
-        Double totalPriceUSD = totalPrice / USDKRW;
+        Double totalPriceUSD = totalPrice / currencyRate;
         OrderEntity order = new OrderEntity(totalPrice, totalPriceUSD, user);
 
         List<OrderItemEntity> orderItems = new ArrayList<>();
         for (CartItemEntity cartItem: cartItems) {
-            orderItems.add(OrderItemEntity.from(cartItem, order, USDKRW));
+            orderItems.add(OrderItemEntity.from(cartItem, order, currencyRate));
         }
         order.addOrderItems(orderItems);
 
