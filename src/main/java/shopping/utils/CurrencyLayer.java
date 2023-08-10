@@ -32,8 +32,7 @@ public class CurrencyLayer implements CurrencyService {
             currencyCountry.getSourceCountry()
         );
 
-        CurrencyRequest currencyRequest = restTemplate.getForObject(URL, CurrencyRequest.class);
-        return currencyRequest;
+        return restTemplate.getForObject(URL, CurrencyRequest.class);
     }
 
 }

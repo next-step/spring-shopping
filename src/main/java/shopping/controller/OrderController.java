@@ -38,8 +38,8 @@ public class OrderController {
 
     @GetMapping("/order/{orderId}")
     @ResponseBody
-    public ResponseEntity<OrderResponse> findOrder(@PathVariable Long orderId, @UserId Long userId) {
-        OrderResponse orderResponse = orderService.findOrder(orderId, userId);
+    public ResponseEntity<OrderResponse> findOrder(@PathVariable Long orderId) {
+        OrderResponse orderResponse = orderService.findOrder(orderId);
         return ResponseEntity.status(HttpStatus.OK).body(orderResponse);
     }
 
