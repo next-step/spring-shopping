@@ -3,19 +3,16 @@ package shopping.cart.domain;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.Objects;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import org.springframework.context.annotation.Configuration;
-import shopping.cart.domain.vo.Quantity;
+import shopping.common.domain.Quantity;
+import shopping.common.converter.MoneyConverter;
+import shopping.common.converter.QuantityConverter;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 @Entity
 @Configuration
@@ -29,11 +26,9 @@ public class CartItem {
     private Long memberId;
     private Long productId;
     private String productName;
-    @Embedded
-    @AttributeOverride(name = "amount", column = @Column(name = "product_price"))
+    @Convert(converter = MoneyConverter.class)
     private Money productPrice;
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "quantity"))
+    @Convert(converter = QuantityConverter.class)
     private Quantity quantity;
     private String imageUrl;
 

@@ -2,17 +2,10 @@ package shopping.order.domain;
 
 import java.util.Collections;
 import java.util.List;
-import javax.persistence.AttributeOverride;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import shopping.product.domain.vo.Money;
+import javax.persistence.*;
+
+import shopping.common.converter.MoneyConverter;
+import shopping.common.domain.Money;
 
 @Entity(name = "orders")
 public class Order {
@@ -23,8 +16,7 @@ public class Order {
     @ElementCollection
     @CollectionTable(name = "order_item",  joinColumns = @JoinColumn(name = "order_id"))
     private List<OrderItem> orderItems;
-    @Embedded
-    @AttributeOverride(name = "amount", column = @Column(name = "total_price"))
+    @Convert(converter = MoneyConverter.class)
     private Money totalPrice;
     private Long memberId;
 

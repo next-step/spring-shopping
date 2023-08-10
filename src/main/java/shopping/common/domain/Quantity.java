@@ -1,4 +1,4 @@
-package shopping.cart.domain.vo;
+package shopping.common.domain;
 
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
@@ -22,16 +22,16 @@ public class Quantity {
         }
     }
 
+    public static Quantity valueOf(int quantity) {
+        return new Quantity(quantity);
+    }
+
     public int getValue() {
         return value;
     }
 
     public Quantity increase() {
         return new Quantity(this.value + 1);
-    }
-
-    private void setValue(int value) { //for hibernate
-        this.value = value;
     }
 
     @Override

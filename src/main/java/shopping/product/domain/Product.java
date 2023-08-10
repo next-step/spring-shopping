@@ -1,17 +1,13 @@
 package shopping.product.domain;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import org.springframework.http.HttpStatus;
+import shopping.common.converter.MoneyConverter;
 import shopping.common.vo.ImageStoreType;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Image;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 @Entity
 public class Product {
@@ -22,8 +18,7 @@ public class Product {
     private String name;
     @Embedded
     private Image image;
-    @Embedded
-    @AttributeOverride(name = "amount", column = @Column(name = "price"))
+    @Convert(converter = MoneyConverter.class)
     private Money price;
 
     protected Product() {

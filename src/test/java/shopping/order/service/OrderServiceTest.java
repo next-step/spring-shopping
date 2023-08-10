@@ -18,7 +18,7 @@ import shopping.order.OrderMapper;
 import shopping.order.domain.Order;
 import shopping.order.repository.OrderRepository;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 import shopping.product.repository.ProductRepository;
 
 @DataJpaTest

@@ -1,4 +1,4 @@
-package shopping.product.domain.vo;
+package shopping.common.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -18,6 +18,10 @@ public class Money {
 
     public Money(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public static Money valueOf(long amount) {
+        return new Money(BigDecimal.valueOf(amount));
     }
 
     public Money plus(Money otherMoney) {
@@ -42,10 +46,6 @@ public class Money {
 
     public int intValue(){
       return amount.intValue();
-    }
-
-    private void setAmount(BigDecimal amount) { //for hibernate
-        this.amount = amount;
     }
 
     @Override

@@ -1,22 +1,20 @@
 package shopping.order.domain;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-import shopping.cart.domain.vo.Quantity;
-import shopping.product.domain.vo.Money;
+import javax.persistence.*;
+
+import shopping.common.domain.Quantity;
+import shopping.common.converter.MoneyConverter;
+import shopping.common.converter.QuantityConverter;
+import shopping.common.domain.Money;
 
 @Embeddable
 public class OrderItem {
 
     private Long productId;
     private String name;
-    @Embedded
-    @AttributeOverride(name = "amount", column = @Column(name = "price"))
+    @Convert(converter = MoneyConverter.class)
     private Money price;
-    @Embedded
-    @AttributeOverride(name = "value", column = @Column(name = "quantity"))
+    @Convert(converter = QuantityConverter.class)
     private Quantity quantity;
     private String imageUrl;
 

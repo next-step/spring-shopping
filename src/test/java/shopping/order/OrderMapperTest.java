@@ -10,7 +10,7 @@ import shopping.cart.domain.CartItem;
 import shopping.member.domain.Member;
 import shopping.order.domain.Order;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 @DisplayName("OrderMapper 단위 테스트")
 class OrderMapperTest {

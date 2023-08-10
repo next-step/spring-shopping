@@ -3,7 +3,7 @@ package shopping.product.domain;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 @DisplayName("Money 단위 테스트")
 class MoneyTest {

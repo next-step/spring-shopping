@@ -3,7 +3,7 @@ package shopping.order.dto.response;
 import java.util.List;
 import java.util.stream.Collectors;
 import shopping.order.domain.Order;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 public class OrderResponse {
     private Long id;

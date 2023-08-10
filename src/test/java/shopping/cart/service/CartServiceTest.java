@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
-import shopping.cart.domain.vo.Quantity;
+import shopping.common.domain.Quantity;
 import shopping.cart.dto.request.CartItemCreationRequest;
 import shopping.cart.dto.request.CartItemQuantityUpdateRequest;
 import shopping.cart.dto.response.AllCartItemsResponse;
@@ -18,7 +18,7 @@ import shopping.cart.repository.CartItemRepository;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 import shopping.product.repository.ProductRepository;
 
 @DataJpaTest

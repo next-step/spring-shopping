@@ -2,9 +2,9 @@ package shopping.order.dto.response;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import shopping.cart.domain.vo.Quantity;
+import shopping.common.domain.Quantity;
 import shopping.order.domain.OrderItem;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 public class OrderItemResponse {
 
