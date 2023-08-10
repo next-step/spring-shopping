@@ -36,4 +36,13 @@ class MoneyTest {
 
         Assertions.assertThat(money1.plus(money2)).isEqualTo(new Money("3"));
     }
+
+    @Test
+    @DisplayName("Money에 특정 수를 곱한다")
+    void multiplyMoney() {
+        Money money = new Money("1");
+        int multiplier = 2;
+
+        Assertions.assertThat(money.multiply(multiplier)).isEqualTo(new Money("2"));
+    }
 }
