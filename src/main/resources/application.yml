@@ -2,3 +2,6 @@
 spring:
   profiles:
     active: local
+
+currency :
+  accessKey: f65f292d4573186551719b6c582fa25e
