@@ -19,12 +19,9 @@ public class UserTest {
         UserEntity userEntity = new UserEntity(1L, "test@test.com", "test_password");
         LoginRequest loginRequest = new LoginRequest("test@test.com", "test_password");
 
-        // when
-        User user = User.from(userEntity);
-
         // then
         assertThatNoException()
-            .isThrownBy(() -> user.matchPassword(loginRequest.getPassword()));
+            .isThrownBy(() -> userEntity.matchPassword(loginRequest.getPassword()));
     }
 
     @Test
@@ -34,11 +31,8 @@ public class UserTest {
         UserEntity userEntity = new UserEntity(1L, "test@test.com", "test_password");
         LoginRequest loginRequest = new LoginRequest("test@test.com", "other_password");
 
-        // when
-        User user = User.from(userEntity);
-
         // then
-        assertThatThrownBy(() -> user.matchPassword(loginRequest.getPassword()))
+        assertThatThrownBy(() -> userEntity.matchPassword(loginRequest.getPassword()))
             .isInstanceOf(ShoppingException.class)
             .extracting("errorCode")
             .isEqualTo(ErrorCode.INVALID_PASSWORD);
