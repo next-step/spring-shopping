@@ -19,6 +19,7 @@ public enum ErrorType {
     PRODUCT_NULL("productId는 필수 항목입니다"),
     PASSWORD_NULL("password는 필수 항목입니다"),
     EMAIL_NULL("email은 필수 항목입니다"),
+    ORDER_NO_EXIST("유저의 주문을 찾을 수 없습니다"),
     SERVER_ERROR("서버에 에러가 발생했습니다");
 
     private final String message;

@@ -37,6 +37,22 @@ public class OrderResponse {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public long getTotalPrice() {
+        return totalPrice;
+    }
+
+    public List<OrderItemResponse> getItems() {
+        return items;
+    }
+
     private static class OrderItemResponse {
 
         private final long id;
@@ -69,6 +85,30 @@ public class OrderResponse {
                     orderItem.getImage().getImage(),
                     orderItem.getQuantity().getValue()
             );
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public long getProductId() {
+            return productId;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public long getPrice() {
+            return price;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public int getQuantity() {
+            return quantity;
         }
     }
 }

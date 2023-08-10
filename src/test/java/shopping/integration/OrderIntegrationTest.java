@@ -5,18 +5,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.dto.OrderResponse;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
 import shopping.integration.util.OrderUtil;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static shopping.integration.util.OrderUtil.ORDER_API_URL;
 
 @IntegrationTest
 class OrderIntegrationTest {
 
     @Test
-    @DisplayName("주문에 성공한다")
+    @DisplayName("주문에 성공한다.")
     void createOrder() {
         // given
         final String accessToken = AuthUtil.accessToken();
@@ -37,7 +39,7 @@ class OrderIntegrationTest {
     }
 
     @Test
-    @DisplayName("주문의 상세 정보를 조회한다")
+    @DisplayName("주문의 상세 정보를 조회한다.")
     void findOrder() {
         // given
         final String accessToken = AuthUtil.accessToken();
@@ -48,13 +50,17 @@ class OrderIntegrationTest {
 
         final String url = OrderUtil.createOrder(accessToken).header("Location");
 
-        // when & then
-        RestAssured
+        // when
+        final OrderResponse orderResponse = RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get(url)
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(OrderResponse.class);
+
+        // then
+        assertThat(orderResponse.getItems()).hasSize(2);
     }
 }

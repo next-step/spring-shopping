@@ -6,6 +6,8 @@ import shopping.application.mapper.OrderMapper;
 import shopping.domain.entity.CartItem;
 import shopping.domain.entity.Order;
 import shopping.domain.entity.OrderItem;
+import shopping.dto.OrderResponse;
+import shopping.exception.OrderNotFoundException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 
@@ -35,6 +37,17 @@ public class OrderService {
 
         final Order order = Order.of(userId, orderItems);
         return orderRepository.save(order).getId();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponse find(Long id, Long userId) {
+        final Order order = findOrderByIdAndUserId(id, userId);
+        return OrderResponse.from(order);
+    }
+
+    private Order findOrderByIdAndUserId(final Long id, final Long userId) {
+        return orderRepository.findByIdAndUserId(id, userId)
+                .orElseThrow(OrderNotFoundException::new);
     }
 
     private List<OrderItem> createOrderItemsFrom(final List<CartItem> cartItems) {
