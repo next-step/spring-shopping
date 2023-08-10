@@ -79,6 +79,12 @@
       document.querySelector('.order-item-list').innerHTML = element;
       document.querySelector(
           '.order-right-section .order-total-price').innerText = `${data.totalPrice} 원`; <!-- 아이템 가격 및 수량 -->
+      if (data.currencyRate != null) {
+        document.querySelector(
+            '.order-right-section .order-total-price').innerText +=
+            `\n(${(data.totalPrice / data.currencyRate).toFixed(2)}  USD)`
+            + `\n환율: ${data.currencyRate}`;
+      }
     }).catch((error) => {
       console.error(error);
     });
