@@ -19,14 +19,12 @@ import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.UserRepository;
+import shopping.util.PageUtil;
 
 @Service
 @Transactional(readOnly = true)
 public class OrderService {
 
-    private static final int PAGE_START_NUMBER = 1;
-    private static final int MIN_PAGE_SIZE = 6;
-    private static final int MAX_PAGE_SIZE = 30;
     private static final String ID_COLUMN = "id";
 
     private final OrderRepository orderRepository;
@@ -76,28 +74,12 @@ public class OrderService {
     }
 
     public Page<OrderResponse> findAllOrder(String email, Integer pageNumber, Integer pageSize) {
-        int page = validatePageNumber(pageNumber);
-        int size = validatePageSize(pageSize);
+        int page = PageUtil.validatePageNumber(pageNumber);
+        int size = PageUtil.validatePageSize(pageSize);
 
         Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email),
-                PageRequest.of(page - PAGE_START_NUMBER, size, Direction.DESC, ID_COLUMN));
+                PageRequest.of(page, size, Direction.DESC, ID_COLUMN));
 
         return orders.map(OrderResponse::of);
-    }
-
-
-    private int validatePageNumber(Integer pageNumber) {
-        return pageNumber < PAGE_START_NUMBER
-                ? PAGE_START_NUMBER : pageNumber;
-    }
-
-    private int validatePageSize(Integer pageSize) {
-        if (pageSize > MAX_PAGE_SIZE) {
-            return MAX_PAGE_SIZE;
-        }
-        if (pageSize < MIN_PAGE_SIZE) {
-            return MIN_PAGE_SIZE;
-        }
-        return pageSize;
     }
 }

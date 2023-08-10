@@ -7,14 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
+import shopping.util.PageUtil;
 
 @Service
 @Transactional(readOnly = true)
 public class ProductService {
-
-    private static final int PAGE_START_NUMBER = 1;
-    private static final int MIN_PAGE_SIZE = 6;
-    private static final int MAX_PAGE_SIZE = 60;
 
     private final ProductRepository productRepository;
 
@@ -23,26 +20,11 @@ public class ProductService {
     }
 
     public Page<ProductResponse> findAllByPage(Integer pageNumber, Integer pageSize) {
-        int page = validatePageNumber(pageNumber);
-        int size = validatePageSize(pageSize);
+        int page = PageUtil.validatePageNumber(pageNumber);
+        int size = PageUtil.validatePageSize(pageSize);
 
         Page<Product> products = productRepository
-                .findAll(PageRequest.of(page - PAGE_START_NUMBER, size));
+                .findAll(PageRequest.of(page, size));
         return products.map(ProductResponse::of);
-    }
-
-    private int validatePageNumber(Integer pageNumber) {
-        return pageNumber < PAGE_START_NUMBER
-                ? PAGE_START_NUMBER : pageNumber;
-    }
-
-    private int validatePageSize(Integer pageSize) {
-        if (pageSize > MAX_PAGE_SIZE) {
-            return MAX_PAGE_SIZE;
-        }
-        if (pageSize < MIN_PAGE_SIZE) {
-            return MIN_PAGE_SIZE;
-        }
-        return pageSize;
     }
 }
