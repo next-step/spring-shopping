@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.domain.entity.Order;
+import shopping.domain.entity.OrderItem;
 import shopping.domain.entity.fixture.EntityFixture;
 
 import java.util.List;
@@ -46,5 +47,21 @@ class OrderRepositoryTest {
 
         // then
         assertThat(persistOrder).isEmpty();
+    }
+
+    @Test
+    @DisplayName("유저 번호로 주문을 찾는다.")
+    void findAllByUserId() {
+        // given
+        final Long userId = 1L;
+        final List<OrderItem> orderItems = List.of(EntityFixture.createOrderItem());
+        final Order order = Order.of(userId, orderItems);
+        orderRepository.save(order);
+
+        // when
+        final List<Order> persistOrder = orderRepository.findAllByUserId(userId);
+
+        // then
+        assertThat(persistOrder).hasSize(orderItems.size());
     }
 }
