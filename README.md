@@ -142,6 +142,6 @@ commit type은 아래 목록 중 하나로 함
 
 ### 사용자 별 주문 목록 확인
 
-- [ ] request : `GET /orders`
-- [ ] response : `200 OK`
-- [ ] 프론트 연동
+- [x] request : `GET /orders`
+- [x] response : `200 OK`
+- [x] 프론트 연동
