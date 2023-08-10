@@ -3,6 +3,8 @@ package shopping.application;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import shopping.auth.PBKDF2PasswordEncoder;
+import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
 import shopping.dto.web.request.LoginRequest;
@@ -25,6 +27,8 @@ class AuthServiceTest extends ServiceTest {
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    private final PasswordEncoder encoder = new PBKDF2PasswordEncoder();
 
     @DisplayName("정상 로그인 요청시 액세스 토큰 반환")
     @Test
@@ -75,7 +79,7 @@ class AuthServiceTest extends ServiceTest {
     }
 
     private User saveUser(String email, String password) {
-        User user = new User(email, password);
+        User user = new User(email, password, encoder);
         return userRepository.save(user);
     }
 }

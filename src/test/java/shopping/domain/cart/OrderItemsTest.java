@@ -2,6 +2,8 @@ package shopping.domain.cart;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.auth.PBKDF2PasswordEncoder;
+import shopping.auth.PasswordEncoder;
 import shopping.domain.user.User;
 import shopping.exception.cart.NoCartItemForOrderException;
 import shopping.exception.cart.NotSameOrderException;
@@ -14,6 +16,8 @@ import static org.assertj.core.api.Assertions.*;
 @DisplayName("주문 도메인 테스트")
 class OrderItemsTest {
 
+    private final PasswordEncoder encoder = new PBKDF2PasswordEncoder();
+
     @DisplayName("장바구니 아이템으로 생성")
     @Test
     void createFromCartItems() {
@@ -23,7 +27,7 @@ class OrderItemsTest {
                 new Product("피자", "/pizza.jpg", 20_000L),
                 new Product("샐러드", "/salad.jpg", 5_000L)
         );
-        User user = new User("test@example.com", "1234");
+        User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(user.getId(), product))
                 .collect(Collectors.toList());
@@ -37,7 +41,7 @@ class OrderItemsTest {
     @Test
     void noCartItems() {
         // given
-        User user = new User("test@example.com", "1234");
+        User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = List.of();
         Order order = new Order(user.getId());
 
@@ -55,7 +59,7 @@ class OrderItemsTest {
                 new Product("피자", "/pizza.jpg", 20_000L),
                 new Product("샐러드", "/salad.jpg", 5_000L)
         );
-        User user = new User("test@example.com", "1234");
+        User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(user.getId(), product))
                 .collect(Collectors.toList());
@@ -102,7 +106,7 @@ class OrderItemsTest {
                 new Product("피자", "/pizza.jpg", 20_000L),
                 new Product("샐러드", "/salad.jpg", 5_000L)
         );
-        User user = new User("test@example.com", "1234");
+        User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(user.getId(), product))
                 .collect(Collectors.toList());
@@ -127,7 +131,7 @@ class OrderItemsTest {
                 new Product("피자", "/pizza.jpg", 20_000L),
                 new Product("샐러드", "/salad.jpg", 5_000L)
         );
-        User user = new User("test@example.com", "1234");
+        User user = new User("test@example.com", "1234", encoder);
         List<CartItem> cartItems = products.stream()
                 .map(product -> new CartItem(user.getId(), product))
                 .collect(Collectors.toList());

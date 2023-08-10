@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import shopping.auth.PBKDF2PasswordEncoder;
+import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Price;
 import shopping.domain.cart.Product;
@@ -39,6 +41,8 @@ class CartItemServiceTest extends ServiceTest {
 
     @Autowired
     private ProductRepository productRepository;
+
+    private final PasswordEncoder encoder = new PBKDF2PasswordEncoder();
 
     @Nested
     @DisplayName("장바구니 상품 조회")
@@ -328,7 +332,7 @@ class CartItemServiceTest extends ServiceTest {
     }
 
     private User saveUser(String email, String digest) {
-        User user = new User(email, digest);
+        User user = new User(email, digest, encoder);
         return userRepository.save(user);
     }
 }

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.auth.PBKDF2PasswordEncoder;
+import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.Price;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
@@ -188,7 +190,8 @@ class OrderIntegrationTest extends IntegrationTest {
     private String otherLogin() {
         String email = "other@example.com";
         String password = "12345";
-        userRepository.save(new User(email, password));
+        PasswordEncoder encoder = new PBKDF2PasswordEncoder();
+        userRepository.save(new User(email, password, encoder));
 
         return RestAssured
                 .given()

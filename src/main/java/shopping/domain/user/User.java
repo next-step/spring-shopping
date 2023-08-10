@@ -1,5 +1,6 @@
 package shopping.domain.user;
 
+import shopping.auth.PasswordEncoder;
 import shopping.exception.auth.PasswordNotMatchException;
 
 import javax.persistence.*;
@@ -23,18 +24,18 @@ public class User {
     protected User() {
     }
 
-    public User(String email, String password) {
-        this.email = new Email(email);
-        this.encodedPassword = new EncodedPassword(password);
-    }
-
-    public User(Long id, String email, String password) {
-        this(email, password);
+    public User(Long id, String email, String password, PasswordEncoder passwordEncoder) {
         this.id = id;
+        this.email = new Email(email);
+        this.encodedPassword = new EncodedPassword(password, passwordEncoder);
     }
 
-    public void matchPassword(String password) {
-        if(!encodedPassword.match(password)) {
+    public User(String email, String password, PasswordEncoder passwordEncoder) {
+        this(null, email, password, passwordEncoder);
+    }
+
+    public void matchPassword(String password, PasswordEncoder passwordEncoder) {
+        if(!encodedPassword.match(password, passwordEncoder)) {
             throw new PasswordNotMatchException();
         }
     }

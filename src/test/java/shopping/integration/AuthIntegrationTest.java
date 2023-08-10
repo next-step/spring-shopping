@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.auth.PBKDF2PasswordEncoder;
+import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
 import shopping.dto.web.request.LoginRequest;
@@ -34,7 +36,8 @@ class AuthIntegrationTest extends IntegrationTest {
     void setUp() {
         super.setUp();
         String password = "1234";
-        userRepository.save(new User("test@example.com", password));
+        PasswordEncoder encoder = new PBKDF2PasswordEncoder();
+        userRepository.save(new User("test@example.com", password, encoder));
     }
 
     @DisplayName("로그인 페이지 연동")
@@ -254,7 +257,8 @@ class AuthIntegrationTest extends IntegrationTest {
         // given
         Long invalidId = 100L;
         String email = "notexist@example.com";
-        User user = new User(invalidId, email, "1234");
+        PasswordEncoder encoder = new PBKDF2PasswordEncoder();
+        User user = new User(invalidId, email, "1234", encoder);
         String accessToken = tokenProvider.issueToken(user);
 
         // when

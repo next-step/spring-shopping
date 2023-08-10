@@ -1,32 +1,22 @@
 package shopping.domain.user;
 
-import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
 import shopping.exception.general.InvalidRequestException;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 
 @Embeddable
 public class EncodedPassword {
 
-    @Transient
-    private final PasswordEncoder passwordEncoder;
-
     private String password;
 
     protected EncodedPassword() {
-        this.passwordEncoder = new PBKDF2PasswordEncoder();
-    }
 
-    public EncodedPassword(String password) {
-        this(password, new PBKDF2PasswordEncoder());
     }
 
     public EncodedPassword(String password, PasswordEncoder passwordEncoder) {
         validate(password);
         this.password = passwordEncoder.encode(password);
-        this.passwordEncoder = passwordEncoder;
     }
 
     private void validate(String password) {
@@ -35,7 +25,7 @@ public class EncodedPassword {
         }
     }
 
-    public boolean match(String password) {
+    public boolean match(String password, PasswordEncoder passwordEncoder) {
         return passwordEncoder.match(password, this.password);
     }
 
