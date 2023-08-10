@@ -17,6 +17,20 @@ public class RestHelper {
 
     public static ExtractableResponse<Response> post(
         final String path,
+        final String jwt
+    ) {
+        return RestAssured
+            .given().log().all()
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .header(HttpHeaders.AUTHORIZATION, BEARER + jwt)
+            .when().post(path)
+            .then().log().all()
+            .extract();
+    }
+
+    public static ExtractableResponse<Response> post(
+        final String path,
         final String jwt,
         final Object request
     ) {

@@ -30,7 +30,7 @@ public class Order {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.ORDERED;
 
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProducts = new ArrayList<>();
@@ -38,20 +38,13 @@ public class Order {
     protected Order() {
     }
 
+    public Order(final Long memberId, final List<OrderProduct> orderProducts) {
+        this.memberId = memberId;
+        this.orderProducts = orderProducts;
+    }
+
     public Long getId() {
         return this.id;
-    }
-
-    public Long getMemberId() {
-        return this.memberId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public OrderStatus getStatus() {
-        return this.status;
     }
 
     public List<OrderProduct> getOrderProducts() {

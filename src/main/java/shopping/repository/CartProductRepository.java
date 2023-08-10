@@ -11,10 +11,12 @@ public interface CartProductRepository extends JpaRepository<CartProduct, Long> 
     // TODO: 언더바 불편
     Optional<CartProduct> findByMemberIdAndProduct_Id(final Long memberId, final Long productId);
 
-    @Query("select cp from CartProduct cp join fetch cp.product")
+    @Query("select cp from CartProduct cp join fetch cp.product where cp.memberId = ?1")
     List<CartProduct> findAllByMemberId(final Long memberId);
 
     Optional<CartProduct> findByIdAndMemberId(final Long cartProductId, final Long memberId);
 
     void deleteByIdAndMemberId(final Long cartProductId, final Long memberId);
+
+    void deleteAllByMemberId(final Long memberId);
 }

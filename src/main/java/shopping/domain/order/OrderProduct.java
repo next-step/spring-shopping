@@ -28,6 +28,7 @@ public class OrderProduct {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    // TODO: Product 정보 VO로 합치기
     @Embedded
     @AttributeOverride(name = "image", column = @Column(name = "ordered_image"))
     private ProductImage orderedImage;
@@ -45,9 +46,18 @@ public class OrderProduct {
     @AttributeOverride(name = "quantity", column = @Column(name = "quantity"))
     private OrderProductQuantity quantity;
 
-    @Column(name = "product_id")
-    private Long productId;
-
     protected OrderProduct() {
+    }
+
+    public OrderProduct(
+        final String orderedImage,
+        final String orderedName,
+        final int orderedPrice,
+        final int quantity
+    ) {
+        this.orderedImage = new ProductImage(orderedImage);
+        this.orderedName = new ProductName(orderedName);
+        this.orderedPrice = new ProductPrice(orderedPrice);
+        this.quantity = new OrderProductQuantity(quantity);
     }
 }
