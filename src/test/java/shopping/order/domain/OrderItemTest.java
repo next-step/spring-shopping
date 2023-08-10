@@ -12,7 +12,13 @@ class OrderItemTest {
     @Test
     @DisplayName("현재 주문 상품의 총 금액을 리턴한다.")
     void getTotalPrice() {
-        OrderItem orderItem = new OrderItem(1L, "테스트 상품", new Money("1000.00"), new Image("image"), new Quantity(3));
+        OrderItem orderItem = new OrderItem(
+            1L,
+            "테스트 상품",
+            new Money("1000.00"),
+            new Image("image"),
+            new Quantity(3)
+        );
 
         Money totalPrice = orderItem.getTotalPrice();
 

@@ -33,6 +33,7 @@ class OrderIntegrationTest extends IntegrationTest {
         ExtractableResponse<Response> response = post("/api/order",
             new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
 
+        // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
@@ -45,8 +46,10 @@ class OrderIntegrationTest extends IntegrationTest {
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
         post("/api/order", new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
 
+        // when
         ExtractableResponse<Response> response = get("/api/order/{orderId}", 1L, DEFAULT_TOKEN);
 
+        // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
@@ -58,15 +61,15 @@ class OrderIntegrationTest extends IntegrationTest {
         LoginResponse loginResponse = post(
             "login",
             new LoginRequest("hello2@woowa.com", "hello2")
-        )
-            .body()
-            .as(LoginResponse.class);
+        ).body().as(LoginResponse.class);
         ProductHelper.createProduct(new ProductCreationRequest("피자", "10000", "imageUrl"));
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
         post("/api/order", new OrderCreationRequest(List.of(1L)), loginResponse.getAccessToken());
 
+        // when
         ExtractableResponse<Response> response = get("/api/order/{orderId}", 1L, DEFAULT_TOKEN);
 
+        // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
@@ -79,8 +82,10 @@ class OrderIntegrationTest extends IntegrationTest {
         CartHelper.createCartItem(new CartItemCreationRequest(1L));
         post("/api/order", new OrderCreationRequest(List.of(1L)), DEFAULT_TOKEN);
 
+        // when
         ExtractableResponse<Response> response = get("/api/order", DEFAULT_TOKEN);
 
+        // then
         Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }

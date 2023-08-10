@@ -34,8 +34,13 @@ public class OrderItem {
     protected OrderItem() {
     }
 
-    public OrderItem(Long productId, String productName, Money productPrice, Image productImage,
-        Quantity quantity) {
+    public OrderItem(
+        Long productId,
+        String productName,
+        Money productPrice,
+        Image productImage,
+        Quantity quantity
+    ) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -43,8 +48,13 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public OrderItem(Long productId, String productName, String productPrice, String productImage,
-        int quantity) {
+    public OrderItem(
+        Long productId,
+        String productName,
+        String productPrice,
+        String productImage,
+        int quantity
+    ) {
         this(productId, productName, new Money(productPrice), new Image(productImage),
             new Quantity(quantity));
     }

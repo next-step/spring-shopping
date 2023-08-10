@@ -29,15 +29,20 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> makeOrder(@AuthMember LoggedInMember loggedInMember,
-        @RequestBody OrderCreationRequest orderCreationRequest) {
+    public ResponseEntity<Void> makeOrder(
+        @AuthMember LoggedInMember loggedInMember,
+        @RequestBody OrderCreationRequest orderCreationRequest
+    ) {
         Long orderId = orderService.addOrder(loggedInMember, orderCreationRequest);
         return ResponseEntity.created(URI.create("/order/" + orderId)).build();
     }
 
     @GetMapping("/{orderId}")
     @ResponseStatus(HttpStatus.OK)
-    public OrderDetailResponse getOrderDetail(@AuthMember LoggedInMember loggedInMember, @PathVariable Long orderId) {
+    public OrderDetailResponse getOrderDetail(
+        @AuthMember LoggedInMember loggedInMember,
+        @PathVariable Long orderId
+    ) {
         return orderService.getOrderDetail(loggedInMember, orderId);
     }
 

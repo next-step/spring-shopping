@@ -28,8 +28,12 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final CurrencyProvider currencyProvider;
 
-    public OrderService(OrderRepository orderRepository, CartItemRepository cartItemRepository,
-        MemberRepository memberRepository, CurrencyProvider currencyProvider) {
+    public OrderService(
+        OrderRepository orderRepository,
+        CartItemRepository cartItemRepository,
+        MemberRepository memberRepository,
+        CurrencyProvider currencyProvider
+    ) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.memberRepository = memberRepository;

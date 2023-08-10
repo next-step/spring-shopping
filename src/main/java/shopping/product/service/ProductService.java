@@ -52,6 +52,7 @@ public class ProductService {
 
     private Product getProductById(Long productId) {
         return productRepository.findById(productId).orElseThrow(
-            () -> new WooWaException("존재하지 않은 Product입니다 id: \'" + productId + "\'", BAD_REQUEST));
+            () -> new WooWaException("존재하지 않은 Product입니다 id: \'" + productId + "\'", BAD_REQUEST)
+        );
     }
 }
