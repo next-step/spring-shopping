@@ -2,27 +2,26 @@
 
 ### Module dependencies
 ```mermaid
-flowchart LR  
+flowchart LR    
+
+mart-controller --> mart-domain  
+mart-repository --> mart-domain  
+mart-service --> mart-domain  
+mart-controller --> auth-domain  
+mart-domain  
+
+auth-service --> auth-domain  
+auth-repository --> auth-domain
+auth-controller --> auth-domain  
+auth-domain
   
-auth-service --> auth-app
-auth-repository --> auth-app
-auth-controller --> auth-app
-auth-app
-
-mart-controller --> auth-app
-mart-controller --> mart-app
-mart-repository --> mart-app
-mart-service --> mart-app
-mart-app
-
-order-controller --> auth-app
-order-controller --> order-app
-order-exchange --> order-app
-order-app --> mart-app
-order-service --> order-app
-order-service --> mart-app
-order-repository --> order-app
-order-repository --> mart-app
+order-service --> mart-domain
+order-service --> order-domain    
+order-controller --> auth-domain  
+order-controller --> order-domain  
+order-exchange --> order-domain  
+order-repository --> order-domain  
+order-repository --> mart-domain
 ```
 
 # API Documentation
