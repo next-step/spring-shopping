@@ -2,8 +2,6 @@ package shopping.application;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Cart;
@@ -12,6 +10,7 @@ import shopping.domain.Email;
 import shopping.domain.Order;
 import shopping.domain.User;
 import shopping.dto.request.ExchangeRate;
+import shopping.dto.request.ShoppingPageRequest;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.OrderNotFoundException;
 import shopping.exception.UserNotFoundException;
@@ -19,14 +18,11 @@ import shopping.exception.UserNotMatchException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 import shopping.repository.UserRepository;
-import shopping.util.PageUtil;
 
 @Service
 @Transactional(readOnly = true)
 public class OrderService {
-
-    private static final String ID_COLUMN = "id";
-
+    
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
@@ -73,13 +69,8 @@ public class OrderService {
         }
     }
 
-    public Page<OrderResponse> findAllOrder(String email, Integer pageNumber, Integer pageSize) {
-        int page = PageUtil.validatePageNumber(pageNumber);
-        int size = PageUtil.validatePageSize(pageSize);
-
-        Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email),
-                PageRequest.of(page, size, Direction.DESC, ID_COLUMN));
-
+    public Page<OrderResponse> findAllOrder(String email, ShoppingPageRequest pageRequest) {
+        Page<Order> orders = orderRepository.findAllByUserEmail(new Email(email), pageRequest);
         return orders.map(OrderResponse::of);
     }
 }

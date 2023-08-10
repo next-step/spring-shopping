@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
+import shopping.dto.request.ShoppingPageRequest;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
@@ -37,7 +38,8 @@ class ProductServiceTest {
         Product salad2Result = productRepository.save(salad2);
 
         // when
-        Page<ProductResponse> products = productService.findAllByPage(1, 12);
+        Page<ProductResponse> products = productService.findAllByPage(
+                ShoppingPageRequest.of(1, 12));
 
         // then
         assertThat(products.toList()).containsExactly(
@@ -60,7 +62,8 @@ class ProductServiceTest {
         Product saladResult = productRepository.save(salad);
 
         // when
-        Page<ProductResponse> products = productService.findAllByPage(-1, 12);
+        Page<ProductResponse> products = productService.findAllByPage(
+                ShoppingPageRequest.of(-1, 12));
 
         // then
         assertThat(products.toList()).containsExactly(

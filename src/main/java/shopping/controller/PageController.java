@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import shopping.application.ProductService;
+import shopping.dto.request.ShoppingPageRequest;
 import shopping.dto.response.ProductResponse;
 
 @Controller
@@ -26,7 +27,8 @@ public class PageController {
             @RequestParam(defaultValue = DEFAULT_PAGE) Integer page,
             @RequestParam(name = "size", defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize) {
 
-        Page<ProductResponse> products = productService.findAllByPage(page, pageSize);
+        Page<ProductResponse> products = productService
+                .findAllByPage(ShoppingPageRequest.of(page, pageSize));
         model.addAttribute("products", products);
         return "index";
     }

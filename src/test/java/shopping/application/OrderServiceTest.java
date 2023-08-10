@@ -20,6 +20,7 @@ import shopping.domain.OrderItem;
 import shopping.domain.Product;
 import shopping.domain.User;
 import shopping.dto.request.ExchangeRate;
+import shopping.dto.request.ShoppingPageRequest;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.EmptyCartException;
@@ -317,7 +318,8 @@ class OrderServiceTest {
             orderService.createOrder(email, exchangeRate);
 
             // when
-            Page<OrderResponse> page = orderService.findAllOrder(email, 1, 12);
+            Page<OrderResponse> page = orderService.findAllOrder(email,
+                    ShoppingPageRequest.recentPageOf(1, 12));
             OrderResponse orderResponse = page.getContent().get(1);
 
             // then
@@ -356,7 +358,8 @@ class OrderServiceTest {
             int pageSize = 12;
 
             // when
-            Page<OrderResponse> page = orderService.findAllOrder(email, pageNumber, pageSize);
+            Page<OrderResponse> page = orderService.findAllOrder(email,
+                    ShoppingPageRequest.recentPageOf(pageNumber, pageSize));
 
             // then
             assertThat(page.getNumber()).isZero();
@@ -372,7 +375,8 @@ class OrderServiceTest {
             int pageSize = 1;
 
             // when
-            Page<OrderResponse> page = orderService.findAllOrder(email, pageNumber, pageSize);
+            Page<OrderResponse> page = orderService.findAllOrder(email,
+                    ShoppingPageRequest.recentPageOf(pageNumber, pageSize));
 
             // then
             assertThat(page.getSize()).isEqualTo(6);
@@ -388,7 +392,8 @@ class OrderServiceTest {
             int pageSize = 100;
 
             // when
-            Page<OrderResponse> page = orderService.findAllOrder(email, pageNumber, pageSize);
+            Page<OrderResponse> page = orderService.findAllOrder(email,
+                    ShoppingPageRequest.recentPageOf(pageNumber, pageSize));
 
             // then
             assertThat(page.getSize()).isEqualTo(30);

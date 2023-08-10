@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import shopping.application.OrderCreator;
 import shopping.application.OrderService;
 import shopping.auth.EmailFromAccessToken;
+import shopping.dto.request.ShoppingPageRequest;
 import shopping.dto.response.OrderResponse;
 
 @RestController
@@ -50,7 +51,8 @@ public class OrderController {
             @RequestParam(defaultValue = DEFAULT_PAGE) Integer page,
             @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer size) {
 
-        Page<OrderResponse> responses = orderService.findAllOrder(email, page, size);
+        Page<OrderResponse> responses = orderService
+                .findAllOrder(email, ShoppingPageRequest.recentPageOf(page, size));
         return ResponseEntity.ok().body(responses);
     }
 }
