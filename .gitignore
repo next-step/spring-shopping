@@ -37,4 +37,5 @@ out/
 .vscode/
 
 ### properties ###
-/src/application-jwt.properties
+/src/main/resources/application-jwt.properties
+/src/main/resources/application-currency.properties
