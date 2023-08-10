@@ -1,4 +1,4 @@
-package shopping.integration;
+package shopping.integration.support;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -8,7 +8,7 @@ import shopping.dto.LoginResponse;
 
 public class OrderProductIntegrationSupporter {
 
-    static ExtractableResponse<Response> orderProduct() {
+    public static ExtractableResponse<Response> orderProduct() {
         String email = "woowa1@woowa.com";
         String password = "1234";
 
@@ -25,7 +25,7 @@ public class OrderProductIntegrationSupporter {
             .then().log().all().extract();
     }
 
-    static ExtractableResponse<Response> findOrder(long orderId) {
+    public static ExtractableResponse<Response> findOrder(long orderId) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 

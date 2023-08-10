@@ -1,4 +1,4 @@
-package shopping.currency;
+package shopping.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
@@ -17,8 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.dto.CurrencyLayerResponse;
 import shopping.exception.CurrencyLayerException;
-import shopping.infrastructure.ApiService;
-import shopping.infrastructure.CurrencyManager;
 
 @DisplayName("CurrencyManager 클래스")
 @ExtendWith(MockitoExtension.class)

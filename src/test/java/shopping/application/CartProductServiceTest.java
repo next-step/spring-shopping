@@ -6,6 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static shopping.application.support.DomainFixture.getMember;
+import static shopping.application.support.DomainFixture.getProduct;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,8 +53,8 @@ public class CartProductServiceTest {
         @DisplayName("member 와 product 를 찾아서 장바구니에 추가한다")
         void addProduct() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
-            Product product = new Product(1L, "치킨", "image", 23000L);
+            Member member = getMember(1L);
+            Product product = getProduct(1L);
 
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
@@ -69,7 +71,7 @@ public class CartProductServiceTest {
         @DisplayName("member 가 존재하지 않는다면 MemberException 을 던진다")
         void throwMemberException_WhenInValidMemberId() {
             // given
-            Product product = new Product(1L, "치킨", "image", 23000L);
+            Product product = getProduct(1L);
 
             given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
             given(memberRepository.findById(anyLong())).willReturn(Optional.empty());
@@ -86,7 +88,7 @@ public class CartProductServiceTest {
         @DisplayName("product 가 존재하지 않는다면 ProductException 을 던진다")
         void throwProductException_WhenInValidProductId() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
+            Member member = getMember(1L);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.empty());
 
@@ -102,8 +104,8 @@ public class CartProductServiceTest {
         @DisplayName("memberId와 productId 쌍이 이미 존재 한다면, 수량을 1개 증가한다")
         void increaseProductQuantity_WhenCartAlreadyExists() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
-            Product product = new Product(1L, "치킨", "image", 23000L);
+            Member member = getMember(1L);
+            Product product = getProduct(1L);
             int initialQuantity = 5;
             CartProduct cart = new CartProduct(member, product, initialQuantity);
 
@@ -127,8 +129,8 @@ public class CartProductServiceTest {
         @DisplayName("장바구니에 있는 상품들을 반환한다.")
         void returnCartProducts() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
-            Product product = new Product(1L, "치킨", "image", 23000L);
+            Member member = getMember(1L);
+            Product product = getProduct(1L);
             int initialQuantity = 5;
             CartProduct cartProduct = new CartProduct(1L, member, product, initialQuantity);
 
@@ -151,8 +153,8 @@ public class CartProductServiceTest {
         @DisplayName("장바구니에 있는 상품을 제거한다")
         void deleteCartProduct() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
-            Product product = new Product(1L, "치킨", "image", 23000L);
+            Member member = getMember(1L);
+            Product product = getProduct(1L);
             int initialQuantity = 5;
             CartProduct cartProduct = new CartProduct(member, product, initialQuantity);
 

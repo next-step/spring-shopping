@@ -2,6 +2,7 @@ package shopping.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static shopping.application.support.DomainFixture.getProduct;
 
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -33,8 +34,8 @@ class ProductServiceTest {
         @DisplayName("저장된 모든 Product 를 가져온다")
         void find_all_products() {
             // given
-            Product product1 = new Product("치킨", "url", 18000L);
-            Product product2 = new Product("피자", "url", 28000L);
+            Product product1 = getProduct(1L);
+            Product product2 = getProduct(2L);
 
             given(productRepository.findAll()).willReturn(List.of(product1, product2));
 

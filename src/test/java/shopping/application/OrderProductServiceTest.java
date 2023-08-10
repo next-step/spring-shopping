@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static shopping.application.support.DomainFixture.getMember;
+import static shopping.application.support.DomainFixture.getProduct;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.infrastructure.CurrencyManager;
 import shopping.domain.CartProduct;
 import shopping.domain.Member;
 import shopping.domain.Order;
@@ -25,6 +26,7 @@ import shopping.domain.Product;
 import shopping.dto.OrderDetailResponse;
 import shopping.dto.OrderResponse;
 import shopping.exception.OrderProductException;
+import shopping.infrastructure.CurrencyManager;
 import shopping.repository.CartProductRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
@@ -56,9 +58,9 @@ class OrderProductServiceTest {
         @DisplayName("장바구니에 있는 상품들을 주문한다")
         void orderProductInCart() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
-            Product product1 = new Product(1L, "치킨", "image", 23000L);
-            Product product2 = new Product(2L, "떡볶이", "image", 14000L);
+            Member member = getMember(1);
+            Product product1 = getProduct(1L);
+            Product product2 = getProduct(2L);
 
             CartProduct cartProduct1 = new CartProduct(1L, member, product1, 3);
             CartProduct cartProduct2 = new CartProduct(1L, member, product2, 4);
@@ -79,7 +81,7 @@ class OrderProductServiceTest {
         @DisplayName("장바구니에 있는 상품의 개수가 0개라면 OrderProductException 을 던진다")
         void throwOrderProductException_WhenOrderProductCountIsNotPositive() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
+            Member member = getMember(1L);
 
             given(cartProductRepository.findAllByMemberId(member.getId())).willReturn(List.of());
             given(memberRepository.findById(member.getId())).willReturn(Optional.of(member));
@@ -102,11 +104,11 @@ class OrderProductServiceTest {
         @DisplayName("orderId 에 해당하는 주문의 상품 정보를 반환한다")
         void returnOrderDetail() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
+            Member member = getMember(1L);
             Order order = new Order(1L, member, 1300.0);
 
-            Product product1 = new Product(1L, "치킨", "image", 23000L);
-            Product product2 = new Product(2L, "떡볶이", "image", 14000L);
+            Product product1 = getProduct(1L);
+            Product product2 = getProduct(2L);
 
             CartProduct cartProduct1 = new CartProduct(member, product1, 1);
             CartProduct cartProduct2 = new CartProduct(member, product2, 2);
@@ -132,7 +134,7 @@ class OrderProductServiceTest {
         @DisplayName("orderId 에 해당하는 주문이 없을 경우 OrderProductException 을 던진다")
         void throwOrderProductException_WhenOrderIsNotExist() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
+            Member member = getMember(1L);
             Order order = new Order(1L, member, 1300.0);
 
             given(orderRepository.findById(order.getId())).willReturn(Optional.empty());
@@ -154,7 +156,7 @@ class OrderProductServiceTest {
         @DisplayName("memberId 에 해당하는 member 의 주문 목록을 반환한다")
         void returnOrders() {
             // given
-            Member member = new Member(1L, "home@woowa.com", "1234");
+            Member member = getMember(1L);
 
             Order order1 = new Order(1L, member, 1300.0);
             Order order2 = new Order(2L, member, 1300.0);

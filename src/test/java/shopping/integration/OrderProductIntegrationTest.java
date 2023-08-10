@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.integration.support.OrderProductIntegrationSupporter;
 
 @DisplayName("상품 주문 기능")
 public class OrderProductIntegrationTest extends IntegrationTest {

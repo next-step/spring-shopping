@@ -1,4 +1,4 @@
-package shopping.integration;
+package shopping.integration.support;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -6,10 +6,11 @@ import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 import shopping.dto.LoginResponse;
 import shopping.dto.CartProductRequest;
+import shopping.integration.support.AuthIntegrationSupporter;
 
 public class CartProductIntegrationSupporter {
 
-    static ExtractableResponse<Response> addProduct(Long productId) {
+    public static ExtractableResponse<Response> addProduct(Long productId) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 
@@ -26,7 +27,7 @@ public class CartProductIntegrationSupporter {
                 .then().log().all().extract();
     }
 
-    static ExtractableResponse<Response> findCartProducts() {
+    public static ExtractableResponse<Response> findCartProducts() {
         String email = "woowa1@woowa.com";
         String password = "1234";
 
@@ -43,7 +44,7 @@ public class CartProductIntegrationSupporter {
                 .then().log().all().extract();
     }
 
-    static ExtractableResponse<Response> deleteCartProduct(Long id) {
+    public static ExtractableResponse<Response> deleteCartProduct(Long id) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 
@@ -60,7 +61,7 @@ public class CartProductIntegrationSupporter {
                 .then().log().all().extract();
     }
 
-    static ExtractableResponse<Response> updateCartProduct(Long id, CartProductRequest request) {
+    public static ExtractableResponse<Response> updateCartProduct(Long id, CartProductRequest request) {
         String email = "woowa1@woowa.com";
         String password = "1234";
 

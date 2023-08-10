@@ -1,4 +1,4 @@
-package shopping.currency;
+package shopping.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.client.MockRestServiceServer;
 import shopping.dto.CurrencyLayerResponse;
-import shopping.infrastructure.ApiService;
 
 @ExtendWith(SpringExtension.class)
 @RestClientTest(ApiService.class)
