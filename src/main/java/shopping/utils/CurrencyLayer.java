@@ -1,17 +1,19 @@
 package shopping.utils;
 
 import java.text.MessageFormat;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shopping.domain.Currency;
+import shopping.domain.CurrencyCountry;
 
 @Component
 public class CurrencyLayer {
 
-    private static final String CURRENCY_ACCESS_KEY = "df19208b7579412eee5bae3132cad09b";
-    private static final String CURRENCY_SOURCE = "USD";
-    private static final String CURRENCY_TARGET = "KRW";
-    private static final String CURRENCY_SOURCE_URL = "http://apilayer.net/api/live";
+    @Value("${currency.access-key}")
+    private String CURRENCY_ACCESS_KEY;
+    @Value("${currency.source-url}")
+    private String CURRENCY_SOURCE_URL;
 
     private final RestTemplate restTemplate;
 
@@ -19,13 +21,13 @@ public class CurrencyLayer {
         restTemplate = new RestTemplate();
     }
 
-    public Currency callCurrency() {
+    public Currency callCurrency(CurrencyCountry targetCounty, CurrencyCountry sourceCountry) {
         String URL = MessageFormat.format(
             "{0}?access_key={1}&currencies={2}&source={3}",
             CURRENCY_SOURCE_URL,
             CURRENCY_ACCESS_KEY,
-            CURRENCY_TARGET,
-            CURRENCY_SOURCE
+            targetCounty,
+            sourceCountry
         );
 
         Currency currency = restTemplate.getForObject(URL, Currency.class);

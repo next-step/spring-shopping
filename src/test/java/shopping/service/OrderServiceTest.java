@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Currency;
+import shopping.domain.CurrencyCountry;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.OrderItemEntity;
@@ -62,7 +63,7 @@ public class OrderServiceTest {
         HashMap<String, Double> hm = new HashMap<>();
         hm.put("USDKRW", 1300.111);
         Currency currency = new Currency(true, "USD", hm);
-        when(currencyLayer.callCurrency()).thenReturn(currency);
+        when(currencyLayer.callCurrency(CurrencyCountry.KRW, CurrencyCountry.USD)).thenReturn(currency);
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
@@ -80,7 +81,7 @@ public class OrderServiceTest {
         // then
         verify(userRepository).getReferenceById(userId);
         verify(cartItemRepository).findByUserId(userId);
-        verify(currencyLayer).callCurrency();
+        verify(currencyLayer).callCurrency(CurrencyCountry.KRW, CurrencyCountry.USD);
         verify(orderRepository).save(any(OrderEntity.class));
     }
 

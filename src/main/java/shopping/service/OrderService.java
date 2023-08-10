@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Currency;
+import shopping.domain.CurrencyCountry;
 import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.OrderItemEntity;
@@ -44,7 +45,7 @@ public class OrderService {
     public OrderIdResponse orderCartItem(Long userId) {
         UserEntity user = userRepository.getReferenceById(userId);
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
-        Currency currency = currencyLayer.callCurrency();
+        Currency currency = currencyLayer.callCurrency(CurrencyCountry.KRW, CurrencyCountry.USD);
         Double USDKRW = currency.getQuotes().get("USDKRW");
 
         int totalPrice = 0;
