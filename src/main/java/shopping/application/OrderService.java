@@ -45,6 +45,22 @@ public class OrderService {
         return OrderResponse.from(order);
     }
 
+    @Transactional(readOnly = true)
+    public List<OrderResponse> findAll(final Long userId) {
+        final List<Order> orders = findOrdersByUserId(userId);
+        return convertAll(orders);
+    }
+
+    private static List<OrderResponse> convertAll(final List<Order> orders) {
+        return orders.stream()
+                .map(OrderResponse::from)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    private List<Order> findOrdersByUserId(final Long userId) {
+        return orderRepository.findAllByUserId(userId);
+    }
+
     private Order findOrderByIdAndUserId(final Long id, final Long userId) {
         return orderRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(OrderNotFoundException::new);

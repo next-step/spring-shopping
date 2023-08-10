@@ -7,6 +7,7 @@ import shopping.dto.OrderResponse;
 import shopping.ui.config.AuthenticationPrincipal;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -28,6 +29,12 @@ public class OrderController {
     public ResponseEntity<OrderResponse> find(@PathVariable final Long id,
                                               @AuthenticationPrincipal final Long userId) {
         final OrderResponse response = orderService.find(id, userId);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> findAll(@AuthenticationPrincipal final Long userId) {
+        final List<OrderResponse> response = orderService.findAll(userId);
         return ResponseEntity.ok().body(response);
     }
 }
