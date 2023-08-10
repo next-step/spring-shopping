@@ -2,6 +2,7 @@ package shopping.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,8 +47,29 @@ public class OrderEntity {
         this(null, totalPrice, totalPriceUSD, user, null);
     }
 
-    public void addOrderItems(List<OrderItemEntity> orderItems) {
-        this.orderItems = orderItems;
+    public static OrderEntity from(UserEntity user,
+        List<CartItemEntity> cartItems,
+        Double currencyRatio
+    ) {
+        int totalPrice = cartItems.stream()
+            .map(CartItemEntity::calculatePrice)
+            .reduce((i1, i2) -> i1 + i2)
+            .get();
+        Double totalPriceUSD = totalPrice / currencyRatio;
+        return new OrderEntity(
+            totalPrice,
+            totalPriceUSD,
+            user
+        );
+    }
+
+    public void addOrderItems(
+        List<CartItemEntity> cartItems,
+        Double currencyRatio
+    ) {
+        this.orderItems = cartItems.stream()
+            .map(cartItem -> OrderItemEntity.from(cartItem, this, currencyRatio))
+            .collect(Collectors.toUnmodifiableList());
     }
 
     public Long getId() {
