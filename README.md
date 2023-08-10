@@ -145,3 +145,23 @@ commit type은 아래 목록 중 하나로 함
 - [x] request : `GET /orders`
 - [x] response : `200 OK`
 - [x] 프론트 연동
+
+---
+
+## Step 5. 주문 (환율 적용)
+
+- 사용자 정보는 요청 Header의 `Authrozation` 필드를 이용
+- 인증 방식은 bearer
+- `Authrozation: <type> <credentials>`
+
+### 주문 시점의 실시간 환율 저장
+
+- [ ] 주문 시점의 실시간 환율 저장
+    - [ ] currencyLayer API 사용
+    - [ ] `orders` 테이블에 환율 컬럼 추가
+
+### 주문 관련 페이지에 적용 환율, 변환 금액 반영
+
+- [ ] 환율로 변환 금액 계산
+- [ ] 프론트 연동
+    - 적용 환율, 변환된 총 주문 금액 추가
