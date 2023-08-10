@@ -46,7 +46,7 @@ class OrderServiceTest {
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId));
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId2));
 
-        Long orderId = orderService.createOrder(loggedInMember);
+        Long orderId = orderService.createOrder(loggedInMember).getId();
 
         Order order = orderRepository.findById(orderId).orElseThrow();
         assertThat(order.getTotalPrice()).isEqualTo(new Money("30000"));
@@ -68,7 +68,7 @@ class OrderServiceTest {
         Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
         LoggedInMember loggedInMember = new LoggedInMember(memberId);
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId));
-        Long orderId = orderService.createOrder(loggedInMember);
+        Long orderId = orderService.createOrder(loggedInMember).getId();
 
         LoggedInMember otherLoggedInMember = new LoggedInMember(999L);
         assertThatThrownBy(() -> orderService.findOrderById(otherLoggedInMember, orderId))

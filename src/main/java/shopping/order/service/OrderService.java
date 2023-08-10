@@ -34,7 +34,7 @@ public class OrderService {
         this.orderMapper = orderMapper;
     }
 
-    public Long createOrder(LoggedInMember loggedInMember) {
+    public OrderResponse createOrder(LoggedInMember loggedInMember) {
         //todo: login user validation을 계속 해야하나?
         List<Product> product = productRepository.findAll();
         List<CartItem> cartItems = cartItemRepository.findAllByMemberId(loggedInMember.getId());
@@ -44,7 +44,7 @@ public class OrderService {
         Order order = orderMapper.mapToOrder(loggedInMember.getId(), cart);
 
         cartItemRepository.deleteAll(cartItems);
-        return orderRepository.save(order).getId();
+        return OrderResponse.from(orderRepository.save(order));
     }
 
     @Transactional(readOnly = true)

@@ -47,5 +47,6 @@ create table order_item (
                             price numeric(19,2),
                             product_id bigint,
                             quantity integer,
+                            image_url varchar(255),
                             FOREIGN KEY (order_id) REFERENCES orders(id)
 );

@@ -9,6 +9,7 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(WooWaException.class)
     public ResponseEntity<ErrorResponse> woowaExceptionHandler(WooWaException exception) {
+        exception.printStackTrace();
         return ResponseEntity
             .status(exception.getHttpStatus())
             .body(new ErrorResponse(exception.getHttpStatus().value(), exception.getMessage()));

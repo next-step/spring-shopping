@@ -8,12 +8,12 @@ import shopping.product.domain.vo.Money;
 public class OrderResponse {
     private Long id;
     private List<OrderItemResponse> orderItems;
-    private Money totalPrice;
+    private int totalPrice;
 
     public OrderResponse(Long id, List<OrderItemResponse> orderItems, Money totalPrice) {
         this.id = id;
         this.orderItems = orderItems;
-        this.totalPrice = totalPrice;
+        this.totalPrice = totalPrice.intValue();
     }
 
     private OrderResponse() {
@@ -39,7 +39,7 @@ public class OrderResponse {
         return orderItems;
     }
 
-    public Money getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 }
