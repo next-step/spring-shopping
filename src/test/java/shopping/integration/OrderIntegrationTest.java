@@ -89,4 +89,30 @@ class OrderIntegrationTest {
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @Test
+    @DisplayName("사용자의 주문 목록들을 조회한다.")
+    void findOrdersByUser() {
+        // given
+        final String accessToken = AuthUtil.accessToken();
+
+        CartUtil.createCartItem(accessToken, 1L);
+        OrderUtil.createOrder(accessToken);
+
+        CartUtil.createCartItem(accessToken, 2L);
+        OrderUtil.createOrder(accessToken);
+
+        // when
+        final OrderResponse[] orderResponse = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get(ORDER_API_URL)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(OrderResponse[].class);
+
+        // then
+        assertThat(orderResponse).hasSize(2);
+    }
 }
