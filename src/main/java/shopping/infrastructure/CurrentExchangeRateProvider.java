@@ -16,9 +16,12 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     private static final String apiUrl = "http://apilayer.net/api/live?access_key=";
 
     private final String apiAccessKey;
+    private final CustomRestTemplate customRestTemplate;
 
-    public CurrentExchangeRateProvider(@Value("${shopping.currency.apiKey}") String apiAccessKey) {
+    public CurrentExchangeRateProvider(@Value("${shopping.currency.apiKey}") String apiAccessKey,
+            CustomRestTemplate customRestTemplate) {
         this.apiAccessKey = apiAccessKey;
+        this.customRestTemplate = customRestTemplate;
     }
 
     @Override
@@ -33,7 +36,6 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     }
 
     private Currency initializeCurrency() {
-        CustomRestTemplate customRestTemplate = new CustomRestTemplate();
         ExchangeResponse response = customRestTemplate.getResult(apiUrl + apiAccessKey, ExchangeResponse.class);
         return new Currency(response.getQuotes());
     }

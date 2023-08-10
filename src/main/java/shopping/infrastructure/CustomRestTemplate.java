@@ -1,10 +1,12 @@
 package shopping.infrastructure;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import shopping.exception.InfraException;
 
+@Component
 public class CustomRestTemplate {
 
     private final RestTemplate restTemplate = new RestTemplate();
