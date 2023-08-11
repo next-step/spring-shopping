@@ -24,7 +24,7 @@ public class CommonExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     public ErrorResponse exceptionHandler(Exception exception) {
-        logger.info(exception.toString());
+        logger.info("[Exception] message = {}, stack trace = {}", exception.getMessage(), exception.getStackTrace());
         return new ErrorResponse(
             INTERNAL_SERVER_ERROR.value(),
             "서버 내부에서 오류가 발생했습니다. 불편을 드려 죄송합니다."
