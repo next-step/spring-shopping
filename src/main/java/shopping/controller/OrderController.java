@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.LoginUser;
-import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderDetailResponse;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.service.OrderService;
@@ -25,11 +24,10 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderCreateResponse> createOrder(@LoginUser final Long memberId) {
-        final OrderCreateResponse response = orderService.createOrder(memberId);
+    public ResponseEntity<Void> createOrder(@LoginUser final Long memberId) {
+        final Long orderId = orderService.createOrder(memberId);
 
-        return ResponseEntity.created(URI.create("/order-detail/" + response.getOrderId()))
-            .body(response);
+        return ResponseEntity.created(URI.create("/order-detail/" + orderId)).build();
     }
 
     @GetMapping

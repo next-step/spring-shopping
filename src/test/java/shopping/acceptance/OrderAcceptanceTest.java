@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import shopping.acceptance.helper.AuthHelper;
 import shopping.acceptance.helper.RestHelper;
-import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderDetailResponse;
 import shopping.dto.response.OrderHistoryResponse;
 
@@ -30,7 +29,6 @@ class OrderAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.header("Location")).isEqualTo("/order-detail/3");
-        assertThat(response.body().as(OrderCreateResponse.class).getOrderId()).isEqualTo(3L);
     }
 
     @Test

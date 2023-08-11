@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.Cart;
 import shopping.domain.order.Order;
-import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderDetailResponse;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.exception.OrderExceptionType;
@@ -37,13 +36,13 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderCreateResponse createOrder(final Long memberId) {
+    public Long createOrder(final Long memberId) {
         final Cart cart = new Cart(memberId, cartProductRepository.findAllByMemberId(memberId));
         final Order order = orderRepository.save(orderMapper.mapFrom(cart));
 
         cartProductRepository.deleteAllByMemberId(memberId);
 
-        return OrderCreateResponse.from(order);
+        return order.getId();
     }
 
     @Transactional(readOnly = true)
