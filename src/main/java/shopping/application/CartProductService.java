@@ -42,7 +42,6 @@ public class CartProductService {
             .orElseThrow(() -> new MemberException("회원Id에 해당하는 회원이 존재하지 않습니다"));
 
         CartProduct cartProduct = findAndUpdateCartProduct(member, product);
-        // isNewTransaction ??
         cartProductRepository.save(cartProduct);
         return cartProduct;
     }
