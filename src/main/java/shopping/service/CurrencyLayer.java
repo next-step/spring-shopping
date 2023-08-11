@@ -2,7 +2,11 @@ package shopping.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -12,6 +16,8 @@ import shopping.exception.ShoppingException;
 
 @Service
 public class CurrencyLayer implements CurrencyService {
+
+    private static final long CACHE_EVICT_TIME = 3l;
 
     @Value("${currency.access-key}")
     private String CURRENCY_ACCESS_KEY;
@@ -33,6 +39,11 @@ public class CurrencyLayer implements CurrencyService {
             throw new ShoppingException(ErrorCode.INVALID_CURRENCY_API);
         }
         return getCurrency(jsonNode, currencyCountry);
+    }
+
+    @CacheEvict(value = "currency", allEntries = true)
+    @Scheduled(fixedDelay = CACHE_EVICT_TIME, timeUnit = TimeUnit.SECONDS)
+    public void cacheEvictInCurrency() {
     }
 
     private Double getCurrency(JsonNode jsonNode, CurrencyCountry currencyCountry) {
