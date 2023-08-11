@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.text.MessageFormat;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import shopping.TestHelper;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
+import shopping.dto.response.OrderIdResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.exception.ErrorCode;
 import shopping.exception.ErrorResponse;
 
@@ -73,6 +77,64 @@ public class OrderIntegrationTest extends IntegrationTest{
         // then
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
         assertThat(errorResponse.getErrorCode()).isEqualTo(ErrorCode.INVALID_PURCHASE);
+    }
+
+    @Test
+    @DisplayName("성공 : 주문 번호로 주문 조회")
+    void searchOrderById() {
+        // given
+        LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+        CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(1L);
+        TestHelper.addCartItem(accessToken, cartItemAddRequest);
+        Long orderId = TestHelper.orderCartItems(
+            accessToken).as(OrderIdResponse.class).getOrderId();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .get(MessageFormat.format("/order/{0}", orderId))
+            .then()
+            .log().all().extract();
+
+        // then
+        OrderResponse orderResponse = response.as(OrderResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(orderResponse.getOrderItems().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("성공 : 유저가 주문한 주문 목록 전체 조회")
+    void searchOrderByUserId() {
+        // given
+        LoginRequest loginRequest = new LoginRequest("test_email@woowafriends.com",
+            "test_password!");
+        String accessToken = TestHelper.login(loginRequest).as(LoginResponse.class)
+            .getAccessToken();
+        CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(1L);
+        TestHelper.addCartItem(accessToken, cartItemAddRequest);
+        TestHelper.orderCartItems(accessToken);
+        TestHelper.orderCartItems(accessToken);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given().log().all()
+            .auth().oauth2(accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .get("/order")
+            .then()
+            .log().all().extract();
+
+        // then
+        List<OrderResponse> orderResponses = response.jsonPath().getList(".", OrderResponse.class);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(orderResponses.size()).isEqualTo(2);
     }
 
 }
