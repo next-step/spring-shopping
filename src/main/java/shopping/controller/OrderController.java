@@ -8,6 +8,8 @@ import shopping.dto.response.OrderResponses;
 import shopping.infrastructure.ExchangeRateApi;
 import shopping.service.OrderService;
 
+import static java.time.LocalDateTime.now;
+
 @RestController
 public class OrderController {
 
@@ -35,7 +37,7 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<OrderCreateResponse> createOrder(@RequestAttribute final Long loginMemberId) {
-        final double exchangeRate = exchangeRateApi.getRealTimeExchangeRate();
+        final double exchangeRate = exchangeRateApi.getExchangeRateEveryMinute(now());
         final OrderCreateResponse orderCreateResponse = orderService.createOrder(loginMemberId, exchangeRate);
 
         return ResponseEntity.ok(orderCreateResponse);

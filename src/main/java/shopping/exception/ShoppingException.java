@@ -10,6 +10,11 @@ public class ShoppingException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+    public ShoppingException(final Throwable cause, final ErrorCode errorCode) {
+        super(cause);
+        this.errorCode = errorCode;
+    }
+
     public HttpStatus getHttpStatus() {
         return this.errorCode.getHttpStatus();
     }

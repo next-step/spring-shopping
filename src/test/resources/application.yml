@@ -27,4 +27,4 @@ security:
 
 currency-api:
   key: test
-  url: http://api.currencylayer.com/live
+  url: http://localhost:8888/

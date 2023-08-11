@@ -1,5 +1,7 @@
 package shopping.infrastructure;
 
+import java.time.LocalDateTime;
+
 public interface ExchangeRateApi {
-    double getRealTimeExchangeRate();
+    double getExchangeRateEveryMinute(final LocalDateTime now);
 }

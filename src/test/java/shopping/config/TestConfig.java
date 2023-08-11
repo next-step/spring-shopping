@@ -11,6 +11,6 @@ public class TestConfig {
     @Bean
     @Profile("test")
     public ExchangeRateApi exchangeRateApi() {
-        return () -> 1300.0;
+        return (time) -> 1300.0;
     }
 }
