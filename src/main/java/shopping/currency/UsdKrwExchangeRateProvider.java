@@ -14,7 +14,7 @@ import shopping.order.domain.vo.ExchangeRate;
 
 @Component
 @Profile("!test")
-public class UsdKrwCurrencyProvider implements CurrencyProvider {
+public class UsdKrwExchangeRateProvider implements ExchangeRateProvider {
 
     private static final String URL = "http://apilayer.net/api/live";
     private static final String ACCESS_KEY_PARAM = "access_key";
@@ -23,12 +23,12 @@ public class UsdKrwCurrencyProvider implements CurrencyProvider {
     private final String accessKey;
     private final RestTemplate restTemplate;
 
-    public UsdKrwCurrencyProvider(@Value("${currency.api.key}") String accessKey, RestTemplate restTemplate) {
+    public UsdKrwExchangeRateProvider(@Value("${currency.api.key}") String accessKey, RestTemplate restTemplate) {
         this.accessKey = accessKey;
         this.restTemplate = restTemplate;
     }
 
-    public ExchangeRate findUsdKrwCurrency() {
+    public ExchangeRate findUsdKrwExchangeRate() {
         ResponseEntity<JsonNode> response = restTemplate.getForEntity(makeUrl(), JsonNode.class);
         validResponseHttpStatus(response);
         return new ExchangeRate(parseResponseBodyUsdKrw(response));

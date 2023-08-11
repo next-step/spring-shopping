@@ -6,10 +6,10 @@ import shopping.order.domain.vo.ExchangeRate;
 
 @Profile("test")
 @Component
-public class MockCurrencyProvider implements CurrencyProvider {
+public class MockExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
-    public ExchangeRate findUsdKrwCurrency() {
+    public ExchangeRate findUsdKrwExchangeRate() {
         return new ExchangeRate("1300");
     }
 }

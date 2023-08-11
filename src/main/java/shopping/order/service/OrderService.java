@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.dto.ProductCartItemDto;
 import shopping.cart.repository.CartItemRepository;
-import shopping.currency.CurrencyProvider;
+import shopping.currency.ExchangeRateProvider;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
@@ -26,18 +26,18 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final MemberRepository memberRepository;
-    private final CurrencyProvider currencyProvider;
+    private final ExchangeRateProvider exchangeRateProvider;
 
     public OrderService(
         OrderRepository orderRepository,
         CartItemRepository cartItemRepository,
         MemberRepository memberRepository,
-        CurrencyProvider currencyProvider
+        ExchangeRateProvider exchangeRateProvider
     ) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.memberRepository = memberRepository;
-        this.currencyProvider = currencyProvider;
+        this.exchangeRateProvider = exchangeRateProvider;
     }
 
     public Long addOrder(LoggedInMember loggedInMember, OrderCreationRequest orderCreationRequest) {
@@ -49,7 +49,7 @@ public class OrderService {
 
         validCartItems(productCartItemDtos);
 
-        Order order = new Order(loggedInMember.getId(), currencyProvider.findUsdKrwCurrency().getValue());
+        Order order = new Order(loggedInMember.getId(), exchangeRateProvider.findUsdKrwExchangeRate().getValue());
 
         productCartItemDtos.stream()
             .map(ProductCartItemDto::toOrderItem)

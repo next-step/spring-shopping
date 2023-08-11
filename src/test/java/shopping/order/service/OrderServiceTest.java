@@ -15,7 +15,7 @@ import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
 import shopping.cart.domain.vo.Quantity;
 import shopping.cart.repository.CartItemRepository;
-import shopping.currency.CurrencyProvider;
+import shopping.currency.ExchangeRateProvider;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
@@ -42,14 +42,14 @@ class OrderServiceTest {
     @Autowired
     private ProductRepository productRepository;
     @MockBean
-    private CurrencyProvider currencyProvider;
+    private ExchangeRateProvider exchangeRateProvider;
     @Autowired
     private OrderService orderService;
 
     @Test
     @DisplayName("주문 생성 메서드 테스트")
     void addOrder() {
-        Mockito.when(currencyProvider.findUsdKrwCurrency()).thenReturn(new ExchangeRate("1300"));
+        Mockito.when(exchangeRateProvider.findUsdKrwExchangeRate()).thenReturn(new ExchangeRate("1300"));
         Member member = makeMember();
 
         Product chicken = makeProduct("치킨", "10000");
