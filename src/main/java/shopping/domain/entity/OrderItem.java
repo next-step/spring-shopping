@@ -9,20 +9,24 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column
     private Long productId;
 
     @Column(nullable = false, length = 20)
+    @AttributeOverride(name = "value", column = @Column(name = "name"))
     private Name name;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "image"))
     private Image image;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "price"))
     private Price price;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity;
 
     protected OrderItem() {

@@ -22,7 +22,7 @@ public class ExchangeRate {
     }
 
     public double apply(final Price price) {
-        return price.getPrice() / value;
+        return price.getValue() / value;
     }
 
     @Override

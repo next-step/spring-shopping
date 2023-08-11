@@ -3,6 +3,8 @@ package shopping.domain;
 import shopping.exception.EmailFormInvalidException;
 import shopping.exception.EmailLengthInvalidException;
 
+import java.util.Objects;
+
 public class Email {
 
     private static final int MAX_LENGTH = 50;
@@ -35,5 +37,18 @@ public class Email {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Email email = (Email) o;
+        return Objects.equals(value, email.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

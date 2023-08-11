@@ -12,12 +12,15 @@ public class Product {
     private Long id;
 
     @Column(nullable = false, length = 20)
+    @AttributeOverride(name = "value", column = @Column(name = "name"))
     private Name name;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "image"))
     private Image image;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "price"))
     private Price price;
 
     protected Product() {

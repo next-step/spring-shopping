@@ -22,8 +22,8 @@ class ProductResponseTest {
 
         // then
         assertThat(response.getId()).isEqualTo(product.getId());
-        assertThat(response.getName()).isEqualTo(product.getName().getName());
-        assertThat(response.getImage()).isEqualTo(product.getImage().getImage());
-        assertThat(response.getPrice()).isEqualTo(product.getPrice().getPrice());
+        assertThat(response.getName()).isEqualTo(product.getName().getValue());
+        assertThat(response.getImage()).isEqualTo(product.getImage().getValue());
+        assertThat(response.getPrice()).isEqualTo(product.getPrice().getValue());
     }
 }

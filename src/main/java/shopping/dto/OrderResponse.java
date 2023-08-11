@@ -31,7 +31,7 @@ public class OrderResponse {
         return new OrderResponse(
                 order.getId(),
                 order.getUserId(),
-                order.getTotalPrice().getPrice(),
+                order.getTotalPrice().getValue(),
                 order.applyExchangeRate(),
                 itemResponses
         );
@@ -91,9 +91,9 @@ public class OrderResponse {
             return new OrderItemResponse(
                     orderItem.getId(),
                     orderItem.getProductId(),
-                    orderItem.getName().getName(),
-                    orderItem.getPrice().getPrice(),
-                    orderItem.getImage().getImage(),
+                    orderItem.getName().getValue(),
+                    orderItem.getPrice().getValue(),
+                    orderItem.getImage().getValue(),
                     orderItem.getQuantity().getValue()
             );
         }

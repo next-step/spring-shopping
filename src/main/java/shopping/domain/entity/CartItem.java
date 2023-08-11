@@ -17,6 +17,7 @@ public class CartItem {
     private Product product;
 
     @Column
+    @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity;
 
     protected CartItem() {

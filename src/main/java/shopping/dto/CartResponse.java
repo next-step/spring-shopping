@@ -24,9 +24,9 @@ public class CartResponse {
     public static CartResponse from(final CartItem cartItem) {
         return new CartResponse(
                 cartItem.getId(),
-                cartItem.getProduct().getName().getName(),
-                cartItem.getProduct().getImage().getImage(),
-                cartItem.getProduct().getPrice().getPrice(),
+                cartItem.getProduct().getName().getValue(),
+                cartItem.getProduct().getImage().getValue(),
+                cartItem.getProduct().getPrice().getValue(),
                 cartItem.getQuantity().getValue()
         );
     }

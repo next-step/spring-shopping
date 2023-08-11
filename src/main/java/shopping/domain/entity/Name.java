@@ -10,16 +10,16 @@ public class Name {
 
     private static final int MAX_LENGTH = 20;
 
-    private final String name;
+    private final String value;
 
     protected Name() {
-        this.name = null;
+        this.value = null;
     }
 
     public Name(final String value) {
         validateLength(value);
 
-        this.name = value;
+        this.value = value;
     }
 
     private void validateLength(final String value) {
@@ -28,8 +28,8 @@ public class Name {
         }
     }
 
-    public String getName() {
-        return name;
+    public String getValue() {
+        return value;
     }
 
     @Override
@@ -37,11 +37,11 @@ public class Name {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final Name name1 = (Name) o;
-        return Objects.equals(name, name1.name);
+        return Objects.equals(value, name1.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(value);
     }
 }

@@ -29,6 +29,6 @@ class ExchangeRateTest {
 
         // then
         assertThat(appliedPrice)
-                .isCloseTo(price.getPrice() / exchangeRate.getValue(), Percentage.withPercentage(99));
+                .isCloseTo(price.getValue() / exchangeRate.getValue(), Percentage.withPercentage(99));
     }
 }

@@ -11,15 +11,15 @@ public class Quantity {
 
     public static final Quantity ONE = new Quantity(1);
 
-    private final int quantity;
+    private final int value;
 
     protected Quantity() {
-        this.quantity = 0;
+        this.value = 0;
     }
 
-    public Quantity(final int quantity) {
-        validatePositive(quantity);
-        this.quantity = quantity;
+    public Quantity(final int value) {
+        validatePositive(value);
+        this.value = value;
     }
 
     private void validatePositive(final int quantity) {
@@ -29,7 +29,7 @@ public class Quantity {
     }
 
     public Quantity increase() {
-        return new Quantity(quantity + 1);
+        return new Quantity(value + 1);
     }
 
     public Quantity update(final int quantity) {
@@ -37,7 +37,7 @@ public class Quantity {
     }
 
     public int getValue() {
-        return quantity;
+        return value;
     }
 
     @Override
@@ -45,11 +45,11 @@ public class Quantity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quantity quantity1 = (Quantity) o;
-        return quantity == quantity1.quantity;
+        return value == quantity1.value;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quantity);
+        return Objects.hash(value);
     }
 }

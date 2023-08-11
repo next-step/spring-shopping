@@ -43,7 +43,7 @@ class OrderTest {
         final Order order = Order.of(1L, orderItems, exchangeRate);
 
         // then
-        assertThat(order.getTotalPrice().getPrice())
+        assertThat(order.getTotalPrice().getValue())
                 .isEqualTo(prices.get(0) * quantities.get(0) + prices.get(1) * quantities.get(1));
     }
 
