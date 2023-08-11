@@ -9,8 +9,6 @@ import shopping.domain.entity.Order;
 import shopping.domain.entity.OrderItem;
 import shopping.dto.OrderResponse;
 import shopping.exception.OrderNotFoundException;
-import shopping.infrastructure.CurrencyCountry;
-import shopping.infrastructure.ExchangeRateProvider;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;
 
@@ -24,24 +22,20 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderMapper orderMapper;
-    private final ExchangeRateProvider exchangeRateProvider;
 
     public OrderService(final OrderRepository orderRepository,
                         final CartItemRepository cartItemRepository,
-                        final OrderMapper orderMapper,
-                        final ExchangeRateProvider exchangeRateProvider) {
+                        final OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.orderMapper = orderMapper;
-        this.exchangeRateProvider = exchangeRateProvider;
     }
 
-    public Long create(final Long userId) {
+    public Long create(final Long userId, final ExchangeRate exchangeRate) {
         final List<CartItem> cartItems = findCartItemsByUserId(userId);
         final List<OrderItem> orderItems = createOrderItemsFrom(cartItems);
         cartItemRepository.deleteAllInBatch(cartItems);
 
-        final ExchangeRate exchangeRate = new ExchangeRate(exchangeRateProvider.getFrom(CurrencyCountry.USA));
         final Order order = Order.of(userId, orderItems, exchangeRate);
         return orderRepository.save(order).getId();
     }
