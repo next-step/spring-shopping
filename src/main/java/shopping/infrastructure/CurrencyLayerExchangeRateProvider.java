@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Objects;
+import java.util.Optional;
 
 import static shopping.infrastructure.CurrencyCountry.KOREA;
 
@@ -38,30 +38,39 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
         final URI uri = createUri(country.getCurrencyLayerName());
 
         try {
-            log.info("환율 서버({})와 통신", uri);
+            log.info("환율 서버와 통신 ({})", uri);
             final ResponseEntity<JsonNode> response = restTemplate.getForEntity(uri, JsonNode.class);
-
             validateStatusCode(response.getStatusCode());
-            final JsonNode body = findSuccessBody(response);
 
-            return findResult(body, country.getCurrencyLayerName()).asDouble();
+            final JsonNode body = findBody(response);
+            return getExchangeRate(country, body);
         } catch (final RestClientException exception) {
             log.error("환율 서버와 통신 중 에러가 발생했습니다");
             throw new IllegalStateException();
         }
     }
 
-    private JsonNode findSuccessBody(final ResponseEntity<JsonNode> response) {
-        final JsonNode body = Objects.requireNonNull(response.getBody());
-        validateSuccess(body);
-        return body;
+    private double getExchangeRate(final CurrencyCountry country, final JsonNode body) {
+//        if (checkSuccess(body)) {
+//            return findResult(body, country.getCurrencyLayerName()).asDouble();
+//        }
+        return Double.MIN_VALUE;
     }
 
-    private void validateSuccess(final JsonNode body) {
+    private JsonNode findBody(final ResponseEntity<JsonNode> response) {
+        if (Optional.ofNullable(response.getBody()).isEmpty()) {
+            log.error("응답이 존재하지 않습니다");
+            throw new IllegalArgumentException();
+        }
+        return response.getBody();
+    }
+
+    private boolean checkSuccess(final JsonNode body) {
         if (!body.get("success").asBoolean(false)) {
             log.error("환율 서버에서 에러가 발생했습니다\n{}", body.get("error"));
-            throw new IllegalStateException();
+            return false;
         }
+        return true;
     }
 
     private static JsonNode findResult(final JsonNode response, final String country) {
