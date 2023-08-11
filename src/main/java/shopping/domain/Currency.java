@@ -8,11 +8,11 @@ import shopping.exception.CurrencyException;
 
 public class Currency {
 
-    private final EnumMap<ExchangeCode, Double> codeMap;
+    private final EnumMap<ExchangeCode, Double> codeMap = new EnumMap<>(ExchangeCode.class);
 
     public Currency(Map<String, Double> quotes) {
         validateQuote(quotes);
-        this.codeMap = createExchangeCodeMap(quotes);
+        initializeCodeMap(quotes);
     }
 
     private void validateCode(ExchangeCode code) {
@@ -26,11 +26,9 @@ public class Currency {
         return codeMap.get(code);
     }
 
-    private EnumMap<ExchangeCode, Double> createExchangeCodeMap(Map<String, Double> original) {
-        EnumMap<ExchangeCode, Double> codeMap = new EnumMap<>(ExchangeCode.class);
+    private void initializeCodeMap(Map<String, Double> original) {
         Arrays.stream(ExchangeCode.values())
             .forEach(code -> codeMap.put(code, original.getOrDefault(code.name(), null)));
-        return codeMap;
     }
 
     private void validateQuote(Map<String, Double> quotes) {
