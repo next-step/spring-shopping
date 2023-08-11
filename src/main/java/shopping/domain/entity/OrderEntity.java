@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import shopping.domain.CurrencyPoint;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "order_info")
 public class OrderEntity {
 
     @Id

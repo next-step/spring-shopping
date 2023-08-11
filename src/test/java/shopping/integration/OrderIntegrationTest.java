@@ -119,7 +119,6 @@ public class OrderIntegrationTest extends IntegrationTest{
         CartItemAddRequest cartItemAddRequest = new CartItemAddRequest(1L);
         TestHelper.addCartItem(accessToken, cartItemAddRequest);
         TestHelper.orderCartItems(accessToken);
-        TestHelper.orderCartItems(accessToken);
 
         // when
         ExtractableResponse<Response> response = RestAssured
