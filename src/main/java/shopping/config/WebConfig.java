@@ -23,7 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
         this.authArgumentResolver = authArgumentResolver;
     }
 
-    // TODO: RestTemplate를 빈으로 등록하는 것이 아니라 RestTemplateBuilder를 등록?
     @Bean
     public RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder()

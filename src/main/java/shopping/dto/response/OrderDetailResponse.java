@@ -33,7 +33,6 @@ public class OrderDetailResponse {
             order.computeTotalPrice(),
             null
         );
-        // TODO: currencyRate null로 보내? or JsonInclude로 아예 보내지 않는다?
     }
 
     public static OrderDetailResponse of(

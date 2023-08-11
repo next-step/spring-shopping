@@ -29,7 +29,6 @@ public class OrderProduct {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    // TODO: Product 정보 VO로 합치기
     @Embedded
     @AttributeOverride(name = "image", column = @Column(name = "ordered_image"))
     private ProductImage orderedImage;

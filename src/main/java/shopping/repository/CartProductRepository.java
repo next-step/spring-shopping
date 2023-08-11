@@ -8,7 +8,6 @@ import shopping.domain.cart.CartProduct;
 
 public interface CartProductRepository extends JpaRepository<CartProduct, Long> {
 
-    // TODO: 언더바 불편
     Optional<CartProduct> findByMemberIdAndProduct_Id(final Long memberId, final Long productId);
 
     @Query("select cp from CartProduct cp join fetch cp.product where cp.memberId = ?1")
