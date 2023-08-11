@@ -65,7 +65,7 @@ class OrderServiceTest {
             given(exchangeRateProvider.getExchange(ExchangeCode.USDKRW)).willReturn(exchangeRate);
 
             // when
-            OrderResponse result = orderService.order(member.getId());
+            OrderResponse result = orderService.createOrder(member.getId());
 
             // then
             long expectedTotalPrice = cartProducts.stream()
@@ -86,7 +86,7 @@ class OrderServiceTest {
             given(memberRepository.findById(notExistMemberId)).willReturn(Optional.empty());
 
             // when & then
-            assertThatThrownBy(() -> orderService.order(notExistMemberId))
+            assertThatThrownBy(() -> orderService.createOrder(notExistMemberId))
                 .hasMessage("존재하지 않는 사용자 입니다")
                 .isInstanceOf(MemberException.class);
         }
@@ -102,7 +102,7 @@ class OrderServiceTest {
                 new ArrayList<>());
 
             // when & then
-            assertThatThrownBy(() -> orderService.order(member.getId()))
+            assertThatThrownBy(() -> orderService.createOrder(member.getId()))
                 .hasMessage("주문할 상품이 존재하지 않습니다")
                 .isInstanceOf(OrderException.class);
         }

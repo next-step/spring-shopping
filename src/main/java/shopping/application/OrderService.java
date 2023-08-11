@@ -38,7 +38,7 @@ public class OrderService {
         this.exchangeRateProvider = exchangeRateProvider;
     }
 
-    public OrderResponse order(long memberId) {
+    public OrderResponse createOrder(long memberId) {
         Member member = findMember(memberId);
         ExchangeRate exchangeRate = exchangeRateProvider.getExchange(exchangeCode);
         Order order = new Order(member, exchangeRate);

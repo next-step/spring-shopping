@@ -36,7 +36,7 @@ public class OrderController {
     @PostMapping("/api/order")
     @ResponseBody
     public ResponseEntity<Void> order(@Login Long memberId) {
-        OrderResponse response = orderService.order(memberId);
+        OrderResponse response = orderService.createOrder(memberId);
         return ResponseEntity
             .created(URI.create("/order-detail/" + response.getId()))
             .build();
