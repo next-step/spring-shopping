@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import shopping.global.vo.Quantity;
 
 @Entity
-@Table(name = "cart_products")
+@Table(name = "CART_PRODUCT")
 public class CartProduct {
 
     @Id
@@ -19,13 +19,14 @@ public class CartProduct {
     @Column(name = "cart_product_id")
     private Long id;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", nullable = false)
     private Long memberId;
 
-    @Column(name = "product_id")
+    @Column(name = "product_id", nullable = false)
     private Long productId;
 
     @Embedded
+    @Column(nullable = false)
     @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity = new Quantity(1);
 

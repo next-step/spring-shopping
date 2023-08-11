@@ -20,7 +20,7 @@ import shopping.product.domain.Product;
 import shopping.product.domain.ProductImage;
 
 @Entity
-@Table(name = "order_products")
+@Table(name = "ORDER_PRODUCT")
 public class OrderProduct {
 
     @Id
@@ -28,26 +28,27 @@ public class OrderProduct {
     @Column(name = "order_product_id")
     private Long id;
 
-    @Column(name = "product_id")
+    @Column(name = "product_id", nullable = false)
     private Long productId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @Embedded
     private Name name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @Column(name = "image")
     @Embedded
     private ProductImage image;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     @Embedded
     private Price price;
 
     @Embedded
+    @Column(nullable = false)
     @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity;
 
@@ -85,7 +86,7 @@ public class OrderProduct {
         );
     }
 
-    void addOrder(final Order order) {
+    void setOrder(final Order order) {
         this.order = order;
     }
 

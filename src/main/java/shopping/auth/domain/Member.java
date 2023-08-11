@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "members")
+@Table(name = "MEMBER")
 public class Member {
 
     @Id
@@ -19,10 +19,12 @@ public class Member {
     private Long id;
 
     @Embedded
+    @Column(nullable = false)
     @AttributeOverride(name = "value", column = @Column(name = "email"))
     private MemberEmail email;
 
     @Embedded
+    @Column(nullable = false)
     @AttributeOverride(name = "value", column = @Column(name = "password"))
     private MemberPassword password;
 

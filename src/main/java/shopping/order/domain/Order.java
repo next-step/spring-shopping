@@ -15,7 +15,7 @@ import shopping.order.domain.vo.ExchangeRate;
 import shopping.order.domain.vo.Money;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 public class Order {
 
     @Id
@@ -26,7 +26,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
-    @Column(name = "total_price")
+    @Column(name = "total_price", nullable = false)
     @Embedded
     private Money totalPrice = new Money(0);
 
@@ -34,7 +34,7 @@ public class Order {
     @Embedded
     private ExchangeRate exchangeRate;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", nullable = false)
     private Long memberId;
 
     protected Order() {
@@ -61,7 +61,7 @@ public class Order {
 
     private void addOrderProduct(final OrderProduct orderProduct) {
         getOrderProducts().add(orderProduct);
-        orderProduct.addOrder(this);
+        orderProduct.setOrder(this);
 
         this.totalPrice = totalPrice.addMoney(orderProduct.calculatePrice());
     }

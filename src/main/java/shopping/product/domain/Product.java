@@ -11,7 +11,7 @@ import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 
 @Entity
-@Table(name = "product")
+@Table(name = "PRODUCT")
 public class Product {
 
     @Id
