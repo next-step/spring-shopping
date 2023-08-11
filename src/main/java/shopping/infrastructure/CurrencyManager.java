@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import shopping.dto.CurrencyLayerResponse;
 import shopping.exception.CurrencyLayerException;
-import shopping.infrastructure.ApiService;
 
 @Service
 public class CurrencyManager {
