@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Objects;
 import shopping.exception.CurrencyException;
 
-public class Currency {
+public class ExchangeRates {
 
-    private final EnumMap<ExchangeCode, Double> codeMap = new EnumMap<>(ExchangeCode.class);
+    private final EnumMap<ExchangeCode, ExchangeRate> codeMap = new EnumMap<>(ExchangeCode.class);
 
-    public Currency(Map<String, Double> quotes) {
+    public ExchangeRates(Map<String, Double> quotes) {
         validateQuote(quotes);
         initializeCodeMap(quotes);
     }
@@ -21,14 +21,17 @@ public class Currency {
         }
     }
 
-    public double getByCode(ExchangeCode code) {
+    public ExchangeRate getRate(ExchangeCode code) {
         validateCode(code);
         return codeMap.get(code);
     }
 
     private void initializeCodeMap(Map<String, Double> original) {
         Arrays.stream(ExchangeCode.values())
-            .forEach(code -> codeMap.put(code, original.getOrDefault(code.name(), null)));
+            .forEach(code -> {
+                Double value = original.get(code.name());
+                codeMap.put(code, new ExchangeRate(value));
+            });
     }
 
     private void validateQuote(Map<String, Double> quotes) {

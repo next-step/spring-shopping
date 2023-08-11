@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
-import shopping.domain.Currency;
+import shopping.domain.ExchangeRates;
 import shopping.dto.response.ExchangeResponse;
 import shopping.exception.CurrencyException;
 import shopping.exception.InfraException;
@@ -28,19 +28,18 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     @Override
     public ExchangeRate getExchange(ExchangeCode code) {
         try {
-            Currency currency = initializeCurrency();
-            double usdCurrency = currency.getByCode(code);
-            return new ExchangeRate(usdCurrency);
+            ExchangeRates exchangeRates = initializeExchangeRates();
+            return exchangeRates.getRate(code);
         } catch (CurrencyException exception) {
             throw new InfraException(exception.getMessage());
         }
     }
 
-    private Currency initializeCurrency() {
+    private ExchangeRates initializeExchangeRates() {
         ExchangeResponse response = customRestTemplate.getResult(apiUrl + apiAccessKey, ExchangeResponse.class);
         if (Objects.isNull(response.getQuotes())) {
             throw new InfraException("환율 정보 조회 중 에러가 발생했습니다");
         }
-        return new Currency(response.getQuotes());
+        return new ExchangeRates(response.getQuotes());
     }
 }

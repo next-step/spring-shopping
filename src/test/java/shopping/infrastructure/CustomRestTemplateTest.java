@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import shopping.domain.Currency;
+import shopping.domain.ExchangeRates;
 import shopping.exception.InfraException;
 
 @DisplayName("CucstomRestTemplate 단위 테스트")
@@ -24,7 +24,7 @@ class CustomRestTemplateTest {
             String invalidUrl = "http://url./tesafdfas/ds/afasdf/asf/as/fs//adsfs/af/asd";
 
             // when & then
-            assertThatThrownBy(() -> customRestTemplate.getResult(invalidUrl, Currency.class))
+            assertThatThrownBy(() -> customRestTemplate.getResult(invalidUrl, ExchangeRates.class))
                 .hasMessage("외부 API 호출 중 에러가 발생했습니다")
                 .isInstanceOf(InfraException.class);
         }
