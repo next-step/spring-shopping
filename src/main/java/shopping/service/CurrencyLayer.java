@@ -25,6 +25,7 @@ public class CurrencyLayer implements CurrencyService {
     }
 
     @Override
+    @Cacheable(value = "currency")
     public Double callCurrency(CurrencyCountry currencyCountry) {
         URI uri = getUri(currencyCountry);
         JsonNode jsonNode = restTemplate.getForObject(uri, JsonNode.class);
