@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,6 +40,9 @@ public class Member {
     }
 
     public boolean matchId(Long other) {
+        if (Objects.isNull(other)) {
+            return false;
+        }
         return this.id.equals(other);
     }
 
