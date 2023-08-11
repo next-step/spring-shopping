@@ -3,7 +3,7 @@ package shopping.infrastructure;
 public enum CurrencyCountry {
 
     KOREA("KRW"),
-    USA("USA");
+    USA("USD");
 
     private final String currencyLayerName;
 

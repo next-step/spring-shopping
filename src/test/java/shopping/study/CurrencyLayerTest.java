@@ -1,6 +1,7 @@
 package shopping.study;
 
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +12,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasKey;
 
 @SpringBootTest
+@Disabled
 class CurrencyLayerTest {
 
-    private static final String API_URL = "http://api.currencylayer.com/live";
+    private static final String API_URL = "http://apilayer.net/api/live";
 
     private final String accessKey;
 
@@ -28,6 +30,9 @@ class CurrencyLayerTest {
                 .given()
                 .baseUri(API_URL)
                 .param("access_key", accessKey)
+                .param("currencies", "KRW")
+                .param("source", "USD")
+                .param("format", 1)
 
                 .when()
                 .get()
