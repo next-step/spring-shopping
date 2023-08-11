@@ -7,6 +7,7 @@ import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.Cart;
 import shopping.cart.domain.CartItem;
 import shopping.cart.repository.CartItemRepository;
+import shopping.common.domain.Rate;
 import shopping.exception.WooWaException;
 import shopping.order.OrderMapper;
 import shopping.order.domain.Order;
@@ -34,14 +35,14 @@ public class OrderService {
         this.orderMapper = orderMapper;
     }
 
-    public OrderResponse createOrder(LoggedInMember loggedInMember) {
+    public OrderResponse createOrder(LoggedInMember loggedInMember, Rate exchangeRate) {
         //todo: login user validation을 계속 해야하나?
         List<Product> product = productRepository.findAll();
         List<CartItem> cartItems = cartItemRepository.findAllByMemberId(loggedInMember.getId());
         Cart cart = new Cart(loggedInMember.getId(), cartItems);
         cart.validate(product);
 
-        Order order = orderMapper.mapToOrder(loggedInMember.getId(), cart);
+        Order order = orderMapper.mapToOrder(loggedInMember.getId(), cart, exchangeRate);
 
         cartItemRepository.deleteAll(cartItems);
         return OrderResponse.from(orderRepository.save(order));

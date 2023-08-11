@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.dto.request.CartItemCreationRequest;
 import shopping.cart.service.CartService;
+import shopping.common.domain.Rate;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
@@ -37,7 +38,7 @@ class OrderServiceTest {
     private CartService cartService;
 
     @Test
-    @DisplayName("주문을 생성한다")
+    @DisplayName("주문을 생성하며 생성 시점에 환율이 저장된다")
     void createOrder() {
         Long memberId = memberRepository.save(new Member("email", "password")).getId();
         Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
@@ -47,9 +48,10 @@ class OrderServiceTest {
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId2));
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId2));
 
-        Long orderId = orderService.createOrder(loggedInMember).getId();
+        Long orderId = orderService.createOrder(loggedInMember, Rate.valueOf(1000)).getId();
 
         Order order = orderRepository.findById(orderId).orElseThrow();
+        assertThat(order).extracting(Order::getExchangeRate).isEqualTo(Rate.valueOf(1000));
         assertThat(order.getTotalPrice()).isEqualTo(new Money("50000"));
     }
 
@@ -69,7 +71,7 @@ class OrderServiceTest {
         Long productId = productRepository.save(new Product("피자", "imageUrl", "10000")).getId();
         LoggedInMember loggedInMember = new LoggedInMember(memberId);
         cartService.addCartItem(loggedInMember, new CartItemCreationRequest(productId));
-        Long orderId = orderService.createOrder(loggedInMember).getId();
+        Long orderId = orderService.createOrder(loggedInMember, Rate.valueOf(1000)).getId();
 
         LoggedInMember otherLoggedInMember = new LoggedInMember(999L);
         assertThatThrownBy(() -> orderService.findOrderById(otherLoggedInMember, orderId))

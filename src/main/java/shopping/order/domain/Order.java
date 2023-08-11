@@ -5,7 +5,9 @@ import java.util.List;
 import javax.persistence.*;
 
 import shopping.common.converter.MoneyConverter;
+import shopping.common.converter.RateConverter;
 import shopping.common.domain.Money;
+import shopping.common.domain.Rate;
 
 @Entity(name = "orders")
 public class Order {
@@ -19,15 +21,18 @@ public class Order {
     @Convert(converter = MoneyConverter.class)
     private Money totalPrice;
     private Long memberId;
+    @Convert(converter = RateConverter.class)
+    private Rate exchangeRate;
 
-    public Order(List<OrderItem> orderItems, Money totalPrice, Long memberId) {
+    public Order(List<OrderItem> orderItems, Money totalPrice, Long memberId, Rate exchangeRate) {
         this.orderItems = orderItems;
         this.totalPrice = totalPrice;
         this.memberId = memberId;
+        this.exchangeRate = exchangeRate;
     }
 
-    public Order(List<OrderItem> orderItems, Long memberId) {
-        this(orderItems, calculateTotalMoney(orderItems), memberId);
+    public Order(List<OrderItem> orderItems, Long memberId, Rate exchangeRate) {
+        this(orderItems, calculateTotalMoney(orderItems), memberId, exchangeRate);
     }
 
     protected Order() {
@@ -53,5 +58,13 @@ public class Order {
 
     public Money getTotalPrice() {
         return totalPrice;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public Rate getExchangeRate() {
+        return exchangeRate;
     }
 }

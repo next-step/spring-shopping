@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.cart.domain.Cart;
 import shopping.cart.domain.CartItem;
+import shopping.common.domain.Rate;
 import shopping.member.domain.Member;
 import shopping.order.domain.Order;
 import shopping.product.domain.Product;
@@ -26,7 +27,7 @@ class OrderMapperTest {
         Cart cart = new Cart(1L, List.of(new CartItem(product1, member, 2), new CartItem(product2, member)));
 
         // when
-        Order order = orderMapper.mapToOrder(member.getId(), cart);
+        Order order = orderMapper.mapToOrder(member.getId(), cart, Rate.valueOf(1300));
 
         // then
         assertThat(order.getOrderItems()).hasSize(2);

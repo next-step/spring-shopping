@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import shopping.auth.annotation.AuthMember;
 import shopping.auth.domain.LoggedInMember;
 import shopping.order.dto.response.OrderResponse;
+import shopping.order.service.ExchangeRateService;
 import shopping.order.service.OrderService;
 
 import java.util.List;
@@ -15,14 +16,17 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService orderService) {
+    private final ExchangeRateService exchangeRateService;
+
+    public OrderController(OrderService orderService, ExchangeRateService exchangeRateService) {
         this.orderService = orderService;
+        this.exchangeRateService = exchangeRateService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse addOrder(@AuthMember LoggedInMember loggedInMember) {
-        return orderService.createOrder(loggedInMember);
+        return orderService.createOrder(loggedInMember, exchangeRateService.getExchangeRate("USD", "KRW"));
     }
 
     @GetMapping("/{orderId}")

@@ -7,6 +7,7 @@ import integration.helper.OrderHelper;
 import integration.helper.ProductHelper;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.cart.dto.response.AllCartItemsResponse;
@@ -53,6 +54,8 @@ class OrderIntegrationTest extends IntegrationTest{
         OrderResponse orderResponse = response.body().as(OrderResponse.class);
         assertThat(orderResponse).extracting(OrderResponse::getId).isEqualTo(orderId);
         assertThat(orderResponse).extracting(OrderResponse::getTotalPrice).isEqualTo(10000);
+        double epsilon = 0.000001d;
+        Assertions.assertEquals(1000, orderResponse.getExchangeRate(), epsilon);
     }
 
     @Test

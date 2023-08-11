@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Image;
 
-@DisplayName("Product 단위 테스")
+@DisplayName("Product 단위 테스트")
 class ProductTest {
 
     @Test
