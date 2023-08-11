@@ -169,10 +169,39 @@ class OrderIntegrationTest {
         assertThat(orderResponse).hasSize(2);
     }
 
+    @Test
+    @DisplayName("환율 서버에 이상이 생겨도 주문이 생성된다.")
+    void createOrderWhenExchangeRateError() throws JsonProcessingException {
+        // given
+        final String accessToken = AuthUtil.accessToken();
+
+        final String mockResponseJson = objectMapper.writeValueAsString(mockFailResponse());
+        getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(mockResponseJson));
+
+        // when & then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post(ORDER_API_URL)
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .header("Location", ORDER_API_URL + "/1");
+    }
+
     private static Map<String, Object> mockSuccessResponse() {
         final Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("quotes", Map.of("USDKRW", 1300.0));
+        return response;
+    }
+
+    private static Map<String, Object> mockFailResponse() {
+        final Map<String, Object> response = new HashMap<>();
+        response.put("success", false);
+        response.put("error", "에러가 발생했습니다");
         return response;
     }
 
