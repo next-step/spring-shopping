@@ -12,7 +12,7 @@ public class ExchangeRateApiTest {
     @DisplayName("exchangeRateApi 를 통해 환율을 얻을 수 있다.")
     void api_이용하여_환율_얻음(){
         // given
-        double actual = new MockExchangeRateApi().callExchangeRate();
+        Double actual = new MockExchangeRateApi().callExchangeRate();
         // when & then
         assertThat(actual).isCloseTo(1300.1, offset(0.01));
         assertThat(actual).isNotCloseTo(1300.2,offset(0.01));

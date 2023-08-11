@@ -43,17 +43,16 @@ public class Order {
     public Order(
         final List<OrderProduct> orderProducts,
         final Long memberId,
-        final double exchangeRate) {
+        final Double exchangeRate) {
         this.orderProducts = orderProducts;
         this.memberId = memberId;
         this.exchangeRate = new ExchangeRate(exchangeRate);
     }
 
-    public Order(final Long memberId, final double exchangeRate) {
+    public Order(final Long memberId, final Double exchangeRate) {
         this.memberId = memberId;
         this.exchangeRate = new ExchangeRate(exchangeRate);
     }
-
 
     public void addOrderProducts(final List<OrderProduct> orderProducts) {
         orderProducts.forEach(this::addOrderProduct);
@@ -87,7 +86,10 @@ public class Order {
         return memberId;
     }
 
-    public double getExchangeRate() {
+    public Double getExchangeRate() {
+        if (exchangeRate == null) {
+            return null;
+        }
         return exchangeRate.getExchangeRate();
     }
 }

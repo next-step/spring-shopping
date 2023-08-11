@@ -13,7 +13,7 @@ import shopping.global.vo.Quantity;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.product.domain.ProductImage;
-import shopping.util.ExchangeRateApi;
+import shopping.infrastructure.ExchangeRateApi;
 
 public class OrderTest {
 

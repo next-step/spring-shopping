@@ -9,13 +9,13 @@ public class OrderResponse {
     private Long id;
     private List<OrderProductResponse> items;
     private long totalPrice;
-    private double exchangeRate;
+    private Double exchangeRate;
 
     public OrderResponse(
         final Long id,
         final List<OrderProductResponse> items,
         final long totalPrice,
-        final double exchangeRate
+        final Double exchangeRate
     ) {
         this.id = id;
         this.items = items;
@@ -48,7 +48,7 @@ public class OrderResponse {
         return totalPrice;
     }
 
-    public double getExchangeRate() {
+    public Double getExchangeRate() {
         return exchangeRate;
     }
 }

@@ -11,7 +11,7 @@ import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.order.dto.OrderResponse;
 import shopping.order.repository.OrderRepository;
-import shopping.util.ExchangeRateApi;
+import shopping.infrastructure.ExchangeRateApi;
 
 @Service
 @Transactional(readOnly = true)

@@ -85,11 +85,19 @@
                     `;
       });
 
-      let usdDollar = `${data.totalPrice}`/ `${data.exchangeRate}`;
       document.querySelector('.order-item-list').innerHTML = element;
       document.querySelector('.order-right-section .order-total-price').innerText = `${data.totalPrice}원`;
-      document.querySelector('.order-right-section .order-exchange-rate').innerText = `${data.exchangeRate}원`;
-      document.querySelector('.order-right-section .order-total-price-usd').innerText = usdDollar.toFixed(4);
+      console.log(`${data.exchangeRate}`);
+      if (`${data.exchangeRate}` !== "null") {
+        let usdDollar = `${data.totalPrice}` / `${data.exchangeRate}`;
+        document.querySelector('.order-right-section .order-exchange-rate').innerText = `${data.exchangeRate}원`;
+        document.querySelector('.order-right-section .order-total-price-usd').innerText = usdDollar.toFixed(4);
+      }
+      else {
+        document.querySelector('.order-right-section .order-exchange-rate').innerText = `지원되지 않습니다.`;
+        document.querySelector('.order-right-section .order-total-price-usd').innerText = `지원되지 않습니다.`;
+      }
+
 
 
     }).catch((error) => {

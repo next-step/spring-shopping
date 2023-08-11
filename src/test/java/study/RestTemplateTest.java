@@ -3,6 +3,7 @@ package study;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,32 +14,34 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+@Disabled
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class)
-public class RestClientTest {
+@DisplayName("RestTemplate의 사용법을 공부한다.")
+public class RestTemplateTest {
 
     @Value(value = "${currency.accessKey}")
     private String accessKey;
-    
+
     @Test
-    @DisplayName("RestJongha 클래스를 호출한다. 쉬고싶어요..")
+    @DisplayName("RestTemplate Client를 이용해 호출하고 반환값을 검증한다")
     void RestTemplate() {
         // given
-        RestJongha restJongha = new RestJongha(accessKey);
+        RestTemplatePractice restTemplatePractice = new RestTemplatePractice(accessKey);
         // when
-        ResponseEntity<Map> body = restJongha.getBody();
+        ResponseEntity<Map> body = restTemplatePractice.getBody();
         // then
         assertThat(body.getBody().get("success")).isEqualTo(true);
     }
 
 
-    static class RestJongha {
+    static class RestTemplatePractice {
 
         final String accessKey;
         final String url;
         final RestTemplate restTemplate;
 
-        public RestJongha(@Value("${currency.accessKey}") String accessKey) {
+        public RestTemplatePractice(@Value("${currency.accessKey}") String accessKey) {
             System.out.println("asds" + accessKey);
             this.accessKey = accessKey;
             this.url = "http://api.currencylayer.com/live?currencies=KRW&access_key=" + accessKey;

@@ -16,7 +16,7 @@ import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;
 import shopping.order.repository.OrderRepository;
 import shopping.order.service.OrderService;
-import shopping.util.ExchangeRateApi;
+import shopping.infrastructure.ExchangeRateApi;
 
 @DataJpaTest
 @Import(MockExchangeRateApi.class)
