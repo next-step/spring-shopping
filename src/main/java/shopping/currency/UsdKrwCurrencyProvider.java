@@ -17,6 +17,9 @@ import shopping.order.domain.vo.ExchangeRate;
 public class UsdKrwCurrencyProvider implements CurrencyProvider {
 
     private static final String URL = "http://apilayer.net/api/live";
+    private static final String ACCESS_KEY_PARAM = "access_key";
+    private static final String QUOTES_FIELD = "quotes";
+    private static final String USDKRW_FIELD = "USDKRW";
     private final String accessKey;
     private final RestTemplate restTemplate;
 
@@ -38,12 +41,12 @@ public class UsdKrwCurrencyProvider implements CurrencyProvider {
     }
 
     private String parseResponseBodyUsdKrw(ResponseEntity<JsonNode> response) {
-        return response.getBody().path("quotes").get("USDKRW").asText();
+        return response.getBody().path(QUOTES_FIELD).get(USDKRW_FIELD).asText();
     }
 
     private URI makeUrl() {
         return UriComponentsBuilder.fromHttpUrl(URL)
-            .queryParam("access_key", accessKey)
+            .queryParam(ACCESS_KEY_PARAM, accessKey)
             .build()
             .toUri();
     }
