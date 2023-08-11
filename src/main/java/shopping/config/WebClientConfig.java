@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class WebClientConfig {
+
     @Bean
     public WebClient webClient() {
         return WebClient.builder()
@@ -29,6 +30,5 @@ public class WebClientConfig {
                 .doOnConnected(conn -> conn
                         .addHandlerLast(new ReadTimeoutHandler(2000, TimeUnit.MILLISECONDS))
                         .addHandlerLast(new WriteTimeoutHandler(2000, TimeUnit.MILLISECONDS)));
-
     }
 }

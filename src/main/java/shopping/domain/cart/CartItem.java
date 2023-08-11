@@ -69,5 +69,4 @@ public class CartItem {
     public int getQuantity() {
         return this.cartItemQuantity.getValue();
     }
-
 }
