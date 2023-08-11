@@ -77,4 +77,8 @@ public final class Cart {
     public Map<Product, Integer> getProductCounts() {
         return productCounts;
     }
+
+    public void deleteAllProducts() {
+        productCounts.clear();
+    }
 }

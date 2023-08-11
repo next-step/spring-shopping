@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.catchException;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
 import shopping.mart.domain.Cart;
+import shopping.mart.domain.Product;
 import shopping.mart.domain.exception.DoesNotExistProductException;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartUpdateRequest;
-import shopping.mart.service.spi.CartRepository;
-import shopping.mart.service.spi.ProductRepository;
+import shopping.mart.domain.repository.CartRepository;
+import shopping.mart.domain.repository.ProductRepository;
 
 @ExtendWith(SpringExtension.class)
 @DisplayName("CartService 테스트")
@@ -55,6 +59,7 @@ class CartServiceTest {
             // then
             assertThat(exception).isInstanceOf(DoesNotExistProductException.class);
         }
+
     }
 
     @Nested
@@ -77,6 +82,7 @@ class CartServiceTest {
             // then
             assertThat(exception).isInstanceOf(DoesNotExistProductException.class);
         }
+
     }
 
     @Nested
@@ -96,10 +102,68 @@ class CartServiceTest {
 
             // when
             Exception exception = catchException(
-                () -> cartService.deleteProduct(userId, productId));
+                    () -> cartService.deleteProduct(userId, productId));
 
             // then
             assertThat(exception).isInstanceOf(DoesNotExistProductException.class);
         }
+
     }
+
+    @Nested
+    @DisplayName("getCart 메소드는")
+    class getCart_method {
+
+        @Test
+        @DisplayName("userId에 해당하는 cart가 없을경우, user가 갖고있는 empty cart를 생성해 반환한다")
+        void return_empty_cart_response_when_cannot_find_cart_by_user_id() {
+            // given
+            long userId = 1L;
+            long cartId = 1L;
+            Cart emptyCart = new Cart(cartId, userId);
+
+            when(cartRepository.existCartByUserId(userId)).thenReturn(false);
+            when(cartRepository.newCart(userId)).thenReturn(emptyCart);
+
+            CartResponse expected = new CartResponse(cartId, List.of());
+
+            // when
+            CartResponse result = cartService.getCart(userId);
+
+            // then
+            Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("userId에 해당하는 cart가 있다면, CartResponse를 반환한다.")
+        void return_cart_response_when_cart_exists() {
+            // given
+            long userId = 1L;
+            long cartId = 1L;
+            long productId = 1L;
+            
+            Cart cart = new Cart(cartId, userId);
+            Product product = new Product(productId, "product", "default-image", "1000");
+            cart.addProduct(product);
+
+            when(cartRepository.existCartByUserId(userId)).thenReturn(true);
+            when(cartRepository.getByUserId(userId)).thenReturn(cart);
+
+            CartResponse expected = getCartResponse(cart, product);
+
+            // when
+            CartResponse result = cartService.getCart(userId);
+
+            // then
+            assertThat(result).usingRecursiveComparison().isEqualTo(expected);
+        }
+
+        private CartResponse getCartResponse(Cart cart, Product product) {
+            return new CartResponse(cart.getCartId(),
+                    List.of(new CartResponse.ProductResponse(product.getId(), 1, product.getImageUrl(),
+                            product.getName(), product.getPrice())));
+        }
+
+    }
+
 }

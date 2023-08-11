@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shopping.mart.domain.usecase.product.ProductUseCase;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
 import shopping.mart.domain.Product;
-import shopping.mart.service.dto.ProductResponse;
-import shopping.mart.service.spi.ProductRepository;
+import shopping.mart.domain.repository.ProductRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class ProductService {
+public class ProductService implements ProductUseCase {
 
     private final ProductRepository productRepository;
 
@@ -18,12 +19,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Override
     public List<ProductResponse> findAllProducts() {
         List<Product> products = productRepository.findAllProducts();
         return products.stream()
-            .map(product -> new ProductResponse(product.getId(), product.getName(),
-                product.getImageUrl(),
-                product.getPrice()))
-            .collect(Collectors.toList());
+                .map(product -> new ProductResponse(product.getId(), product.getName(),
+                        product.getImageUrl(),
+                        product.getPrice()))
+                .collect(Collectors.toList());
     }
 }

@@ -7,9 +7,9 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import shopping.auth.service.dto.LoginRequest;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartUpdateRequest;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
 
 class UrlHelper {
 
@@ -78,6 +78,39 @@ class UrlHelper {
                     .when().delete("/carts")
                     .then().log().all()
                     .extract();
+        }
+    }
+
+    static final class Order {
+
+        static ExtractableResponse<Response> orderCart(String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().post("/orders")
+                    .then().log().all()
+                    .extract();
+        }
+    }
+
+    static final class Receipt {
+
+        static ExtractableResponse<Response> history(String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().get("/receipts")
+                    .then().log().all()
+                    .extract();
+        }
+
+        static ExtractableResponse<Response> details(long receiptId, String accessToken) {
+            return given().log().all()
+                .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/receipts/{receipt-id}", receiptId)
+                .then().log().all()
+                .extract();
         }
     }
 }

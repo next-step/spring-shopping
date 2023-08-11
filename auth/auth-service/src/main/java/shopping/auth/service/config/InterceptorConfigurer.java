@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import shopping.auth.domain.usecase.AuthorizationPath;
 import shopping.auth.service.infra.JwtUtils;
 import shopping.auth.service.interceptor.AuthInterceptor;
 import shopping.auth.service.interceptor.TokenPerRequest;

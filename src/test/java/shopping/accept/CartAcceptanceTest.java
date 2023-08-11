@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.accept.UrlHelper.Cart;
 import shopping.accept.AssertHelper.Http;
-import shopping.auth.service.dto.LoginRequest;
-import shopping.auth.service.dto.TokenResponse;
-import shopping.mart.service.dto.CartAddRequest;
-import shopping.mart.service.dto.CartResponse;
-import shopping.mart.service.dto.CartUpdateRequest;
-import shopping.mart.service.dto.ProductResponse;
+import shopping.accept.UrlHelper.Cart;
+import shopping.auth.domain.usecase.request.LoginRequest;
+import shopping.auth.domain.usecase.response.TokenResponse;
+import shopping.mart.domain.usecase.cart.request.CartAddRequest;
+import shopping.mart.domain.usecase.cart.request.CartUpdateRequest;
+import shopping.mart.domain.usecase.cart.response.CartResponse;
+import shopping.mart.domain.usecase.product.response.ProductResponse;
 
 @DisplayName("Cart 인수테스트")
 class CartAcceptanceTest extends AcceptanceTest {
@@ -171,8 +171,8 @@ class CartAcceptanceTest extends AcceptanceTest {
     private CartResponse getExpectedCartResponse(List<ProductResponse> productResponses) {
         return new CartResponse(1L, productResponses.stream().map(
             productResponse -> new CartResponse.ProductResponse(
-                productResponse.getId(), 1, productResponse.getImageUrl(),
-                productResponse.getName())
+                    productResponse.getId(), 1, productResponse.getImageUrl(),
+                    productResponse.getName(), productResponse.getPrice())
         ).collect(Collectors.toList()));
     }
 

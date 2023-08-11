@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.mart.domain.Product;
+import shopping.mart.domain.repository.ProductRepository;
 import shopping.mart.repository.entity.ProductEntity;
-import shopping.mart.service.spi.ProductRepository;
 
 @Repository
 public class ProductPersistService implements ProductRepository {

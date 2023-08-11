@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.catchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import shopping.auth.domain.User;
 import shopping.auth.domain.exception.InvalidEmailException;
 import shopping.auth.domain.exception.InvalidPasswordException;
 

@@ -1,16 +1,27 @@
 # Dependencies
 
+### Module dependencies
 ```mermaid
----
-title: Module dependencies
----
-flowchart LR
+flowchart LR    
 
-app[app] --> mart[mart]
-app --> auth[auth]
-mart --> core[core `ex. global util...`]
-auth --> core
-mart --> auth
+mart-controller --> mart-domain  
+mart-repository --> mart-domain  
+mart-service --> mart-domain  
+mart-controller --> auth-domain  
+mart-domain  
+
+auth-service --> auth-domain  
+auth-repository --> auth-domain
+auth-controller --> auth-domain  
+auth-domain
+  
+order-service --> mart-domain
+order-service --> order-domain    
+order-controller --> auth-domain  
+order-controller --> order-domain  
+order-exchange --> order-domain  
+order-repository --> order-domain  
+order-repository --> mart-domain
 ```
 
 # API Documentation
@@ -161,8 +172,100 @@ HTTP/1.1 204 No Content
 
 #### 예외 처리
 
-다음 예외들에 대한 처리가 정의되어 있습니다.
+- 400 Bad Request `AlreadyExistProductException`: 이미 카트에 존재하는 제품을 추가할 때 발생하는 예외.
+- 400 Bad Request `DoesNotExistProductException`: 카트에 존재하지 않는 제품을 업데이트 또는 삭제할 때 발생하는 예외.
+- 400 Bad Request `NegativeProductCountException`: 제품 수량이 음수인 경우 발생하는 예외.
 
-- `AlreadyExistProductException`: 이미 카트에 존재하는 제품을 추가할 때 발생하는 예외.
-- `DoesNotExistProductException`: 카트에 존재하지 않는 제품을 업데이트 또는 삭제할 때 발생하는 예외.
-- `NegativeProductCountException`: 제품 수량이 음수인 경우 발생하는 예외.
+## 주문 생성 API
+
+주문을 생성하고, 주문에 대한 상세 정보를 확인할 수 있는 API입니다.
+
+
+- URL: `POST /orders`
+- 요청 헤더: Authorization: token
+- 응답: 200 OK
+- 응답 헤더: Location: /order-detail/{receiptId}
+
+
+**응답 예시**
+
+```
+HTTP/1.1 200 OK 
+Location: /order-detail/{receiptId}
+```
+
+### 예외 처리
+
+- 400 Bad Request `EmptyCartException`: Cart가 비어있는상황에서 주문 요청할때
+- 500 Internal Server Error `IllegalExchangeRateException` 환율이 0 미만 일때
+
+## 내가 구매한 모든 구매내역(Receipt) 조회 API
+
+내가 구매한 구매내역을 조회할 수 있습니다.
+
+- URL: `GET /receipts`
+- 요청 헤더: Authorization: token
+- 응답: 200 OK
+
+**응답 예시**
+
+```json
+{
+  "id": 98765,
+  "receiptProducts": [
+    {
+      "productId": 12345,
+      "name": "Product Name 1",
+      "price": "19099",
+      "imageUrl": "/images/beer.jpeg",
+      "quantity": 1
+    },
+    {
+      "productId": 67890,
+      "name": "Product Name 2",
+      "price": "90000",
+      "imageUrl": "/images/soju.png",
+      "quantity": 3
+    }
+  ]
+}
+```
+
+## 내가 구매한 측정 구매내역(Receipt) 조회 API
+
+내가 구매한 구매내역중 특정 구매내역을 자세히 조회할 수 있습니카.
+
+- USER: `GET /receipts/{receiptId}`
+- 요청 헤더: Authorization: token
+- 응답: 200 OK
+
+**응답 예시**
+
+``` json
+{
+  "id": 98765,
+  "receiptDetailProducts": [
+    {
+      "productId": 12345,
+      "name": "Product Name 1",
+      "price": "19099",
+      "imageUrl": "/images/beer.jpeg",
+      "quantity": 1
+    },
+    {
+      "productId": 67890,
+      "name": "Product Name 2",
+      "price": "90000",
+      "imageUrl": "/images/soju.png",
+      "quantity": 3
+    }
+  ],
+  "totalPrice": "9999999",
+  "exchangedPrice": "44.99",
+  "exchangeRate": 0.90
+}
+```
+
+예외 처리
+
+- 400 Bad Request `DoesNotFindReceiptException` Receipt를 찾을 수 없을때

@@ -27,7 +27,7 @@ public class CartProductEntity extends TimeBaseEntity {
     @Column(name = "count", nullable = false)
     private Integer count;
 
-    private CartProductEntity() {
+    public CartProductEntity() {
     }
 
     public CartProductEntity(CartEntity cartEntity, Long productId, Integer count) {

@@ -8,6 +8,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import shopping.mart.domain.Cart;
+import shopping.mart.domain.Product;
 import shopping.mart.domain.exception.AlreadyExistProductException;
 import shopping.mart.domain.exception.DoesNotExistProductException;
 import shopping.mart.domain.exception.NegativeProductCountException;
