@@ -51,17 +51,11 @@ public class OrderService {
 
         Order order = new Order(loggedInMember.getId(), exchangeRateProvider.findUsdKrwExchangeRate().getValue());
 
-        productCartItemDtos.stream()
-            .map(ProductCartItemDto::toOrderItem)
-            .collect(Collectors.toList())
-            .forEach(order::addOrderItem);
+        addOrderItemsInOrder(productCartItemDtos, order);
 
         orderRepository.save(order);
 
-        cartItemRepository.deleteAll(productCartItemDtos.stream()
-            .map(ProductCartItemDto::getCartItem)
-            .collect(Collectors.toList())
-        );
+        deleteAllCartItems(productCartItemDtos);
 
         return order.getId();
     }
@@ -70,6 +64,20 @@ public class OrderService {
         if (productCartItemDtos.isEmpty()) {
             throw new WooWaException("장바구니에 상품이 없습니다.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private void addOrderItemsInOrder(List<ProductCartItemDto> productCartItemDtos, Order order) {
+        productCartItemDtos.stream()
+            .map(ProductCartItemDto::toOrderItem)
+            .collect(Collectors.toList())
+            .forEach(order::addOrderItem);
+    }
+
+    private void deleteAllCartItems(List<ProductCartItemDto> productCartItemDtos) {
+        cartItemRepository.deleteAll(productCartItemDtos.stream()
+            .map(ProductCartItemDto::getCartItem)
+            .collect(Collectors.toList())
+        );
     }
 
     @Transactional(readOnly = true)
