@@ -8,7 +8,7 @@ import shopping.exception.CurrencyException;
 
 public class Currency {
 
-    EnumMap<ExchangeCode, Double> codeMap;
+    private final EnumMap<ExchangeCode, Double> codeMap;
 
     public Currency(Map<String, Double> quotes) {
         validateQuote(quotes);
