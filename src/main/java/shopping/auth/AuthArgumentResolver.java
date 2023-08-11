@@ -13,11 +13,14 @@ import shopping.exception.ShoppingException;
 @Component
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final JwtHelper jwtHelper;
+    private final JwtResolver jwtResolver;
     private final TokenExtractor tokenExtractor;
 
-    public AuthArgumentResolver(final JwtHelper jwtHelper, final TokenExtractor tokenExtractor) {
-        this.jwtHelper = jwtHelper;
+    public AuthArgumentResolver(
+        final JwtResolver jwtResolver,
+        final TokenExtractor tokenExtractor
+    ) {
+        this.jwtResolver = jwtResolver;
         this.tokenExtractor = tokenExtractor;
     }
 
@@ -29,14 +32,14 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Long resolveArgument(final MethodParameter parameter,
         final ModelAndViewContainer mavContainer,
-        final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory)
-        throws Exception {
+        final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory
+    ) {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         final String jwt = tokenExtractor.extract(request);
-        if (!jwtHelper.validateToken(jwt)) {
+        if (!jwtResolver.validateToken(jwt)) {
             throw new ShoppingException(AuthExceptionType.INVALID_TOKEN, jwt);
         }
 
-        return Long.valueOf(jwtHelper.getSubject(jwt));
+        return Long.valueOf(jwtResolver.getSubject(jwt));
     }
 }
