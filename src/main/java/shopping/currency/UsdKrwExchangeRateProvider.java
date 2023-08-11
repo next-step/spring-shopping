@@ -16,14 +16,18 @@ import shopping.order.domain.vo.ExchangeRate;
 @Profile("!test")
 public class UsdKrwExchangeRateProvider implements ExchangeRateProvider {
 
-    private static final String URL = "http://apilayer.net/api/live";
     private static final String ACCESS_KEY_PARAM = "access_key";
     private static final String QUOTES_FIELD = "quotes";
     private static final String USDKRW_FIELD = "USDKRW";
+    private final String url;
     private final String accessKey;
     private final RestTemplate restTemplate;
 
-    public UsdKrwExchangeRateProvider(@Value("${currency.api.key}") String accessKey, RestTemplate restTemplate) {
+    public UsdKrwExchangeRateProvider(
+        @Value("${currency.api.url}") String url,
+        @Value("${currency.api.key}") String accessKey,
+        RestTemplate restTemplate) {
+        this.url = url;
         this.accessKey = accessKey;
         this.restTemplate = restTemplate;
     }
@@ -45,7 +49,7 @@ public class UsdKrwExchangeRateProvider implements ExchangeRateProvider {
     }
 
     private URI makeUrl() {
-        return UriComponentsBuilder.fromHttpUrl(URL)
+        return UriComponentsBuilder.fromHttpUrl(url)
             .queryParam(ACCESS_KEY_PARAM, accessKey)
             .build()
             .toUri();
