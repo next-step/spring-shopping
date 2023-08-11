@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.List;
 import java.util.stream.Collectors;
 import shopping.domain.order.Order;
+import shopping.exchange.CurrencyExchangeRate;
 
 public class OrderDetailResponse {
 
@@ -35,12 +36,15 @@ public class OrderDetailResponse {
         // TODO: currencyRate null로 보내? or JsonInclude로 아예 보내지 않는다?
     }
 
-    public static OrderDetailResponse of(final Order order, final double currencyRate) {
+    public static OrderDetailResponse of(
+        final Order order,
+        final CurrencyExchangeRate currencyExchangeRate
+    ) {
         return new OrderDetailResponse(
             order.getId(),
             generateOrderProductResponses(order),
             order.computeTotalPrice(),
-            currencyRate
+            currencyExchangeRate.getRate()
         );
     }
 

@@ -11,7 +11,7 @@ import shopping.dto.response.OrderDetailResponse;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.exception.OrderExceptionType;
 import shopping.exception.ShoppingException;
-import shopping.exchange.CurrencyExchangeManager;
+import shopping.exchange.CurrencyExchanger;
 import shopping.exchange.CurrencyType;
 import shopping.repository.CartProductRepository;
 import shopping.repository.OrderRepository;
@@ -22,18 +22,18 @@ public class OrderService {
     private final CartProductRepository cartProductRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final CurrencyExchangeManager currencyExchangeManager;
+    private final CurrencyExchanger currencyExchanger;
 
     public OrderService(
         final CartProductRepository cartProductRepository,
         final OrderRepository orderRepository,
         final OrderMapper orderMapper,
-        final CurrencyExchangeManager currencyExchangeManager
+        final CurrencyExchanger currencyExchanger
     ) {
         this.cartProductRepository = cartProductRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-        this.currencyExchangeManager = currencyExchangeManager;
+        this.currencyExchanger = currencyExchanger;
     }
 
     @Transactional
@@ -51,7 +51,7 @@ public class OrderService {
         final Order order = orderRepository.findByIdAndMemberIdWithOrderProduct(orderId, memberId)
             .orElseThrow(() -> new ShoppingException(OrderExceptionType.NOT_FOUND_ORDER, orderId));
 
-        return currencyExchangeManager.findCurrencyExchangeRate(CurrencyType.KRW, CurrencyType.USD)
+        return currencyExchanger.findCurrencyExchangeRate(CurrencyType.USD, CurrencyType.KRW)
             .map(rate -> OrderDetailResponse.of(order, rate))
             .orElse(OrderDetailResponse.from(order));
     }

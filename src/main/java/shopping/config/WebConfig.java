@@ -1,6 +1,9 @@
 package shopping.config;
 
+import java.time.Duration;
 import java.util.List;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -18,6 +21,14 @@ public class WebConfig implements WebMvcConfigurer {
         final AuthArgumentResolver authArgumentResolver) {
         this.jwtInterceptor = jwtInterceptor;
         this.authArgumentResolver = authArgumentResolver;
+    }
+
+    // TODO: RestTemplate를 빈으로 등록하는 것이 아니라 RestTemplateBuilder를 등록?
+    @Bean
+    public RestTemplateBuilder restTemplateBuilder() {
+        return new RestTemplateBuilder()
+            .setConnectTimeout(Duration.ofSeconds(1))
+            .setReadTimeout(Duration.ofSeconds(1));
     }
 
     @Override
