@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shopping.exception.WooWaException;
@@ -34,9 +35,17 @@ public class UsdKrwExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
     public ExchangeRate findTargetExchangeRate() {
-        ResponseEntity<JsonNode> response = restTemplate.getForEntity(makeUrl(), JsonNode.class);
+        ResponseEntity<JsonNode> response = findHttpResponse();
         validResponseHttpStatus(response);
         return new ExchangeRate(parseResponseBodyUsdKrw(response));
+    }
+
+    private ResponseEntity<JsonNode> findHttpResponse() {
+        try {
+            return restTemplate.getForEntity(makeUrl(), JsonNode.class);
+        } catch (RestClientException e) {
+            throw new WooWaException("외부 요청에 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     private void validResponseHttpStatus(ResponseEntity<JsonNode> response) {
