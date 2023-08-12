@@ -49,7 +49,7 @@ public class OrderService {
 
         validCartItems(productCartItemDtos);
 
-        Order order = new Order(loggedInMember.getId(), exchangeRateProvider.findUsdKrwExchangeRate().getValue());
+        Order order = new Order(loggedInMember.getId(), exchangeRateProvider.findTargetExchangeRate().getValue());
 
         addOrderItemsInOrder(productCartItemDtos, order);
 

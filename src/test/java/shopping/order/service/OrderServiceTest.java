@@ -49,7 +49,7 @@ class OrderServiceTest {
     @Test
     @DisplayName("주문 생성 메서드 테스트")
     void addOrder() {
-        Mockito.when(exchangeRateProvider.findUsdKrwExchangeRate()).thenReturn(new ExchangeRate("1300"));
+        Mockito.when(exchangeRateProvider.findTargetExchangeRate()).thenReturn(new ExchangeRate("1300"));
         Member member = makeMember();
 
         Product chicken = makeProduct("치킨", "10000");

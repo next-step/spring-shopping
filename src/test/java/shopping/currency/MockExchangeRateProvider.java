@@ -9,7 +9,7 @@ import shopping.order.domain.vo.ExchangeRate;
 public class MockExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
-    public ExchangeRate findUsdKrwExchangeRate() {
+    public ExchangeRate findTargetExchangeRate() {
         return new ExchangeRate("1300");
     }
 }

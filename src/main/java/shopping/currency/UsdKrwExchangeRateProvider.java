@@ -32,7 +32,8 @@ public class UsdKrwExchangeRateProvider implements ExchangeRateProvider {
         this.restTemplate = restTemplate;
     }
 
-    public ExchangeRate findUsdKrwExchangeRate() {
+    @Override
+    public ExchangeRate findTargetExchangeRate() {
         ResponseEntity<JsonNode> response = restTemplate.getForEntity(makeUrl(), JsonNode.class);
         validResponseHttpStatus(response);
         return new ExchangeRate(parseResponseBodyUsdKrw(response));

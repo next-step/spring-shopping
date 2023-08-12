@@ -4,5 +4,5 @@ import shopping.order.domain.vo.ExchangeRate;
 
 public interface ExchangeRateProvider {
 
-    ExchangeRate findUsdKrwExchangeRate();
+    ExchangeRate findTargetExchangeRate();
 }
