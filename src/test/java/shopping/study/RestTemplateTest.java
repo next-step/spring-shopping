@@ -1,4 +1,4 @@
-package study;
+package shopping.study;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

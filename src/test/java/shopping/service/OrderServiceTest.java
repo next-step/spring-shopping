@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import shopping.cart.repository.CartProductRepository;
-import shopping.exchange.MockExchangeRateApi;
+import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;
 import shopping.order.repository.OrderRepository;
