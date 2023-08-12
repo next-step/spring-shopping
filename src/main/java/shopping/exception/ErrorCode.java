@@ -16,8 +16,8 @@ public enum ErrorCode {
     INVALID_PRODUCT(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다."),
     INVALID_ORDER(HttpStatus.BAD_REQUEST, "존재하지 않는 주문 목록입니다."),
     INVALID_PURCHASE(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
-    INVALID_CONVERT_CURRENCY(HttpStatus.INTERNAL_SERVER_ERROR, "현재 환율 정보가 없습니다."),
     INVALID_CONNECT_CURRENCY_API(HttpStatus.INTERNAL_SERVER_ERROR, "현재 환율 정보를 가져올 수 없습니다."),
+    INVALID_CONVERT_CURRENCY(HttpStatus.INTERNAL_SERVER_ERROR, "현재 미국 환율로 전환이 불가합니다."),
     ;
 
     private final HttpStatus status;

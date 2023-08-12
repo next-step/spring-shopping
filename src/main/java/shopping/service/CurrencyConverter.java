@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shopping.domain.CurrencyCountry;
@@ -39,9 +40,17 @@ public class CurrencyConverter implements CurrencyService {
     @Cacheable(value = "currency")
     public double getCurrencyOf(CurrencyCountry currencyCountry) {
         URI uri = getUri(currencyCountry);
-        ResponseEntity<JsonNode> jsonNode = restTemplate.getForEntity(uri, JsonNode.class);
+        ResponseEntity<JsonNode> jsonNode = getJsonNodeFrom(uri);
         checkCurrencyApi(jsonNode);
         return getCurrency(jsonNode.getBody(), currencyCountry);
+    }
+
+    private ResponseEntity<JsonNode> getJsonNodeFrom(URI uri) {
+        try {
+            return restTemplate.getForEntity(uri, JsonNode.class);
+        } catch (RestClientException ignore) {
+            throw new ShoppingException(ErrorCode.INVALID_CONNECT_CURRENCY_API);
+        }
     }
 
     private void checkCurrencyApi(ResponseEntity<JsonNode> jsonNode) {
