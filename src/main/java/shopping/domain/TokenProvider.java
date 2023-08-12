@@ -1,8 +1,8 @@
 package shopping.domain;
 
-public interface TokenProvider {
+public interface TokenProvider<T> {
 
-    String createToken(Long id);
+    String createToken(T id);
 
-    Long decodeToken(String token);
+    T decodeToken(String token);
 }

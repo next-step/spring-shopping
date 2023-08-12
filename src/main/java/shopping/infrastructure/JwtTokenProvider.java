@@ -11,7 +11,7 @@ import shopping.exception.TokenException;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider implements TokenProvider {
+public class JwtTokenProvider implements TokenProvider<Long> {
 
     private static final long TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
     public static final String MEMBER_ID_KEY = "memberId";

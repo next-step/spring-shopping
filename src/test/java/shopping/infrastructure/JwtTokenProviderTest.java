@@ -18,7 +18,7 @@ class JwtTokenProviderTest {
     private static final String TEST_SECRET_KEY = "this is test secret key";
     private static final int TEST_TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
 
-    private final TokenProvider tokenProvider = new JwtTokenProvider(TEST_SECRET_KEY);
+    private final TokenProvider<Long> tokenProvider = new JwtTokenProvider(TEST_SECRET_KEY);
 
     @DisplayName("createToken 메서드는")
     @Nested

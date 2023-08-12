@@ -11,7 +11,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
     private final MemberRepository memberRepository;
 
-    public LoginCheckInterceptor(MemberRepository memberRepository, TokenProvider tokenProvider) {
+    public LoginCheckInterceptor(MemberRepository memberRepository, TokenProvider<Long> tokenProvider) {
         this.memberRepository = memberRepository;
         this.tokenProvider = tokenProvider;
     }
@@ -19,7 +19,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    private final TokenProvider tokenProvider;
+    private final TokenProvider<Long> tokenProvider;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
