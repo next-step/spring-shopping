@@ -70,6 +70,19 @@ class CurrentExchangeRateProviderTest {
                 .hasMessage("지원하지 않는 환율 코드입니다")
                 .isInstanceOf(InfraException.class);
         }
+
+        @DisplayName("외부 api 호출 중 에러가 발생하면 InfraException 을 던진다")
+        @Test
+        void throwInfraException_whenApiCallThrowError() {
+            // given
+            ExchangeCode code = ExchangeCode.USDKRW;
+
+            given(customRestTemplate.getResult(anyString(), any())).willThrow(InfraException.class);
+
+            // when & then
+            assertThatThrownBy(() -> exchangeRateProvider.getExchange(code))
+                .isInstanceOf(InfraException.class);
+        }
     }
 
     private ExchangeResponse createExchangeResponse(ExchangeCode code, Double codeExchange) {
