@@ -15,7 +15,11 @@ import shopping.infrastructure.ExceptionLogger;
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 
-    private final ExceptionLogger logger = new ExceptionLogger(this.getClass().getSimpleName());
+    private final ExceptionLogger logger;
+
+    public GlobalControllerAdvice(ExceptionLogger logger) {
+        this.logger = logger;
+    }
 
     @ExceptionHandler(TokenException.class)
     ResponseEntity<ErrorResponse> catchTokenException(TokenException exception) {

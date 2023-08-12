@@ -28,7 +28,7 @@ class CustomRestTemplateTest {
     @BeforeEach
     void setUp() {
         restTemplate = Mockito.mock(RestTemplate.class);
-        customRestTemplate = new CustomRestTemplate(restTemplate);
+        customRestTemplate = new CustomRestTemplate(restTemplate, Mockito.mock(ExceptionLogger.class));
     }
 
     @DisplayName("getResult 메서드는")
@@ -66,18 +66,16 @@ class CustomRestTemplateTest {
             assertThat(customRestTemplate.getResult(url, ExchangeResponse.class)).isEmpty();
         }
 
-        @DisplayName("유효하지 않은 주소로 요청을 보내면 InfraException 을 던진다")
+        @DisplayName("api 호출 중 에러가 발생하면 Optional.empty 를 반환한다")
         @Test
         void throwInfraException_WhenInvalidUrlRequest() {
             // given
             String invalidUrl = "http://url./tesafdfas/ds/afasdf/asf/as/fs//adsfs/af/asd";
 
-            given(restTemplate.getForObject(invalidUrl, ExchangeResponse.class)).willThrow(RestClientException.class);
+            given(restTemplate.getForObject(invalidUrl, ExchangeResponse.class)).willReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> customRestTemplate.getResult(invalidUrl, ExchangeResponse.class))
-                .hasMessage("외부 API 호출 중 에러가 발생했습니다")
-                .isInstanceOf(InfraException.class);
+            assertThat(customRestTemplate.getResult(invalidUrl, ExchangeResponse.class)).isEmpty();
         }
     }
 

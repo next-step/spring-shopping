@@ -2,13 +2,15 @@ package shopping.infrastructure;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExceptionLogger {
 
     private final Logger logger;
 
-    public ExceptionLogger(String name) {
-        logger = LoggerFactory.getLogger(name);
+    public ExceptionLogger() {
+        logger = LoggerFactory.getLogger("exception");
     }
 
     public void logException(Exception exception) {

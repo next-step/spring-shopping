@@ -9,9 +9,11 @@ import org.springframework.web.client.RestTemplate;
 public class CustomRestTemplate {
 
     private final RestTemplate restTemplate;
+    private final ExceptionLogger logger;
 
-    public CustomRestTemplate(RestTemplate restTemplate) {
+    public CustomRestTemplate(RestTemplate restTemplate, ExceptionLogger logger) {
         this.restTemplate = restTemplate;
+        this.logger = logger;
     }
 
     public <T> Optional<T> getResult(String url, Class<T> clazz) {
@@ -22,6 +24,7 @@ public class CustomRestTemplate {
         try {
             return restTemplate.getForObject(url, clazz);
         } catch (RestClientException exception) {
+            logger.logException(exception);
             return null;
         }
     }
