@@ -1,4 +1,4 @@
-package shopping.currency;
+package shopping.order.service.currency;
 
 import shopping.order.domain.vo.ExchangeRate;
 

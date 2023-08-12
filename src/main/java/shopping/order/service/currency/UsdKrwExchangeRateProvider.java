@@ -1,4 +1,4 @@
-package shopping.currency;
+package shopping.order.service.currency;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import java.net.URI;

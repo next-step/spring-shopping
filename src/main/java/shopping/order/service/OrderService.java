@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.dto.ProductCartItemDto;
 import shopping.cart.repository.CartItemRepository;
-import shopping.currency.ExchangeRateProvider;
+import shopping.order.service.currency.ExchangeRateProvider;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
