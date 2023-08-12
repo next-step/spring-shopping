@@ -22,7 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginTokenInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns("/", "/error", "/css/**", "/assets/**", "/login", "/js/**",
-                "/*.ico", "/view/**", "/products/**", "/orders/**", "/orders", "/order-history");
+                "/*.ico", "/view/**", "/products/**", "/orders/**", "/orders", "/order-history", "/actuator/prometheus");
     }
 
     @Override

@@ -44,13 +44,14 @@
             data.forEach(order => {
                 let itemElement = '';
                 order.orderItems.forEach((item) => {
+                  let orderItemDollar = (item.price / order.exchangeRate).toFixed(2);
                     itemElement += `
                         <div class="order-list-item">
                           <div class="flex gap-15 mt-10">
                             <img class="w-144 h-144" src="${item.imageUrl}" /> <!-- 아이템 이미지 -->
                             <div class="flex-col gap-15">
                               <span class="order-name">${item.name}</span> <!-- 아이템 이름 -->
-                              <span class="order-info">${item.price}원 / 수량: ${item.quantity}개</span> <!-- 아이템 가격 및 수량 -->
+                              <span class="order-info">${item.price} 원 (${orderItemDollar} $) / 수량: ${item.quantity}개</span> <!-- 아이템 가격 및 수량 -->
                             </div>
                           </div>
                         </div>
