@@ -1,9 +1,9 @@
 package shopping.service;
 
-import shopping.domain.CurrencyCountry;
+import shopping.domain.CurrencyConversion;
 
 public interface CurrencyService {
 
-    double getCurrencyOf(CurrencyCountry currencyCountry);
+    double getCurrencyOf(CurrencyConversion currencyConversion);
 
 }

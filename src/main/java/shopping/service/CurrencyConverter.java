@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import shopping.domain.CurrencyCountry;
+import shopping.domain.CurrencyConversion;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
@@ -38,11 +38,11 @@ public class CurrencyConverter implements CurrencyService {
 
     @Override
     @Cacheable(value = "currency")
-    public double getCurrencyOf(CurrencyCountry currencyCountry) {
-        URI uri = getUri(currencyCountry);
+    public double getCurrencyOf(CurrencyConversion currencyConversion) {
+        URI uri = getUri(currencyConversion);
         ResponseEntity<JsonNode> jsonNode = getJsonNodeFrom(uri);
         checkCurrencyApi(jsonNode);
-        return getCurrency(jsonNode.getBody(), currencyCountry);
+        return getCurrency(jsonNode.getBody(), currencyConversion);
     }
 
     private ResponseEntity<JsonNode> getJsonNodeFrom(URI uri) {
@@ -77,18 +77,18 @@ public class CurrencyConverter implements CurrencyService {
     public void cacheEvictInCurrency() {
     }
 
-    private double getCurrency(JsonNode jsonNode, CurrencyCountry currencyCountry) {
+    private double getCurrency(JsonNode jsonNode, CurrencyConversion currencyConversion) {
         return jsonNode
             .get("quotes")
-            .get(currencyCountry.getSourceTargetCountry())
+            .get(currencyConversion.getSourceTarget())
             .asDouble();
     }
 
-    private URI getUri(CurrencyCountry currencyCountry) {
+    private URI getUri(CurrencyConversion currencyConversion) {
         return UriComponentsBuilder.fromHttpUrl(CURRENCY_SOURCE_URL)
             .queryParam("access_key", CURRENCY_ACCESS_KEY)
-            .queryParam("currencies", currencyCountry.getTargetCurrency())
-            .queryParam("source", currencyCountry.getSourceCurrency())
+            .queryParam("currencies", currencyConversion.getTarget())
+            .queryParam("source", currencyConversion.getSource())
             .build()
             .toUri();
     }
