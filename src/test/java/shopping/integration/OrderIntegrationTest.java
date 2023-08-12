@@ -15,11 +15,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.annotation.DirtiesContext.MethodMode;
 import shopping.domain.ExchangeCode;
 import shopping.dto.response.ExchangeResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.infrastructure.CustomRestTemplate;
 
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @DisplayName("주문 기능")
 class OrderIntegrationTest extends IntegrationTest {
 
