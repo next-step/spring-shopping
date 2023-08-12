@@ -5,6 +5,7 @@ import shopping.exception.ProductIdInvalidException;
 import shopping.exception.ProductIdNotFoundException;
 
 public class CartCreateRequest {
+
     private Long productId;
 
     private CartCreateRequest() {

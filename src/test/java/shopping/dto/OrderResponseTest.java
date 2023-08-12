@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import shopping.domain.entity.Order;
 import shopping.domain.fixture.DomainFixture;
 
-import static org.assertj.core.api.Assertions.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class OrderResponseTest {
 
@@ -15,7 +15,14 @@ class OrderResponseTest {
         // given
         final Order order = DomainFixture.createOrderWithId();
 
-        // when & then
-        assertThatNoException().isThrownBy(() -> OrderResponse.from(order));
+        // when
+        final OrderResponse response = OrderResponse.from(order);
+
+        // then
+        assertThat(response.getId()).isEqualTo(1);
+        assertThat(response.getUserId()).isEqualTo(1);
+        assertThat(response.getTotalPrice()).isEqualTo(1);
+        assertThat(response.getTotalConvertedPrice()).isNotInfinite();
+        assertThat(response.getItems()).hasSize(1);
     }
 }
