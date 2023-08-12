@@ -6,6 +6,7 @@ import shopping.auth.annotation.AuthMember;
 import shopping.auth.domain.LoggedInMember;
 import shopping.order.dto.response.OrderResponse;
 import shopping.order.service.ExchangeRateService;
+import shopping.order.service.ExchangeType;
 import shopping.order.service.OrderService;
 
 import java.util.List;
@@ -26,7 +27,8 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse addOrder(@AuthMember LoggedInMember loggedInMember) {
-        return orderService.createOrder(loggedInMember, exchangeRateService.getExchangeRate("USD", "KRW"));
+        return orderService.createOrder(loggedInMember, exchangeRateService.getExchangeRate(
+            ExchangeType.USD, ExchangeType.KRW));
     }
 
     @GetMapping("/{orderId}")

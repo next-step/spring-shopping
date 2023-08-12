@@ -1,13 +1,12 @@
 package shopping.other.exchange;
 
-import org.springframework.stereotype.Component;
 import shopping.common.domain.Rate;
 import shopping.order.service.ExchangeRateService;
+import shopping.order.service.ExchangeType;
 
-@Component
 public class MockExchangeRateServiceImpl implements ExchangeRateService {
     @Override
-    public Rate getExchangeRate(String source, String target) {
+    public Rate getExchangeRate(ExchangeType source, ExchangeType target) {
         return new Rate(1000L);
     }
 }
