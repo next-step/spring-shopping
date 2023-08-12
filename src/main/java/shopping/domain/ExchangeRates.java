@@ -26,10 +26,10 @@ public class ExchangeRates {
         return codeMap.get(code);
     }
 
-    private void initializeCodeMap(Map<String, Double> original) {
+    private void initializeCodeMap(Map<String, Double> quotes) {
         Arrays.stream(ExchangeCode.values())
             .forEach(code -> {
-                Double value = original.get(code.name());
+                Double value = quotes.get(code.name());
                 codeMap.put(code, new ExchangeRate(value));
             });
     }
