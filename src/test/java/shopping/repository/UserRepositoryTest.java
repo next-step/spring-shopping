@@ -4,9 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import shopping.domain.Email;
-import shopping.domain.Password;
 import shopping.domain.entity.User;
+import shopping.domain.vo.Email;
+import shopping.domain.vo.Password;
 import shopping.infrastructure.SHA256PasswordEncoder;
 
 import java.util.Optional;

@@ -1,8 +1,8 @@
 package shopping.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import shopping.domain.Email;
-import shopping.domain.Password;
+import shopping.domain.vo.Email;
+import shopping.domain.vo.Password;
 import shopping.exception.EmailNotFoundException;
 import shopping.exception.PasswordNotFoundException;
 import shopping.infrastructure.SHA256PasswordEncoder;

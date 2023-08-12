@@ -1,7 +1,7 @@
 package shopping.application;
 
 import org.springframework.stereotype.Service;
-import shopping.domain.ExchangeRate;
+import shopping.domain.vo.ExchangeRate;
 import shopping.infrastructure.CurrencyCountry;
 import shopping.infrastructure.ExchangeRateProvider;
 

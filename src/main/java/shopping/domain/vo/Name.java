@@ -1,4 +1,4 @@
-package shopping.domain.entity;
+package shopping.domain.vo;
 
 import shopping.exception.NameLengthInvalidException;
 

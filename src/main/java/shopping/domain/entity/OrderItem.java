@@ -1,5 +1,10 @@
 package shopping.domain.entity;
 
+import shopping.domain.vo.Image;
+import shopping.domain.vo.Name;
+import shopping.domain.vo.Price;
+import shopping.domain.vo.Quantity;
+
 import javax.persistence.*;
 
 @Entity

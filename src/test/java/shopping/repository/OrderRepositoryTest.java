@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import shopping.domain.entity.Order;
 import shopping.domain.entity.OrderItem;
-import shopping.domain.entity.fixture.EntityFixture;
+import shopping.domain.fixture.DomainFixture;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +24,7 @@ class OrderRepositoryTest {
     void findByIdAndUserId() {
         // given
         final long userId = 1L;
-        final Order order = EntityFixture.createOrder(userId);
+        final Order order = DomainFixture.createOrder(userId);
         final Long id = orderRepository.save(order).getId();
 
         // when
@@ -39,7 +39,7 @@ class OrderRepositoryTest {
     void findNullByIdAndUserId() {
         // given
         final long userId = 1L;
-        final Order order = EntityFixture.createOrder(userId);
+        final Order order = DomainFixture.createOrder(userId);
         final Long id = orderRepository.save(order).getId();
 
         // when
@@ -54,8 +54,8 @@ class OrderRepositoryTest {
     void findAllByUserId() {
         // given
         final long userId = 1L;
-        final List<OrderItem> orderItems = List.of(EntityFixture.createOrderItem());
-        final Order order = EntityFixture.createOrder(userId);
+        final List<OrderItem> orderItems = List.of(DomainFixture.createOrderItem());
+        final Order order = DomainFixture.createOrder(userId);
         orderRepository.save(order);
 
         // when

@@ -3,8 +3,8 @@ package shopping.domain.entity;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.domain.ExchangeRate;
-import shopping.domain.entity.fixture.EntityFixture;
+import shopping.domain.fixture.DomainFixture;
+import shopping.domain.vo.ExchangeRate;
 
 import java.util.List;
 
@@ -33,8 +33,8 @@ class OrderTest {
         final List<Integer> quantities = List.of(2, 3);
 
         final List<OrderItem> orderItems = List.of(
-                EntityFixture.createOrderItem(1, prices.get(0), quantities.get(0)),
-                EntityFixture.createOrderItem(2, prices.get(1), quantities.get(1))
+                DomainFixture.createOrderItem(1, prices.get(0), quantities.get(0)),
+                DomainFixture.createOrderItem(2, prices.get(1), quantities.get(1))
         );
 
         final ExchangeRate exchangeRate = new ExchangeRate(1.0);
@@ -55,7 +55,7 @@ class OrderTest {
         final int originPrice = 1000;
 
         final List<OrderItem> orderItems = List.of(
-                EntityFixture.createOrderItem(1, originPrice, 1)
+                DomainFixture.createOrderItem(1, originPrice, 1)
         );
 
         // when

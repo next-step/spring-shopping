@@ -1,5 +1,7 @@
 package shopping.domain.entity;
 
+import shopping.domain.vo.Quantity;
+
 import javax.persistence.*;
 
 @Entity
@@ -65,5 +67,4 @@ public class CartItem {
     public boolean equalsById(final long id) {
         return this.id == id;
     }
-
 }

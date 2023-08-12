@@ -2,6 +2,9 @@ package shopping.domain.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import shopping.domain.vo.Image;
+import shopping.domain.vo.Name;
+import shopping.domain.vo.Price;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 

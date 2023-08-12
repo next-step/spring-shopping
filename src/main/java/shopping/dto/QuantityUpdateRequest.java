@@ -1,6 +1,6 @@
 package shopping.dto;
 
-import shopping.domain.entity.Quantity;
+import shopping.domain.vo.Quantity;
 
 public class QuantityUpdateRequest {
 

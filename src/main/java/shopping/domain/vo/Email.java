@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.vo;
 
 import shopping.exception.EmailFormInvalidException;
 import shopping.exception.EmailLengthInvalidException;

@@ -1,7 +1,7 @@
 package shopping.domain.entity;
 
-import shopping.domain.Email;
-import shopping.domain.Password;
+import shopping.domain.vo.Email;
+import shopping.domain.vo.Password;
 
 import javax.persistence.*;
 

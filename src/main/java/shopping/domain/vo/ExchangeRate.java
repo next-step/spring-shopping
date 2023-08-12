@@ -1,6 +1,4 @@
-package shopping.domain;
-
-import shopping.domain.entity.Price;
+package shopping.domain.vo;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;

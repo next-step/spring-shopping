@@ -1,6 +1,7 @@
 package shopping.domain.entity;
 
-import shopping.domain.ExchangeRate;
+import shopping.domain.vo.ExchangeRate;
+import shopping.domain.vo.Price;
 
 import javax.persistence.*;
 import java.util.ArrayList;

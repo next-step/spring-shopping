@@ -1,13 +1,14 @@
-package shopping.domain.entity.fixture;
+package shopping.domain.fixture;
 
-import shopping.domain.Email;
-import shopping.domain.ExchangeRate;
-import shopping.domain.Password;
-import shopping.domain.entity.*;
+import shopping.domain.entity.Order;
+import shopping.domain.entity.OrderItem;
+import shopping.domain.entity.Product;
+import shopping.domain.entity.User;
+import shopping.domain.vo.*;
 
 import java.util.List;
 
-public class EntityFixture {
+public class DomainFixture {
 
     public static User createUser() {
         return new User(1L, new Email("test@test.com"), Password.createEncodedPassword("test", password -> password));

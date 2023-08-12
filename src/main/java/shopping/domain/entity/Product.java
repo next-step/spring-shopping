@@ -1,5 +1,9 @@
 package shopping.domain.entity;
 
+import shopping.domain.vo.Image;
+import shopping.domain.vo.Name;
+import shopping.domain.vo.Price;
+
 import javax.persistence.*;
 import java.util.Objects;
 

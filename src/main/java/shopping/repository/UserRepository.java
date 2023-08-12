@@ -2,9 +2,9 @@ package shopping.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import shopping.domain.Email;
-import shopping.domain.Password;
 import shopping.domain.entity.User;
+import shopping.domain.vo.Email;
+import shopping.domain.vo.Password;
 
 import java.util.Optional;
 
