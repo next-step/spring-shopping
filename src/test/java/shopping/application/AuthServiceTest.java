@@ -33,7 +33,7 @@ public class AuthServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
-    private TokenProvider tokenProvider;
+    private TokenProvider<Long> tokenProvider;
 
     @Nested
     @DisplayName("login 메소드는")
