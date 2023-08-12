@@ -1,4 +1,4 @@
-package shopping.other.exchange;
+package shopping.other.exchange.currencylayer;
 
 import shopping.common.domain.Rate;
 import shopping.order.service.ExchangeRateService;
