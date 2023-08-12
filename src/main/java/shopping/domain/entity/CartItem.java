@@ -64,7 +64,7 @@ public class CartItem {
         return quantity;
     }
 
-    public boolean equalsById(final long id) {
-        return this.id == id;
+    public boolean equalsByProductId(final Long productId) {
+        return this.product.equalsById(productId);
     }
 }

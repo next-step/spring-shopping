@@ -12,11 +12,13 @@ import shopping.dto.CartResponse;
 import shopping.dto.QuantityUpdateRequest;
 import shopping.exception.ProductNotFoundException;
 import shopping.exception.UserNotFoundException;
+import shopping.exception.UserNotHasCartItemException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,10 +42,26 @@ public class CartService {
         final User user = findUserById(userId);
         final Product product = findProductById(request.getProductId());
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem newItem = new CartItem(user, product, Quantity.ONE);
 
-        items.add(newItem);
-        checkItemIsNew(items, newItem);
+        final Optional<CartItem> cartItem = items.find(product.getId());
+        if (cartItem.isPresent()) {
+            final CartItem existItem = cartItem.get();
+            addCartItemQuantity(existItem);
+            return;
+        }
+
+        final CartItem newItem = new CartItem(user, product, Quantity.ONE);
+        addCartItem(items, newItem);
+    }
+
+    private void addCartItem(final CartItems items, final CartItem item) {
+        items.add(item);
+        cartItemRepository.save(item);
+    }
+
+    private void addCartItemQuantity(final CartItem cartItem) {
+        cartItem.increaseQuantity();
+        cartItemRepository.save(cartItem);
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +75,8 @@ public class CartService {
     @Transactional
     public void update(final QuantityUpdateRequest request, final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = items.find(cartItemId);
+        final CartItem item = items.find(cartItemId)
+                .orElseThrow(UserNotHasCartItemException::new);
 
         item.updateQuantity(request.getQuantity());
     }
@@ -65,15 +84,10 @@ public class CartService {
     @Transactional
     public void delete(final Long cartItemId, final Long userId) {
         final CartItems items = findCartItemsByUserId(userId);
-        final CartItem item = items.find(cartItemId);
+        final CartItem item = items.find(cartItemId)
+                .orElseThrow(UserNotHasCartItemException::new);
 
         cartItemRepository.delete(item);
-    }
-
-    private void checkItemIsNew(final CartItems items, final CartItem newItem) {
-        if (items.contains(newItem)) {
-            cartItemRepository.save(newItem);
-        }
     }
 
     private CartItems findCartItemsByUserId(final Long userId) {
