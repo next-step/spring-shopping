@@ -12,8 +12,8 @@ public class Image {
     protected Image() {
     }
 
-    public Image(ImageStoreType imageStoreType, String imageName) {
-        this.imagePath = imageStoreType.getPath() + imageName;
+    public Image(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getImagePath() {

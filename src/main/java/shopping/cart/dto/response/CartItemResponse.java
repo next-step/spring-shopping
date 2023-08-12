@@ -24,7 +24,7 @@ public class CartItemResponse {
 
     public static CartItemResponse from(CartItem cartItem, Product product) {
         return new CartItemResponse(cartItem.getId(), cartItem.getProductId(),
-            cartItem.getProductName(), product.getImage().getImagePath(), cartItem.getQuantity());
+            cartItem.getProductName(), product.getImage().getImagePath(), cartItem.getQuantity().getValue());
     }
 
     public static List<CartItemResponse> listOf(List<ProductCartItemDto> productCartItemDtos) {

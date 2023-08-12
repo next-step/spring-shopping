@@ -12,7 +12,7 @@ import shopping.cart.domain.vo.Quantity;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.vo.Money;
 
 @Entity
 public class CartItem {
@@ -94,7 +94,7 @@ public class CartItem {
         return productPrice;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
     }
 }

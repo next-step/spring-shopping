@@ -37,6 +37,16 @@ public class CommonRestAssuredUtils {
             .extract();
     }
 
+    public static <T> ExtractableResponse<Response> get(String url, T pathParam, String token) {
+        return RestAssured
+            .given().log().all()
+            .header("Authorization", "Bearer " + token)
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get(url, pathParam)
+            .then().log().all()
+            .extract();
+    }
+
     public static <T> ExtractableResponse<Response> get(String url, Map<String, T> params) {
         return RestAssured
             .given().log().all()

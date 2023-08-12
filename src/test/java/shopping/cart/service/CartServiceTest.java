@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import shopping.auth.domain.LoggedInMember;
 import shopping.cart.domain.CartItem;
+import shopping.cart.domain.vo.Quantity;
 import shopping.cart.dto.request.CartItemCreationRequest;
 import shopping.cart.dto.request.CartItemQuantityUpdateRequest;
 import shopping.cart.dto.response.AllCartItemsResponse;
@@ -17,7 +18,7 @@ import shopping.cart.repository.CartItemRepository;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.vo.Money;
 import shopping.product.repository.ProductRepository;
 
 @DataJpaTest
@@ -44,7 +45,7 @@ class CartServiceTest {
         Long cartItemId = cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
         CartItem cartItem = cartItemRepository.findAll().get(0);
-        assertCartItem(cartItemId, memberId, productId, "피자", new Money("10000"), cartItem, 1);
+        assertCartItem(cartItemId, memberId, productId, "피자", new Money("10000"), cartItem, new Quantity(1));
     }
 
     @Test
@@ -59,7 +60,7 @@ class CartServiceTest {
         Long cartItemId = cartService.addCartItem(loggedInMember, cartItemCreationRequest);
 
         CartItem cartItem = cartItemRepository.findAll().get(0);
-        int expectedQuantity = 2;
+        Quantity expectedQuantity = new Quantity(2);
         assertCartItem(cartItemId , memberId, productId, "피자", new Money("10000"), cartItem, expectedQuantity);
     }
 
@@ -123,7 +124,7 @@ class CartServiceTest {
         assertThat(allCartItem).isEmpty();
     }
 
-    private static void assertCartItem(Long id, Long memberId, Long productId, String productName, Money price, CartItem cartItem, int quantity) {
+    private static void assertCartItem(Long id, Long memberId, Long productId, String productName, Money price, CartItem cartItem, Quantity quantity) {
         assertThat(cartItem).extracting("id").isEqualTo(id);
         assertThat(cartItem).extracting("memberId").isEqualTo(memberId);
         assertThat(cartItem).extracting("productId").isEqualTo(productId);

@@ -12,7 +12,7 @@ public class ProductHelper {
     public static ExtractableResponse<Response> createProduct(
         ProductCreationRequest productCreationRequest) {
         ExtractableResponse<Response> response = CommonRestAssuredUtils.post(
-            "/products",
+            "/api/products",
             productCreationRequest,
             CommonRestAssuredUtils.DEFAULT_TOKEN
         );

@@ -22,14 +22,16 @@
     <div class="cart-list">
     </div>
 <!--    TODO: [4단계] 장바구니 아이템 전체 주문 시 아래 주석을 해제하여 연동 -->
-<!--    <div class="flex justify-between items-center mt-30">-->
-<!--      <button class="primary-button flex-center" onclick="requestOrder()">주문하기</button>-->
-<!--    </div>-->
+    <div class="flex justify-between items-center mt-30">
+      <button class="primary-button flex-center jiwon">주문하기</button>
+    </div>
   </section>
 </div>
 <script th:src="@{/js/cart.js}"></script>
 <script th:src="@{/js/order.js}"></script>
 <script>
+  const selectedCartItemIds = [];
+
     document.addEventListener("DOMContentLoaded", function () {
         const credentials = sessionStorage.getItem('accessToken');
         if (!credentials) {
@@ -39,7 +41,7 @@
         }
 
         // TODO: [4단계] 장바구니 아이템 목록 조회 스펙에 맞게 변경
-        fetch('/cart', {
+        fetch('/api/carts', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${credentials}`,
@@ -50,6 +52,7 @@
         }).then((data) => {
             let element = '<hr class="divide-line-gray mt-10" />';
             data.cartItemResponses.forEach(cartItem => {
+              selectedCartItemIds.push(cartItem.id);
                 element += `
                     <div class="cart-container">
                       <div class="flex gap-15 mt-10">
@@ -75,9 +78,16 @@
             });
 
             document.querySelector('.cart-list').innerHTML = element;
+
+            let btn = document.querySelector(".jiwon");
+            btn.addEventListener("click", () => {
+              console.log(selectedCartItemIds)
+              requestOrder(selectedCartItemIds)
+            })
         }).catch((error) => {
             console.error(error);
         });
+
 
     });
 </script>
