@@ -42,7 +42,6 @@ public class RestTemplateTest {
         final RestTemplate restTemplate;
 
         public RestTemplatePractice(@Value("${currency.accessKey}") String accessKey) {
-            System.out.println("asds" + accessKey);
             this.accessKey = accessKey;
             this.url = "http://api.currencylayer.com/live?currencies=KRW&access_key=" + accessKey;
             this.restTemplate = new RestTemplate();
