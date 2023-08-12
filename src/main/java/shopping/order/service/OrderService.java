@@ -36,7 +36,6 @@ public class OrderService {
     }
 
     public OrderResponse createOrder(LoggedInMember loggedInMember, Rate exchangeRate) {
-        //todo: login user validation을 계속 해야하나?
         List<Product> product = productRepository.findAll();
         List<CartItem> cartItems = cartItemRepository.findAllByMemberId(loggedInMember.getId());
         Cart cart = new Cart(loggedInMember.getId(), cartItems);
