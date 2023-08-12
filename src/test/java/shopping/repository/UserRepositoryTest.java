@@ -25,7 +25,7 @@ class UserRepositoryTest {
         // when
         Email email = new Email("test@gmail.com");
         Password password = Password.createEncodedPassword("test1234", new SHA256PasswordEncoder());
-        Optional<User> user = userRepository.findByEmailAndPassword(email.getValue(), password.getValue());
+        Optional<User> user = userRepository.findByEmailAndPassword(email, password);
 
         // then
         assertThat(user.get().getId()).isEqualTo(1L);
@@ -37,9 +37,9 @@ class UserRepositoryTest {
         // when
         Email email = new Email("tes2@gmail.com");
         Password password = Password.createEncodedPassword("test1234", new SHA256PasswordEncoder());
-        Optional<User> user = userRepository.findByEmailAndPassword(email.getValue(), password.getValue());
+        Optional<User> user = userRepository.findByEmailAndPassword(email, password);
 
         // then
-        assertThat(user.isEmpty()).isTrue();
+        assertThat(user).isEmpty();
     }
 }

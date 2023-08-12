@@ -36,11 +36,11 @@ public class LoginRequest {
         }
     }
 
-    public String getEmail() {
-        return email.getValue();
+    public Email getEmail() {
+        return email;
     }
 
-    public String getPassword() {
-        return password.getValue();
+    public Password getPassword() {
+        return password;
     }
 }

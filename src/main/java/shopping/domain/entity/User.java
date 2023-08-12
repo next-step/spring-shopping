@@ -1,5 +1,8 @@
 package shopping.domain.entity;
 
+import shopping.domain.Email;
+import shopping.domain.Password;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,16 +14,18 @@ public class User {
     private Long id;
 
     @Column(nullable = false, length = 50)
-    private String email;
+    @AttributeOverride(name = "value", column = @Column(name = "email"))
+    private Email email;
 
     @Column(nullable = false)
-    private String password;
+    @AttributeOverride(name = "value", column = @Column(name = "password"))
+    private Password password;
 
     protected User() {
 
     }
 
-    public User(final Long id, final String email, final String password) {
+    public User(final Long id, final Email email, final Password password) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -30,11 +35,11 @@ public class User {
         return id;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 }

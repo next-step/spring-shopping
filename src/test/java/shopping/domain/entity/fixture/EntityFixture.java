@@ -1,6 +1,8 @@
 package shopping.domain.entity.fixture;
 
+import shopping.domain.Email;
 import shopping.domain.ExchangeRate;
+import shopping.domain.Password;
 import shopping.domain.entity.*;
 
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.List;
 public class EntityFixture {
 
     public static User createUser() {
-        return new User(1L, "test@test.com", "test");
+        return new User(1L, new Email("test@test.com"), Password.createEncodedPassword("test", password -> password));
     }
 
     public static Product createProduct() {

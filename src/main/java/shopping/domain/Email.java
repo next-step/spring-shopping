@@ -3,8 +3,10 @@ package shopping.domain;
 import shopping.exception.EmailFormInvalidException;
 import shopping.exception.EmailLengthInvalidException;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class Email {
 
     private static final int MAX_LENGTH = 50;

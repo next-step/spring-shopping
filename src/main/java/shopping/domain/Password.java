@@ -2,8 +2,10 @@ package shopping.domain;
 
 import shopping.infrastructure.PasswordEncoder;
 
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class Password {
 
     private final String value;
