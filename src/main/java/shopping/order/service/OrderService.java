@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.cart.domain.CartProductWithProduct;
+import shopping.cart.dto.CartProductWithProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;

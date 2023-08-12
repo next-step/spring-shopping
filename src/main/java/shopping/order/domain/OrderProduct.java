@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import shopping.cart.domain.CartProduct;
-import shopping.cart.domain.CartProductWithProduct;
+import shopping.cart.dto.CartProductWithProduct;
 import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;

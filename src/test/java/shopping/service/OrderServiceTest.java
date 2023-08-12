@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import shopping.cart.domain.CartProductWithProduct;
+import shopping.cart.dto.CartProductWithProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.exception.ShoppingException;
@@ -50,18 +50,21 @@ public class OrderServiceTest {
         List<CartProductWithProduct> cartProducts = cartProductRepository
             .findAllByMemberId(memberId);
         assertThat(cartProducts).isNotEmpty();
-        OrderResponse orderResponse = orderService.saveOrder(memberId);
         // when
+        OrderResponse orderResponse = orderService.saveOrder(memberId);
+        // then
         assertThat(orderResponse.getItems().size()).isEqualTo(cartProducts.size());
     }
 
     @Test
     @DisplayName("주문 상품을 생성한다.")
     void 주문_상품이_없을_경우_에러_반환_한다() {
+        // given
         Long memberId = 3L;
         assertThat(cartProductRepository.findAllByMemberId(memberId)).isEmpty();
 
-        assertThatCode(() -> orderService.saveOrder(3L))
+        // when & then
+        assertThatCode(() -> orderService.saveOrder(memberId))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("주문하실 상품이 존재하지 않습니다.");
     }
@@ -72,6 +75,7 @@ public class OrderServiceTest {
         // given
         Long memberId = 2L;
         Long orderId = 1L;
+
         // when & then
         assertThatCode(() -> orderService.getOrder(memberId, orderId))
             .doesNotThrowAnyException();

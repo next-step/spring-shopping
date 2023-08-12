@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import shopping.cart.domain.CartProduct;
-import shopping.cart.domain.CartProductWithProduct;
-import shopping.cart.dto.response.CartResponse;
+import shopping.cart.dto.CartProductWithProduct;
 
 @Repository
 public interface CartProductRepository extends JpaRepository<CartProduct, Long> {
@@ -20,6 +19,9 @@ public interface CartProductRepository extends JpaRepository<CartProduct, Long> 
 
     void deleteAllByMemberId(final Long memberId);
 
-    @Query("select new shopping.cart.domain.CartProductWithProduct(c,p) from Product p join CartProduct c on c.productId = p.id where c.memberId = :memberId")
+    @Query(
+        "select new shopping.cart.dto.CartProductWithProduct(c,p) from Product p join CartProduct c "
+            + "on c.productId = p.id "
+            + "where c.memberId = :memberId")
     List<CartProductWithProduct> findAllByMemberId(final Long memberId);
 }

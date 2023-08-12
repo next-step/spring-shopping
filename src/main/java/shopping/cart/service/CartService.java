@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartProduct;
-import shopping.cart.domain.CartProductWithProduct;
+import shopping.cart.dto.CartProductWithProduct;
 import shopping.cart.dto.request.CartProductCreateRequest;
 import shopping.cart.dto.request.CartProductQuantityUpdateRequest;
 import shopping.cart.dto.response.CartResponse;

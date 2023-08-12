@@ -50,9 +50,10 @@ public class CurrencyLayerExchangeRateApi implements ExchangeRateApi {
     }
 
     private JsonNode getJsonNode() {
-        JsonNode jsonNode = restTemplate.getForObject(url, JsonNode.class).get("quotes");
+        JsonNode jsonNode = restTemplate.getForObject(url, JsonNode.class);
         validateJsonNode(jsonNode);
-        return jsonNode;
+        validateJsonNode(jsonNode.get("quotes"));
+        return jsonNode.get("quotes");
     }
 
     private void validateJsonNode(final JsonNode jsonNode) {

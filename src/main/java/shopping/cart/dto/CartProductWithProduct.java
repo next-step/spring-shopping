@@ -1,5 +1,6 @@
-package shopping.cart.domain;
+package shopping.cart.dto;
 
+import shopping.cart.domain.CartProduct;
 import shopping.product.domain.Product;
 
 public class CartProductWithProduct {

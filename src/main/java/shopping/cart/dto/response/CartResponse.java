@@ -2,7 +2,7 @@ package shopping.cart.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.cart.domain.CartProduct;
-import shopping.cart.domain.CartProductWithProduct;
+import shopping.cart.dto.CartProductWithProduct;
 import shopping.product.domain.Product;
 
 public class CartResponse {

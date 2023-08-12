@@ -36,7 +36,6 @@ public class OrderRestController {
         final @LoginUser Long memberId,
         final @PathVariable Long orderId) {
         OrderResponse order = orderService.getOrder(memberId, orderId);
-        System.out.println(order.getExchangeRate());
         return ResponseEntity.ok().body(order);
     }
 }
