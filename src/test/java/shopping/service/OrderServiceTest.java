@@ -1,5 +1,6 @@
 package shopping.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.util.List;
@@ -10,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import shopping.cart.domain.CartProductWithProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;
+import shopping.order.dto.OrderResponse;
 import shopping.order.repository.OrderRepository;
 import shopping.order.service.OrderService;
 import shopping.infrastructure.ExchangeRateApi;
@@ -37,6 +40,41 @@ public class OrderServiceTest {
     @BeforeEach
     void setUp() {
         orderService = new OrderService(orderRepository, cartProductRepository, exchangeRateApi);
+    }
+
+    @Test
+    @DisplayName("주문 상품을 생성한다.")
+    void 주문_상품_정상적으로_생성_한다() {
+        // given
+        Long memberId = 1L;
+        List<CartProductWithProduct> cartProducts = cartProductRepository
+            .findAllByMemberId(memberId);
+        assertThat(cartProducts).isNotEmpty();
+        OrderResponse orderResponse = orderService.saveOrder(memberId);
+        // when
+        assertThat(orderResponse.getItems().size()).isEqualTo(cartProducts.size());
+    }
+
+    @Test
+    @DisplayName("주문 상품을 생성한다.")
+    void 주문_상품이_없을_경우_에러_반환_한다() {
+        Long memberId = 3L;
+        assertThat(cartProductRepository.findAllByMemberId(memberId)).isEmpty();
+
+        assertThatCode(() -> orderService.saveOrder(3L))
+            .isInstanceOf(ShoppingException.class)
+            .hasMessage("주문하실 상품이 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("로그인한 유저의 주문상품을 불러온다.")
+    void 주문_상품을_정상적으로_불러올_수_있다() {
+        // given
+        Long memberId = 2L;
+        Long orderId = 1L;
+        // when & then
+        assertThatCode(() -> orderService.getOrder(memberId, orderId))
+            .doesNotThrowAnyException();
     }
 
     @Test
@@ -75,6 +113,23 @@ public class OrderServiceTest {
         assertThatCode(() -> orderService.saveOrder(memberId))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("주문하실 상품이 존재하지 않습니다.");
+    }
+    
+    @Test
+    @DisplayName("사용자별 모든 주문을 다 가져온다.")
+    void 사용자별_주문_목록_반환(){
+        // given 
+        Long memberId= 2L;
+        List<Order> orderList = orderRepository.findByMemberId(2L);
+
+        // when
+        List<OrderResponse> orderResponses = orderService.getOrderList(memberId);
+
+        // then
+        assertThat(orderResponses)
+            .extracting("items")
+            .size()
+            .isEqualTo(orderList.size());
     }
 
 }
