@@ -39,12 +39,13 @@ public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService
         JsonNode root = null;
         try {
             root = objectMapper.readTree(jsonString);
+            return Rate.valueOf(root.path("quotes")
+                                    .path(source.name() + target.name())
+                                    .asDouble());
         } catch (JsonProcessingException e) {
-            log.error("외부 서비스 문제 발생");
-            return null;
+            log.error("환율 정보를 가져오지 못했습니다.", e);
+            return Rate.EMPTY_RATE;
         }
-        return Rate.valueOf(root.path("quotes")
-            .path(source.name() + target.name()).asDouble());
     }
 
     public String getExchangeRateJson(ExchangeType source, ExchangeType target) {
@@ -53,6 +54,10 @@ public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService
             .uri(uriBuild(source, target))
             .retrieve()
             .bodyToMono(String.class)
+            .doOnError(throwable ->
+                log.error("An error occurred during web request: {}", throwable.getMessage()))
+            .retry(2)
+            .onErrorReturn("nullValue")
             .block();
     }
 

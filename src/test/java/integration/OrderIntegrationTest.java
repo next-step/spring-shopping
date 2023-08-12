@@ -7,14 +7,13 @@ import integration.helper.OrderHelper;
 import integration.helper.ProductHelper;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.cart.dto.response.AllCartItemsResponse;
 import shopping.order.dto.response.OrderResponse;
 import shopping.product.dto.request.ProductCreationRequest;
-
-import java.util.ArrayList;
 
 @DisplayName("주문 통합 테스트")
 class OrderIntegrationTest extends IntegrationTest{

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Rate {
 
+    public static final Rate EMPTY_RATE = new Rate(-1);
     private final double value;
 
     public Rate(double value) {
