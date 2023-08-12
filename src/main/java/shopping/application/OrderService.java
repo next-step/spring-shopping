@@ -48,7 +48,7 @@ public class OrderService {
 
         clearMemberCart(memberId);
 
-        return mapToResponse(order, orderItems);
+        return mapToResponse(order);
     }
 
     public OrderResponse getOrder(Long memberId, Long id) {
@@ -57,26 +57,26 @@ public class OrderService {
 
         validateOrderOwner(memberId, order);
 
-        return mapToResponse(order, order.getOrderItems());
+        return mapToResponse(order);
     }
 
     public List<OrderResponse> getOrders(Long memberId) {
         List<Order> orders = orderRepository.findByMemberId(memberId);
         return orders.stream()
-            .map(order -> mapToResponse(order, order.getOrderItems()))
+            .map(this::mapToResponse)
             .collect(Collectors.toList());
     }
 
-    private OrderResponse mapToResponse(Order order, List<OrderItem> orderItems) {
-        long totalPrice = 0;
-        List<OrderItemResponse> orderItemResponses = new ArrayList<>();
-        for (OrderItem orderItem : orderItems) {
-            totalPrice += orderItem.calculateTotalPrice();
-            orderItemResponses.add(OrderItemResponse.of(orderItem));
-        }
+    private OrderResponse mapToResponse(Order order) {
+        List<OrderItemResponse> orderItemResponses = order.getOrderItems()
+            .stream()
+            .map(OrderItemResponse::of)
+            .collect(Collectors.toList());
 
+        long totalPrice = order.calculateTotalPrice();
         final ExchangeRate exchangeRate = order.getExchangeRate();
         final double dollarPrice = exchangeRate.exchange(totalPrice);
+
         return new OrderResponse(order.getId(), totalPrice, orderItemResponses, order.getExchangeRate(), dollarPrice);
     }
 

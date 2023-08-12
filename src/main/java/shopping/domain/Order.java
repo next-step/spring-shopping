@@ -66,6 +66,12 @@ public class Order extends BaseTime {
         return Collections.unmodifiableList(orderItems);
     }
 
+    public long calculateTotalPrice() {
+        return orderItems.stream()
+            .mapToLong(OrderItem::calculateTotalPrice)
+            .sum();
+    }
+
     private void setOrderItems(List<OrderItem> orderItems) {
         orderItems.forEach(orderItem -> {
             orderItem.setOrder(this);
