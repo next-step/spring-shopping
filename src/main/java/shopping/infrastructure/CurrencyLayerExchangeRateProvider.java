@@ -51,9 +51,9 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
     }
 
     private double getExchangeRate(final CurrencyCountry country, final JsonNode body) {
-//        if (checkSuccess(body)) {
-//            return findResult(body, country.getCurrencyLayerName()).asDouble();
-//        }
+        if (checkSuccess(body)) {
+            return findResult(body, country.getCurrencyLayerName()).asDouble();
+        }
         return Double.MIN_VALUE;
     }
 
