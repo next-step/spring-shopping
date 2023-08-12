@@ -9,7 +9,6 @@ import static shopping.exception.ShoppingErrorType.NOT_FOUND_ORDER_ID;
 import static shopping.fixture.CartItemFixture.createCartItem;
 import static shopping.fixture.MemberFixture.MEMBER_ID;
 import static shopping.fixture.MemberFixture.createMember;
-import static shopping.fixture.OrderFixture.DEFAULT_EXCHANGE_RATE;
 import static shopping.fixture.OrderFixture.createOrderItems;
 import static shopping.fixture.ProductFixture.CHICKEN_IMAGE;
 import static shopping.fixture.ProductFixture.CHICKEN_NAME;
@@ -77,7 +76,7 @@ class OrderServiceTest {
         when(cartItemRepository.findAllByMemberId(MEMBER_ID)).thenReturn(cartItems);
         when(orderRepository.save(any())).thenReturn(order);
 
-        final OrderResponse orderResponse = orderService.createOrder(MEMBER_ID, DEFAULT_EXCHANGE_RATE);
+        final OrderResponse orderResponse = orderService.createOrder(MEMBER_ID);
 
         assertThat(orderResponse.getOrderId()).isEqualTo(orderId);
         assertThat(orderResponse.getOrderItems()).extracting("name", "image", "price", "quantity")
@@ -94,7 +93,7 @@ class OrderServiceTest {
         when(memberRepository.findById(MEMBER_ID)).thenReturn(Optional.of(member));
         when(cartItemRepository.findAllByMemberId(MEMBER_ID)).thenReturn(Collections.emptyList());
 
-        final Exception exception = catchException(() -> orderService.createOrder(MEMBER_ID, DEFAULT_EXCHANGE_RATE));
+        final Exception exception = catchException(() -> orderService.createOrder(MEMBER_ID));
 
         assertThat(exception).isInstanceOf(ShoppingException.class);
         assertThat(exception.getMessage()).isEqualTo(INVALID_ORDER_REQUEST.getMessage());

@@ -15,6 +15,7 @@ import shopping.domain.order.OrderItem;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.exception.ShoppingException;
+import shopping.infra.ExchangeRateApi;
 import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
@@ -22,22 +23,26 @@ import shopping.repository.OrderRepository;
 @Service
 public class OrderService {
 
+    private final ExchangeRateApi exchangeRateApi;
     private final MemberRepository memberRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
 
     public OrderService(
+            final ExchangeRateApi exchangeRateApi,
             final MemberRepository memberRepository,
             final CartItemRepository cartItemRepository,
             final OrderRepository orderRepository
     ) {
+        this.exchangeRateApi = exchangeRateApi;
         this.memberRepository = memberRepository;
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
     }
 
     @Transactional
-    public OrderResponse createOrder(final Long memberId, final double exchangeRate) {
+    public OrderResponse createOrder(final Long memberId) {
+        final double exchangeRate = exchangeRateApi.getUSDtoKRWExchangeRate();
         final Member member = getMemberById(memberId);
         final List<CartItem> cartItems = cartItemRepository.findAllByMemberId(memberId);
         validateEmptyCartItems(cartItems);
