@@ -1,6 +1,5 @@
 package shopping.application;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -94,7 +93,7 @@ public class OrderService {
     private List<OrderItem> orderMemberCartItems(Member member) {
         List<CartProduct> cartProducts = findMemberCartProducts(member.getId());
         return cartProducts.stream()
-            .map(cartProduct -> new OrderItem(cartProduct.getProduct(), cartProduct.getProduct().getName(),
+            .map(cartProduct -> new OrderItem(cartProduct.getProduct().getId(), cartProduct.getProduct().getName(),
                 cartProduct.getProduct().getPrice(), cartProduct.getQuantity(),
                 cartProduct.getProduct().getImageUrl()))
             .collect(Collectors.toList());

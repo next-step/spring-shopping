@@ -31,7 +31,7 @@ public class OrderItemResponse {
     public static OrderItemResponse of(OrderItem orderItem) {
         return new OrderItemResponse(
             orderItem.getId(),
-            orderItem.getProduct().getId(),
+            orderItem.getProductId(),
             orderItem.getName(),
             orderItem.getPrice(),
             orderItem.getQuantity(),

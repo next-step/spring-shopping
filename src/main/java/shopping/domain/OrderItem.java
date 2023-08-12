@@ -24,9 +24,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private Long productId;
 
     @Column(nullable = false, length = MAX_NAME_LENGTH)
     private String name;
@@ -43,15 +41,15 @@ public class OrderItem {
     protected OrderItem() {
     }
 
-    public OrderItem(Product product, String name, long price, int quantity,
+    public OrderItem(Long productId, String name, long price, int quantity,
             String imageUrl) {
-        this(null, product, name, price, quantity, imageUrl);
+        this(null, productId, name, price, quantity, imageUrl);
     }
 
-    public OrderItem(Long id, Product product, String name, long price, int quantity,
+    public OrderItem(Long id, Long productId, String name, long price, int quantity,
         String imageUrl) {
         this.id = id;
-        this.product = product;
+        this.productId = productId;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -70,8 +68,8 @@ public class OrderItem {
         return order;
     }
 
-    public Product getProduct() {
-        return product;
+    public Long getProductId() {
+        return productId;
     }
 
     public String getName() {

@@ -76,8 +76,7 @@ class OrderRepositoryTest {
 
     private Order createOrder(Member member) {
         ExchangeRate exchangeRate = new ExchangeRate(1002.2);
-        Product chicken = productRepository.findById(1L).get();
-        OrderItem chickenItem = new OrderItem(chicken, "chicken", 2000, 1, "image");
+        OrderItem chickenItem = new OrderItem(1L, "chicken", 2000, 1, "image");
         Order order = new Order(member, List.of(chickenItem), exchangeRate);
         orderRepository.save(order);
         return order;

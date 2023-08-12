@@ -42,6 +42,5 @@ CREATE TABLE orders_item
     price      BIGINT       NOT NULL,
     quantity   INT          NOT NULL,
     product_id BIGINT       NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES product (id),
     FOREIGN KEY (order_id) REFERENCES orders (id)
 );
