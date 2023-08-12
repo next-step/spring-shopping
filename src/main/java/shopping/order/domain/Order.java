@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import shopping.infrastructure.dto.ExchangeRateResponse;
 import shopping.order.domain.vo.ExchangeRate;
 import shopping.order.domain.vo.Money;
 
@@ -43,15 +44,20 @@ public class Order {
     public Order(
         final List<OrderProduct> orderProducts,
         final Long memberId,
-        final Double exchangeRate) {
+        final ExchangeRateResponse exchangeRate) {
         this.orderProducts = orderProducts;
         this.memberId = memberId;
-        this.exchangeRate = new ExchangeRate(exchangeRate);
+        this.exchangeRate = new ExchangeRate(exchangeRate.getRate());
     }
 
     public Order(final Long memberId, final Double exchangeRate) {
         this.memberId = memberId;
         this.exchangeRate = new ExchangeRate(exchangeRate);
+    }
+
+    public Order(final Long memberId, final ExchangeRateResponse exchangeRate) {
+        this.memberId = memberId;
+        this.exchangeRate = new ExchangeRate(exchangeRate.getRate());
     }
 
     public void addOrderProducts(final List<OrderProduct> orderProducts) {

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shopping.global.exception.ShoppingException;
+import shopping.infrastructure.dto.ExchangeRateResponse;
 import shopping.order.domain.vo.ExchangeRate;
 
 @Component
@@ -36,12 +37,12 @@ public class CurrencyLayerExchangeRateApi implements ExchangeRateApi {
     }
 
     @Override
-    public Double callExchangeRate() {
+    public ExchangeRateResponse callExchangeRate() {
         try {
             JsonNode quotes = getJsonNode()
                 .get(sourceCountry + targetCountry);
             validateExchangeRate(quotes);
-            return quotes.asDouble();
+            return new ExchangeRateResponse(quotes.asDouble());
         } catch (ShoppingException e) {
             logger.error(e.getMessage());
             return null;
