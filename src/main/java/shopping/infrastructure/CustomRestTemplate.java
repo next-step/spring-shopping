@@ -9,13 +9,17 @@ import shopping.exception.InfraException;
 @Component
 public class CustomRestTemplate {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public CustomRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public <T> T getResult(String url, Class<T> clazz) {
         ResponseEntity<T> response = doApiCall(url, clazz);
 
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new InfraException("외부 API 호출 중 에러가 발생했습니다. - " + url);
+            throw new InfraException("외부 API 호출 중 에러가 발생했습니다");
         }
 
         return response.getBody();
