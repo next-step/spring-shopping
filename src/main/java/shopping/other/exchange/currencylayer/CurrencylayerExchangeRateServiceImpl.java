@@ -14,6 +14,8 @@ import shopping.order.service.ExchangeType;
 
 
 public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService {
+
+    public static final int DEFAULT_RETRY_COUNT = 2;
     private final Logger log = LoggerFactory.getLogger(getClass());
     public static final int JSON_FORMAT_ON = 1;
 
@@ -36,9 +38,8 @@ public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService
     }
 
     private Rate parseJson(ExchangeType source, ExchangeType target, String jsonString) {
-        JsonNode root = null;
         try {
-            root = objectMapper.readTree(jsonString);
+            JsonNode root = objectMapper.readTree(jsonString);
             return Rate.valueOf(root.path("quotes")
                                     .path(source.name() + target.name())
                                     .asDouble());
@@ -56,7 +57,7 @@ public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService
             .bodyToMono(String.class)
             .doOnError(throwable ->
                 log.error("An error occurred during web request: {}", throwable.getMessage()))
-            .retry(2)
+            .retry(DEFAULT_RETRY_COUNT)
             .onErrorReturn("nullValue")
             .block();
     }
