@@ -1,4 +1,4 @@
-package shopping.integration;
+package shopping.integration.support;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -8,7 +8,7 @@ import shopping.dto.LoginRequest;
 
 public class AuthIntegrationSupporter {
 
-    static ExtractableResponse<Response> login(String email, String password) {
+    public static ExtractableResponse<Response> login(String email, String password) {
         return RestAssured
                 .given().log().all()
                 .body(new LoginRequest(email, password))

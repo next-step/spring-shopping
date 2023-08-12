@@ -3,19 +3,29 @@
 ## Domain
 
 ### Product
-- ID
+- product_id
 - name
 - imageUrl
 - price
 
 ### Member
-- ID
+- member_id
 - email
 - password
 
-### Cart
-- ID
+### CartProduct
+- cart_product_id
 - Member
+- Product
+- quantity
+
+### Order
+- order_id
+- Member
+
+### OrderProduct
+- order_product_id
+- Order
 - Product
 - quantity
 
@@ -92,3 +102,71 @@ DELETE /cart/{id}
 
 ### 장바구니 검증
 - 장바구니 상품 개수는 1이상이어야 합니다.
+
+## 주문
+#### Request Header
+```
+Authorization: Bearer {jwt_token}
+```
+#### Request
+```
+POST /orders
+```
+#### Response Header
+```
+Location: /orders/{orderId}
+```
+- [x] 장바구니에 담긴 아이템 전체 주문
+  - [x] 주문 요청이 성공하면 주문 상세 페이지로 이동
+
+#### Request
+```
+GET /orders/{orderId}
+```
+#### Response
+```
+{
+    orderId : {orderId},
+    products : [
+        {
+            name = {name},
+            imageUrl = {imageUrl},
+            price = {price},
+            quantity = {quantity}
+        },
+        ...
+    ],
+    totalPrice : {totalPrice}
+}
+```
+- [x] 주문 상세 조회
+  - 주문 정보 : 주문 번호, 주문 아이템 정보 (이름, 가격, 이미지, 수량), 총 결제 금액
+
+#### Request
+```
+GET /orders
+```
+#### Response
+```
+[
+    {
+        orderId : {orderId},
+        products : [
+            {
+                name = {name},
+                imageUrl = {imageUrl},
+                price = {price},
+                quantity = {quantity}
+            },
+            ...
+        ],
+    },
+    ...
+]
+```
+- [x] 주문 목록 조회
+  - 주문 정보 : 주문 번호, 주문 아이템 정보 (이름, 가격, 이미지, 수량)
+
+- [x] 주문 금액을 달러로 환산
+  - [x] 주문 시점의 실시간 환율 저장
+  - [x] 주문 관련 페이지에 적용 환율, 변환 금액 반영

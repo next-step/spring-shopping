@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import shopping.jwt.TokenManager;
+import shopping.infrastructure.TokenManager;
 import shopping.repository.MemberRepository;
 import shopping.ui.argumentresolver.LoginArgumentResolver;
 import shopping.ui.interceptor.LoginCheckInterceptor;
@@ -25,7 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginCheckInterceptor(memberRepository, tokenManager))
-                .addPathPatterns("/cart/products/**");
+            .addPathPatterns("/cart/products/**")
+            .addPathPatterns("/orders/**");
     }
 
     @Override

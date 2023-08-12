@@ -1,4 +1,4 @@
-package shopping.integration;
+package shopping.integration.support;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 
 public class ProductIntegrationSupporter {
 
-    static ExtractableResponse<Response> findProducts() {
+    public static ExtractableResponse<Response> findProducts() {
         return RestAssured
                 .given().log().all()
                 .accept(MediaType.TEXT_HTML_VALUE)

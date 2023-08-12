@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import shopping.integration.support.AuthIntegrationSupporter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,7 +16,7 @@ import shopping.domain.Member;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
+import shopping.infrastructure.TokenManager;
 import shopping.repository.MemberRepository;
 
 @DisplayName("AuthService 클래스")
