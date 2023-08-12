@@ -10,6 +10,7 @@ import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,7 +31,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void order() {
         // given
         when(mockCustomRestTemplate.getResult(anyString(), any()))
-            .thenReturn(createExchangeResponse());
+            .thenReturn(Optional.of(createExchangeResponse()));
 
         // when
         ExtractableResponse<Response> result = OrderIntegrationSupporter.order();
@@ -45,7 +46,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void allCartProductsShouldBeDeleted_WhenOrderSuccess() {
         // given
         when(mockCustomRestTemplate.getResult(anyString(), any()))
-            .thenReturn(createExchangeResponse());
+            .thenReturn(Optional.of(createExchangeResponse()));
 
         // when
         OrderIntegrationSupporter.order();
@@ -60,7 +61,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void returnBadRequest_WhenCartProductIsEmpty() {
         // given
         when(mockCustomRestTemplate.getResult(anyString(), any()))
-            .thenReturn(createExchangeResponse());
+            .thenReturn(Optional.of(createExchangeResponse()));
 
         // when
         ExtractableResponse<Response> result = OrderIntegrationSupporter.order("woowa2@woowa.com",
@@ -75,7 +76,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void findMemberOrderById() {
         // given
         when(mockCustomRestTemplate.getResult(anyString(), any()))
-            .thenReturn(createExchangeResponse());
+            .thenReturn(Optional.of(createExchangeResponse()));
 
         ExtractableResponse<Response> order = OrderIntegrationSupporter.order();
         String orderId = order.header("Location").split("/")[2];
@@ -122,7 +123,7 @@ class OrderIntegrationTest extends IntegrationTest {
     void findMemberOrders() {
         // given
         when(mockCustomRestTemplate.getResult(anyString(), any()))
-            .thenReturn(createExchangeResponse());
+            .thenReturn(Optional.of(createExchangeResponse()));
 
         OrderIntegrationSupporter.order();
 

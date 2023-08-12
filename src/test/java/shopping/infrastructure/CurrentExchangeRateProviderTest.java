@@ -8,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,7 +47,7 @@ class CurrentExchangeRateProviderTest {
             Double codeExchange = 1302.2;
             ExchangeResponse response = createExchangeResponse(code, codeExchange);
 
-            given(customRestTemplate.getResult(anyString(), any())).willReturn(response);
+            given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
 
             // when
             ExchangeRate exchange = exchangeRateProvider.getExchange(code);
@@ -63,7 +64,7 @@ class CurrentExchangeRateProviderTest {
             Double codeExchange = 1302.2;
             ExchangeResponse response = createExchangeResponse(ExchangeCode.USDKRW, codeExchange);
 
-            given(customRestTemplate.getResult(anyString(), any())).willReturn(response);
+            given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
 
             // when & then
             assertThatThrownBy(() -> exchangeRateProvider.getExchange(invalidCode))

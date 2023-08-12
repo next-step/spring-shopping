@@ -7,16 +7,16 @@ import static org.mockito.BDDMockito.given;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import shopping.domain.ExchangeCode;
-import shopping.domain.ExchangeRates;
+import shopping.dto.response.ExchangeResponse;
 import shopping.exception.InfraException;
 
 @DisplayName("CustomRestTemplate 단위 테스트")
@@ -41,30 +41,29 @@ class CustomRestTemplateTest {
             // given
             String url = "https://url";
             ExchangeCode code = ExchangeCode.USDKRW;
-            ResponseEntity<ExchangeRates> response = createApiResponse(code);
+            ExchangeResponse response = createApiResponse(code);
 
-            given(restTemplate.getForEntity(url, ExchangeRates.class)).willReturn(response);
+            given(restTemplate.getForObject(url, ExchangeResponse.class)).willReturn(response);
 
             // when
-            ExchangeRates result = customRestTemplate.getResult(url, ExchangeRates.class);
+            Optional<ExchangeResponse> result = customRestTemplate.getResult(url, ExchangeResponse.class);
 
             // then
-            assertThat(result.getRate(code)).isEqualTo(response.getBody().getRate(code));
+            assertThat(result)
+                .isPresent()
+                .hasValue(response);
         }
 
-        @DisplayName("외부 api 호출의 응답 값이 2xx 가 아니면 InfraException 을 던진다")
+        @DisplayName("외부 api 가 응답으로 null 을 반환하면 Optional.empty 를 반환한다")
         @Test
-        void throwInfraException_WhenStatusCodeIsNot200() {
+        void returnEmpty_WhenApiReturnNull() {
             // given
             String url = "https://url";
-            ResponseEntity<ExchangeRates> response = ResponseEntity.internalServerError().build();
 
-            given(restTemplate.getForEntity(url, ExchangeRates.class)).willReturn(response);
+            given(restTemplate.getForObject(url, ExchangeResponse.class)).willReturn(null);
 
             // when & then
-            assertThatThrownBy(() -> customRestTemplate.getResult(url, ExchangeRates.class))
-                .hasMessage("외부 API 호출 중 에러가 발생했습니다")
-                .isInstanceOf(InfraException.class);
+            assertThat(customRestTemplate.getResult(url, ExchangeResponse.class)).isEmpty();
         }
 
         @DisplayName("유효하지 않은 주소로 요청을 보내면 InfraException 을 던진다")
@@ -73,19 +72,18 @@ class CustomRestTemplateTest {
             // given
             String invalidUrl = "http://url./tesafdfas/ds/afasdf/asf/as/fs//adsfs/af/asd";
 
-            given(restTemplate.getForEntity(invalidUrl, ExchangeRates.class)).willThrow(RestClientException.class);
+            given(restTemplate.getForObject(invalidUrl, ExchangeResponse.class)).willThrow(RestClientException.class);
 
             // when & then
-            assertThatThrownBy(() -> customRestTemplate.getResult(invalidUrl, ExchangeRates.class))
+            assertThatThrownBy(() -> customRestTemplate.getResult(invalidUrl, ExchangeResponse.class))
                 .hasMessage("외부 API 호출 중 에러가 발생했습니다")
                 .isInstanceOf(InfraException.class);
         }
     }
 
-    private ResponseEntity<ExchangeRates> createApiResponse(ExchangeCode code) {
+    private ExchangeResponse createApiResponse(ExchangeCode code) {
         Map<String, Double> exchangeMap = new HashMap<>();
         exchangeMap.put(code.name(), 1202.1);
-        ExchangeRates exchangeRates = new ExchangeRates(exchangeMap);
-        return ResponseEntity.ok().body(exchangeRates);
+        return new ExchangeResponse(exchangeMap);
     }
 }

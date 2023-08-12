@@ -36,10 +36,13 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     }
 
     private ExchangeRates initializeExchangeRates() {
-        ExchangeResponse response = customRestTemplate.getResult(apiUrl + apiAccessKey, ExchangeResponse.class);
+        ExchangeResponse response = customRestTemplate.getResult(apiUrl + apiAccessKey, ExchangeResponse.class)
+            .orElseThrow(() -> new InfraException("환율 정보 조회 중 에러가 발생했습니다"));
+
         if (Objects.isNull(response.getQuotes())) {
             throw new InfraException("환율 정보 조회 중 에러가 발생했습니다");
         }
+
         return new ExchangeRates(response.getQuotes());
     }
 }
