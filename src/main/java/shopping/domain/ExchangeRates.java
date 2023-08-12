@@ -15,6 +15,9 @@ public class ExchangeRates {
         initializeCodeMap(quotes);
     }
 
+    ExchangeRates() {
+    }
+
     private void validateCode(ExchangeCode code) {
         if (Objects.isNull(code) || !codeMap.containsKey(code)) {
             throw new CurrencyException("지원하지 않는 환율 코드입니다");

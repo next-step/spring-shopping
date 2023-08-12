@@ -4,7 +4,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import shopping.exception.InfraException;
 
 @Component
 public class CustomRestTemplate {
@@ -23,7 +22,7 @@ public class CustomRestTemplate {
         try {
             return restTemplate.getForObject(url, clazz);
         } catch (RestClientException exception) {
-            throw new InfraException("외부 API 호출 중 에러가 발생했습니다");
+            return null;
         }
     }
 }

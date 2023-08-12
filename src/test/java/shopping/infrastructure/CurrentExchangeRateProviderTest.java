@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.application.ExchangeRateProvider;
+import shopping.domain.EmptyExchangeRate;
 import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
 import shopping.dto.response.ExchangeResponse;
@@ -83,6 +84,21 @@ class CurrentExchangeRateProviderTest {
             // when & then
             assertThatThrownBy(() -> exchangeRateProvider.getExchange(code))
                 .isInstanceOf(InfraException.class);
+        }
+
+        @DisplayName("외부 api 호출 결과가 null 이면 EmptyExchangeRates 를 반환한다")
+        @Test
+        void returnEmptyExchangeRates_whenApiCallReturnNull() {
+            // given
+            ExchangeCode code = ExchangeCode.USDKRW;
+
+            given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.empty());
+
+            // when
+            ExchangeRate exchange = exchangeRateProvider.getExchange(code);
+
+            // then
+            assertThat(exchange).isInstanceOf(EmptyExchangeRate.class);
         }
     }
 
