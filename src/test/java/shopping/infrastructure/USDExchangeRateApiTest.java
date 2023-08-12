@@ -87,7 +87,7 @@ class USDExchangeRateApiTest {
 
         assertThatCode(() -> usdExchangeRateApi.getExchangeRateEveryMinute(time))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("외부 API 재시도를 했지만 실패했습니다.");
+                .hasMessage("환율 정보를 가져오지 못했습니다.");
     }
 
     @Test

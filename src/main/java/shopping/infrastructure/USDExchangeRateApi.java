@@ -6,11 +6,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.util.UriComponentsBuilder;
-import shopping.aspect.annotation.Retry;
+import reactor.util.retry.Retry;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -38,7 +39,6 @@ public class USDExchangeRateApi implements ExchangeRateApi {
         this.cachedExchangeRate = new CachedExchangeRate(MINUTES);
     }
 
-    @Retry
     @Override
     public double getExchangeRateEveryMinute(final LocalDateTime now) {
         if (cachedExchangeRate.isLatest(now)) {
@@ -56,8 +56,9 @@ public class USDExchangeRateApi implements ExchangeRateApi {
                     .uri(uriBuild())
                     .retrieve()
                     .bodyToMono(JsonNode.class)
+                    .retryWhen(Retry.backoff(3, Duration.ofSeconds(1)))
                     .block();
-        } catch (WebClientException e) {
+        } catch (WebClientException | IllegalStateException e) {
             throw new ShoppingException(e, ErrorCode.CURRENCY_API_ERROR);
         }
     }

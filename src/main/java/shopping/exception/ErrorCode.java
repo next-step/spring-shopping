@@ -26,7 +26,6 @@ public enum ErrorCode {
     FORBIDDEN_MODIFY_CART_ITEM(HttpStatus.FORBIDDEN, "해당 장바구니 아이템을 수정할 권한이 없습니다."),
     EMPTY_CART_ITEM(HttpStatus.BAD_REQUEST, "해당 장바구니가 비어있습니다."),
     CURRENCY_API_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "환율 정보를 가져오지 못했습니다."),
-    API_RETRY_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "외부 API 재시도를 했지만 실패했습니다."),
     RETRY_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "환율 정보를 가져오지 못했습니다."),
     CACHED_INVALID(HttpStatus.INTERNAL_SERVER_ERROR, "캐시된 정보가 유효하지 않습니다."),
     ;
