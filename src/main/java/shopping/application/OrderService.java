@@ -40,9 +40,11 @@ public class OrderService {
 
     public OrderResponse createOrder(long memberId) {
         Member member = findMember(memberId);
+        List<OrderItem> orderItems = orderMemberCartItems(member);
+
         ExchangeRate exchangeRate = exchangeRateProvider.getExchange(exchangeCode);
-        Order order = new Order(member, exchangeRate);
-        List<OrderItem> orderItems = orderMemberCartItems(member, order);
+        Order order = new Order(member, orderItems, exchangeRate);
+        orderRepository.save(order);
 
         clearMemberCart(memberId);
 
@@ -89,11 +91,13 @@ public class OrderService {
             .orElseThrow(() -> new MemberException("존재하지 않는 사용자 입니다"));
     }
 
-    private List<OrderItem> orderMemberCartItems(Member member, Order order) {
+    private List<OrderItem> orderMemberCartItems(Member member) {
         List<CartProduct> cartProducts = findMemberCartProducts(member.getId());
-        List<OrderItem> orderItems = createOrderItems(order, cartProducts);
-        orderRepository.save(order);
-        return orderItems;
+        return cartProducts.stream()
+            .map(cartProduct -> new OrderItem(cartProduct.getProduct(), cartProduct.getProduct().getName(),
+                cartProduct.getProduct().getPrice(), cartProduct.getQuantity(),
+                cartProduct.getProduct().getImageUrl()))
+            .collect(Collectors.toList());
     }
 
     private List<CartProduct> findMemberCartProducts(long memberId){
@@ -102,15 +106,6 @@ public class OrderService {
             throw new OrderException("주문할 상품이 존재하지 않습니다");
         }
         return cartProducts;
-    }
-
-    private List<OrderItem> createOrderItems(Order order, List<CartProduct> cartProducts) {
-        return cartProducts.stream()
-            .map(cartProduct -> new OrderItem(order, cartProduct.getProduct(),
-                cartProduct.getProduct().getName(),
-                cartProduct.getProduct().getPrice(), cartProduct.getQuantity(),
-                cartProduct.getProduct().getImageUrl()))
-            .collect(Collectors.toList());
     }
 
     private void clearMemberCart(long memberId) {

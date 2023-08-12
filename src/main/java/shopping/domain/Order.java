@@ -35,13 +35,14 @@ public class Order extends BaseTime {
     protected Order() {
     }
 
-    public Order(Member member, ExchangeRate exchangeRate) {
-        this(null, member, exchangeRate);
+    public Order(Member member, List<OrderItem> orderItems, ExchangeRate exchangeRate) {
+        this(null, member, orderItems, exchangeRate);
     }
 
-    public Order(Long id, Member member, ExchangeRate exchangeRate) {
+    public Order(Long id, Member member, List<OrderItem> orderItems, ExchangeRate exchangeRate) {
         this.id = id;
         this.member = member;
+        setOrderItems(orderItems);
         this.exchangeRate = exchangeRate;
     }
 
@@ -65,7 +66,10 @@ public class Order extends BaseTime {
         return Collections.unmodifiableList(orderItems);
     }
 
-    public void addOrderItem(OrderItem orderItem) {
-        this.orderItems.add(orderItem);
+    private void setOrderItems(List<OrderItem> orderItems) {
+        orderItems.forEach(orderItem -> {
+            orderItem.setOrder(this);
+            this.orderItems.add(orderItem);
+        });
     }
 }

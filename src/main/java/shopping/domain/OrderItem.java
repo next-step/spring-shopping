@@ -43,15 +43,14 @@ public class OrderItem {
     protected OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, String name, long price, int quantity,
+    public OrderItem(Product product, String name, long price, int quantity,
             String imageUrl) {
-        this(null, order, product, name, price, quantity, imageUrl);
+        this(null, product, name, price, quantity, imageUrl);
     }
 
-    public OrderItem(Long id, Order order, Product product, String name, long price, int quantity,
+    public OrderItem(Long id, Product product, String name, long price, int quantity,
         String imageUrl) {
         this.id = id;
-        setOrder(order);
         this.product = product;
         this.name = name;
         this.price = price;
@@ -91,8 +90,7 @@ public class OrderItem {
         return imageUrl;
     }
 
-    private void setOrder(Order order) {
+    public void setOrder(Order order) {
         this.order = order;
-        order.addOrderItem(this);
     }
 }

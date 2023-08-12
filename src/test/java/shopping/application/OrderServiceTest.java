@@ -206,10 +206,8 @@ class OrderServiceTest {
     }
 
     private Order createOrder(Member member) {
-        Order order = new Order(1L, member, new ExchangeRate(1002.2));
         Product product = new Product(1L, "chicken", "url", 10000);
-        OrderItem chicken = new OrderItem(order, product, "chicken", 20000, 2, "img");
-        order.addOrderItem(chicken);
-        return order;
+        OrderItem chicken = new OrderItem(product, "chicken", 20000, 2, "img");
+        return new Order(1L, member, List.of(chicken), new ExchangeRate(1002.2));
     }
 }
