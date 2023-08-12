@@ -35,7 +35,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderIdResponse orderCartItem(Double currency, Long userId) {
+    public OrderIdResponse orderCartItem(double currency, Long userId) {
         UserEntity user = userRepository.getReferenceById(userId);
         List<CartItemEntity> cartItems = cartItemRepository.findByUserId(userId);
         if (cartItems.isEmpty()) {
