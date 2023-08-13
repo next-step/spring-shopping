@@ -7,14 +7,12 @@ import java.util.Collections;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
-@Component
-public class CurrencyLayerParser {
+public class CurrencyLayerCurrencyExchangeParser implements CurrencyExchangeParser {
 
     private final ObjectMapper objectMapper;
 
-    public CurrencyLayerParser(final ObjectMapper objectMapper) {
+    public CurrencyLayerCurrencyExchangeParser(final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

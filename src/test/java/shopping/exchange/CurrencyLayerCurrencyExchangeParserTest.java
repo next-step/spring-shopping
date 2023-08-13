@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-class CurrencyLayerParserTest {
+class CurrencyLayerCurrencyExchangeParserTest {
 
-    CurrencyLayerParser currencyLayerParser;
+    CurrencyLayerCurrencyExchangeParser currencyLayerCurrencyExchangeParser;
     ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
-        currencyLayerParser = new CurrencyLayerParser(objectMapper);
+        currencyLayerCurrencyExchangeParser = new CurrencyLayerCurrencyExchangeParser(objectMapper);
     }
 
     @Test
@@ -38,7 +38,7 @@ class CurrencyLayerParserTest {
 
         /* when */
         final Map<String, Double> exchangeRateByCurrency =
-            currencyLayerParser.parseExchangeRateMap(response);
+            currencyLayerCurrencyExchangeParser.parseExchangeRateMap(response);
 
         /* then */
         assertThat(exchangeRateByCurrency).containsEntry("USDKRW", 1234.5);
@@ -56,7 +56,7 @@ class CurrencyLayerParserTest {
 
         /* when */
         final Map<String, Double> exchangeRateByCurrency =
-            currencyLayerParser.parseExchangeRateMap(response);
+            currencyLayerCurrencyExchangeParser.parseExchangeRateMap(response);
 
         /* then */
         assertThat(exchangeRateByCurrency).doesNotContainKey("USDKRW");

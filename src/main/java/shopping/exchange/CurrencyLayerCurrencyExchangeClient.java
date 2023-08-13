@@ -1,14 +1,11 @@
 package shopping.exchange;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Component
-public class CurrencyLayerClient {
+public class CurrencyLayerCurrencyExchangeClient implements CurrencyExchangeClient {
 
     private static final String LIVE_EXCHANGE_RATE_PATH = "/live?access_key=";
 
@@ -16,9 +13,9 @@ public class CurrencyLayerClient {
     private final String accessKey;
     private final RestTemplate restTemplate;
 
-    public CurrencyLayerClient(
-        @Value("${currency-layer.base-url}") final String baseUrl,
-        @Value("${currency-layer.access-key}") final String accessKey,
+    public CurrencyLayerCurrencyExchangeClient(
+        final String baseUrl,
+        final String accessKey,
         final RestTemplateBuilder restTemplateBuilder
     ) {
         this.baseUrl = baseUrl;
