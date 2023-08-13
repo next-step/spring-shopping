@@ -28,7 +28,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /order API는 장바구니에 담긴 물건을 구매 처리하고 Location을 반환한다.")
+    @DisplayName("POST /orders API는 장바구니에 담긴 물건을 구매 처리하고 Location을 반환한다.")
     void order_and_return_location_when_order() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -44,7 +44,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /order API는 장바구니가 비어 있을 경우 ORDER-401 예외를 던진다.")
+    @DisplayName("POST /orders API는 장바구니가 비어 있을 경우 ORDER-401 예외를 던진다.")
     void throw_order_401_when_cart_is_empty() {
         // when
         ExtractableResponse<Response> response = UrlHelper.Order.orderCart(accessToken);

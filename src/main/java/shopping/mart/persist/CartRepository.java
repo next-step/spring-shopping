@@ -9,7 +9,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.CartEntity;
 import shopping.core.entity.CartProductEntity;
@@ -44,6 +43,14 @@ public class CartRepository {
         cartJpaRepository.save(new CartEntity(null, userId));
 
         return getEmptyCart(userId);
+    }
+
+    public Cart getCartByUserId(long userId) {
+        if (!existCartByUserId(userId)) {
+            newCart(userId);
+        }
+
+        return getByUserId(userId);
     }
 
     public Cart getByUserId(long userId) {
