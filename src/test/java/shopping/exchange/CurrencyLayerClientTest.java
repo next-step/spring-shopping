@@ -41,7 +41,7 @@ class CurrencyLayerClientTest {
     }
 
     @Test
-    @DisplayName("Current layer에서 환율 정보를 받아온다.")
+    @DisplayName("환율 정보를 받아온다.")
     void sendLiveCurrencyExchangeRateRequest() {
         /* given */
         final String json = "{\n"
@@ -69,7 +69,7 @@ class CurrencyLayerClientTest {
 
         /* when */
         final ResponseEntity<JsonNode> response = client.sendLiveCurrencyExchangeRateRequest();
-        
+
         /* then */
         assertThat(response.getBody().path("success").asBoolean()).isTrue();
     }
