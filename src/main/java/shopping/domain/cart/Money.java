@@ -1,11 +1,10 @@
 package shopping.domain.cart;
 
-import shopping.exception.general.InvalidRequestException;
-
+import java.util.Objects;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Objects;
+import shopping.exception.general.InvalidRequestException;
 
 @Embeddable
 public class Money {

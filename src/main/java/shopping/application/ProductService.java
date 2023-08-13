@@ -1,12 +1,11 @@
 package shopping.application;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.dto.web.response.ProductResponse;
 import shopping.repository.ProductRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @Service

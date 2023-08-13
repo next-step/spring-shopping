@@ -1,5 +1,6 @@
 package shopping.auth;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -8,8 +9,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import shopping.exception.auth.UserNotFoundException;
 import shopping.repository.UserRepository;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {

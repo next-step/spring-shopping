@@ -1,9 +1,8 @@
 package shopping.domain.user;
 
+import javax.persistence.Embeddable;
 import shopping.auth.PasswordEncoder;
 import shopping.exception.general.InvalidRequestException;
-
-import javax.persistence.Embeddable;
 
 @Embeddable
 public class EncodedPassword {

@@ -1,9 +1,8 @@
 package shopping.auth;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import shopping.exception.auth.AuthException;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class TokenExtractor {

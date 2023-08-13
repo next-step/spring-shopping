@@ -1,13 +1,12 @@
 package shopping.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import shopping.application.ProductService;
 import shopping.dto.web.response.ProductResponse;
-
-import java.util.List;
 
 @Controller
 public class ViewController {

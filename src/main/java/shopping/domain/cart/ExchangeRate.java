@@ -1,10 +1,9 @@
 package shopping.domain.cart;
 
-import shopping.exception.cart.NotExchangeableException;
-
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import shopping.exception.cart.NotExchangeableException;
 
 @Embeddable
 public class ExchangeRate {

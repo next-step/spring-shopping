@@ -1,10 +1,9 @@
 package shopping.domain.user;
 
-import shopping.exception.general.InvalidRequestException;
-
-import javax.persistence.Embeddable;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import javax.persistence.Embeddable;
+import shopping.exception.general.InvalidRequestException;
 
 @Embeddable
 public class Email {

@@ -1,10 +1,9 @@
 package shopping.dto.web.response;
 
-import shopping.domain.cart.Money;
-import shopping.domain.cart.OrderItems;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import shopping.domain.cart.Money;
+import shopping.domain.cart.OrderItems;
 
 public class OrderResponse {
     private final Long id;

@@ -1,14 +1,14 @@
 package shopping.domain.cart;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
 import shopping.domain.user.User;
 import shopping.exception.general.InvalidRequestException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("장바구니 상품 도메인 테스트")
 class CartItemTest {

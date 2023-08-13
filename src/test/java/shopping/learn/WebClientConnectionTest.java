@@ -1,5 +1,7 @@
 package shopping.learn;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Disabled;
@@ -9,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.function.client.WebClient;
 import shopping.dto.api.ExchangeRateResponse;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Disabled
