@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: test
   jpa:
     hibernate:
       ddl-auto: none
@@ -16,8 +18,13 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+
 security:
   jwt:
     token:
       secret-key: test
       expire-time: 3600
+
+currency-api:
+  key: test
+  url: http://localhost:8888/

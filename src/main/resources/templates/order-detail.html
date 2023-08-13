@@ -1,44 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" th:href="@{/css/index.css}">
-  <title>cart</title>
+    <meta charset="UTF-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>cart</title>
 </head>
 <body>
 <div class="root">
-  <nav class="nav flex justify-end">
-    <div class="flex-center gap-15">
-      <a href="/" class="nav-button">상품</a>
-      <a href="/cart" class="nav-button">장바구니</a>
-      <a href="/order-history" class="nav-button">주문목록</a>
-      <a href="/login" class="nav-button">로그인</a>
-    </div>
-  </nav>
+    <nav class="nav flex justify-end">
+        <div class="flex-center gap-15">
+            <a class="nav-button" href="/">상품</a>
+            <a class="nav-button" href="/cart">장바구니</a>
+            <a class="nav-button" href="/order-history">주문목록</a>
+            <a class="nav-button" href="/login">로그인</a>
+        </div>
+    </nav>
 
-  <section class="order-section">
-    <div class="flex">
-      <section class="order-left-section">
-        <h3 class="order-title" th:text="'주문 번호: ' + ${orderId}"></h3>
-        <div class="order-item-list">
+    <section class="order-section">
+        <div class="flex">
+            <section class="order-left-section">
+                <h3 class="order-title" th:text="'주문 번호: ' + ${orderId}"></h3>
+                <div class="order-item-list">
+                </div>
+            </section>
+            <section class="order-right-section">
+                <div class="order-right-section__top">
+                    <h3 class="order-title">결제금액</h3>
+                </div>
+                <hr class="divide-line-thin"/>
+                <div class="order-right-section__bottom">
+
+                    <div class="flex justify-between p-20 mt-20">
+                        <span class="highlight-text">총 결제금액</span>
+                        <span class="highlight-text order-total-price"></span>
+                    </div>
+
+                    <div class="flex justify-between p-20 mt-20">
+                        <span class="highlight-text">적용 환율</span>
+                        <span class="highlight-text order-exchange-rate"></span>
+                    </div>
+
+                    <div class="flex justify-between p-20 mt-20">
+                        <span class="highlight-text">변환된 총 주문 금액</span>
+                        <span class="highlight-text order-exchange-price"></span>
+                    </div>
+
+                </div>
+            </section>
         </div>
-      </section>
-      <section class="order-right-section">
-        <div class="order-right-section__top">
-          <h3 class="order-title">결제금액</h3>
-        </div>
-        <hr class="divide-line-thin"/>
-        <div class="order-right-section__bottom">
-          <div class="flex justify-between p-20 mt-20">
-            <span class="highlight-text">총 결제금액</span>
-            <span class="highlight-text order-total-price"></span>
-          </div>
-        </div>
-      </section>
-    </div>
-  </section>
+    </section>
 </div>
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
@@ -49,10 +61,9 @@
             return;
         }
 
-        const orderId = /*[[${orderId}]]*/ '';
+        const orderId = [[${orderId}]];
 
-        // TODO: [4단계] 주문 상세 조회 스펙에 맞게 변경
-        fetch('', {
+        fetch('/orders/' + orderId, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${credentials}`,
@@ -62,23 +73,24 @@
             return response.json();
         }).then((data) => {
             let element = '<hr class="divide-line-gray mt-10" />';
-            data.items.forEach(orderItem => {
+            data.orderItems.forEach(orderItem => {
                 element += `
                     <div class="cart-container">
                       <div class="flex gap-15 mt-10">
-                        <img class="w-144 h-144" /> <!-- 아이템 이미지 -->
+                        <img class="w-144 h-144" src="${orderItem.image}"/> <!-- 아이템 이미지 -->
                         <div class="flex-col gap-15">
-                          <span class="cart-name"></span> <!-- 아이템 이름 -->
-                          <span class="cart-info">원 / 수량: 개</span> <!-- 아이템 가격 및 수량 -->
+                          <span class="cart-name">${orderItem.name}</span> <!-- 아이템 이름 -->
+                          <span class="cart-info">${orderItem.price}원 / 수량: ${orderItem.quantity}개</span> <!-- 아이템 가격 및 수량 -->
                         </div>
                       </div>
                     </div>
                     <hr class="divide-line-thin mt-10"/>
                     `;
             });
-
             document.querySelector('.order-item-list').innerHTML = element;
-            document.querySelector('.order-right-section .order-total-price').innerText = ` 원`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-total-price').innerText = `${data.orderPrice} 원`; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-exchange-rate').innerText = `${data.exchangeRate} `; <!-- 아이템 가격 및 수량 -->
+            document.querySelector('.order-right-section .order-exchange-price').innerText = `${data.exchangedPrice}`; <!-- 아이템 가격 및 수량 -->
         }).catch((error) => {
             console.error(error);
         });

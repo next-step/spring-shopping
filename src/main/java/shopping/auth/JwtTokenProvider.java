@@ -1,22 +1,24 @@
 package shopping.auth;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    @Value("${security.jwt.token.secret-key}")
-    private String secretKey;
+    private final String secretKey;
+    
+    private final long validityInMilliseconds;
 
-    @Value("${security.jwt.token.expire-time}")
-    private long validityInMilliseconds;
+    public JwtTokenProvider(
+            @Value("${security.jwt.token.secret-key}") final String secretKey,
+            @Value("${security.jwt.token.expire-time}") final long validityInMilliseconds) {
+        this.secretKey = secretKey;
+        this.validityInMilliseconds = validityInMilliseconds;
+    }
 
     public String createToken(final Long payload) {
         final Claims claims = Jwts.claims().setSubject(String.valueOf(payload));

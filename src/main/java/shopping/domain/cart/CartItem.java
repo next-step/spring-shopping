@@ -1,19 +1,12 @@
 package shopping.domain.cart;
 
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import shopping.domain.member.Member;
 import shopping.domain.product.Product;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
+
+import javax.persistence.*;
 
 @Entity
 public class CartItem {
@@ -32,27 +25,27 @@ public class CartItem {
     private Product product;
 
     @Embedded
-    private Quantity quantity;
+    private CartItemQuantity cartItemQuantity;
 
     protected CartItem() {
     }
 
     public CartItem(final Member member, final Product product) {
-        this(member, product, Quantity.defaultValue());
+        this(member, product, CartItemQuantity.defaultValue());
     }
 
-    public CartItem(final Member member, final Product product, final Quantity quantity) {
+    public CartItem(final Member member, final Product product, final CartItemQuantity cartItemQuantity) {
         this.member = member;
         this.product = product;
-        this.quantity = quantity;
+        this.cartItemQuantity = cartItemQuantity;
     }
 
     public void updateQuantity(final int quantity) {
-        this.quantity = Quantity.from(quantity);
+        this.cartItemQuantity = CartItemQuantity.from(quantity);
     }
 
     public void plusQuantity() {
-        this.quantity = Quantity.from(this.getQuantity() + 1);
+        this.cartItemQuantity = CartItemQuantity.from(this.getQuantity() + 1);
     }
 
     public void validateMember(final Member member) {
@@ -74,7 +67,6 @@ public class CartItem {
     }
 
     public int getQuantity() {
-        return this.quantity.getValue();
+        return this.cartItemQuantity.getValue();
     }
-
 }

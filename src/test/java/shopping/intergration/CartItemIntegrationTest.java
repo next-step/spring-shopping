@@ -18,12 +18,10 @@ import static org.assertj.core.api.Assertions.tuple;
 import static shopping.intergration.helper.CartItemHelper.*;
 import static shopping.intergration.helper.LogInHelper.login;
 import static shopping.intergration.helper.RestAssuredHelper.extractObject;
+import static shopping.intergration.utils.LoginUtils.*;
 
+@DisplayName("장바구니 아이템 테스트")
 class CartItemIntegrationTest extends IntegrationTest {
-
-    private static final String EMAIL = "yongs170@naver.com";
-    private static final String PASSWORD = "123!@#asd";
-    private static final String DIFFERENT_MEMBER_EMAIL = "proto_seo@naver.com";
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -132,7 +130,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, moreThanMaxQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.CART_ITEM_QUANTITY_INVALID.getMessage());
     }
 
     @Test
@@ -147,7 +145,7 @@ class CartItemIntegrationTest extends IntegrationTest {
         final ExtractableResponse<Response> response = updateCartItemRequest(accessToken, targetCartItemId, lessThanMinQuantity);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.QUANTITY_INVALID.getMessage());
+        assertThat(response.jsonPath().getString("message")).isEqualTo(ErrorCode.CART_ITEM_QUANTITY_INVALID.getMessage());
     }
 
     @Test

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TokenInterceptor implements HandlerInterceptor {
 
     private static final String BEARER_HEADER_NAME = "Bearer ";
+    private static final String LOGIN_MEMBER_ID = "loginMemberId";
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -31,7 +32,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new AuthException(ErrorCode.TOKEN_INVALID);
         }
-        request.setAttribute("loginMemberId", jwtTokenProvider.getPayload(token));
+        request.setAttribute(LOGIN_MEMBER_ID, jwtTokenProvider.getPayload(token));
         return true;
     }
 

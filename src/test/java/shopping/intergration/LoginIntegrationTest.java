@@ -13,11 +13,11 @@ import shopping.exception.ErrorCode;
 import static org.assertj.core.api.Assertions.assertThat;
 import static shopping.intergration.helper.LogInHelper.loginRequest;
 import static shopping.intergration.helper.RestAssuredHelper.extractObject;
+import static shopping.intergration.utils.LoginUtils.EMAIL;
+import static shopping.intergration.utils.LoginUtils.PASSWORD;
 
+@DisplayName("로그인 테스트")
 class LoginIntegrationTest extends IntegrationTest {
-
-    private static final String EMAIL = "yongs170@naver.com";
-    private static final String PASSWORD = "123!@#asd";
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;

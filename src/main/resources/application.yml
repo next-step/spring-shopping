@@ -1,4 +1,11 @@
 spring:
+  profiles:
+    active: local
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   thymeleaf:
     cache: false
   jpa:
@@ -10,9 +17,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${USERNAME}
     password: ${PASSWORD}
-
 security:
   jwt:
     token:
       secret-key: ${SECRET_KEY}
       expire-time: ${EXPIRE}
+
+currency-api:
+  key: ${CURRENCY_ACCESS_KEY}
+  url: http://api.currencylayer.com/live

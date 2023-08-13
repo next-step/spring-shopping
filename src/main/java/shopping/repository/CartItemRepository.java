@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
+    void deleteAllByMember(final Member member);
+
     CartItem getByMemberAndProduct(final Member member, final Product product);
 
     boolean existsByMemberAndProduct(final Member member, final Product product);

@@ -9,5 +9,4 @@ public class LoginPageController {
     public String renderLoginPage() {
         return "login";
     }
-
 }

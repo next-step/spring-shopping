@@ -1,7 +1,10 @@
 package shopping.exception;
 
 public class ApiExceptionResponse {
-    private final String message;
+    private String message;
+
+    private ApiExceptionResponse() {
+    }
 
     private ApiExceptionResponse(final String message) {
         this.message = message;
