@@ -1,12 +1,11 @@
 package shopping.application;
 
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.dto.response.ProductResponse;
+import shopping.dto.web.response.ProductResponse;
 import shopping.repository.ProductRepository;
-
-import java.util.List;
 
 @Transactional(readOnly = true)
 @Service
@@ -18,9 +17,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductResponse> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable)
+    public List<ProductResponse> findAll() {
+        return productRepository.findAll()
+                .stream()
                 .map(ProductResponse::of)
-                .getContent();
+                .collect(Collectors.toList());
     }
 }

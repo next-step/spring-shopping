@@ -4,17 +4,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
 import shopping.domain.cart.CartItem;
+import shopping.domain.cart.Money;
 import shopping.domain.cart.Product;
 import shopping.domain.user.User;
-import shopping.dto.request.CartItemCreateRequest;
-import shopping.dto.request.CartItemUpdateRequest;
-import shopping.dto.response.CartItemResponse;
-import shopping.exception.CartItemNotFoundException;
-import shopping.exception.ProductNotFoundException;
-import shopping.exception.UserNotMatchException;
+import shopping.dto.web.request.CartItemCreateRequest;
+import shopping.dto.web.request.CartItemUpdateRequest;
+import shopping.dto.web.response.CartItemResponse;
+import shopping.exception.auth.UserNotMatchException;
+import shopping.exception.cart.CartItemNotFoundException;
+import shopping.exception.cart.ProductNotFoundException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
 import shopping.repository.UserRepository;
@@ -41,8 +42,7 @@ class CartItemServiceTest extends ServiceTest {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder = new PBKDF2PasswordEncoder();
 
     @Nested
     @DisplayName("장바구니 상품 조회")
@@ -53,13 +53,12 @@ class CartItemServiceTest extends ServiceTest {
         void getCartItems() {
             // given
             String email = "test@example.com";
-            String digest = passwordEncoder.encode("1234");
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            String password = "1234";
+            User savedUser = saveUser(email, password);
 
-            Product chicken = new Product("치킨", "/chicken.jpg", 10_000L);
-            Product pizza = new Product("피자", "/pizza.jpg", 20_000L);
-            Product salad = new Product("샐러드", "/salad.jpg", 5_000L);
+            Product chicken = new Product("치킨", "/chicken.jpg", 10_000.0);
+            Product pizza = new Product("피자", "/pizza.jpg", 20_000.0);
+            Product salad = new Product("샐러드", "/salad.jpg", 5_000.0);
             List<Product> productList = List.of(chicken, pizza, salad);
             productRepository.saveAll(productList);
 
@@ -71,7 +70,7 @@ class CartItemServiceTest extends ServiceTest {
             List<CartItem> savedItems = cartItemRepository.saveAll(cartItems);
 
             // when
-            List<CartItemResponse> responses = cartItemService.findAllByUserId(savedUser.getId(), PageRequest.of(0, 3));
+            List<CartItemResponse> responses = cartItemService.findAllByUserId(savedUser.getId());
 
             // then
             assertThat(responses).usingRecursiveComparison().isEqualTo(
@@ -92,14 +91,11 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             Product savedProduct = productRepository.save(product);
@@ -115,7 +111,7 @@ class CartItemServiceTest extends ServiceTest {
             CartItem cartItem = cartItems.get(0);
             assertThat(cartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
-                    .containsExactly(name, imageUrl, price);
+                    .containsExactly(name, imageUrl, new Money(price));
             assertThat(cartItem.getUserId()).isEqualTo(savedUser.getId());
 
         }
@@ -126,10 +122,7 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
             Long userId = savedUser.getId();
 
             CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
@@ -145,14 +138,11 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             Product savedProduct = productRepository.save(product);
@@ -173,11 +163,11 @@ class CartItemServiceTest extends ServiceTest {
             assertThat(updatedCartItem.getQuantity().getQuantity()).isEqualTo(quantity + 1);
             assertThat(updatedCartItem.getProduct())
                     .extracting(Product::getName, Product::getImageUrl, Product::getPrice)
-                    .containsExactly(name, imageUrl, price);
+                    .containsExactly(name, imageUrl, new Money(price));
             assertThat(updatedCartItem.getUserId()).isEqualTo(savedUser.getId());
         }
-    }
 
+    }
     @Nested
     @DisplayName("장바구니 상품 수량 변경")
     class WhenUpdateCartItemQuantity {
@@ -188,14 +178,11 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -213,7 +200,7 @@ class CartItemServiceTest extends ServiceTest {
             Optional<CartItem> optionalCartItem = cartItemRepository.findById(savedCartItem.getId());
             assertThat(optionalCartItem).isPresent();
             CartItem updatedCartItem = optionalCartItem.get();
-            assertThat(updatedCartItem.getQuantity()).isEqualTo(newQuantity);
+            assertThat(updatedCartItem.getQuantity().getQuantity()).isEqualTo(newQuantity);
         }
 
         @DisplayName("상품이 존재하지 않으면 예외 발생")
@@ -222,10 +209,7 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
             Long userId = savedUser.getId();
 
             Integer newQuantity = 5;
@@ -243,22 +227,16 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
             Long userId = savedUser.getId();
 
             String otherEmail = "other@example.com";
             String otherPassword = "other";
-            String otherDigest = passwordEncoder.encode(otherPassword);
-
-            User other = new User(otherEmail, otherDigest);
-            User savedOther = userRepository.save(other);
+            User savedOther = saveUser(otherEmail, otherPassword);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -275,8 +253,8 @@ class CartItemServiceTest extends ServiceTest {
                     () -> cartItemService.updateCartItemQuantity(userId, cartItemId, cartItemUpdateRequest))
                     .isInstanceOf(UserNotMatchException.class);
         }
-    }
 
+    }
     @Nested
     @DisplayName("장바구니 상품 삭제")
     class WhenDeleteCartItem {
@@ -287,14 +265,11 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -317,10 +292,7 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
             Long userId = savedUser.getId();
 
             // when, then
@@ -334,22 +306,16 @@ class CartItemServiceTest extends ServiceTest {
             // given
             String email = "test@example.com";
             String password = "1234";
-            String digest = passwordEncoder.encode(password);
-
-            User user = new User(email, digest);
-            User savedUser = userRepository.save(user);
+            User savedUser = saveUser(email, password);
             Long userId = savedUser.getId();
 
             String otherEmail = "other@example.com";
             String otherPassword = "other";
-            String otherDigest = passwordEncoder.encode(otherPassword);
-
-            User other = new User(otherEmail, otherDigest);
-            User savedOther = userRepository.save(other);
+            User savedOther = saveUser(otherEmail, otherPassword);
 
             String name = "치킨";
             String imageUrl = "/chicken.jpg";
-            Long price = 10_000L;
+            Double price = 10_000.0;
 
             Product product = new Product(name, imageUrl, price);
             productRepository.save(product);
@@ -362,5 +328,11 @@ class CartItemServiceTest extends ServiceTest {
             assertThatThrownBy(() -> cartItemService.deleteCartItem(userId, cartItemId))
                     .isInstanceOf(UserNotMatchException.class);
         }
+
+    }
+
+    private User saveUser(String email, String digest) {
+        User user = new User(email, digest, encoder);
+        return userRepository.save(user);
     }
 }

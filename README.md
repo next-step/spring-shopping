@@ -1,5 +1,85 @@
 # spring-shopping
 
+## Step5 주문 (환율 적용)
+
+4단계에서 구현한 주문 기능에서 주문 금액을 달러로 환산한 금액을 함께 보여줘야하는 추가 요구사항이 생겼습니다.
+환율은 시간에 따라 변하는 값이므로 주문 시점의 환율을 적용해 변환된 값을 노출해야 합니다.
+서비스와 독립적으로 동작하는 외부 API를 호출하고 이 값을 저장하는데 집중하여 미션을 진행합니다.
+
+### 요구사항
+
+- [x] 주문 시점의 실시간 환율 저장
+- [x] 주문 관련 페이지에 적용 환율, 변환 금액 반영
+
+#### 주문 시점의 실시간 환율 저장
+
+ - 사용자에게 총 주문 금액을 미국 달러로 함께 보여주려 합니다.
+ - 이를 위해 주문 시점의 실시간 환율을 저장합니다.
+ - 실시간 환율 정보는 https://currencylayer.com/ 의 API를 사용해서 조회합니다.
+   - [currencylayer API Documentation](https://currencylayer.com/documentation)
+   - 무료 플랜의 계정을 생성하여 API 키를 발급 받아 사용합니다. 
+
+#### 주문 관련 페이지에 적용 환율, 변환 금액 반영
+
+ - 4단계에서 작업한 주문 관련 페이지에 총 주문 금액과 함께 적용 환율, 변환된 총 주문 금액을 함께 노출하도록 변경합니다.
+
+## Step4 주문
+
+이번 미션에서는 장바구니에 담긴 아이템을 주문하고 이전 주문을 확인하는 기능을 구현합니다.
+사용자가 장바구니 목록 페이지에서 주문하기 버튼을 누르면 바로 주문이 완료되는 시나리오 입니다.
+상품과 장바구니와 주문 도메인의 관계를 고려하여 설계해 주세요.
+
+### 요구사항
+
+- [x] 주문 기능 구현
+- [x] 주문 관련 페이지 연동
+
+#### 주문 기능 구현
+- 쇼핑 주문과 관련된 아래 기능을 구현합니다.
+  - [x] 장바구니에 담긴 아이템 전체 주문
+    ```
+    POST /api/order HTTP/1.1
+    content-type: application/json
+    host: localhost:8080
+    ```
+  - [x] 특정 주문의 상세 정보를 확인
+    ```
+    GET /api/order/{id} HTTP/1.1
+    content-type: application/json
+    host: localhost:8080
+    ```
+  - [x] 사용자 별 주문 목록 확인
+    ```
+    GET /api/order HTTP/1.1
+    content-type: application/json
+    host: localhost:8080
+    ```
+- 장바구니 기능과 동일하게 사용자 정보는 요청 Header의 Authorization 필드를 사용해 인증 처리를 하여 얻습니다.
+- 주문 정보에는 아래의 내용이 담겨 있어야 합니다.
+  - 필요한 경우 주문 정보의 종류를 추가할 수 있습니다.(ex. 주문 시간, 상태)
+```
+## 주문 기본 정보
+- 주문 번호
+- 주문 아이템 정보
+    - 이름
+    - 가격
+    - 이미지
+    - 수량
+- 총 결제금액
+```
+
+#### 주문 관련 페이지 연동
+- 장바구니에 담긴 아이템 전체 주문
+  - 장바구니 목록 페이지(/cart)에서 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문할 수 있습니다
+  - 주문 요청이 성공하면 주문 상세 페이지로 이동합니다.
+- 주문 상세 정보
+  - order-detail.html 파일을 이용하여 특정 주문의 상세 정보를 확인할 수 있게 만듭니다
+  - 페이지에서 주문 id를 알 수 있도록 페이지를 내려주는 Controller에서 orderId를 attribute로 추가해야 빠르게 연동할 수 있습니다.
+- 사용자 별 주문 목록 확인
+  - order-history.html 파일을 이용하여 사용자 별 주문 목록을 확인할 수 있게 만듭니다.
+  - /order-history url로 접근할 경우 주문 목록 페이지를 조회할 수 있어야 합니다.
+  - 상세보기 버튼을 클릭해 주문 상세 정보 페이지로 이동할 수 있습니다.
+
 ## Step3 장바구니
 
 이번 미션에서는 사용자별로 장바구니에 상품을 담고, 장바구니에 담긴 아이템을 확인하고 변경하는 기능을 만듭니다.
@@ -16,7 +96,7 @@
 - 장바구니와 관련된 아래 기능을 구현합니다.
     - [x] 장바구니에 상품 아이템 추가
         ```
-        POST /cart/items HTTP/1.1
+        POST /api/cart/items HTTP/1.1
         content-type: application/json
         host: localhost:8080
         
@@ -26,12 +106,12 @@
         ```
     - [x] 장바구니에 담긴 아이템 목록 조회
         ```
-        GET /cart/items HTTP/1.1
+        GET /api/cart/items HTTP/1.1
         host: localhost:8080
         ```
     - [x] 장바구니에 담긴 아이템 수량 변경
         ```
-        PATCH /cart/items/1 HTTP/1.1
+        PATCH /api/cart/items/1 HTTP/1.1
         content-type: application/json
         host: localhost:8080
         
@@ -41,7 +121,7 @@
         ```
     - [x] 장바구니에 담긴 아이템 제거
         ```
-        DELETE /cart/items/1 HTTP/1.1
+        DELETE /api/cart/items/1 HTTP/1.1
         content-type: application/json
         host: localhost:8080
         ```
@@ -95,7 +175,7 @@
 
 ```
 Request
-POST /login/token HTTP/1.1
+POST /api/login/token HTTP/1.1
 content-type: application/json
 host: localhost:8080
 

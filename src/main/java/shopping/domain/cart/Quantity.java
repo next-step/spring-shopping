@@ -1,8 +1,7 @@
 package shopping.domain.cart;
 
-import shopping.exception.InvalidRequestException;
-
 import javax.persistence.Embeddable;
+import shopping.exception.general.InvalidRequestException;
 
 @Embeddable
 public class Quantity {

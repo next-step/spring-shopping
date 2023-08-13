@@ -1,21 +1,20 @@
 package shopping.application;
 
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Product;
-import shopping.dto.request.CartItemCreateRequest;
-import shopping.dto.request.CartItemUpdateRequest;
-import shopping.dto.response.CartItemResponse;
-import shopping.exception.CartItemNotFoundException;
-import shopping.exception.ProductNotFoundException;
-import shopping.exception.UserNotMatchException;
+import shopping.dto.web.request.CartItemCreateRequest;
+import shopping.dto.web.request.CartItemUpdateRequest;
+import shopping.dto.web.response.CartItemResponse;
+import shopping.exception.auth.UserNotMatchException;
+import shopping.exception.cart.CartItemNotFoundException;
+import shopping.exception.cart.ProductNotFoundException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.ProductRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Service
@@ -44,10 +43,11 @@ public class CartItemService {
                                 .orElse(new CartItem(userId, product))));
     }
 
-    public List<CartItemResponse> findAllByUserId(Long userId, Pageable pageable) {
-        return cartItemRepository.findAllByUserId(userId, pageable)
+    public List<CartItemResponse> findAllByUserId(Long userId) {
+        return cartItemRepository.findAllByUserId(userId)
+                .stream()
                 .map(CartItemResponse::of)
-                .getContent();
+                .collect(Collectors.toList());
     }
 
     @Transactional

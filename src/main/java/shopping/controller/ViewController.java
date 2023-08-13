@@ -1,14 +1,12 @@
 package shopping.controller;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import shopping.application.ProductService;
-import shopping.dto.response.ProductResponse;
-
-import java.util.List;
+import shopping.dto.web.response.ProductResponse;
 
 @Controller
 public class ViewController {
@@ -20,8 +18,8 @@ public class ViewController {
     }
 
     @GetMapping("/")
-    public String index(Model model, @PageableDefault Pageable pageable) {
-        List<ProductResponse> products = productService.findAll(pageable);
+    public String index(Model model) {
+        List<ProductResponse> products = productService.findAll();
         model.addAttribute("products", products);
         return "index";
     }
@@ -34,5 +32,16 @@ public class ViewController {
     @GetMapping("/cart")
     public String getCartPage() {
         return "cart";
+    }
+
+    @GetMapping("/order/{id}/detail")
+    public String orderDetailPage(Model model, @PathVariable Long id) {
+        model.addAttribute("orderId", id);
+        return "order-detail";
+    }
+
+    @GetMapping("/order-history")
+    public String orderHistoryPage() {
+        return "order-history";
     }
 }

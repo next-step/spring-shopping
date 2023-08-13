@@ -3,9 +3,8 @@ package shopping.application;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import shopping.domain.cart.Product;
-import shopping.dto.response.ProductResponse;
+import shopping.dto.web.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 import java.util.List;
@@ -27,14 +26,14 @@ class ProductServiceTest extends ServiceTest {
     void findAll() {
         // given
         List<Product> productList = List.of(
-                new Product("치킨", "/chicken.jpg", 10_000L),
-                new Product("피자", "/pizza.jpg", 20_000L),
-                new Product("샐러드", "/salad.jpg", 5_000L)
+                new Product("치킨", "/chicken.jpg", 10_000.0),
+                new Product("피자", "/pizza.jpg", 20_000.0),
+                new Product("샐러드", "/salad.jpg", 5_000.0)
         );
         List<Product> savedProducts = productRepository.saveAll(productList);
 
         // when
-        List<ProductResponse> products = productService.findAll(PageRequest.of(0, 3));
+        List<ProductResponse> products = productService.findAll();
 
         // then
         assertThat(products).usingRecursiveComparison().isEqualTo(

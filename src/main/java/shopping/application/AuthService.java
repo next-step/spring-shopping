@@ -6,10 +6,9 @@ import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.Email;
 import shopping.domain.user.User;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.LoginResponse;
-import shopping.exception.PasswordNotMatchException;
-import shopping.exception.UserNotFoundException;
+import shopping.dto.web.request.LoginRequest;
+import shopping.dto.web.response.LoginResponse;
+import shopping.exception.auth.UserNotFoundException;
 import shopping.repository.UserRepository;
 
 @Transactional(readOnly = true)
@@ -20,8 +19,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, TokenProvider tokenProvider,
-            PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, TokenProvider tokenProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
         this.passwordEncoder = passwordEncoder;
@@ -30,11 +28,8 @@ public class AuthService {
     public LoginResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(new Email(loginRequest.getEmail()))
                 .orElseThrow(UserNotFoundException::new);
-        if (!passwordEncoder.match(loginRequest.getPassword(), user.getPassword())) {
-            throw new PasswordNotMatchException();
-        }
+        user.matchPassword(loginRequest.getPassword(), passwordEncoder);
         String accessToken = tokenProvider.issueToken(user);
-
         return new LoginResponse(accessToken);
     }
 }

@@ -1,26 +1,21 @@
 package shopping.auth;
 
-import org.springframework.stereotype.Component;
-import shopping.domain.user.Password;
-import shopping.exception.PasswordNotHashException;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Random;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import shopping.exception.auth.PasswordNotHashException;
 
-@Component
 public class PBKDF2PasswordEncoder implements PasswordEncoder {
 
     @Override
-    public boolean match(String planePassword, Password digest) {
-        String code = digest.getPassword();
-        byte[] salt = getSalt(code);
+    public boolean match(String planePassword, String encodedPassword) {
+        byte[] salt = getSalt(encodedPassword);
         String hashedPassword = encode(planePassword, salt);
 
-        return code.equals(hashedPassword);
+        return encodedPassword.equals(hashedPassword);
     }
 
     private String encode(String password, byte[] salt) {

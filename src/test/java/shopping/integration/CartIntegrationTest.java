@@ -7,10 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.request.CartItemCreateRequest;
-import shopping.dto.request.CartItemUpdateRequest;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.CartItemResponse;
+import shopping.dto.web.request.CartItemCreateRequest;
+import shopping.dto.web.request.CartItemUpdateRequest;
+import shopping.dto.web.request.LoginRequest;
+import shopping.dto.web.response.CartItemResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,14 +27,7 @@ class CartIntegrationTest extends IntegrationTest {
     void addCartItem() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("admin@example.com", "123456789"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .extract().jsonPath().getString("accessToken");
+        String accessToken = login();
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -42,7 +35,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(cartItemCreateRequest)
-                .when().post("/cart/items")
+                .when().post("/api/cart/items")
                 .then().log().all()
                 .extract();
 
@@ -55,22 +48,8 @@ class CartIntegrationTest extends IntegrationTest {
     void getCartItems() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("admin@example.com", "123456789"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .extract().jsonPath().getString("accessToken");
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(cartItemCreateRequest)
-                .when().post("/cart/items")
-                .then().log().all();
+        String accessToken = login();
+        addCartItem(cartItemCreateRequest, accessToken);
 
         // when, then
         RestAssured
@@ -87,35 +66,9 @@ class CartIntegrationTest extends IntegrationTest {
     void updateCartItemsQuantity() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("admin@example.com", "123456789"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .extract().jsonPath().getString("accessToken");
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(cartItemCreateRequest)
-                .when().post("/cart/items")
-                .then().log().all();
-
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
-                .then().log().all()
-                .extract();
-        List<Long> cartItemIds = response.jsonPath()
-                .getList(".", CartItemResponse.class)
-                .stream()
-                .map(CartItemResponse::getId)
-                .collect(Collectors.toList());
+        String accessToken = login();
+        addCartItem(cartItemCreateRequest, accessToken);
+        List<Long> cartItemIds = getCartItemIds(accessToken);
 
         // when
         RestAssured
@@ -123,7 +76,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CartItemUpdateRequest(3))
-                .when().patch("/cart/items/{:id}", cartItemIds.get(0))
+                .when().patch("/api/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value());
 
@@ -132,7 +85,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
         List<CartItemResponse> cartItemResponses = result.jsonPath()
@@ -146,35 +99,9 @@ class CartIntegrationTest extends IntegrationTest {
     void updateCartItemsQuantityNotPositiveQuantity() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("admin@example.com", "123456789"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .extract().jsonPath().getString("accessToken");
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(cartItemCreateRequest)
-                .when().post("/cart/items")
-                .then().log().all();
-
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
-                .then().log().all()
-                .extract();
-        List<Long> cartItemIds = response.jsonPath()
-                .getList(".", CartItemResponse.class)
-                .stream()
-                .map(CartItemResponse::getId)
-                .collect(Collectors.toList());
+        String accessToken = login();
+        addCartItem(cartItemCreateRequest, accessToken);
+        List<Long> cartItemIds = getCartItemIds(accessToken);
 
         Map<String, Object> params = new HashMap<>();
         params.put("quantity", 0);
@@ -185,7 +112,7 @@ class CartIntegrationTest extends IntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(params)
-                .when().patch("/cart/items/{:id}", cartItemIds.get(0))
+                .when().patch("/api/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
@@ -195,42 +122,16 @@ class CartIntegrationTest extends IntegrationTest {
     void deleteCartItem() {
         // given
         CartItemCreateRequest cartItemCreateRequest = new CartItemCreateRequest(1L);
-        String accessToken = RestAssured
-                .given().log().all()
-                .body(new LoginRequest("admin@example.com", "123456789"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .extract().jsonPath().getString("accessToken");
-
-        RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(cartItemCreateRequest)
-                .when().post("/cart/items")
-                .then().log().all();
-
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
-                .then().log().all()
-                .extract();
-        List<Long> cartItemIds = response.jsonPath()
-                .getList(".", CartItemResponse.class)
-                .stream()
-                .map(CartItemResponse::getId)
-                .collect(Collectors.toList());
+        String accessToken = login();
+        addCartItem(cartItemCreateRequest, accessToken);
+        List<Long> cartItemIds = getCartItemIds(accessToken);
 
         // when
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/cart/items/{:id}", cartItemIds.get(0))
+                .when().delete("/api/cart/items/{:id}", cartItemIds.get(0))
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
 
@@ -239,12 +140,48 @@ class CartIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
         int length = result.jsonPath()
                 .getList(".", CartItemResponse.class).size();
 
         assertThat(length).isEqualTo(cartItemIds.size() - 1);
+    }
+
+    private String login() {
+        return RestAssured
+                .given().log().all()
+                .body(new LoginRequest("admin@example.com", "123456789"))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/api/login/token")
+                .then().log().all()
+                .extract().jsonPath().getString("accessToken");
+    }
+
+    private void addCartItem(CartItemCreateRequest cartItemCreateRequest, String accessToken) {
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(cartItemCreateRequest)
+                .when().post("/api/cart/items")
+                .then().log().all();
+    }
+
+    private List<Long> getCartItemIds(String accessToken) {
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/cart/items")
+                .then().log().all()
+                .extract();
+        return response.jsonPath()
+                .getList(".", CartItemResponse.class)
+                .stream()
+                .map(CartItemResponse::getId)
+                .collect(Collectors.toList());
     }
 }

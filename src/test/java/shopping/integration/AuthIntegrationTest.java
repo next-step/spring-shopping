@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
-import shopping.auth.TokenExtractor;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.User;
-import shopping.dto.request.LoginRequest;
+import shopping.dto.web.request.LoginRequest;
 import shopping.repository.UserRepository;
 
 import java.util.HashMap;
@@ -29,21 +29,15 @@ class AuthIntegrationTest extends IntegrationTest {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private TokenProvider tokenProvider;
-
-    @Autowired
-    private TokenExtractor tokenExtractor;
 
     @Override
     @BeforeEach
     void setUp() {
         super.setUp();
         String password = "1234";
-        String encodedPassword = passwordEncoder.encode(password);
-        userRepository.save(new User("test@example.com", encodedPassword));
+        PasswordEncoder encoder = new PBKDF2PasswordEncoder();
+        userRepository.save(new User("test@example.com", password, encoder));
     }
 
     @DisplayName("로그인 페이지 연동")
@@ -68,7 +62,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -89,7 +83,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -110,7 +104,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -131,7 +125,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -152,7 +146,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -173,7 +167,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -194,7 +188,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -215,7 +209,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -236,7 +230,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(loginRequest)
-                .when().post("/login/token")
+                .when().post("/api/login/token")
                 .then().log().all()
                 .extract();
 
@@ -250,7 +244,7 @@ class AuthIntegrationTest extends IntegrationTest {
         RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .body(
                         containsString("login")
@@ -263,8 +257,8 @@ class AuthIntegrationTest extends IntegrationTest {
         // given
         Long invalidId = 100L;
         String email = "notexist@example.com";
-        String digest = passwordEncoder.encode("1234");
-        User user = new User(invalidId, email, digest);
+        PasswordEncoder encoder = new PBKDF2PasswordEncoder();
+        User user = new User(invalidId, email, "1234", encoder);
         String accessToken = tokenProvider.issueToken(user);
 
         // when
@@ -272,7 +266,7 @@ class AuthIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/items")
+                .when().get("/api/cart/items")
                 .then().log().all()
                 .extract();
 

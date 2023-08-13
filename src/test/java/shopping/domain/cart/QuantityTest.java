@@ -1,11 +1,11 @@
 package shopping.domain.cart;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import shopping.exception.InvalidRequestException;
-
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import shopping.exception.general.InvalidRequestException;
 
 @DisplayName("수량 도메인 테스트")
 class QuantityTest {
@@ -22,5 +22,4 @@ class QuantityTest {
         assertThatThrownBy(() -> new Quantity(0))
                 .isInstanceOf(InvalidRequestException.class);
     }
-
 }
