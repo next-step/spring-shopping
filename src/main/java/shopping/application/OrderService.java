@@ -1,26 +1,24 @@
 package shopping.application;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.domain.cart.*;
+import shopping.domain.cart.CartItem;
+import shopping.domain.cart.CurrencyType;
+import shopping.domain.cart.ExchangeRate;
+import shopping.domain.cart.Order;
+import shopping.domain.cart.OrderItems;
 import shopping.dto.web.response.OrderResponse;
-import shopping.exception.infrastructure.ErrorResponseException;
-import shopping.exception.infrastructure.NullResponseException;
 import shopping.infrastructure.ExchangeRateFetcher;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Transactional(readOnly = true)
 @Service
 public class OrderService {
-
-    private final Logger log = LoggerFactory.getLogger(OrderService.class);
 
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
@@ -48,15 +46,9 @@ public class OrderService {
     }
 
     private Order orderWithExchangeRate(Long userId) {
-        try {
-            double exchangeRate = exchangeRateFetcher.getExchangeRate(CurrencyType.USD, CurrencyType.KRW);
-            return new Order(userId, new ExchangeRate(exchangeRate, CurrencyType.USD, CurrencyType.KRW));
-        } catch (ErrorResponseException e) {
-            log.error("code: {}, info: {}", e.getErrorCode(), e.getMessage());
-        } catch (NullResponseException e) {
-            log.error(e.getMessage());
-        }
-        return new Order(userId);
+        Optional<Double> exchangeRate = exchangeRateFetcher.getExchangeRate(CurrencyType.USD, CurrencyType.KRW);
+        return exchangeRate.map(rate -> new Order(userId, new ExchangeRate(rate, CurrencyType.USD, CurrencyType.KRW)))
+                           .orElseGet(() -> new Order(userId));
     }
 
     public OrderResponse findOrderById(Long userId, Long orderId) {

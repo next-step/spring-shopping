@@ -1,10 +1,9 @@
 package shopping.infrastructure;
 
+import java.util.Optional;
 import shopping.domain.cart.CurrencyType;
-import shopping.exception.infrastructure.ErrorResponseException;
-import shopping.exception.infrastructure.NullResponseException;
 
 public interface ExchangeRateFetcher {
 
-    Double getExchangeRate(CurrencyType source, CurrencyType target) throws ErrorResponseException, NullResponseException;
+    Optional<Double> getExchangeRate(CurrencyType source, CurrencyType target);
 }

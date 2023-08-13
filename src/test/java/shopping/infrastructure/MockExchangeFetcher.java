@@ -1,5 +1,6 @@
 package shopping.infrastructure;
 
+import java.util.Optional;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -14,15 +15,13 @@ public class MockExchangeFetcher implements ExchangeRateFetcher {
 
     private static final CurrencyType SOURCE = CurrencyType.USD;
     private static final CurrencyType TARGET = CurrencyType.KRW;
-    private static final String NOT_SUPPORT_SOURCE_MESSAGE = "Access Restricted - Your current Subscription Plan does not support Source Currency Switching.";
-    private static final int NOT_SUPPORT_SOURCE_ERROR_CODE = 105;
 
     @Override
-    public Double getExchangeRate(CurrencyType source, CurrencyType target) throws ErrorResponseException, NullResponseException {
+    public Optional<Double> getExchangeRate(CurrencyType source, CurrencyType target) {
         if (source.equals(SOURCE) && target.equals(TARGET)) {
-            return 1300.0;
+            return Optional.of(1300.0);
         }
-        throw new ErrorResponseException(NOT_SUPPORT_SOURCE_MESSAGE, NOT_SUPPORT_SOURCE_ERROR_CODE);
+        return Optional.empty();
     }
 
 }
