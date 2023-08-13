@@ -24,7 +24,6 @@ public class OrderProduct {
     @Column(name = "id")
     private Long id;
 
-    // TODO: 양방향 필요?
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
