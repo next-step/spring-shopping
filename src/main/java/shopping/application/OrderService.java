@@ -25,7 +25,8 @@ public class OrderService {
 
     public OrderService(final CartItemRepository cartItemRepository,
                         final OrderRepository orderRepository,
-                        final OrderMapper orderMapper, ExchangeRateProvider exchangeRateProvider) {
+                        final OrderMapper orderMapper,
+                        final ExchangeRateProvider exchangeRateProvider) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
@@ -38,8 +39,7 @@ public class OrderService {
 
         validateCartNotEmpty(cart);
 
-        double exchangeRate = exchangeRateProvider.getExchangeRate()
-                .orElseThrow(() -> new ShoppingException(ErrorType.NO_EXCHANGE_RATE));
+        double exchangeRate = exchangeRateProvider.getExchangeRate();
         Order order = orderMapper.mapOrderFrom(cart, exchangeRate);
 
         Long id = orderRepository.save(order).getId();
