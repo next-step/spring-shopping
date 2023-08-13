@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.exception.ShoppingException;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
@@ -13,7 +14,7 @@ class CachedExchangeRateTest {
     @Test
     @DisplayName("캐싱된 환율 정보가 최신 환율인지 확인한다.")
     void isLatestCached() {
-        CachedExchangeRate cachedExchangeRate = new CachedExchangeRate(1L);
+        CachedExchangeRate cachedExchangeRate = new CachedExchangeRate(Duration.ofMinutes(1L));
         LocalDateTime pastTime = LocalDateTime.of(2023, 8, 10, 12, 1);
         cachedExchangeRate.updateExchangeRate(1300.0, pastTime);
         LocalDateTime currentTime = LocalDateTime.of(2023, 8, 10, 12, 1, 30);
@@ -28,7 +29,7 @@ class CachedExchangeRateTest {
     @Test
     @DisplayName("환율 정보를 캐싱한다.")
     void getExchangeRate() {
-        CachedExchangeRate cachedExchangeRate = new CachedExchangeRate(1L);
+        CachedExchangeRate cachedExchangeRate = new CachedExchangeRate(Duration.ofMinutes(1L));
         LocalDateTime pastTime = LocalDateTime.of(2023, 8, 10, 12, 1);
         cachedExchangeRate.updateExchangeRate(1300.0, pastTime);
         LocalDateTime currentTime = LocalDateTime.of(2023, 8, 10, 12, 1, 30);
@@ -41,7 +42,7 @@ class CachedExchangeRateTest {
     @Test
     @DisplayName("캐싱한 환율 정보가 유효하지 않은데 접근하는 경우 예외가 발생한다.")
     void getExchangeRateFail() {
-        CachedExchangeRate cachedExchangeRate = new CachedExchangeRate(1L);
+        CachedExchangeRate cachedExchangeRate = new CachedExchangeRate(Duration.ofMinutes(1L));
         LocalDateTime pastTime = LocalDateTime.of(2023, 8, 10, 12, 1);
         cachedExchangeRate.updateExchangeRate(1300.0, pastTime);
         LocalDateTime currentTime = LocalDateTime.of(2023, 8, 10, 12, 30);

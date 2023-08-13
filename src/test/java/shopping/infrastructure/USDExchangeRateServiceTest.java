@@ -46,7 +46,7 @@ class USDExchangeRateServiceTest {
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .setBody(jsonStr));
 
-        final double result = usdExchangeRateApi.getExchangeRateEveryMinute(time);
+        final double result = usdExchangeRateApi.getExchangeRate(time);
         assertThat(result).isCloseTo(1300.0, within(0.001));
     }
 
@@ -67,7 +67,7 @@ class USDExchangeRateServiceTest {
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .setBody(jsonStr));
 
-        final double result = usdExchangeRateApi.getExchangeRateEveryMinute(time);
+        final double result = usdExchangeRateApi.getExchangeRate(time);
         assertThat(result).isCloseTo(1300.0, within(0.001));
     }
 
@@ -85,7 +85,7 @@ class USDExchangeRateServiceTest {
         mockWebServer.enqueue(new MockResponse()
                 .setResponseCode(500));
 
-        assertThatCode(() -> usdExchangeRateApi.getExchangeRateEveryMinute(time))
+        assertThatCode(() -> usdExchangeRateApi.getExchangeRate(time))
                 .isInstanceOf(ShoppingException.class)
                 .hasMessage("환율 정보를 가져오지 못했습니다.");
     }
@@ -102,10 +102,10 @@ class USDExchangeRateServiceTest {
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .setBody(jsonStr));
 
-        final double result = usdExchangeRateApi.getExchangeRateEveryMinute(time);
+        final double result = usdExchangeRateApi.getExchangeRate(time);
         assertThat(result).isCloseTo(1330.0, within(0.001));
 
-        final double cachedResult = usdExchangeRateApi.getExchangeRateEveryMinute(next);
+        final double cachedResult = usdExchangeRateApi.getExchangeRate(next);
         assertThat(cachedResult).isCloseTo(1330.0, within(0.001));
     }
 }

@@ -22,7 +22,6 @@ public class USDExchangeRateService implements ExchangeRateService {
     private static final String QUOTES = "quotes";
     private static final String USD_KRW = "USDKRW";
     private static final String ACCESS_KEY = "access_key";
-    private static final long MINUTES = 1L;
     private final WebClient webClient;
     private final String currencyApiUrl;
     private final String accessKey;
@@ -37,11 +36,11 @@ public class USDExchangeRateService implements ExchangeRateService {
         this.webClient = webClient;
         this.accessKey = accessKey;
         this.currencyApiUrl = currencyApiUrl;
-        this.cachedExchangeRate = new CachedExchangeRate(MINUTES);
+        this.cachedExchangeRate = new CachedExchangeRate(Duration.ofMinutes(1L));
     }
 
     @Override
-    public double getExchangeRateEveryMinute(final LocalDateTime now) {
+    public double getExchangeRate(final LocalDateTime now) {
         if (cachedExchangeRate.isLatest(now)) {
             return cachedExchangeRate.getExchangeRate(now);
         }

@@ -37,7 +37,7 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<OrderCreateResponse> createOrder(@RequestAttribute final Long loginMemberId) {
-        final double exchangeRate = exchangeRateService.getExchangeRateEveryMinute(now());
+        final double exchangeRate = exchangeRateService.getExchangeRate(now());
         final OrderCreateResponse orderCreateResponse = orderService.createOrder(loginMemberId, exchangeRate);
 
         return ResponseEntity.ok(orderCreateResponse);

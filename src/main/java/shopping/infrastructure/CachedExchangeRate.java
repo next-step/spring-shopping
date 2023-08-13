@@ -3,15 +3,16 @@ package shopping.infrastructure;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class CachedExchangeRate {
-    private final long intervalMinutes;
+    private final Duration intervalTime;
     private LocalDateTime expiredTime;
     private double exchangeRate;
 
-    CachedExchangeRate(final long intervalMinutes) {
-        this.intervalMinutes = intervalMinutes;
+    CachedExchangeRate(final Duration intervalTime) {
+        this.intervalTime = intervalTime;
     }
 
     boolean isLatest(LocalDateTime now) {
@@ -31,7 +32,7 @@ public class CachedExchangeRate {
     }
 
     void updateExchangeRate(final double exchangeRate, final LocalDateTime now) {
-        this.expiredTime = now.plusMinutes(intervalMinutes);
+        this.expiredTime = now.plus(intervalTime);
         this.exchangeRate = exchangeRate;
     }
 }
