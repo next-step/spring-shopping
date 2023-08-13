@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,9 +22,12 @@ public class CurrencyLayerCurrencyExchangeParser implements CurrencyExchangePars
             return Collections.emptyMap();
         }
 
-        final JsonNode quotes = response.getBody().path("quotes");
+        final JsonNode body = response.getBody();
+        if (Objects.isNull(body)) {
+            return Collections.emptyMap();
+        }
 
-        return objectMapper.convertValue(quotes, new TypeReference<>() {
+        return objectMapper.convertValue(body.path("quotes"), new TypeReference<>() {
         });
     }
 }
