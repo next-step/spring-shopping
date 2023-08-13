@@ -8,4 +8,5 @@ import shopping.core.entity.OrderProductEntity;
 public interface OrderProductJpaRepository extends JpaRepository<OrderProductEntity, Long> {
 
     List<OrderProductEntity> findByOrderEntity(OrderEntity orderEntity);
+    List<OrderProductEntity> findAllByOrderEntityIn(List<OrderEntity> orderEntities);
 }

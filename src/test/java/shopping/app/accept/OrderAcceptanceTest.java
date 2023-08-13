@@ -7,7 +7,6 @@ import static shopping.app.accept.UrlHelper.Auth;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -71,11 +70,8 @@ class OrderAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> orderResponse = UrlHelper.Order.orderCart(accessToken);
         String location = orderResponse.header("Location");
 
-        String[] words = location.split("/");
-        String orderId = words[words.length - 1];
-
         // when
-        OrderDetailResponse result = Order.findOrderDetail(accessToken, Long.parseLong(orderId))
+        OrderDetailResponse result = Order.findOrderDetail(accessToken, location)
                 .as(OrderDetailResponse.class);
 
         // then
@@ -90,11 +86,11 @@ class OrderAcceptanceTest extends AcceptanceTest {
     @DisplayName("GET /orders/{orderId} API는 orderId에 해당하는 주문 정보가 없을 경우 ORDER-402를 반환한다.")
     void not_found_order() {
         // when
-        ExtractableResponse<Response> response = Order.findOrderDetail(accessToken, 99999L);
+        ExtractableResponse<Response> response = Order.findOrderDetail(accessToken, "/orders/99999");
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.statusCode());
-        assertEquals("ORDER-402", response.as(ErrorTemplate.class).getMessage());
+        assertEquals("ORDER-402", response.as(ErrorTemplate.class).getStatusCode());
     }
 
     @Test
@@ -102,10 +98,11 @@ class OrderAcceptanceTest extends AcceptanceTest {
     void find_order_history() {
         // given
         ProductResponse firstProduct = findAllProducts().get(0);
-        ProductResponse secondProduct = findAllProducts().get(1);
         UrlHelper.Cart.addProduct(new CartAddRequest(firstProduct.getId()), accessToken);
-        UrlHelper.Cart.addProduct(new CartAddRequest(secondProduct.getId()), accessToken);
+        UrlHelper.Order.orderCart(accessToken);
 
+        ProductResponse secondProduct = findAllProducts().get(1);
+        UrlHelper.Cart.addProduct(new CartAddRequest(secondProduct.getId()), accessToken);
         UrlHelper.Order.orderCart(accessToken);
 
         // when

@@ -1,6 +1,9 @@
 package shopping.mart.persist;
 
+import static java.util.function.Function.identity;
+
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,8 +28,8 @@ public class OrderRepository {
         this.orderProductJpaRepository = orderProductJpaRepository;
     }
 
-    public Order findOrderById(Long orderId) {
-        OrderEntity orderEntity = orderJpaRepository.findById(orderId)
+    public Order findOrderById(Long userId, Long orderId) {
+        OrderEntity orderEntity = orderJpaRepository.findByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new BadRequestException(
                         MessageFormat.format("orderId\"{0}\"에 해당하는 내역이 없습니다.", orderId),
                         OrderExceptionStatus.NOT_EXISTS_ORDER.getStatus())
@@ -43,6 +46,27 @@ public class OrderRepository {
                 ), OrderProductEntity::getCount));
 
         return new Order(productCounts);
+    }
+
+    public List<Order> findOrderHistory(Long userId) {
+        List<OrderEntity> orderEntities = orderJpaRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+        List<OrderProductEntity> orderProductEntities = orderProductJpaRepository.findAllByOrderEntityIn(orderEntities);
+
+        Map<OrderEntity, Map<Product, Integer>> mergeTable = orderEntities.stream()
+                .collect(Collectors.toMap(identity(), orderEntity -> new HashMap<>()));
+        orderProductEntities.forEach(orderProductEntity -> {
+            Product product = new Product(
+                    orderProductEntity.getProductId(),
+                    orderProductEntity.getName(),
+                    orderProductEntity.getImageUrl(),
+                    orderProductEntity.getPrice()
+            );
+            mergeTable.get(orderProductEntity.getOrderEntity()).put(product, orderProductEntity.getCount());
+        });
+
+        return orderEntities.stream()
+                .map(orderEntity -> new Order(mergeTable.get(orderEntity)))
+                .collect(Collectors.toList());
     }
 
     public Long order(Long userId, Order order) {

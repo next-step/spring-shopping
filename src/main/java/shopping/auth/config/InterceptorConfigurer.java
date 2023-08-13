@@ -20,6 +20,6 @@ class InterceptorConfigurer implements WebMvcConfigurer {
         AuthInterceptor authInterceptor = new AuthInterceptor(jwtUtils);
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/carts")
-                .addPathPatterns("/orders");
+                .addPathPatterns("/orders/**");
     }
 }

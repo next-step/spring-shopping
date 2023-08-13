@@ -33,6 +33,13 @@ public final class OrderDetailResponse {
         public OrderedProductResponse() {
         }
 
+        public OrderedProductResponse(String name, String imageUrl, String price, int count) {
+            this.name = name;
+            this.imageUrl = imageUrl;
+            this.price = price;
+            this.count = count;
+        }
+
         public String getName() {
             return name;
         }

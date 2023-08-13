@@ -38,7 +38,7 @@ class OrderRepositoryTest extends JpaTest {
             Long orderId = orderRepository.order(1L, order);
 
             // when
-            Order result = orderRepository.findOrderById(orderId);
+            Order result = orderRepository.findOrderById(1L, orderId);
 
             // then
             assertEquals(order, result);
@@ -51,7 +51,7 @@ class OrderRepositoryTest extends JpaTest {
             Long notExistsId = 9999L;
 
             // when
-            Exception exception = catchException(() -> orderRepository.findOrderById(notExistsId));
+            Exception exception = catchException(() -> orderRepository.findOrderById(1L, notExistsId));
 
             // then
             assertThat(exception).isExactlyInstanceOf(BadRequestException.class);
@@ -77,7 +77,7 @@ class OrderRepositoryTest extends JpaTest {
             Long orderId = orderRepository.order(1L, order);
 
             // then
-            Order result = orderRepository.findOrderById(orderId);
+            Order result = orderRepository.findOrderById(1L, orderId);
             assertEquals(order, result);
         }
     }
