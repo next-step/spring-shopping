@@ -91,5 +91,23 @@ class UrlHelper {
                     .then().log().all()
                     .extract();
         }
+
+        static ExtractableResponse<Response> findOrderDetail(String accessToken, long orderId) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().get("/orders/" + orderId)
+                    .then().log().all()
+                    .extract();
+        }
+
+        static ExtractableResponse<Response> findOrderHistory(String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().get("/orders")
+                    .then().log().all()
+                    .extract();
+        }
     }
 }
