@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import shopping.domain.DomainFixture;
 import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
+import shopping.domain.order.OrderItemPrice;
 import shopping.domain.product.Product;
 import shopping.domain.wrapper.Quantity;
 
@@ -20,7 +21,7 @@ class OrderDetailResponseTest {
 
         Order order = new Order(1L, 1L,
                 List.of(new OrderItem(product.getId(), product.getName(),
-                        product.getImage(), product.getPrice(), new Quantity(2))),
+                        product.getImage(), new OrderItemPrice(product.getPrice().getPrice()), new Quantity(2))),
                 20000L,
                 1
         );

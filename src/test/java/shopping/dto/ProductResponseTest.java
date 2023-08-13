@@ -3,9 +3,9 @@ package shopping.dto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.domain.product.Product;
+import shopping.domain.product.ProductPrice;
 import shopping.domain.wrapper.Image;
 import shopping.domain.wrapper.Name;
-import shopping.domain.wrapper.Price;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,7 @@ class ProductResponseTest {
     @DisplayName("Product 엔티티로부터 Response DTO를 생성할 수 있다.")
     public void createFromEntity() {
         // given
-        Product product = new Product(1L, new Name("치킨"), new Image("chicken.png"), new Price(2000));
+        Product product = new Product(1L, new Name("치킨"), new Image("chicken.png"), new ProductPrice(2000));
 
         // when
         ProductResponse response = ProductResponse.of(product);

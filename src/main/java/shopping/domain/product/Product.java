@@ -2,7 +2,6 @@ package shopping.domain.product;
 
 import shopping.domain.wrapper.Image;
 import shopping.domain.wrapper.Name;
-import shopping.domain.wrapper.Price;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,12 +26,12 @@ public class Product {
     private Image image;
 
     @Column
-    private Price price;
+    private ProductPrice price;
 
     protected Product() {
     }
 
-    public Product(final Long id, final Name name, final Image image, final Price price) {
+    public Product(final Long id, final Name name, final Image image, final ProductPrice price) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -51,7 +50,7 @@ public class Product {
         return image;
     }
 
-    public Price getPrice() {
+    public ProductPrice getPrice() {
         return price;
     }
 

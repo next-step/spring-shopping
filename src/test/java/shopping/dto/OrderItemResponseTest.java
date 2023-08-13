@@ -3,6 +3,7 @@ package shopping.dto;
 import org.junit.jupiter.api.Test;
 import shopping.domain.DomainFixture;
 import shopping.domain.order.OrderItem;
+import shopping.domain.order.OrderItemPrice;
 import shopping.domain.product.Product;
 import shopping.domain.wrapper.Quantity;
 
@@ -15,7 +16,7 @@ class OrderItemResponseTest {
         // given
         Product product = DomainFixture.createProduct();
         OrderItem orderItem = new OrderItem(product.getId(), product.getName(),
-                product.getImage(), product.getPrice(), new Quantity(2));
+                product.getImage(), new OrderItemPrice(product.getPrice().getPrice()), new Quantity(2));
 
         // when
         OrderItemResponse response = OrderItemResponse.from(orderItem);

@@ -5,6 +5,7 @@ import shopping.domain.cart.Cart;
 import shopping.domain.cart.CartItem;
 import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
+import shopping.domain.order.OrderItemPrice;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class OrderMapper {
         return new OrderItem(item.getProduct().getId(),
                 item.getProduct().getName(),
                 item.getProduct().getImage(),
-                item.getProduct().getPrice(),
+                new OrderItemPrice(item.getProduct().getPrice().getPrice()),
                 item.getQuantity());
     }
 }

@@ -2,7 +2,6 @@ package shopping.domain.order;
 
 import shopping.domain.wrapper.Image;
 import shopping.domain.wrapper.Name;
-import shopping.domain.wrapper.Price;
 import shopping.domain.wrapper.Quantity;
 
 import javax.persistence.Column;
@@ -20,7 +19,7 @@ public class OrderItem {
     private Image image;
 
     @Column(name = "price")
-    private Price price;
+    private OrderItemPrice price;
 
     @Embedded
     @Column(name = "quantity")
@@ -33,7 +32,7 @@ public class OrderItem {
     public OrderItem(final Long productId,
                      final Name name,
                      final Image image,
-                     final Price price,
+                     final OrderItemPrice price,
                      final Quantity quantity) {
         this.productId = productId;
         this.name = name;
@@ -54,7 +53,7 @@ public class OrderItem {
         return image;
     }
 
-    public Price getPrice() {
+    public OrderItemPrice getPrice() {
         return price;
     }
 

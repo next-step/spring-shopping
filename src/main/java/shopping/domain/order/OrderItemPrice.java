@@ -1,4 +1,4 @@
-package shopping.domain.wrapper;
+package shopping.domain.order;
 
 import shopping.exception.ErrorType;
 import shopping.exception.ShoppingException;
@@ -10,15 +10,15 @@ import java.util.Objects;
 
 @Embeddable
 @Access(AccessType.FIELD)
-public class Price {
+public class OrderItemPrice {
 
     private final int price;
 
-    protected Price() {
+    protected OrderItemPrice() {
         this.price = 0;
     }
 
-    public Price(final int value) {
+    public OrderItemPrice(final int value) {
         validateIsPositive(value);
 
         this.price = value;
@@ -38,7 +38,7 @@ public class Price {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Price price1 = (Price) o;
+        OrderItemPrice price1 = (OrderItemPrice) o;
         return price == price1.price;
     }
 
