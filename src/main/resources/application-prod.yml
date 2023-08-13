@@ -18,4 +18,8 @@ security:
       expire-time: 3600000
 
 api:
-  access-key: ${API_ACCESS_KEY}
+  url: "http://api.currencylayer.com/live"
+  quotes: quotes
+  source: USD
+  target: KRW
+  accessKey: ${API_ACCESS_KEY}
