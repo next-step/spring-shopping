@@ -2,6 +2,7 @@ package shopping.mart.persist;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.OrderEntity;
@@ -26,26 +27,31 @@ public class OrderRepository {
 
     public Order findOrderById(Long orderId) {
         OrderEntity orderEntity = orderJpaRepository.findById(orderId)
-                .orElseThrow(() -> new BadRequestException(MessageFormat.format("orderId\"{0}\"에 해당하는 내역이 없습니다.", orderId),
-                        OrderExceptionStatus.NOT_EXISTS_ORDER.getStatus()));
+                .orElseThrow(() -> new BadRequestException(
+                        MessageFormat.format("orderId\"{0}\"에 해당하는 내역이 없습니다.", orderId),
+                        OrderExceptionStatus.NOT_EXISTS_ORDER.getStatus())
+                );
 
         List<OrderProductEntity> orderProductEntities = orderProductJpaRepository.findByOrderEntity(orderEntity);
 
-        List<Product> products = orderProductEntities.stream()
-                .map(orderProductEntity -> new Product(orderProductEntity.getId(), orderProductEntity.getName(),
-                        orderProductEntity.getImageUrl(), orderProductEntity.getPrice()))
-                .collect(Collectors.toList());
+        Map<Product, Integer> productCounts = orderProductEntities.stream()
+                .collect(Collectors.toMap(product -> new Product(
+                        product.getProductId(),
+                        product.getName(),
+                        product.getImageUrl(),
+                        product.getPrice()
+                ), OrderProductEntity::getCount));
 
-        return new Order(products);
+        return new Order(productCounts);
     }
 
     public Long order(Long userId, Order order) {
         OrderEntity orderEntity = new OrderEntity(userId);
         OrderEntity savedOrder = orderJpaRepository.save(orderEntity);
 
-        List<OrderProductEntity> savedOrderProducts = order.getProducts().stream()
-                .map(product -> new OrderProductEntity(savedOrder, product.getId(), product.getName(),
-                        product.getImageUrl(), product.getPrice()))
+        List<OrderProductEntity> savedOrderProducts = order.getProductCounts().entrySet().stream()
+                .map(item -> new OrderProductEntity(savedOrder, item.getKey().getId(), item.getKey().getName(),
+                        item.getKey().getImageUrl(), item.getKey().getPrice(), item.getValue()))
                 .collect(Collectors.toList());
         orderProductJpaRepository.saveAll(savedOrderProducts);
 

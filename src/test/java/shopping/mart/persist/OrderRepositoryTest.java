@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,10 +29,10 @@ class OrderRepositoryTest extends JpaTest {
         @DisplayName("orderId에 해당하는 OrderEntity, OrderProductEntity를 조회하고 Order로 취합해 반환한다.")
         void find_and_return_Order_by_OrderEntity_and_OrderProductEntity() {
             // given
-            List<Product> products = List.of(
-                    new Product(1L, "소주", "images/soju.jpeg", "5000"),
-                    new Product(2L, "맥주", "images/beer.jpeg", "5500"),
-                    new Product(3L, "막걸리", "images/makgeolli.png", "6000")
+            Map<Product, Integer> products = Map.of(
+                    new Product(1L, "소주", "images/soju.jpeg", "5000"), 1,
+                    new Product(2L, "맥주", "images/beer.jpeg", "5500"), 1,
+                    new Product(3L, "막걸리", "images/makgeolli.png", "6000"), 2
             );
             Order order = new Order(products);
             Long orderId = orderRepository.order(1L, order);
@@ -66,10 +66,10 @@ class OrderRepositoryTest extends JpaTest {
         @DisplayName("Order를 받아 OrderEntity, OrderProductEntity를 저장하고 orderId를 반환한다.")
         void save_OrderEntity_and_OrderProductEntity_from_Order() {
             // given
-            List<Product> products = List.of(
-                    new Product(1L, "소주", "images/soju.jpeg", "5000"),
-                    new Product(2L, "맥주", "images/beer.jpeg", "5500"),
-                    new Product(3L, "막걸리", "images/makgeolli.png", "6000")
+            Map<Product, Integer> products = Map.of(
+                    new Product(1L, "소주", "images/soju.jpeg", "5000"), 1,
+                    new Product(2L, "맥주", "images/beer.jpeg", "5500"), 1,
+                    new Product(3L, "막걸리", "images/makgeolli.png", "6000"), 2
             );
             Order order = new Order(products);
 

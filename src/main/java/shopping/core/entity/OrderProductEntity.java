@@ -35,21 +35,26 @@ public class OrderProductEntity {
     @Column(name = "price", nullable = false)
     private String price;
 
+    @Column(name = "count", nullable = false)
+    private Integer count;
+
     protected OrderProductEntity() {
     }
 
-    public OrderProductEntity(OrderEntity orderEntity, Long productId, String name, String imageUrl, String price) {
-        this(null, orderEntity, productId, name, imageUrl, price);
+    public OrderProductEntity(OrderEntity orderEntity, Long productId, String name, String imageUrl, String price,
+            Integer count) {
+        this(null, orderEntity, productId, name, imageUrl, price, count);
     }
 
     public OrderProductEntity(Long id, OrderEntity orderEntity, Long productId, String name, String imageUrl,
-            String price) {
+            String price, Integer count) {
         this.id = id;
         this.orderEntity = orderEntity;
         this.productId = productId;
         this.name = name;
         this.imageUrl = imageUrl;
         this.price = price;
+        this.count = count;
     }
 
     public Long getId() {
@@ -70,5 +75,13 @@ public class OrderProductEntity {
 
     public String getPrice() {
         return price;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public Integer getCount() {
+        return count;
     }
 }

@@ -1,12 +1,9 @@
 package shopping.mart.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.mart.domain.Cart;
 import shopping.mart.domain.Order;
-import shopping.mart.domain.Product;
 import shopping.mart.persist.CartRepository;
 import shopping.mart.persist.OrderRepository;
 
@@ -24,9 +21,8 @@ public class OrderService {
     @Transactional
     public Long order(final long userId) {
         Cart cart = cartRepository.getByUserId(userId);
-        List<Product> products = new ArrayList<>(cart.getProductCounts().keySet());
 
-        Order order = new Order(products);
+        Order order = new Order(cart.getProductCounts());
 
         return orderRepository.order(userId, order);
     }

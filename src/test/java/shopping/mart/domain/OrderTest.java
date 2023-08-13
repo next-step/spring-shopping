@@ -4,8 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,13 +21,14 @@ class OrderTest {
         @DisplayName("Product 리스트를 받아 총 결제 금액을 계산한다.")
         void calculate_total_price_by_product_list() {
             // given
-            List<Product> products = List.of(
-                    new Product("소주", "images/soju.jpeg", "5000"),
-                    new Product("맥주", "images/beer.jpeg", "5500"),
-                    new Product("막걸리", "images/makgeolli.png", "6000")
+            Map<Product, Integer> products = Map.of(
+                    new Product("소주", "images/soju.jpeg", "5000"), 1,
+                    new Product("맥주", "images/beer.jpeg", "5500"), 1,
+                    new Product("막걸리", "images/makgeolli.png", "6000"), 2
             );
-            String expectedTotalPrice = products.stream()
-                    .map(product -> new BigInteger(product.getPrice()))
+
+            String expectedTotalPrice = products.entrySet().stream()
+                    .map(item -> new BigInteger(item.getKey().getPrice()).multiply(new BigInteger(item.getValue().toString())))
                     .reduce(BigInteger::add)
                     .get()
                     .toString();
@@ -44,7 +44,7 @@ class OrderTest {
         @DisplayName("빈 Product 리스트를 받으면 BadRequestException을 던진다.")
         void throw_BadRequestException_when_product_list_is_null_or_empty() {
             // given
-            List<Product> products = Collections.emptyList();
+            Map<Product, Integer> products = Map.of();
 
             // when
             Exception exception = catchException(() -> new Order(products));
