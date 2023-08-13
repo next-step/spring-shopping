@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    // TODO: DB에 Price -> Money에 Money타입 저장 + Money 타입을 Double로 전환하고 Response에서 Long으로 변환
-
     private final Logger log = LoggerFactory.getLogger(OrderService.class);
 
     private final CartItemRepository cartItemRepository;
