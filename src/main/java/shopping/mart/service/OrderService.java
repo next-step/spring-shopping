@@ -23,8 +23,7 @@ public class OrderService {
 
     @Transactional
     public Long order(final long userId) {
-        Cart cart = cartRepository.getCartByUserId(userId);
-
+        Cart cart = cartRepository.getByUserId(userId);
         List<Product> products = new ArrayList<>(cart.getProductCounts().keySet());
 
         Order order = new Order(products);

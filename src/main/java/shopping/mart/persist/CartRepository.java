@@ -45,15 +45,11 @@ public class CartRepository {
         return getEmptyCart(userId);
     }
 
-    public Cart getCartByUserId(long userId) {
+    public Cart getByUserId(long userId) {
         if (!existCartByUserId(userId)) {
             newCart(userId);
         }
 
-        return getByUserId(userId);
-    }
-
-    public Cart getByUserId(long userId) {
         List<CartProductEntity> cartProductEntities = cartProductJpaRepository.findAllByUserId(userId);
         if (cartProductEntities.isEmpty()) {
             return getEmptyCart(userId);
