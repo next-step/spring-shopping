@@ -13,11 +13,12 @@ import shopping.order.domain.vo.ExchangeRate;
 public class ExchangeRateTest {
 
     @ParameterizedTest
-    @ValueSource(doubles = {0, -1})
-    @DisplayName("환율은 0 이하이면 안된다.")
+    @ValueSource(doubles = { -1, 0})
+    @DisplayName("환율은 0 미만이면 안된다.")
     void 환율_0_이하일_경우_에러_반환(Double value) {
         assertThatCode(() -> new ExchangeRate(value))
-            .doesNotThrowAnyException();
+            .isInstanceOf(ShoppingException.class)
+            .hasMessage("환율은 0미만이면 안됩니다. 입력값: "+value);
     }
 
     @Test

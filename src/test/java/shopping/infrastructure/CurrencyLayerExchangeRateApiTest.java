@@ -23,7 +23,6 @@ import shopping.infrastructure.dto.ExchangeRateResponse;
 @Import(TestConfig.class)
 public class CurrencyLayerExchangeRateApiTest {
 
-
     private @Value("${currency.accessKey}") String accessKey;
     private @Value("${currency.baseUrl}") String baseurl;
     @Autowired
