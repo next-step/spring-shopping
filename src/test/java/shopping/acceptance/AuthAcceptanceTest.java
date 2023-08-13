@@ -94,7 +94,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         /* when */
         final ExtractableResponse<Response> response = RestAssured
             .given().log().all()
-            .when().get("/api/cartProduct")
+            .when().get("/api/cart-product")
             .then().log().all()
             .extract();
 
@@ -114,7 +114,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestAssured
             .given().log().all()
             .header(HttpHeaders.AUTHORIZATION, value)
-            .when().get("/api/cartProduct")
+            .when().get("/api/cart-product")
             .then().log().all()
             .extract();
 
@@ -133,7 +133,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
         final ExtractableResponse<Response> response = RestAssured
             .given().log().all()
             .header(HttpHeaders.AUTHORIZATION, "maratang 123")
-            .when().get("/api/cartProduct")
+            .when().get("/api/cart-product")
             .then().log().all()
             .extract();
 

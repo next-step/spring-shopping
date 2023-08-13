@@ -28,7 +28,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductCreateRequest request = new CartProductCreateRequest(3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart-product", jwt,
             request);
 
         /* then */
@@ -43,7 +43,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductCreateRequest request = new CartProductCreateRequest(3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart-product", jwt,
             request);
 
         /* then */
@@ -58,7 +58,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductCreateRequest request = new CartProductCreateRequest(123L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart-product", jwt,
             request);
 
         /* then */
@@ -92,7 +92,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         CartProductHelper.createCartProduct(jwt, 3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.get("/api/cartProduct", jwt);
+        final ExtractableResponse<Response> response = RestHelper.get("/api/cart-product", jwt);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -112,7 +112,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -132,7 +132,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -152,7 +152,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .delete("/api/cartProduct/{cartProductId}", jwt, List.of(cartProductId));
+            .delete("/api/cart-product/{cartProductId}", jwt, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -170,13 +170,13 @@ class CartProductAcceptanceTest extends AcceptanceTest {
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(
             RestHelper
-                .get("/api/cartProduct", jwt).body().as(new TypeRef<List<CartResponse>>() {
+                .get("/api/cart-product", jwt).body().as(new TypeRef<List<CartResponse>>() {
                 })).hasSize(2);
     }
 
@@ -192,7 +192,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());

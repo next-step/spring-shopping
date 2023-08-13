@@ -20,7 +20,7 @@ import shopping.service.CartService;
 
 
 @RestController
-@RequestMapping("/api/cartProduct")
+@RequestMapping("/api/cart-product")
 public class CartProductController {
 
     private final CartProductService cartProductService;
