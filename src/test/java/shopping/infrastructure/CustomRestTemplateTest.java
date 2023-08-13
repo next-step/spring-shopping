@@ -2,7 +2,6 @@ package shopping.infrastructure;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 
 import java.util.HashMap;
@@ -13,11 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import shopping.domain.ExchangeCode;
 import shopping.dto.response.ExchangeResponse;
-import shopping.exception.InfraException;
 
 @DisplayName("CustomRestTemplate 단위 테스트")
 class CustomRestTemplateTest {
@@ -28,7 +25,7 @@ class CustomRestTemplateTest {
     @BeforeEach
     void setUp() {
         restTemplate = Mockito.mock(RestTemplate.class);
-        customRestTemplate = new CustomRestTemplate(restTemplate, Mockito.mock(ExceptionLogger.class));
+        customRestTemplate = new CustomRestTemplate(restTemplate);
     }
 
     @DisplayName("getResult 메서드는")

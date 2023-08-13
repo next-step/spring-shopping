@@ -1,6 +1,8 @@
 package shopping.ui.advice;
 
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,16 +12,11 @@ import shopping.dto.response.ErrorResponse;
 import shopping.exception.AuthException;
 import shopping.exception.ShoppingException;
 import shopping.exception.TokenException;
-import shopping.infrastructure.ExceptionLogger;
 
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 
-    private final ExceptionLogger logger;
-
-    public GlobalControllerAdvice(ExceptionLogger logger) {
-        this.logger = logger;
-    }
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(TokenException.class)
     ResponseEntity<ErrorResponse> catchTokenException(TokenException exception) {
@@ -51,7 +48,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(RuntimeException.class)
     ResponseEntity<ErrorResponse> catchRuntimeException(RuntimeException exception) {
-        logger.logException(exception);
+        logger.error("처리되지 않은 예왜 발생: {}", exception.getMessage(), exception);
         return ResponseEntity.internalServerError()
             .body(new ErrorResponse("알 수 없는 에러가 발생하였습니다."));
     }

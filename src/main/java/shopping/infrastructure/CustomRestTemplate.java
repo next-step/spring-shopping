@@ -1,6 +1,8 @@
 package shopping.infrastructure;
 
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -9,11 +11,10 @@ import org.springframework.web.client.RestTemplate;
 public class CustomRestTemplate {
 
     private final RestTemplate restTemplate;
-    private final ExceptionLogger logger;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public CustomRestTemplate(RestTemplate restTemplate, ExceptionLogger logger) {
+    public CustomRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.logger = logger;
     }
 
     public <T> Optional<T> getResult(String url, Class<T> clazz) {
@@ -24,7 +25,7 @@ public class CustomRestTemplate {
         try {
             return restTemplate.getForObject(url, clazz);
         } catch (RestClientException exception) {
-            logger.logException(exception);
+            logger.error("api 호출 예외 발생: {}", exception.getMessage(), exception);
             return null;
         }
     }
