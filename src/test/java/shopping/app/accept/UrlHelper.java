@@ -92,11 +92,11 @@ class UrlHelper {
                     .extract();
         }
 
-        static ExtractableResponse<Response> findOrderDetail(String accessToken, String location) {
+        static ExtractableResponse<Response> findOrderDetail(String accessToken, Long orderId) {
             return given().log().all()
                     .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .when().get(location)
+                    .when().get("/api/orders/" + orderId)
                     .then().log().all()
                     .extract();
         }

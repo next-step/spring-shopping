@@ -8,11 +8,17 @@ import shopping.mart.domain.status.OrderExceptionStatus;
 
 public class Order {
 
+    private Long orderId;
     private final Map<Product, Integer> productCounts;
     private final Price totalPrice;
 
     public Order(final Map<Product, Integer> productCounts) {
+        this(null, productCounts);
+    }
+
+    public Order(final Long orderId, final Map<Product, Integer> productCounts) {
         validate(productCounts);
+        this.orderId = orderId;
         this.productCounts = productCounts;
         this.totalPrice = calcTotalPrice(productCounts);
     }
@@ -33,12 +39,20 @@ public class Order {
         return new Price(calculated);
     }
 
+    public Long getOrderId() {
+        return orderId;
+    }
+
     public Map<Product, Integer> getProductCounts() {
         return productCounts;
     }
 
     public String getTotalPrice() {
         return totalPrice.getValue().toString();
+    }
+
+    public void setOrderId(final Long orderId) {
+        this.orderId = orderId;
     }
 
     @Override

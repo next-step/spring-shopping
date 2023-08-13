@@ -4,15 +4,21 @@ import java.util.List;
 
 public final class OrderDetailResponse {
 
+    private Long orderId;
     private List<OrderedProductResponse> items;
     private String totalPrice;
 
     public OrderDetailResponse() {
     }
 
-    public OrderDetailResponse(List<OrderedProductResponse> items, String totalPrice) {
+    public OrderDetailResponse(Long orderId, List<OrderedProductResponse> items, String totalPrice) {
+        this.orderId = orderId;
         this.items = items;
         this.totalPrice = totalPrice;
+    }
+
+    public Long getOrderId() {
+        return orderId;
     }
 
     public List<OrderedProductResponse> getItems() {

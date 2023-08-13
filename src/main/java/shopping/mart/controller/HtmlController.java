@@ -42,4 +42,9 @@ public class HtmlController {
         model.addAttribute("orderId", orderId);
         return "order-detail";
     }
+
+    @GetMapping("/order-history")
+    public String orderHistoryView() {
+        return "order-history";
+    }
 }

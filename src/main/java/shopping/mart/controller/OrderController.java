@@ -26,7 +26,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Void> order(@RequestAttribute("userId") Long userId) {
-        String location = "/api/orders/" + orderService.order(userId);
+        String location = "/orders/" + orderService.order(userId);
         return ResponseEntity.created(URI.create(location)).build();
     }
 

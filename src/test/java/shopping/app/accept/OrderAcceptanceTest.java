@@ -70,8 +70,11 @@ class OrderAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> orderResponse = UrlHelper.Order.orderCart(accessToken);
         String location = orderResponse.header("Location");
 
+        String[] words = location.split("/");
+        Long orderId = Long.valueOf(words[words.length - 1]);
+
         // when
-        OrderDetailResponse result = Order.findOrderDetail(accessToken, location)
+        OrderDetailResponse result = Order.findOrderDetail(accessToken, orderId)
                 .as(OrderDetailResponse.class);
 
         // then
@@ -86,7 +89,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     @DisplayName("GET /api/orders/{orderId} API는 orderId에 해당하는 주문 정보가 없을 경우 ORDER-402를 반환한다.")
     void not_found_order() {
         // when
-        ExtractableResponse<Response> response = Order.findOrderDetail(accessToken, "/api/orders/99999");
+        ExtractableResponse<Response> response = Order.findOrderDetail(accessToken, 99999L);
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.statusCode());

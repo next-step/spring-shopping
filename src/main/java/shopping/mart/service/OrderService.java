@@ -28,11 +28,11 @@ public class OrderService {
 
         Order order = new Order(cart.getProductCounts());
 
-        Long orderId = orderRepository.order(userId, order);
+        order.setOrderId(orderRepository.order(userId, order));
 
         cartRepository.deleteAllProducts(userId);
 
-        return orderId;
+        return order.getOrderId();
     }
 
     @Transactional(readOnly = true)
@@ -57,6 +57,6 @@ public class OrderService {
                         item.getKey().getPrice(), item.getValue()))
                 .collect(Collectors.toList());
 
-        return new OrderDetailResponse(orderedProducts, order.getTotalPrice());
+        return new OrderDetailResponse(order.getOrderId(), orderedProducts, order.getTotalPrice());
     }
 }

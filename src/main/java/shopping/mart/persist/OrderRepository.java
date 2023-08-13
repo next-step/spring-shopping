@@ -45,7 +45,7 @@ public class OrderRepository {
                         product.getPrice()
                 ), OrderProductEntity::getCount));
 
-        return new Order(productCounts);
+        return new Order(orderEntity.getId(), productCounts);
     }
 
     public List<Order> findOrderHistory(Long userId) {
@@ -65,7 +65,7 @@ public class OrderRepository {
         });
 
         return orderEntities.stream()
-                .map(orderEntity -> new Order(mergeTable.get(orderEntity)))
+                .map(orderEntity -> new Order(orderEntity.getId(), mergeTable.get(orderEntity)))
                 .collect(Collectors.toList());
     }
 
