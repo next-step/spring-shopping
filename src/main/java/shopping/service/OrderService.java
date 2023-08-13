@@ -40,7 +40,7 @@ public class OrderService {
         final Cart cart = new Cart(memberId, cartProductRepository.findAllByMemberId(memberId));
         final Order order = orderRepository.save(orderMapper.mapFrom(cart));
 
-        cartProductRepository.deleteAllByMemberId(memberId);
+        cleanUpCart(memberId);
 
         return order.getId();
     }
@@ -62,5 +62,9 @@ public class OrderService {
         return orders.stream()
             .map(OrderHistoryResponse::from)
             .collect(Collectors.toList());
+    }
+
+    private void cleanUpCart(final Long memberId) {
+        cartProductRepository.deleteAllByMemberId(memberId);
     }
 }
