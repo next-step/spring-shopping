@@ -35,6 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### Property ###
-src/main/resources/currencylayer-api.properties
