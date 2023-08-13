@@ -9,6 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.util.retry.Retry;
 import shopping.exception.ErrorCode;
 import shopping.exception.ShoppingException;
+import shopping.service.ExchangeRateService;
 
 import java.net.URI;
 import java.time.Duration;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Component
-public class USDExchangeRateApi implements ExchangeRateApi {
+public class USDExchangeRateService implements ExchangeRateService {
 
     private static final String QUOTES = "quotes";
     private static final String USD_KRW = "USDKRW";
@@ -28,7 +29,7 @@ public class USDExchangeRateApi implements ExchangeRateApi {
 
     private final CachedExchangeRate cachedExchangeRate;
 
-    public USDExchangeRateApi(
+    public USDExchangeRateService(
             final WebClient webClient,
             @Value("${currency-api.key}") final String accessKey,
             @Value("${currency-api.url}") final String currencyApiUrl

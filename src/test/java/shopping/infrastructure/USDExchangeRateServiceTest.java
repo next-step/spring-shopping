@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class USDExchangeRateApiTest {
+class USDExchangeRateServiceTest {
 
     @Autowired
-    private USDExchangeRateApi usdExchangeRateApi;
+    private USDExchangeRateService usdExchangeRateApi;
     private MockWebServer mockWebServer;
 
     @BeforeEach
