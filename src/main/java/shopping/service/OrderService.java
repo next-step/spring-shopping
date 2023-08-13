@@ -47,7 +47,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public OrderDetailResponse findOrderDetail(final Long memberId, final Long orderId) {
-        final Order order = orderRepository.findByIdAndMemberIdWithOrderProduct(orderId, memberId)
+        final Order order = orderRepository.findByIdAndMemberId(orderId, memberId)
             .orElseThrow(() -> new ShoppingException(OrderExceptionType.NOT_FOUND_ORDER, orderId));
 
         return currencyExchanger.findCurrencyExchangeRate(CurrencyType.USD, CurrencyType.KRW)

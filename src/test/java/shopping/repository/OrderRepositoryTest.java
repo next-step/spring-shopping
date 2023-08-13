@@ -22,7 +22,7 @@ class OrderRepositoryTest {
         final Long orderId = 1L;
 
         /* when */
-        final Order order = orderRepository.findByIdAndMemberIdWithOrderProduct(orderId, memberId)
+        final Order order = orderRepository.findByIdAndMemberId(orderId, memberId)
             .orElseThrow(() -> new IllegalStateException("테스트 케이스가 존재하지 않습니다."));
 
         /* then */
