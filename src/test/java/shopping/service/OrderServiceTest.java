@@ -2,7 +2,6 @@ package shopping.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,6 +19,7 @@ import shopping.domain.entity.CartItemEntity;
 import shopping.domain.entity.OrderEntity;
 import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
+import shopping.dto.response.OrderIdResponse;
 import shopping.dto.response.OrderItemResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.repository.CartItemRepository;
@@ -57,18 +57,19 @@ public class OrderServiceTest {
 
         // (1) orderEntity 저장
         int totalPrice = 70000;
-        OrderEntity order = new OrderEntity(totalPrice, 0D, user);
+        OrderEntity order = new OrderEntity(1L, totalPrice, 0D, user, null);
 
         order.addOrderItems(cartItems, 1300D, CurrencyPoint.HUNDREDTH);
-        lenient().when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
+        when(orderRepository.save(any(OrderEntity.class))).thenReturn(order);
 
         // when
-        orderService.orderCartItem(1300D, userId);
+        OrderIdResponse orderIdResponse = orderService.orderCartItem(1300D, userId);
 
         // then
         verify(userRepository).getReferenceById(userId);
         verify(cartItemRepository).findByUserId(userId);
         verify(orderRepository).save(any(OrderEntity.class));
+        assertThat(orderIdResponse.getOrderId()).isEqualTo(1L);
     }
 
     @Test

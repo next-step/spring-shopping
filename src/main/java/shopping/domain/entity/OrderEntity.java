@@ -24,7 +24,7 @@ public class OrderEntity {
 
     private int totalPrice;
 
-    private Double totalPriceUSD;
+    private double totalPriceUSD;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -35,8 +35,13 @@ public class OrderEntity {
 
     protected OrderEntity() {}
 
-    public OrderEntity(Long id, int totalPrice, Double totalPriceUSD,UserEntity user,
-        List<OrderItemEntity> orderItems) {
+    public OrderEntity(
+        Long id,
+        int totalPrice,
+        double totalPriceUSD,
+        UserEntity user,
+        List<OrderItemEntity> orderItems
+    ) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.totalPriceUSD = totalPriceUSD;
@@ -44,7 +49,11 @@ public class OrderEntity {
         this.orderItems = orderItems;
     }
 
-    public OrderEntity(int totalPrice, Double totalPriceUSD, UserEntity user) {
+    public OrderEntity(
+        int totalPrice,
+        double totalPriceUSD,
+        UserEntity user
+    ) {
         this(null, totalPrice, totalPriceUSD, user, null);
     }
 
@@ -56,8 +65,11 @@ public class OrderEntity {
         );
     }
 
-    public void updatePrices(List<CartItemEntity> cartItems,
-        Double currencyRatio, CurrencyPoint currencyPoint) {
+    public void updatePrices(
+        List<CartItemEntity> cartItems,
+        Double currencyRatio,
+        CurrencyPoint currencyPoint
+    ) {
         updateTotalPrice(cartItems);
         updateTotalPriceUSD(currencyRatio, currencyPoint);
     }
@@ -69,13 +81,13 @@ public class OrderEntity {
             .get();
     }
 
-    private void updateTotalPriceUSD(Double currencyRatio, CurrencyPoint currencyPoint) {
+    private void updateTotalPriceUSD(double currencyRatio, CurrencyPoint currencyPoint) {
         this.totalPriceUSD = Math.round(currencyPoint.getDigits() * totalPrice / currencyRatio) / currencyPoint.getDigits();
     }
 
     public void addOrderItems(
         List<CartItemEntity> cartItems,
-        Double currencyRatio,
+        double currencyRatio,
         CurrencyPoint currencyPoint
     ) {
         this.orderItems = cartItems.stream()
@@ -91,7 +103,7 @@ public class OrderEntity {
         return totalPrice;
     }
 
-    public Double getTotalPriceUSD() {
+    public double getTotalPriceUSD() {
         return totalPriceUSD;
     }
 

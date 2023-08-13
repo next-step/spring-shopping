@@ -38,7 +38,7 @@ public class CurrencyConverter implements CurrencyService {
 
     @Override
     @Cacheable(value = "currency")
-    public double getCurrencyOf(CurrencyConversion currencyConversion) {
+    public double getCurrencyFrom(CurrencyConversion currencyConversion) {
         URI uri = getUri(currencyConversion);
         ResponseEntity<JsonNode> jsonNode = getJsonNodeFrom(uri);
         checkCurrencyApi(jsonNode);

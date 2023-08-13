@@ -30,7 +30,7 @@ public class OrderController {
     @PostMapping("/order")
     @ResponseBody
     public ResponseEntity<OrderIdResponse> orderCartItem(@UserId Long userId) {
-        double currency = currencyService.getCurrencyOf(CurrencyConversion.USD_KRW);
+        double currency = currencyService.getCurrencyFrom(CurrencyConversion.USD_KRW);
         OrderIdResponse orderIdResponse = orderService.orderCartItem(currency, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderIdResponse);
     }

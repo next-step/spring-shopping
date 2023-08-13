@@ -4,6 +4,6 @@ import shopping.domain.CurrencyConversion;
 
 public interface CurrencyService {
 
-    double getCurrencyOf(CurrencyConversion currencyConversion);
+    double getCurrencyFrom(CurrencyConversion currencyConversion);
 
 }
