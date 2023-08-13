@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import shopping.domain.cart.CurrencyType;
-import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.ErrorResponseException;
 import shopping.exception.infrastructure.NullResponseException;
 
 @Profile("test")
@@ -18,11 +18,11 @@ public class MockExchangeFetcher implements ExchangeRateFetcher {
     private static final int NOT_SUPPORT_SOURCE_ERROR_CODE = 105;
 
     @Override
-    public Double getExchangeRate(CurrencyType source, CurrencyType target) throws ConnectionErrorException, NullResponseException {
+    public Double getExchangeRate(CurrencyType source, CurrencyType target) throws ErrorResponseException, NullResponseException {
         if (source.equals(SOURCE) && target.equals(TARGET)) {
             return 1300.0;
         }
-        throw new ConnectionErrorException(NOT_SUPPORT_SOURCE_MESSAGE, NOT_SUPPORT_SOURCE_ERROR_CODE);
+        throw new ErrorResponseException(NOT_SUPPORT_SOURCE_MESSAGE, NOT_SUPPORT_SOURCE_ERROR_CODE);
     }
 
 }

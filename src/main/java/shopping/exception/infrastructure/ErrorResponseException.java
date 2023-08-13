@@ -1,10 +1,10 @@
 package shopping.exception.infrastructure;
 
-public class ConnectionErrorException extends Exception {
+public class ErrorResponseException extends Exception {
 
     private final int errorCode;
 
-    public ConnectionErrorException(String message, int errorCode) {
+    public ErrorResponseException(String message, int errorCode) {
         super(message);
         this.errorCode = errorCode;
     }

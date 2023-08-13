@@ -7,7 +7,7 @@ import reactor.util.retry.Retry;
 import shopping.domain.cart.CurrencyType;
 import shopping.dto.api.ExchangeRateResponse;
 import shopping.dto.web.response.ExchangeRateErrorResponse;
-import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.ErrorResponseException;
 import shopping.exception.infrastructure.NullResponseException;
 
 import java.time.Duration;
@@ -28,13 +28,13 @@ public class CurrencyLayerConnection implements ExchangeRateFetcher {
     }
 
     @Override
-    public Double getExchangeRate(CurrencyType source, CurrencyType target) throws ConnectionErrorException, NullResponseException {
+    public Double getExchangeRate(CurrencyType source, CurrencyType target) throws ErrorResponseException, NullResponseException {
         ExchangeRateResponse response = getExchangeRateResponse(source.getType(), target.getType());
         if (response.isSuccess()) {
             return response.getExchangeRates().get(source.getType()+target.getType());
         }
         ExchangeRateErrorResponse error = response.getError();
-        throw new ConnectionErrorException(error.getInformation(), error.getCode());
+        throw new ErrorResponseException(error.getInformation(), error.getCode());
     }
 
     private ExchangeRateResponse getExchangeRateResponse(String source, String target) throws NullResponseException {

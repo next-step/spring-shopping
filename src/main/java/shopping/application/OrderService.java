@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.*;
 import shopping.dto.web.response.OrderResponse;
-import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.ErrorResponseException;
 import shopping.exception.infrastructure.NullResponseException;
 import shopping.infrastructure.ExchangeRateFetcher;
 import shopping.repository.CartItemRepository;
@@ -51,7 +51,7 @@ public class OrderService {
         try {
             double exchangeRate = exchangeRateFetcher.getExchangeRate(CurrencyType.USD, CurrencyType.KRW);
             return new Order(userId, new ExchangeRate(exchangeRate, CurrencyType.USD, CurrencyType.KRW));
-        } catch (ConnectionErrorException e) {
+        } catch (ErrorResponseException e) {
             log.error("code: {}, info: {}", e.getErrorCode(), e.getMessage());
         } catch (NullResponseException e) {
             log.error(e.getMessage());

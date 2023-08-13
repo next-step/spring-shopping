@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import shopping.domain.cart.CurrencyType;
-import shopping.exception.infrastructure.ConnectionErrorException;
+import shopping.exception.infrastructure.ErrorResponseException;
 import shopping.exception.infrastructure.NullResponseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,7 +18,7 @@ class CurrencyLayerConnectionTest {
 
     @DisplayName("정상 조회 시 환율 반환")
     @Test
-    void getExchangeRate() throws NullResponseException, ConnectionErrorException {
+    void getExchangeRate() throws NullResponseException, ErrorResponseException {
         assertThat(mockFetcher.getExchangeRate(CurrencyType.USD, CurrencyType.KRW))
                 .isCloseTo(1300.0, Offset.offset(100.0));
     }
@@ -28,10 +28,10 @@ class CurrencyLayerConnectionTest {
     void errorGet() {
 
         Exception exception = catchException(() -> mockFetcher.getExchangeRate(CurrencyType.KRW, CurrencyType.USD));
-        ConnectionErrorException connectionErrorException = (ConnectionErrorException) exception;
+        ErrorResponseException errorResponseException = (ErrorResponseException) exception;
 
-        assertThat(connectionErrorException.getErrorCode()).isEqualTo(105);
-        assertThat(connectionErrorException.getMessage()).isEqualTo("Access Restricted - Your current Subscription Plan does not support Source Currency Switching.");
+        assertThat(errorResponseException.getErrorCode()).isEqualTo(105);
+        assertThat(errorResponseException.getMessage()).isEqualTo("Access Restricted - Your current Subscription Plan does not support Source Currency Switching.");
     }
 }
 
