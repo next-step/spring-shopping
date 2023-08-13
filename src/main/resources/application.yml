@@ -10,4 +10,11 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.H2Dialect
   config:
-    import: security.yml
+    import: optional:file:.env[.properties]
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY}
+    expiration: ${JWT_EXPIRATION}
+  currency-layer:
+    access-key: ${CURRENCY_ACCESS_KEY}
