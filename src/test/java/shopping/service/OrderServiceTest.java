@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestClientException;
 import shopping.domain.cart.CartItem;
 import shopping.domain.cart.Quantity;
 import shopping.domain.member.Member;
@@ -37,8 +38,10 @@ import shopping.domain.order.Order;
 import shopping.domain.order.OrderItem;
 import shopping.dto.response.OrderHistoryResponse;
 import shopping.dto.response.OrderResponse;
+import shopping.exception.ShoppingErrorType;
 import shopping.exception.ShoppingException;
 import shopping.fixture.OrderFixture;
+import shopping.infra.ExchangeRateApi;
 import shopping.repository.CartItemRepository;
 import shopping.repository.MemberRepository;
 import shopping.repository.OrderRepository;
@@ -49,6 +52,9 @@ class OrderServiceTest {
 
     @Autowired
     private OrderService orderService;
+
+    @MockBean
+    private ExchangeRateApi exchangeRateApi;
 
     @MockBean
     private MemberRepository memberRepository;
@@ -156,5 +162,35 @@ class OrderServiceTest {
                         Tuple.tuple(CHICKEN_NAME, CHICKEN_IMAGE, CHICKEN_PRICE, chickenQuantity.getValue()),
                         Tuple.tuple(PIZZA_NAME, PIZZA_IMAGE, PIZZA_PRICE, pizzaQuantity.getValue())
                 );
+    }
+
+    @Test
+    @DisplayName("장바구니에 담긴 상품들 주문할 경우 API에 환율이 없는 경우 예외를 던진다.")
+    void createOrderWithExchangeApiHasNotExchangeRate() {
+        final Member member = createMember(MEMBER_ID);
+        final Quantity chickenQuantity = Quantity.from(10);
+        final Quantity pizzaQuantity = Quantity.from(5);
+        final List<CartItem> cartItems = List.of(
+                createCartItem(member, createChicken(), chickenQuantity, 1L),
+                createCartItem(member, createPizza(), pizzaQuantity, 2L)
+        );
+        when(memberRepository.findById(MEMBER_ID)).thenReturn(Optional.of(member));
+        when(cartItemRepository.findAllByMemberId(MEMBER_ID)).thenReturn(cartItems);
+        when(exchangeRateApi.getUSDtoKRWExchangeRate()).thenReturn(Double.POSITIVE_INFINITY);
+
+        final Exception exception = catchException(() -> orderService.createOrder(MEMBER_ID));
+
+        assertThat(exception).isInstanceOf(ShoppingException.class);
+        assertThat(exception.getMessage()).isEqualTo(ShoppingErrorType.ERROR_EXCHANGE_RATE.getMessage());
+    }
+
+    @Test
+    @DisplayName("외부 API에 오류가 발생한 경우 예외를 던진다.")
+    void createOrderWithExchangeApiHasError() {
+        when(exchangeRateApi.getUSDtoKRWExchangeRate()).thenThrow(RestClientException.class);
+
+        final Exception exception = catchException(() -> orderService.createOrder(MEMBER_ID));
+
+        assertThat(exception).isInstanceOf(RestClientException.class);
     }
 }
