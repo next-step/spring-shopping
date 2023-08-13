@@ -24,7 +24,7 @@ public enum ErrorCode {
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
     TOKEN_IS_EMPTY(HttpStatus.BAD_REQUEST, "토큰이 존재하지 않습니다."),
     FORBIDDEN_MODIFY_CART_ITEM(HttpStatus.FORBIDDEN, "해당 장바구니 아이템을 수정할 권한이 없습니다."),
-    EMPTY_CART_ITEM(HttpStatus.BAD_REQUEST, "해당 장바구니가 비어있습니다."),
+    EMPTY_ORDER_ITEM(HttpStatus.BAD_REQUEST, "주문 아이템이 없습니다."),
     CURRENCY_API_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "환율 정보를 가져오지 못했습니다."),
     RETRY_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "환율 정보를 가져오지 못했습니다."),
     CACHED_INVALID(HttpStatus.INTERNAL_SERVER_ERROR, "캐시된 정보가 유효하지 않습니다."),

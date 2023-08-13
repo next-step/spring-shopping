@@ -3,8 +3,6 @@ package shopping.domain.order;
 import shopping.domain.member.Member;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -25,10 +23,6 @@ public class Order {
     @Embedded
     private ExchangeRate exchangeRate;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-
     protected Order() {
     }
 
@@ -38,9 +32,8 @@ public class Order {
         this.exchangeRate = ExchangeRate.from(exchangeRate);
     }
 
-    public void addOrderItem(final OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderPrice = orderPrice.plusPrice(orderItem.getTotalPrice());
+    public void updateOrderPrice(long totalPrice) {
+        orderPrice = orderPrice.plusPrice(totalPrice);
     }
 
     public long getOrderPrice() {
@@ -57,9 +50,5 @@ public class Order {
 
     public double getExchangeRate() {
         return exchangeRate.getValue();
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return new ArrayList<>(orderItems);
     }
 }

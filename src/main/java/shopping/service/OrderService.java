@@ -46,26 +46,46 @@ public class OrderService {
     @Transactional
     public OrderCreateResponse createOrder(final Long memberId, final double exchangeRate) {
         final Member member = getMemberById(memberId);
-        final Order persistOrder = saveOrder(member, exchangeRate);
+        final Order createdOrder = createOrder(member, exchangeRate);
         emptyCartItems(member);
 
-        return OrderCreateResponse.from(persistOrder.getId());
+        return OrderCreateResponse.from(createdOrder.getId());
     }
 
-    private Order saveOrder(final Member member, final double exchangeRate) {
-        final Order persistOrder = orderRepository.save(new Order(member, exchangeRate));
-        final List<CartItem> cartItems = cartItemRepository.findAllByMemberId(member.getId());
-        validateOrder(cartItems);
-        orderItemRepository.saveAll(cartItems.stream()
+    private Order createOrder(final Member member, final double exchangeRate) {
+        final Order createdOrder = orderRepository.save(new Order(member, exchangeRate));
+        final List<OrderItem> orderItems = getOrderItemsFromCartItems(member, createdOrder);
+        validateOrder(orderItems);
+        orderItemRepository.saveAll(orderItems);
+
+        for (OrderItem orderItem : orderItems) {
+            createdOrder.updateOrderPrice(orderItem.getTotalPrice());
+        }
+
+        return createdOrder;
+    }
+
+    private List<OrderItem> getOrderItemsFromCartItems(final Member member, final Order persistOrder) {
+        return cartItemRepository.findAllByMemberId(member.getId()).stream()
                 .map(convertCartItemToOrderItem(persistOrder))
-                .collect(toList()));
-
-        return persistOrder;
+                .collect(toList());
     }
 
-    private void validateOrder(final List<CartItem> cartItems) {
-        if (cartItems.isEmpty()) {
-            throw new ShoppingException(ErrorCode.EMPTY_CART_ITEM);
+    private Function<CartItem, OrderItem> convertCartItemToOrderItem(final Order order) {
+        return cartItem -> {
+            final Product product = cartItem.getProduct();
+            return new OrderItem(
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImage(),
+                    cartItem.getQuantity(),
+                    order);
+        };
+    }
+
+    private void validateOrder(final List<OrderItem> orderItems) {
+        if (orderItems.isEmpty()) {
+            throw new ShoppingException(ErrorCode.EMPTY_ORDER_ITEM);
         }
     }
 
@@ -76,7 +96,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public OrderResponse readOrder(final Long orderId) {
         final Order order = getOrderById(orderId);
-        final List<OrderItemResponse> orderItemResponses = order.getOrderItems().stream()
+        final List<OrderItemResponse> orderItemResponses = orderItemRepository.findAllByOrder(order).stream()
                 .map(OrderItemResponse::from)
                 .collect(toList());
 
@@ -96,18 +116,6 @@ public class OrderService {
                 .collect(toList());
 
         return OrderResponses.from(response);
-    }
-
-    private Function<CartItem, OrderItem> convertCartItemToOrderItem(final Order order) {
-        return cartItem -> {
-            final Product product = cartItem.getProduct();
-            return new OrderItem(
-                    product.getName(),
-                    product.getPrice(),
-                    product.getImage(),
-                    cartItem.getQuantity(),
-                    order);
-        };
     }
 
     private Member getMemberById(final Long memberId) {

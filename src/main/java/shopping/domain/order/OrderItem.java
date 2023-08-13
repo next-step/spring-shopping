@@ -40,7 +40,6 @@ public class OrderItem {
         this.orderItemImage = OrderItemImage.from(orderItemImage);
         this.orderItemQuantity = OrderItemQuantity.from(orderItemQuantity);
         this.order = order;
-        order.addOrderItem(this);
     }
 
     public long getTotalPrice() {
