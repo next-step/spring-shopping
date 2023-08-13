@@ -17,7 +17,7 @@ import shopping.mart.dto.CartUpdateRequest;
 import shopping.mart.service.CartService;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/api/carts")
 public class CartController {
 
     private final CartService cartService;

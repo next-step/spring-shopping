@@ -29,7 +29,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /carts API는 product를 cart에 추가한다.")
+    @DisplayName("POST /api/carts API는 product를 cart에 추가한다.")
     void add_product_to_cart() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -43,7 +43,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /carts API는 인증에 실패하면, AUTH-INTERCEPTOR-401을 던진다.")
+    @DisplayName("POST /api/carts API는 인증에 실패하면, AUTH-INTERCEPTOR-401을 던진다.")
     void throw_auth_interceptor_401() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -59,7 +59,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /carts API는 product를 찾을 수 없으면, CART-405를 던진다.")
+    @DisplayName("POST /api/carts API는 product를 찾을 수 없으면, CART-405를 던진다.")
     void throw_cart_405() {
         // given
         CartAddRequest request = new CartAddRequest(9999999L);
@@ -72,7 +72,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /carts API는 cart에 있는 모든 product를 반환한다.")
+    @DisplayName("GET /api/carts API는 cart에 있는 모든 product를 반환한다.")
     void find_all_products_in_cart() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
@@ -87,7 +87,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 cart에 있는 한 product의 수량을 변경한다.")
+    @DisplayName("PATCH /api/carts API는 cart에 있는 한 product의 수량을 변경한다.")
     void update_product_count() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
@@ -106,7 +106,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 업데이트할 product가 없을경우, CART-405를 던진다.")
+    @DisplayName("PATCH /api/carts API는 업데이트할 product가 없을경우, CART-405를 던진다.")
     void throw_cart_402_when_no_updatable_product() {
         // given
         CartUpdateRequest request = new CartUpdateRequest(999999999L, 100_000);
@@ -119,7 +119,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("PATCH /carts API는 count가 0이하일경우, CART-403을 던진다.")
+    @DisplayName("PATCH /api/carts API는 count가 0이하일경우, CART-403을 던진다.")
     void throw_cart_403_when_not_positive() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
@@ -137,7 +137,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("DELETE /carts?product-id={productId} API는 cart에 있는 product를 삭제한다.")
+    @DisplayName("DELETE /api/carts?product-id={productId} API는 cart에 있는 product를 삭제한다.")
     void delete_product() {
         // given
         List<ProductResponse> allProducts = findAllProducts();
@@ -152,7 +152,7 @@ class CartAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("DELETE /carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-405를 던진다.")
+    @DisplayName("DELETE /api/carts?product-id={productId} API는 productId에 해당하는 product가 없을경우, CART-405를 던진다.")
     void throw_cart_405_when_no_product_id() {
         // given
         long deleteTargetId = 999999999L;

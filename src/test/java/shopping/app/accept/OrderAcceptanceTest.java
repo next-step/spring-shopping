@@ -33,7 +33,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /orders API는 장바구니에 담긴 물건을 구매 처리하고 Location을 반환한다.")
+    @DisplayName("POST /api/orders API는 장바구니에 담긴 물건을 구매 처리하고 Location을 반환한다.")
     void order_and_return_location_when_order() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -49,7 +49,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("POST /orders API는 장바구니가 비어 있을 경우 ORDER-401 예외를 던진다.")
+    @DisplayName("POST /api/orders API는 장바구니가 비어 있을 경우 ORDER-401 예외를 던진다.")
     void throw_order_401_when_cart_is_empty() {
         // when
         ExtractableResponse<Response> response = UrlHelper.Order.orderCart(accessToken);
@@ -60,7 +60,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /orders/{orderId} API는 orderId에 해당하는 주문 정보를 반환한다.")
+    @DisplayName("GET /api/orders/{orderId} API는 orderId에 해당하는 주문 정보를 반환한다.")
     void find_order_detail_by_orderId() {
         // given
         ProductResponse productResponse = findAllProducts().get(0);
@@ -83,10 +83,10 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /orders/{orderId} API는 orderId에 해당하는 주문 정보가 없을 경우 ORDER-402를 반환한다.")
+    @DisplayName("GET /api/orders/{orderId} API는 orderId에 해당하는 주문 정보가 없을 경우 ORDER-402를 반환한다.")
     void not_found_order() {
         // when
-        ExtractableResponse<Response> response = Order.findOrderDetail(accessToken, "/orders/99999");
+        ExtractableResponse<Response> response = Order.findOrderDetail(accessToken, "/api/orders/99999");
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.statusCode());
@@ -94,7 +94,7 @@ class OrderAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("GET /orders API는 모든 주문 정보를 반환한다.")
+    @DisplayName("GET /api/orders API는 모든 주문 정보를 반환한다.")
     void find_order_history() {
         // given
         ProductResponse firstProduct = findAllProducts().get(0);
