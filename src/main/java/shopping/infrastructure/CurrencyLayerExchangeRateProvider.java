@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import shopping.application.ExchangeRateProvider;
+import shopping.application.ExchangeRateProviderService;
 
 import java.time.Duration;
 
 @Component
 @Profile("!test")
-public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
+public class CurrencyLayerExchangeRateProvider implements ExchangeRateProviderService {
 
     private static final String EXCHANGE_RATE_API_PATH = "/live";
     private static final String SOURCE_CURRENCY = "USD";

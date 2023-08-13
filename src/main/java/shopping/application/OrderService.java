@@ -21,28 +21,24 @@ public class OrderService {
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final ExchangeRateProvider exchangeRateProvider;
 
     public OrderService(final CartItemRepository cartItemRepository,
                         final OrderRepository orderRepository,
-                        final OrderMapper orderMapper,
-                        final ExchangeRateProvider exchangeRateProvider) {
+                        final OrderMapper orderMapper) {
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-        this.exchangeRateProvider = exchangeRateProvider;
     }
 
     @Transactional
-    public Long createFromCart(final Long userId) {
-        Cart cart = findCartByUserId(userId);
+    public Long createFromCart(final Long userId, final double exchangeRate) {
+        final Cart cart = findCartByUserId(userId);
 
         validateCartNotEmpty(cart);
 
-        double exchangeRate = exchangeRateProvider.getExchangeRate();
-        Order order = orderMapper.mapOrderFrom(cart, exchangeRate);
+        final Order order = orderMapper.mapOrderFrom(cart, exchangeRate);
 
-        Long id = orderRepository.save(order).getId();
+        final Long id = orderRepository.save(order).getId();
         cartItemRepository.deleteAll(cart.getItems());
 
         return id;
@@ -56,7 +52,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public OrderDetailResponse findById(final Long userId, final Long id) {
-        Order order = orderRepository.findById(id)
+        final Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new ShoppingException(ErrorType.ORDER_NO_EXIST, id));
 
         if (!Objects.equals(order.getUserId(), userId)) {
@@ -68,7 +64,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public List<OrderResponse> findAll(final Long userId) {
-        List<Order> orders = orderRepository.findAllByUserId(userId);
+        final List<Order> orders = orderRepository.findAllByUserId(userId);
 
         return orders.stream()
                 .map(OrderResponse::from)

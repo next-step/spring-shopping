@@ -1,6 +1,6 @@
 package shopping.application;
 
-public interface ExchangeRateProvider {
+public interface ExchangeRateProviderService {
 
     Double getExchangeRate();
 }
