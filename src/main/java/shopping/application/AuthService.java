@@ -2,7 +2,6 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.auth.PBKDF2PasswordEncoder;
 import shopping.auth.PasswordEncoder;
 import shopping.auth.TokenProvider;
 import shopping.domain.user.Email;
@@ -18,11 +17,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
-    private final PasswordEncoder passwordEncoder = new PBKDF2PasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, TokenProvider tokenProvider) {
+    public AuthService(UserRepository userRepository, TokenProvider tokenProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
