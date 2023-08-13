@@ -2,11 +2,16 @@ package shopping.intergration;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import shopping.dto.response.OrderCreateResponse;
 import shopping.dto.response.OrderResponse;
 import shopping.dto.response.OrderResponses;
@@ -15,6 +20,8 @@ import shopping.exception.ErrorCode;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderItemRepository;
 import shopping.repository.OrderRepository;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.*;
 import static shopping.intergration.helper.CartItemHelper.addCartItem;
@@ -37,8 +44,17 @@ class OrderIntegrationTest extends IntegrationTest {
     @Autowired
     OrderRepository orderRepository;
 
+    MockWebServer mockWebServer;
+
+    @BeforeEach
+    void setup() throws IOException {
+        mockWebServer = new MockWebServer();
+        mockWebServer.start(8888);
+    }
+
     @AfterEach
-    void tearDown() {
+    void tearDown() throws IOException {
+        mockWebServer.shutdown();
         cartItemRepository.deleteAllInBatch();
         orderItemRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
@@ -51,6 +67,7 @@ class OrderIntegrationTest extends IntegrationTest {
         addCartItem(accessToken, 1L);
         addCartItem(accessToken, 1L);
         addCartItem(accessToken, 2L);
+        stubbingExchangeRate();
 
         final ExtractableResponse<Response> response = createOrderRequest(accessToken);
 
@@ -63,6 +80,7 @@ class OrderIntegrationTest extends IntegrationTest {
         final String accessToken = login(EMAIL, PASSWORD).getToken();
         addCartItem(accessToken, 1L);
         addCartItem(accessToken, 2L);
+        stubbingExchangeRate();
         final OrderCreateResponse orders = createOrders(accessToken);
 
         final ExtractableResponse<Response> response = readOrderRequest(accessToken, orders);
@@ -91,9 +109,11 @@ class OrderIntegrationTest extends IntegrationTest {
         final String accessToken = login(EMAIL, PASSWORD).getToken();
         addCartItem(accessToken, 1L);
         addCartItem(accessToken, 2L);
+        stubbingExchangeRate();
         createOrders(accessToken);
         addCartItem(accessToken, 2L);
         addCartItem(accessToken, 2L);
+        stubbingExchangeRate();
         createOrders(accessToken);
 
         final ExtractableResponse<Response> response = readOrdersRequest(accessToken);
@@ -113,11 +133,21 @@ class OrderIntegrationTest extends IntegrationTest {
     @DisplayName("장바구니에 등록한 아이템이 없으면 주문에 실패한다.")
     void ifEmptyCartFailCreateOrder() {
         final String accessToken = login(EMAIL, PASSWORD).getToken();
+        stubbingExchangeRate();
 
         final ExtractableResponse<Response> response = createOrderRequest(accessToken);
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(extractObject(response, ApiExceptionResponse.class).getMessage())
-                .isEqualTo(ErrorCode.EMPTY_CART_ITEM.getMessage());
+                .isEqualTo(ErrorCode.EMPTY_ORDER_ITEM.getMessage());
+    }
+
+
+    private void stubbingExchangeRate() {
+        String jsonStr = "{\"quotes\" : { \"USDKRW\" : 1300.00}}";
+        mockWebServer.enqueue(new MockResponse()
+                .setResponseCode(200)
+                .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .setBody(jsonStr));
     }
 }

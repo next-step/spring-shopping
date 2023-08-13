@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import shopping.config.TestConfig;
 import shopping.domain.cart.CartItem;
 import shopping.domain.member.Member;
 import shopping.domain.order.Order;
@@ -25,7 +24,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.groups.Tuple.tuple;
 
 @DataJpaTest
-@Import({OrderService.class, TestConfig.class})
+@Import({OrderService.class})
 class OrderServiceTest {
 
     @Autowired
@@ -66,7 +65,7 @@ class OrderServiceTest {
 
         assertThatCode(() -> orderService.createOrder(anyMember.getId(), 1311.0))
                 .isInstanceOf(ShoppingException.class)
-                .hasMessage("해당 장바구니가 비어있습니다.");
+                .hasMessage("주문 아이템이 없습니다.");
     }
 
     @Test
