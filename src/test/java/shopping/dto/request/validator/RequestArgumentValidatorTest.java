@@ -16,7 +16,9 @@ class RequestArgumentValidatorTest {
     @ValueSource(strings = {"asdf", "helloworld"})
     void validateStringArgumentSuccess(String target) {
         // when, then
-        assertThatCode(() -> RequestArgumentValidator.validateStringArgument(target, "target", 12))
+        assertThatCode(
+                () -> RequestArgumentValidator.validateStringNotNullAndNotBlankAndNotLong(target,
+                        "target", 12))
                 .doesNotThrowAnyException();
     }
 
@@ -26,7 +28,9 @@ class RequestArgumentValidatorTest {
     @ValueSource(strings = {"  ", "a123456789b123456789"})
     void validateStringArgumentThrow(String target) {
         // when, then
-        assertThatCode(() -> RequestArgumentValidator.validateStringArgument(target, "target", 12))
+        assertThatCode(
+                () -> RequestArgumentValidator.validateStringNotNullAndNotBlankAndNotLong(target,
+                        "target", 12))
                 .isInstanceOf(ArgumentValidateFailException.class);
     }
 
@@ -35,7 +39,8 @@ class RequestArgumentValidatorTest {
     @ValueSource(longs = {1L, 2L})
     void validateNumberArgumentSuccess(Long target) {
         // when, then
-        assertThatCode(() -> RequestArgumentValidator.validateNumberArgument(target, "target"))
+        assertThatCode(
+                () -> RequestArgumentValidator.validateNumberNotNullAndPositive(target, "target"))
                 .doesNotThrowAnyException();
     }
 
@@ -45,7 +50,8 @@ class RequestArgumentValidatorTest {
     @ValueSource(longs = {-1L})
     void validateNumberArgumentThrow(Long target) {
         // when, then
-        assertThatCode(() -> RequestArgumentValidator.validateNumberArgument(target, "target"))
+        assertThatCode(
+                () -> RequestArgumentValidator.validateNumberNotNullAndPositive(target, "target"))
                 .isInstanceOf(ArgumentValidateFailException.class);
     }
 

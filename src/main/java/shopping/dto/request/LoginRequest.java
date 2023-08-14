@@ -1,6 +1,6 @@
 package shopping.dto.request;
 
-import static shopping.dto.request.validator.RequestArgumentValidator.validateStringArgument;
+import static shopping.dto.request.validator.RequestArgumentValidator.validateStringNotNullAndNotBlankAndNotLong;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,8 +24,8 @@ public class LoginRequest {
     }
 
     private void validate(String email, String password) {
-        validateStringArgument(email, EMAIL_NAME, EMAIL_MAX_LENGTH);
-        validateStringArgument(password, PASSWORD_NAME, PASSWORD_MAX_LENGTH);
+        validateStringNotNullAndNotBlankAndNotLong(email, EMAIL_NAME, EMAIL_MAX_LENGTH);
+        validateStringNotNullAndNotBlankAndNotLong(password, PASSWORD_NAME, PASSWORD_MAX_LENGTH);
     }
 
     public String getEmail() {

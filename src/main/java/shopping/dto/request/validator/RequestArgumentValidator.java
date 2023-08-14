@@ -7,7 +7,8 @@ public class RequestArgumentValidator {
     private RequestArgumentValidator() {
     }
 
-    public static void validateStringArgument(String target, String targetName, int maxLength) {
+    public static void validateStringNotNullAndNotBlankAndNotLong(String target, String targetName,
+            int maxLength) {
 
         if (target == null || target.isBlank()) {
             throw new ArgumentValidateFailException(targetName + " 항목은 비어있으면 안됩니다.");
@@ -22,7 +23,7 @@ public class RequestArgumentValidator {
         }
     }
 
-    public static void validateNumberArgument(Number target, String targetName) {
+    public static void validateNumberNotNullAndPositive(Number target, String targetName) {
         validateNotNull(target, targetName);
         validatePositive(target, targetName);
     }

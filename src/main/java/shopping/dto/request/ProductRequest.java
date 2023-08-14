@@ -1,7 +1,7 @@
 package shopping.dto.request;
 
-import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberArgument;
-import static shopping.dto.request.validator.RequestArgumentValidator.validateStringArgument;
+import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberNotNullAndPositive;
+import static shopping.dto.request.validator.RequestArgumentValidator.validateStringNotNullAndNotBlankAndNotLong;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,9 +28,9 @@ public class ProductRequest {
     }
 
     private void validate(String name, String imageUrl, Long price) {
-        validateStringArgument(name, NAME_NAME, MAX_NAME_LENGTH);
-        validateStringArgument(imageUrl, IMAGE_URL_NAME, MAX_NAME_LENGTH);
-        validateNumberArgument(price, PRICE_NAME);
+        validateStringNotNullAndNotBlankAndNotLong(name, NAME_NAME, MAX_NAME_LENGTH);
+        validateStringNotNullAndNotBlankAndNotLong(imageUrl, IMAGE_URL_NAME, MAX_NAME_LENGTH);
+        validateNumberNotNullAndPositive(price, PRICE_NAME);
     }
 
     public String getName() {

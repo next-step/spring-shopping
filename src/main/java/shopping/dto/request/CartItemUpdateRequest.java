@@ -1,6 +1,6 @@
 package shopping.dto.request;
 
-import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberArgument;
+import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberNotNullAndPositive;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +18,7 @@ public class CartItemUpdateRequest {
     }
 
     private void validate(Integer quantity) {
-        validateNumberArgument(quantity, QUANTITY_NAME);
+        validateNumberNotNullAndPositive(quantity, QUANTITY_NAME);
     }
 
     public Integer getQuantity() {

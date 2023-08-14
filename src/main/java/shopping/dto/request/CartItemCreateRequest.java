@@ -1,6 +1,6 @@
 package shopping.dto.request;
 
-import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberArgument;
+import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberNotNullAndPositive;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +18,7 @@ public class CartItemCreateRequest {
     }
 
     private void validate(Long productId) {
-        validateNumberArgument(productId, PRODUCT_ID_NAME);
+        validateNumberNotNullAndPositive(productId, PRODUCT_ID_NAME);
     }
 
     public Long getProductId() {
