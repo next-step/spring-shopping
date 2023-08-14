@@ -1,6 +1,7 @@
 package shopping.infrastructure;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.EmptyExchangeRates;
@@ -25,6 +26,7 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
         this.customRestTemplate = customRestTemplate;
     }
 
+    @Cacheable(cacheNames = "exchangeRate", key = "#code", unless = "#result.value == 0.0")
     @Override
     public ExchangeRate getExchange(ExchangeCode code) {
         try {

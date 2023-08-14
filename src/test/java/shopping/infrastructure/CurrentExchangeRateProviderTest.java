@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.EmptyExchangeRate;
 import shopping.domain.ExchangeCode;
@@ -23,18 +27,15 @@ import shopping.domain.ExchangeRate;
 import shopping.dto.response.ExchangeResponse;
 import shopping.exception.InfraException;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @DisplayName("CurrentExchangeRateProvider 클래스")
 class CurrentExchangeRateProviderTest {
 
+    @Autowired
     private ExchangeRateProvider exchangeRateProvider;
-    private CustomRestTemplate customRestTemplate;
 
-    @BeforeEach
-    void setUp() {
-        customRestTemplate = Mockito.mock(CustomRestTemplate.class);
-        exchangeRateProvider = new CurrentExchangeRateProvider("apiKey", customRestTemplate);
-    }
+    @MockBean
+    private CustomRestTemplate customRestTemplate;
 
     @Nested
     @DisplayName("getExchange 메소드는")
@@ -55,6 +56,24 @@ class CurrentExchangeRateProviderTest {
 
             // then
             assertThat(exchange.getValue()).isEqualTo(codeExchange);
+        }
+
+        @DisplayName("캐싱된 환율 정보를 가져온다")
+        @Test
+        void getExchange_fromCache() {
+            // given
+            ExchangeCode code = ExchangeCode.USDKRW;
+            Double codeExchange = 1302.2;
+            ExchangeResponse response = createExchangeResponse(code, codeExchange);
+
+            given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
+
+            // when
+            ExchangeRate originalExchange = exchangeRateProvider.getExchange(code);
+            ExchangeRate cachedExchange = exchangeRateProvider.getExchange(code);
+
+            // then
+            assertThat(originalExchange).isSameAs(cachedExchange);
         }
 
         @DisplayName("유효하지 않은 quote 를 입력하면 InfraException 을 던진다 ")
