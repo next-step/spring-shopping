@@ -16,9 +16,9 @@ import shopping.order.service.ExchangeType;
 public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService {
 
     public static final int DEFAULT_RETRY_COUNT = 2;
-    private final Logger log = LoggerFactory.getLogger(getClass());
     public static final int JSON_FORMAT_ON = 1;
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
     private final String apikey;
