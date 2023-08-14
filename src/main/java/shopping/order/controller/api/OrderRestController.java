@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.auth.dto.LoginUser;
 import shopping.order.dto.OrderResponse;
+import shopping.order.service.OrderCreator;
 import shopping.order.service.OrderService;
 
 @RestController
@@ -16,14 +17,18 @@ import shopping.order.service.OrderService;
 public class OrderRestController {
 
     private final OrderService orderService;
+    private final OrderCreator orderCreator;
 
-    public OrderRestController(final OrderService orderService) {
+    public OrderRestController(final OrderService orderService,
+        final OrderCreator orderCreator) {
         this.orderService = orderService;
+        this.orderCreator = orderCreator;
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> saveOrder(final @LoginUser Long memberId) {
-        return ResponseEntity.ok().body(orderService.saveOrder(memberId));
+        OrderResponse orderResponse = orderCreator.createOrder(memberId);
+        return ResponseEntity.ok().body(orderResponse);
     }
 
     @GetMapping

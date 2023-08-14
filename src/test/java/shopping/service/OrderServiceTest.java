@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import shopping.cart.domain.CartProduct;
 import shopping.cart.repository.CartProductRepository;
-import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.exception.ShoppingException;
+import shopping.infrastructure.MockExchangeRateApi;
+import shopping.infrastructure.dto.ExchangeRateResponse;
 import shopping.order.domain.Order;
 import shopping.order.dto.OrderResponse;
 import shopping.order.repository.OrderRepository;
 import shopping.order.service.OrderService;
-import shopping.infrastructure.ExchangeRateApi;
 
 @DataJpaTest
 @Import(MockExchangeRateApi.class)
@@ -32,39 +32,38 @@ public class OrderServiceTest {
     @Autowired
     private CartProductRepository cartProductRepository;
 
-    @Autowired
-    private ExchangeRateApi exchangeRateApi;
-
     private OrderService orderService;
 
     @BeforeEach
     void setUp() {
-        orderService = new OrderService(orderRepository, cartProductRepository, exchangeRateApi);
+        orderService = new OrderService(orderRepository, cartProductRepository);
     }
 
     @Test
-    @DisplayName("주문 상품을 생성한다.")
+    @DisplayName("주문 상품을 정상적으로 생성한다.")
     void 주문_상품_정상적으로_생성_한다() {
         // given
         Long memberId = 1L;
+        ExchangeRateResponse exchangeRateResponse = new ExchangeRateResponse(1300D);
         List<CartProduct> cartProducts = cartProductRepository
             .findAllByMemberId(memberId);
         assertThat(cartProducts).isNotEmpty();
         // when
-        OrderResponse orderResponse = orderService.saveOrder(memberId);
+        OrderResponse orderResponse = orderService.saveOrder(memberId, exchangeRateResponse);
         // then
         assertThat(orderResponse.getItems().size()).isEqualTo(cartProducts.size());
     }
 
     @Test
-    @DisplayName("주문 상품을 생성한다.")
+    @DisplayName("주문 상품이 없을 경우 에러 반환한다.")
     void 주문_상품이_없을_경우_에러_반환_한다() {
         // given
         Long memberId = 3L;
+        ExchangeRateResponse exchangeRateResponse = new ExchangeRateResponse(1300D);
         assertThat(cartProductRepository.findAllByMemberId(memberId)).isEmpty();
 
         // when & then
-        assertThatCode(() -> orderService.saveOrder(memberId))
+        assertThatCode(() -> orderService.saveOrder(memberId, exchangeRateResponse))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("주문하실 상품이 존재하지 않습니다.");
     }
@@ -112,18 +111,19 @@ public class OrderServiceTest {
     void 주문_생성_시_주문_상품_없다면_에러_반환() {
         // given
         Long memberId = 3L;
+        ExchangeRateResponse exchangeRateResponse = new ExchangeRateResponse(1300D);
 
         // when & then
-        assertThatCode(() -> orderService.saveOrder(memberId))
+        assertThatCode(() -> orderService.saveOrder(memberId, exchangeRateResponse))
             .isInstanceOf(ShoppingException.class)
             .hasMessage("주문하실 상품이 존재하지 않습니다.");
     }
-    
+
     @Test
     @DisplayName("사용자별 모든 주문을 다 가져온다.")
-    void 사용자별_주문_목록_반환(){
+    void 사용자별_주문_목록_반환() {
         // given 
-        Long memberId= 2L;
+        Long memberId = 2L;
         List<Order> orderList = orderRepository.findByMemberId(2L);
 
         // when

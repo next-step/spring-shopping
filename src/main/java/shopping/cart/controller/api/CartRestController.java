@@ -1,7 +1,6 @@
 package shopping.cart.controller.api;
 
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,7 @@ public class CartRestController {
 
     private final CartService cartService;
 
-    public CartRestController(
-        final CartService cartService
-    ) {
+    public CartRestController(final CartService cartService) {
         this.cartService = cartService;
     }
 

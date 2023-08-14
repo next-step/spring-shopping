@@ -7,11 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.global.exception.ShoppingException;
+import shopping.infrastructure.dto.ExchangeRateResponse;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.order.dto.OrderResponse;
 import shopping.order.repository.OrderRepository;
-import shopping.infrastructure.ExchangeRateApi;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,20 +19,18 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CartProductRepository cartProductRepository;
-    private final ExchangeRateApi exchangeRateApi;
 
     public OrderService(
         final OrderRepository orderRepository,
-        final CartProductRepository cartProductRepository,
-        final ExchangeRateApi exchangeRateApi
+        final CartProductRepository cartProductRepository
     ) {
         this.orderRepository = orderRepository;
         this.cartProductRepository = cartProductRepository;
-        this.exchangeRateApi = exchangeRateApi;
     }
 
     @Transactional
-    public OrderResponse saveOrder(final Long memberId) {
+    public OrderResponse saveOrder(final Long memberId,
+        ExchangeRateResponse exchangeRateResponse) {
         List<CartProduct> cartProducts = cartProductRepository
             .findAllByMemberId(memberId);
 
@@ -40,7 +38,7 @@ public class OrderService {
             throw new ShoppingException("주문하실 상품이 존재하지 않습니다.");
         }
 
-        Order order = new Order(memberId, exchangeRateApi.callExchangeRate());
+        Order order = new Order(memberId, exchangeRateResponse);
         orderRepository.save(order);
 
         List<OrderProduct> orderProducts = convertOrderProduct(cartProducts);
@@ -58,7 +56,6 @@ public class OrderService {
     }
 
     public OrderResponse getOrder(final Long memberId, final Long orderId) {
-
         Order order = orderRepository.findById(orderId)
             .orElseThrow(
                 () -> new ShoppingException("찾으시는 주문이 존재하지 않습니다. 입력 값 : " + orderId)
