@@ -16,11 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestTemplate;
-import shopping.config.TestConfig;
+import shopping.infrastructure.config.CurrencyLayerExchangeRateApiTestConfig;
 import shopping.infrastructure.dto.ExchangeRateResponse;
 
 @RestClientTest(CurrencyLayerExchangeRateApi.class)
-@Import(TestConfig.class)
+@Import(CurrencyLayerExchangeRateApiTestConfig.class)
 public class CurrencyLayerExchangeRateApiTest {
 
     private @Value("${currency.accessKey}") String accessKey;
@@ -86,4 +86,6 @@ public class CurrencyLayerExchangeRateApiTest {
         // then
         assertThat(response).isEqualTo(null);
     }
+
+
 }
