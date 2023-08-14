@@ -22,7 +22,7 @@ import shopping.repository.UserRepository;
 @Service
 @Transactional(readOnly = true)
 public class OrderService {
-    
+
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
@@ -48,8 +48,7 @@ public class OrderService {
     private Order saveOrder(ExchangeRate rate, User user, List<CartItem> cartItems) {
         Cart cart = new Cart(cartItems, user);
         Order order = cart.toOrderWithRatio(rate.toDomain());
-        orderRepository.save(order);
-        return order;
+        return orderRepository.save(order);
     }
 
 
