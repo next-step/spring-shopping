@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import shopping.common.domain.Rate;
+import shopping.order.exchage.currencylayer.CurrencylayerExchangeRateServiceImpl;
 import shopping.order.service.ExchangeType;
 
 @SpringBootTest

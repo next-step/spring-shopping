@@ -14,7 +14,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import shopping.order.service.ExchangeRateService;
-import shopping.other.exchange.currencylayer.CurrencylayerExchangeRateServiceImpl;
+import shopping.order.exchage.currencylayer.CurrencylayerExchangeRateServiceImpl;
 
 @Configuration
 public class OtherApiConfiguration {

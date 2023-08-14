@@ -1,4 +1,4 @@
-package shopping.other.exchange.currencylayer;
+package shopping.order.exchage.currencylayer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
