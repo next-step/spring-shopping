@@ -13,6 +13,7 @@ import shopping.infrastructure.ExchangeRateApi;
 @Configuration
 @Import(TestConfig.class)
 public class CurrencyLayerExchangeRateApiTestConfig {
+
     @Autowired
     private RestTemplate restTemplate;
 
@@ -20,6 +21,7 @@ public class CurrencyLayerExchangeRateApiTestConfig {
     private String accessKey;
     @Value("${currency.baseUrl}")
     private String baseurl;
+
     @Bean
     public ExchangeRateApi exchangeRateApi() {
         return new CurrencyLayerExchangeRateApi(

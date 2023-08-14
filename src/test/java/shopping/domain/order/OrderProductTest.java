@@ -10,7 +10,7 @@ import shopping.global.vo.Quantity;
 import shopping.order.domain.OrderProduct;
 import shopping.product.domain.ProductImage;
 
-public class OrderProductTest {
+class OrderProductTest {
 
     @Test
     @DisplayName("Order Product를 생성한다.")

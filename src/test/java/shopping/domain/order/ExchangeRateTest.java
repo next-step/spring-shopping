@@ -6,19 +6,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.slf4j.Logger;
 import shopping.global.exception.ShoppingException;
 import shopping.order.domain.vo.ExchangeRate;
 
-public class ExchangeRateTest {
+class ExchangeRateTest {
 
     @ParameterizedTest
-    @ValueSource(doubles = { -1, 0})
+    @ValueSource(doubles = {-1, 0})
     @DisplayName("환율은 0 미만이면 안된다.")
     void 환율_0_이하일_경우_에러_반환(Double value) {
         assertThatCode(() -> new ExchangeRate(value))
             .isInstanceOf(ShoppingException.class)
-            .hasMessage("환율은 0미만이면 안됩니다. 입력값: "+value);
+            .hasMessage("환율은 0미만이면 안됩니다. 입력값: " + value);
     }
 
     @Test

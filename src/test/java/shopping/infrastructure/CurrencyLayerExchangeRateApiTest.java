@@ -21,7 +21,7 @@ import shopping.infrastructure.dto.ExchangeRateResponse;
 
 @RestClientTest(CurrencyLayerExchangeRateApi.class)
 @Import(CurrencyLayerExchangeRateApiTestConfig.class)
-public class CurrencyLayerExchangeRateApiTest {
+class CurrencyLayerExchangeRateApiTest {
 
     private @Value("${currency.accessKey}") String accessKey;
     private @Value("${currency.baseUrl}") String baseurl;
@@ -34,7 +34,7 @@ public class CurrencyLayerExchangeRateApiTest {
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
@@ -68,12 +68,12 @@ public class CurrencyLayerExchangeRateApiTest {
         ExchangeRateResponse response = exchangeRateApi.callExchangeRate();
 
         // then
-        assertThat(response).isEqualTo(null);
+        assertThat(response).isNull();
     }
 
     @Test
     @DisplayName("만약 response에 qutoes가 있지만, KRW 가 없을 때 null을 반환한다.")
-    public void response_있을때_quotes가_있지만_KRW가_없을때_null() {
+    void response_있을때_quotes가_있지만_KRW가_없을때_null() {
         // given
         String jsonResponse = "{\"hello\": {\"USD" + "EUR\": 1200}}";
         mockServer
@@ -84,7 +84,7 @@ public class CurrencyLayerExchangeRateApiTest {
         ExchangeRateResponse response = exchangeRateApi.callExchangeRate();
 
         // then
-        assertThat(response).isEqualTo(null);
+        assertThat(response).isNull();
     }
 
 

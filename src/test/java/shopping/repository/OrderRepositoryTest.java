@@ -7,17 +7,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
+import shopping.infrastructure.MockExchangeRateApi;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.order.repository.OrderRepository;
 import shopping.product.domain.ProductImage;
 
 @DataJpaTest
-public class OrderRepositoryTest {
+class OrderRepositoryTest {
 
     @Autowired
     OrderRepository orderRepository;
@@ -36,7 +36,7 @@ public class OrderRepositoryTest {
             new ProductImage(imageUrl),
             new Price(price),
             new Quantity(10));
-        Order order = new Order( memberId, new MockExchangeRateApi().callExchangeRate());
+        Order order = new Order(memberId, new MockExchangeRateApi().callExchangeRate());
         order.addOrderProducts(List.of(orderProduct));
         orderRepository.save(order);
 

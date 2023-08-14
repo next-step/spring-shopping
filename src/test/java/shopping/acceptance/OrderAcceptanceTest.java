@@ -14,7 +14,7 @@ import shopping.acceptance.helper.RestHelper;
 import shopping.cart.dto.response.CartResponse;
 import shopping.order.dto.OrderResponse;
 
-public class OrderAcceptanceTest extends AcceptanceTest {
+class OrderAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("사용자가 장바구니의 상품을 주문한다")
@@ -27,13 +27,11 @@ public class OrderAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.body().as(OrderResponse.class)
-            .getItems().size())
-            .isEqualTo(2);
+        assertThat(response.body().as(OrderResponse.class).getItems()).hasSize(2);
         ExtractableResponse<Response> cartProductResponse = RestHelper.get(
             "/api/cartProduct", jwt);
         assertThat(cartProductResponse.body().as(new TypeRef<List<CartResponse>>() {
-        })).hasSize(0);
+        })).isEmpty();
 
     }
 

@@ -2,6 +2,7 @@ package shopping.order.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -68,7 +69,7 @@ public class Order {
 
 
     public boolean matchPersonOrder(final Long memberId) {
-        return this.memberId == memberId;
+        return Objects.equals(this.memberId, memberId);
     }
 
     public Long getId() {

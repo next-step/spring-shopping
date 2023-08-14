@@ -6,16 +6,16 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
+import shopping.infrastructure.ExchangeRateApi;
+import shopping.infrastructure.MockExchangeRateApi;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.product.domain.ProductImage;
-import shopping.infrastructure.ExchangeRateApi;
 
-public class OrderTest {
+class OrderTest {
 
     private ExchangeRateApi exchangeRateApi = new MockExchangeRateApi();
 

@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(initializers = ConfigDataApplicationContextInitializer.class)
 @DisplayName("RestTemplate의 사용법을 공부한다.")
-public class RestTemplateTest {
+class RestTemplateTest {
 
     @Value(value = "${currency.accessKey}")
     private String accessKey;
@@ -31,7 +31,7 @@ public class RestTemplateTest {
         // when
         ResponseEntity<Map> body = restTemplatePractice.getBody();
         // then
-        assertThat(body.getBody().get("success")).isEqualTo(true);
+        assertThat(body.getBody()).containsEntry("success", true);
     }
 
 

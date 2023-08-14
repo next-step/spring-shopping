@@ -7,8 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import shopping.cart.repository.CartProductRepository;
 import shopping.cart.domain.CartProduct;
+import shopping.cart.repository.CartProductRepository;
 import shopping.product.domain.Product;
 import shopping.product.repository.ProductRepository;
 
@@ -84,8 +84,8 @@ class CartProductRepositoryTest {
         // when
         cartProductRepository.deleteAllByMemberId(existMemberId);
         // then
-        assertThat(cartProductRepository.findAllByMemberId(existMemberId).size())
-            .isEqualTo(0);
+        assertThat(cartProductRepository.findAllByMemberId(existMemberId))
+            .isEmpty();
 
     }
 }

@@ -24,7 +24,7 @@ import shopping.order.service.OrderService;
 @DataJpaTest
 @Import(MockExchangeRateApi.class)
 @ActiveProfiles("test")
-public class OrderServiceTest {
+class OrderServiceTest {
 
     @Autowired
     private OrderRepository orderRepository;
