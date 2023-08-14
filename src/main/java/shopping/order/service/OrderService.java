@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shopping.cart.dto.CartProductWithProduct;
+import shopping.cart.domain.CartProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.global.exception.ShoppingException;
 import shopping.order.domain.Order;
@@ -33,7 +33,7 @@ public class OrderService {
 
     @Transactional
     public OrderResponse saveOrder(final Long memberId) {
-        List<CartProductWithProduct> cartProducts = cartProductRepository
+        List<CartProduct> cartProducts = cartProductRepository
             .findAllByMemberId(memberId);
 
         if (cartProducts.isEmpty()) {
@@ -51,7 +51,7 @@ public class OrderService {
     }
 
     private List<OrderProduct> convertOrderProduct(
-        final List<CartProductWithProduct> cartProducts) {
+        final List<CartProduct> cartProducts) {
         return cartProducts.stream()
             .map(OrderProduct::from)
             .collect(Collectors.toList());

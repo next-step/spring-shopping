@@ -1,18 +1,17 @@
 package shopping.cart.service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartProduct;
-import shopping.cart.dto.CartProductWithProduct;
 import shopping.cart.dto.request.CartProductCreateRequest;
 import shopping.cart.dto.request.CartProductQuantityUpdateRequest;
 import shopping.cart.dto.response.CartResponse;
-import shopping.global.exception.ShoppingException;
 import shopping.cart.repository.CartProductRepository;
+import shopping.global.exception.ShoppingException;
+import shopping.product.domain.Product;
 import shopping.product.repository.ProductRepository;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +29,7 @@ public class CartService {
     }
 
     public List<CartResponse> findAllCartProducts(final Long memberId) {
-        List<CartProductWithProduct> cartProducts = cartProductRepository.findAllByMemberId(
+        List<CartProduct> cartProducts = cartProductRepository.findAllByMemberId(
             memberId);
         return cartProducts.stream()
             .map(CartResponse::from)
@@ -44,16 +43,15 @@ public class CartService {
     ) {
         final Long productId = cartProductCreateRequest.getProductId();
 
-        productRepository.findById(productId)
+        Product product = productRepository.findById(productId)
             .orElseThrow(() -> new ShoppingException("존재하지 않는 상품입니다. 입력값: " + productId));
-
-        cartProductRepository.findByMemberIdAndProductId(memberId, productId)
+        cartProductRepository.findByMemberIdAndProduct(memberId, product)
             .ifPresent(cartProduct -> {
                 throw new ShoppingException(
-                    "이미 장바구니에 담긴 상품입니다. 입력값: " + cartProduct.getProductId());
+                    "이미 장바구니에 담긴 상품입니다. 입력값: " + cartProduct.getProduct().getId());
             });
 
-        return cartProductRepository.save(new CartProduct(memberId, productId));
+        return cartProductRepository.save(new CartProduct(memberId, product));
     }
 
     @Transactional

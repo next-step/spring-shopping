@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import shopping.cart.domain.CartProduct;
-import shopping.cart.dto.CartProductWithProduct;
 import shopping.global.vo.Name;
 import shopping.global.vo.Price;
 import shopping.global.vo.Quantity;
@@ -69,20 +68,20 @@ public class OrderProduct {
         this.quantity = quantity;
     }
 
-    public static OrderProduct from(final CartProductWithProduct cartItem) {
+    public static OrderProduct from(final CartProduct cartItem) {
         return new OrderProduct(
-            cartItem.getCartProduct(),
-            cartItem.getProduct()
+            cartItem.getProduct(),
+            cartItem.getQuantity()
         );
     }
 
-    private OrderProduct(final CartProduct cartProduct, final Product product) {
+    private OrderProduct(final Product product, final int quantity) {
         this(
-            cartProduct.getProductId(),
+            product.getId(),
             new Name(product.getName()),
             new ProductImage(product.getImage()),
             new Price(product.getPrice()),
-            new Quantity(cartProduct.getQuantity())
+            new Quantity(quantity)
         );
     }
 

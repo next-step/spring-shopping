@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import shopping.cart.dto.CartProductWithProduct;
+import shopping.cart.domain.CartProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.infrastructure.MockExchangeRateApi;
 import shopping.global.exception.ShoppingException;
@@ -47,7 +47,7 @@ public class OrderServiceTest {
     void 주문_상품_정상적으로_생성_한다() {
         // given
         Long memberId = 1L;
-        List<CartProductWithProduct> cartProducts = cartProductRepository
+        List<CartProduct> cartProducts = cartProductRepository
             .findAllByMemberId(memberId);
         assertThat(cartProducts).isNotEmpty();
         // when

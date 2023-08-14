@@ -35,13 +35,23 @@ public class Product {
     }
 
     public Product(
+        final Long id,
         final String name,
         final String image,
         final int price
     ) {
+        this.id = id;
         this.name = new Name(name);
         this.image = new ProductImage(image);
         this.price = new Price(price);
+    }
+
+    public Product(
+        final String name,
+        final String image,
+        final int price
+    ) {
+        this(null, name, image, price);
     }
 
     public Long getId() {
