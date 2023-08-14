@@ -12,14 +12,13 @@ import shopping.domain.entity.ProductEntity;
 import shopping.domain.entity.UserEntity;
 
 @DisplayName("OrderEntityTest")
-public class OrderEntityTest {
+class OrderEntityTest {
 
     @Test
     @DisplayName("성공 : 주문 상품의 전체 금액과 환율 정보 업데이트")
     void updatePrices() {
         // given
         UserEntity user = new UserEntity(1L, "test@email.com", "test_password");
-        OrderEntity order = OrderEntity.by(user);
         ProductEntity chicken = new ProductEntity(1L, "치킨", "image_chicken", 20000);
         ProductEntity pizza = new ProductEntity(2L, "피자", "image_pizza", 25000);
         CartItemEntity cartChicken = new CartItemEntity(1L, user, chicken, 1);
@@ -29,7 +28,7 @@ public class OrderEntityTest {
         CurrencyPoint currencyPoint = CurrencyPoint.HUNDREDTH;
 
         // when
-        order.updatePrices(cartItems, currencyRatio, currencyPoint);
+        OrderEntity order = OrderEntity.from(user, cartItems, currencyRatio, currencyPoint);
 
         // then
         assertThat(order.getTotalPrice()).isEqualTo(70000);
@@ -41,7 +40,6 @@ public class OrderEntityTest {
     void addOrderItems() {
         // given
         UserEntity user = new UserEntity(1L, "test@email.com", "test_password");
-        OrderEntity order = OrderEntity.by(user);
         ProductEntity chicken = new ProductEntity(1L, "치킨", "image_chicken", 20000);
         ProductEntity pizza = new ProductEntity(2L, "피자", "image_pizza", 25000);
         CartItemEntity cartChicken = new CartItemEntity(1L, user, chicken, 1);
@@ -51,11 +49,12 @@ public class OrderEntityTest {
         CurrencyPoint currencyPoint = CurrencyPoint.HUNDREDTH;
 
         // when
+        OrderEntity order = OrderEntity.from(user, cartItems, currencyRatio, currencyPoint);
         order.addOrderItems(cartItems, currencyRatio, currencyPoint);
         List<OrderItemEntity> orderItems = order.getOrderItems();
 
         // then
-        assertThat(orderItems.size()).isEqualTo(2);
+        assertThat(orderItems).size().isEqualTo(2);
         assertThat(orderItems.get(0).getTotalPrice()).isEqualTo(20000);
         assertThat(orderItems.get(1).getTotalPrice()).isEqualTo(50000);
 

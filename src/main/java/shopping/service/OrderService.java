@@ -42,8 +42,7 @@ public class OrderService {
             throw new ShoppingException(ErrorCode.INVALID_PURCHASE);
         }
 
-        OrderEntity order = OrderEntity.by(user);
-        order.updatePrices(cartItems, currency, CurrencyPoint.HUNDREDTH);
+        OrderEntity order = OrderEntity.from(user, cartItems, currency, CurrencyPoint.HUNDREDTH);
         order.addOrderItems(cartItems, currency, CurrencyPoint.HUNDREDTH);
 
         return new OrderIdResponse(orderRepository.save(order).getId());

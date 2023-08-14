@@ -49,7 +49,7 @@ public class OrderEntity {
         this.orderItems = orderItems;
     }
 
-    public OrderEntity(
+    private OrderEntity(
         int totalPrice,
         double totalPriceUSD,
         UserEntity user
@@ -57,32 +57,30 @@ public class OrderEntity {
         this(null, totalPrice, totalPriceUSD, user, null);
     }
 
-    public static OrderEntity by(UserEntity user) {
-        return new OrderEntity(
-            0,
-            0D,
-            user
-        );
-    }
-
-    public void updatePrices(
+    public static OrderEntity from(
+        UserEntity user,
         List<CartItemEntity> cartItems,
         Double currencyRatio,
         CurrencyPoint currencyPoint
     ) {
-        updateTotalPrice(cartItems);
-        updateTotalPriceUSD(currencyRatio, currencyPoint);
+        int totalPrice = getTotalPrice(cartItems);
+        double totalPriceUSD = getTotalPriceUSD(totalPrice, currencyRatio, currencyPoint);
+        return new OrderEntity(
+            totalPrice,
+            totalPriceUSD,
+            user
+        );
     }
 
-    private void updateTotalPrice(List<CartItemEntity> cartItems) {
-        this.totalPrice = cartItems.stream()
+    private static int getTotalPrice(List<CartItemEntity> cartItems) {
+        return cartItems.stream()
             .map(CartItemEntity::calculatePrice)
             .reduce(Integer::sum)
             .get();
     }
 
-    private void updateTotalPriceUSD(double currencyRatio, CurrencyPoint currencyPoint) {
-        this.totalPriceUSD = Math.round(currencyPoint.getDigits() * totalPrice / currencyRatio) / currencyPoint.getDigits();
+    private static double getTotalPriceUSD(int totalPrice, double currencyRatio, CurrencyPoint currencyPoint) {
+        return Math.round(currencyPoint.getDigits() * totalPrice / currencyRatio) / currencyPoint.getDigits();
     }
 
     public void addOrderItems(
