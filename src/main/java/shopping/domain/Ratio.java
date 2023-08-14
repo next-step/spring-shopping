@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import java.util.Objects;
 import javax.persistence.Embeddable;
 import shopping.exception.ArgumentValidateFailException;
 
@@ -29,5 +30,22 @@ public class Ratio {
 
     public Double getRatio() {
         return ratio;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Ratio ratio1 = (Ratio) o;
+        return Objects.equals(ratio, ratio1.ratio);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ratio);
     }
 }
