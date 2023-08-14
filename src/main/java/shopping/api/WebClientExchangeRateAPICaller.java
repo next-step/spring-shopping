@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,7 +11,6 @@ import shopping.dto.request.ExchangeRate;
 import shopping.exception.CurrencyApiFailException;
 
 @Component
-@Profile("!test")
 public class WebClientExchangeRateAPICaller implements ExchangeRateAPICaller {
 
     private static final String QUOTES = "quotes";

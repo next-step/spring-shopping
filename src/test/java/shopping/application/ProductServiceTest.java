@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
 import shopping.dto.request.ShoppingPageRequest;
@@ -15,6 +16,7 @@ import shopping.repository.ProductRepository;
 
 @Transactional
 @SpringBootTest
+@ActiveProfiles("test")
 @DisplayName("상품 테스트 통합 테스트")
 class ProductServiceTest {
 

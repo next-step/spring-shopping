@@ -7,8 +7,8 @@ import static org.mockserver.model.HttpResponse.response;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +17,8 @@ import org.mockserver.junit.jupiter.MockServerExtension;
 import org.mockserver.model.Header;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import shopping.dto.request.CartItemCreateRequest;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.OrderResponse;
@@ -25,13 +27,17 @@ import shopping.dto.response.OrderResponse;
 @ExtendWith(MockServerExtension.class)
 class OrderIntegrationTest extends IntegrationTest {
 
-    private ClientAndServer mockServer;
+    private static ClientAndServer mockServer;
 
-    @Override
-    @BeforeEach
-    void setUp() {
-        super.setUp();
-        mockServer = ClientAndServer.startClientAndServer(1080);
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("secret.currency.url",
+                () -> "http://127.0.0.1:" + mockServer.getPort() + "/live?access_key=");
+    }
+
+    @BeforeAll
+    static void setUpMockServer() {
+        mockServer = ClientAndServer.startClientAndServer();
         mockServer.when(request()
                 .withMethod("GET")
                 .withPath("/live")
@@ -44,8 +50,8 @@ class OrderIntegrationTest extends IntegrationTest {
         );
     }
 
-    @AfterEach
-    void shutDown() {
+    @AfterAll
+    static void shutDownMockServer() {
         mockServer.stop();
     }
 

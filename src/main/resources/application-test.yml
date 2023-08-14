@@ -1,4 +1,4 @@
 secret:
   currency:
     access_key: test-access-key
-    url: http://localhost:1080/live?currencies=KRW&access_key=
+    url: http://127.0.0.1
