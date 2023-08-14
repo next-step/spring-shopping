@@ -17,7 +17,7 @@ public class CartItemResponse {
     public static CartItemResponse from(final CartItem cartItem) {
         return new CartItemResponse(
                 cartItem.getId(),
-                cartItem.getQuantity(),
+                cartItem.getQuantity().getValue(),
                 ProductResponse.from(cartItem.getProduct())
         );
     }

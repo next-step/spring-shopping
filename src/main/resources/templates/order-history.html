@@ -12,8 +12,8 @@
   <nav class="nav flex justify-end">
     <div class="flex-center gap-15">
       <a href="/" class="nav-button">상품</a>
-      <a href="/cart" class="nav-button">장바구니</a>
-      <a href="/order-history" class="nav-button">주문목록</a>
+      <a href="/cart-items" class="nav-button">장바구니</a>
+      <a href="/orders" class="nav-button">주문목록</a>
       <a href="/login" class="nav-button">로그인</a>
     </div>
   </nav>
@@ -30,8 +30,7 @@
             return;
         }
 
-        // TODO: [4단계] 주문 목록 조회 스펙에 맞게 변경
-        fetch('', {
+        fetch('/api/orders', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${credentials}`,
@@ -43,14 +42,14 @@
             let element = '';
             data.forEach(order => {
                 let itemElement = '';
-                order.items.forEach((item) => {
+                order.orderItems.forEach((item) => {
                     itemElement += `
                         <div class="order-list-item">
                           <div class="flex gap-15 mt-10">
-                            <img class="w-144 h-144" /> <!-- 아이템 이미지 -->
+                            <img src=${item.image} class="w-144 h-144" /> <!-- 아이템 이미지 -->
                             <div class="flex-col gap-15">
-                              <span class="order-name"></span> <!-- 아이템 이름 -->
-                              <span class="order-info">원 / 수량: 개</span> <!-- 아이템 가격 및 수량 -->
+                              <span class="order-name">${item.name}</span> <!-- 아이템 이름 -->
+                              <span class="order-info">${item.price} 원 / 수량: ${item.quantity} 개</span> <!-- 아이템 가격 및 수량 -->
                             </div>
                           </div>
                         </div>
@@ -61,8 +60,8 @@
                 element += `
                     <div class="order-list">
                       <div class="order-list__header">
-                        <span>주문 번호: </span> <!-- 주문 번호 -->
-                        <a href="">상세보기 ></a> <!-- 주문 상세 페이지로 연결 -->
+                        <span>주문 번호: ${order.orderId}</span> <!-- 주문 번호 -->
+                        <a href="/orders/${order.orderId}">상세보기 ></a> <!-- 주문 상세 페이지로 연결 -->
                       </div>
                       ${itemElement}
                     </div>

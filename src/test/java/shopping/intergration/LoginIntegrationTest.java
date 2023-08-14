@@ -32,7 +32,7 @@ class LoginIntegrationTest extends IntegrationTest {
                 .body(new LoginRequest(EMAIL, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login")
+                .when().post("/api/login")
                 .then().log().all().extract().as(LoginResponse.class).getToken();
 
         assertThat(jwtTokenProvider.validateToken(accessToken)).isTrue();
@@ -48,7 +48,7 @@ class LoginIntegrationTest extends IntegrationTest {
                 .body(new LoginRequest(invalidEmail, PASSWORD))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login")
+                .when().post("/api/login")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -66,7 +66,7 @@ class LoginIntegrationTest extends IntegrationTest {
                 .body(new LoginRequest(EMAIL, invalidPassword))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login")
+                .when().post("/api/login")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());

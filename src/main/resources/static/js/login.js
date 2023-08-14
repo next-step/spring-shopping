@@ -11,7 +11,7 @@ form.addEventListener('submit', (event) => {
         loginRequest[key] = value;
     }
 
-    fetch('/login', {
+    fetch('/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ form.addEventListener('submit', (event) => {
         sessionStorage.setItem('accessToken', token);
         window.location.href = '/';
     }).catch((error) => {
-        alert(error);
+        alert(error.message);
     });
 
 });

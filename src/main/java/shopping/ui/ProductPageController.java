@@ -1,4 +1,4 @@
-package shopping.controller;
+package shopping.ui;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,11 +7,11 @@ import shopping.dto.response.ProductResponses;
 import shopping.service.ProductService;
 
 @Controller
-public class ProductController {
+public class ProductPageController {
 
     private final ProductService productService;
 
-    public ProductController(final ProductService productService) {
+    public ProductPageController(final ProductService productService) {
         this.productService = productService;
     }
 

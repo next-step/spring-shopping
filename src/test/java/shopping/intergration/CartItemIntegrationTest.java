@@ -52,7 +52,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .body(new CartItemAddRequest(productId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
+                .when().post("/api/cart-items")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -77,7 +77,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .body(new CartItemAddRequest(productId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
+                .when().post("/api/cart-items")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -100,7 +100,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart-items")
+                .when().get("/api/cart-items")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -128,7 +128,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CartItemUpdateRequest(updateQuantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
+                .when().patch("/api/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -148,7 +148,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/cart-items/{cartItemId}", targetCartItemId)
+                .when().delete("/api/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -165,7 +165,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .body(new CartItemAddRequest(productId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
+                .when().post("/api/cart-items")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -184,7 +184,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .body(new CartItemAddRequest(productId))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/cart-items")
+                .when().post("/api/cart-items")
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
@@ -206,7 +206,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CartItemUpdateRequest(moreThanMaxQuantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
+                .when().patch("/api/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -228,7 +228,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CartItemUpdateRequest(lessThanMinQuantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
+                .when().patch("/api/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -249,7 +249,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .body(new CartItemUpdateRequest(quantity))
-                .when().patch("/cart-items/{cartItemId}", targetCartItemId)
+                .when().patch("/api/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
@@ -268,7 +268,7 @@ class CartItemIntegrationTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(differentMemberAccessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/cart-items/{cartItemId}", targetCartItemId)
+                .when().delete("/api/cart-items/{cartItemId}", targetCartItemId)
                 .then().log().all().extract();
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());

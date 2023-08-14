@@ -37,15 +37,15 @@ public class Product {
         return this.id;
     }
 
-    public String getImage() {
-        return this.image.getValue();
+    public ProductImage getImage() {
+        return this.image;
     }
 
-    public String getName() {
-        return this.name.getValue();
+    public ProductName getName() {
+        return this.name;
     }
 
-    public int getPrice() {
-        return this.price.getValue();
+    public Price getPrice() {
+        return this.price;
     }
 }

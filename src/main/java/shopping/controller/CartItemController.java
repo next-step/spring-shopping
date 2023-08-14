@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.dto.request.CartItemAddRequest;
 import shopping.dto.request.CartItemUpdateRequest;
@@ -16,6 +17,7 @@ import shopping.dto.response.CartItemResponses;
 import shopping.service.CartItemService;
 
 @RestController
+@RequestMapping("/api/cart-items")
 public class CartItemController {
 
     private final CartItemService cartItemService;
@@ -24,14 +26,14 @@ public class CartItemController {
         this.cartItemService = cartItemService;
     }
 
-    @GetMapping("/cart-items")
+    @GetMapping
     public ResponseEntity<CartItemResponses> readCartItems(@RequestAttribute final Long loginMemberId) {
         final CartItemResponses cartItemResponses = cartItemService.readCartItems(loginMemberId);
 
         return ResponseEntity.ok(cartItemResponses);
     }
 
-    @PostMapping("/cart-items")
+    @PostMapping
     public ResponseEntity<CartItemResponse> addCartItem(
             @RequestAttribute final Long loginMemberId,
             @RequestBody final CartItemAddRequest cartItemAddRequest
@@ -41,7 +43,7 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemResponse);
     }
 
-    @PatchMapping("/cart-items/{cartItemId}")
+    @PatchMapping("/{cartItemId}")
     public ResponseEntity<CartItemResponse> updateCartItem(
             @RequestAttribute final Long loginMemberId,
             @PathVariable final Long cartItemId,
@@ -56,7 +58,7 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemResponse);
     }
 
-    @DeleteMapping("/cart-items/{cartItemId}")
+    @DeleteMapping("/{cartItemId}")
     public ResponseEntity<Void> deleteCartItem(
             @RequestAttribute final Long loginMemberId,
             @PathVariable final Long cartItemId
