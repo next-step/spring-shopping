@@ -1,10 +1,10 @@
 package shopping.application;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import shopping.api.ExchangeRateAPICaller;
 import shopping.dto.request.ExchangeRate;
 
-@Component
+@Service
 public class OrderCreator {
 
     private final OrderService orderService;
