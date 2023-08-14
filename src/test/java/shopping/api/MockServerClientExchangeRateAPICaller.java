@@ -12,8 +12,8 @@ import shopping.dto.request.ExchangeRate;
 import shopping.exception.CurrencyApiFailException;
 
 @Component
-@Profile("!test")
-public class WebClientExchangeRateAPICaller implements ExchangeRateAPICaller {
+@Profile("test")
+public class MockServerClientExchangeRateAPICaller implements ExchangeRateAPICaller {
 
     private static final String QUOTES = "quotes";
     private static final String USDKRW = "USDKRW";
@@ -27,7 +27,7 @@ public class WebClientExchangeRateAPICaller implements ExchangeRateAPICaller {
     private String API_ACCESS_KEY;
 
 
-    public WebClientExchangeRateAPICaller(WebClient webClient) {
+    public MockServerClientExchangeRateAPICaller(WebClient webClient) {
         this.webClient = webClient;
     }
 
@@ -40,6 +40,8 @@ public class WebClientExchangeRateAPICaller implements ExchangeRateAPICaller {
                     .retrieve()
                     .bodyToMono(JsonNode.class)
                     .block();
+            log.info("This is Testing Method");
+            log.info(String.valueOf(response));
             return new ExchangeRate(extractExchangeRate(response));
         } catch (Exception e) {
             log.error("환율 API 통신 실패", e);

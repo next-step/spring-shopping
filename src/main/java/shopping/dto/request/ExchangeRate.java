@@ -13,4 +13,8 @@ public class ExchangeRate {
     public Ratio toDomain() {
         return new Ratio(ratio);
     }
+
+    public Double getRatio() {
+        return ratio;
+    }
 }

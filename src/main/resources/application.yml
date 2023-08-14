@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: default
   thymeleaf:
     cache: false
   jpa:
