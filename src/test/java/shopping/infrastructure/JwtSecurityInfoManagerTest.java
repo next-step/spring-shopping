@@ -9,16 +9,17 @@ import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import shopping.domain.TokenProvider;
+import shopping.domain.SecurityInfo;
+import shopping.domain.SecurityInfoManager;
 import shopping.exception.TokenException;
 
 @DisplayName("JwtTokenProvider 클래스")
-class JwtTokenProviderTest {
+class JwtSecurityInfoManagerTest {
 
     private static final String TEST_SECRET_KEY = "this is test secret key";
     private static final int TEST_TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
 
-    private final TokenProvider<Long> tokenProvider = new JwtTokenProvider(TEST_SECRET_KEY);
+    private final SecurityInfoManager securityInfoManager = new JwtSecurityInfoManager(TEST_SECRET_KEY);
 
     @DisplayName("createToken 메서드는")
     @Nested
@@ -29,9 +30,10 @@ class JwtTokenProviderTest {
         void returnJwtToken() {
             // given
             Long memberId = 1L;
+            SecurityInfo securityInfo = new SecurityInfo(memberId);
 
             // when
-            String jwt = tokenProvider.createToken(memberId);
+            String jwt = securityInfoManager.encode(securityInfo);
 
             // then
             assertThat(jwt).isNotBlank();
@@ -47,13 +49,14 @@ class JwtTokenProviderTest {
         void returnMemberIdFromJwt() {
             // given
             Long memberId = 1L;
-            String jwt = tokenProvider.createToken(memberId);
+            SecurityInfo securityInfo = new SecurityInfo(memberId);
+            String jwt = securityInfoManager.encode(securityInfo);
 
             // when
-            Long decodedMemberId = tokenProvider.decodeToken(jwt);
+            SecurityInfo decoded = securityInfoManager.decode(jwt);
 
             // then
-            assertThat(decodedMemberId).isEqualTo(memberId);
+            assertThat(decoded.getPrincipal()).isEqualTo(memberId);
         }
 
         @DisplayName("유효하지 않은 jwt 토큰 해독을 시도하면 TokenException 을 던진다.")
@@ -63,7 +66,7 @@ class JwtTokenProviderTest {
             String jwt = "malformed jwt token";
 
             // when
-            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
+            Exception exception = catchException(() -> securityInfoManager.decode(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
@@ -77,7 +80,7 @@ class JwtTokenProviderTest {
             String jwt = null;
 
             // when
-            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
+            Exception exception = catchException(() -> securityInfoManager.decode(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
@@ -93,7 +96,7 @@ class JwtTokenProviderTest {
             String jwt = createTestToken(differentSecretKey, new Date(), memberId);
 
             // when
-            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
+            Exception exception = catchException(() -> securityInfoManager.decode(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);
@@ -109,7 +112,7 @@ class JwtTokenProviderTest {
             String jwt = createTestToken(TEST_SECRET_KEY, expiredDate, memberId);
 
             // when
-            Exception exception = catchException(() -> tokenProvider.decodeToken(jwt));
+            Exception exception = catchException(() -> securityInfoManager.decode(jwt));
 
             // then
             assertThat(exception).isInstanceOf(TokenException.class);

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import shopping.domain.TokenProvider;
+import shopping.domain.SecurityInfoManager;
 import shopping.repository.MemberRepository;
 import shopping.ui.argumentresolver.LoginArgumentResolver;
 import shopping.ui.interceptor.LoginCheckInterceptor;
@@ -13,17 +13,17 @@ import shopping.ui.interceptor.LoginCheckInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private final TokenProvider tokenProvider;
+    private final SecurityInfoManager securityInfoManager;
     private final MemberRepository memberRepository;
 
-    public WebConfig(TokenProvider tokenProvider, MemberRepository memberRepository) {
-        this.tokenProvider = tokenProvider;
+    public WebConfig(SecurityInfoManager securityInfoManager, MemberRepository memberRepository) {
+        this.securityInfoManager = securityInfoManager;
         this.memberRepository = memberRepository;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginCheckInterceptor(memberRepository, tokenProvider))
+        registry.addInterceptor(new LoginCheckInterceptor(memberRepository, securityInfoManager))
             .addPathPatterns("/api/cart/**")
             .addPathPatterns("/api/order/**")
             .addPathPatterns("/api/order-detail/**")
