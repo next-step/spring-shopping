@@ -1,4 +1,4 @@
-package shopping.order;
+package shopping.order.service;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -10,6 +10,7 @@ import shopping.cart.domain.CartItem;
 import shopping.common.domain.Rate;
 import shopping.member.domain.Member;
 import shopping.order.domain.Order;
+import shopping.order.service.OrderMapper;
 import shopping.product.domain.Product;
 import shopping.common.domain.Money;
 

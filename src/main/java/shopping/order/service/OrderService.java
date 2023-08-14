@@ -9,7 +9,6 @@ import shopping.cart.domain.CartItem;
 import shopping.cart.repository.CartItemRepository;
 import shopping.common.domain.Rate;
 import shopping.exception.WooWaException;
-import shopping.order.OrderMapper;
 import shopping.order.domain.Order;
 import shopping.order.dto.response.OrderResponse;
 import shopping.order.repository.OrderRepository;

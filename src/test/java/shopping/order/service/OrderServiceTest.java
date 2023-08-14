@@ -15,7 +15,6 @@ import shopping.common.domain.Rate;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.member.repository.MemberRepository;
-import shopping.order.OrderMapper;
 import shopping.order.domain.Order;
 import shopping.order.repository.OrderRepository;
 import shopping.product.domain.Product;
