@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
+import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,6 +18,7 @@ public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService
 
     public static final int DEFAULT_RETRY_COUNT = 2;
     public static final int JSON_FORMAT_ON = 1;
+    public static final int DEFAULT_METHOD_TIME_OUT_SECONDS = 5;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final WebClient webClient;
@@ -58,6 +60,7 @@ public class CurrencylayerExchangeRateServiceImpl implements ExchangeRateService
             .doOnError(throwable ->
                 log.error("An error occurred during web request: {}", throwable.getMessage()))
             .retry(DEFAULT_RETRY_COUNT)
+            .timeout(Duration.ofSeconds(DEFAULT_METHOD_TIME_OUT_SECONDS))
             .onErrorReturn("nullValue")
             .block();
     }

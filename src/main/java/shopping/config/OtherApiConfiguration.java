@@ -19,7 +19,7 @@ import shopping.order.exchage.currencylayer.CurrencylayerExchangeRateServiceImpl
 @Configuration
 public class OtherApiConfiguration {
 
-    public static final int DEFAULT_MILLISECONDS = 2000;
+    public static final int CONNECTION_TIME_OUT_DEFAULT_MILLISECONDS = 3000;
     @Value("${currencylayer.apikey}")
     private String currencylayerApikey;
     @Value("${currencylayer.url}")
@@ -41,10 +41,11 @@ public class OtherApiConfiguration {
     @Bean
     public HttpClient httpClient() {
         return  HttpClient.create()
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, DEFAULT_MILLISECONDS)
-            .responseTimeout(Duration.ofMillis(DEFAULT_MILLISECONDS))
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECTION_TIME_OUT_DEFAULT_MILLISECONDS)
+            .responseTimeout(Duration.ofMillis(CONNECTION_TIME_OUT_DEFAULT_MILLISECONDS))
             .doOnConnected(conn ->
-                conn.addHandlerLast(new ReadTimeoutHandler(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS))
-                    .addHandlerLast(new WriteTimeoutHandler(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)));
+                conn.addHandlerLast(new ReadTimeoutHandler(CONNECTION_TIME_OUT_DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS))
+                    .addHandlerLast(new WriteTimeoutHandler(
+                        CONNECTION_TIME_OUT_DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)));
     }
 }
