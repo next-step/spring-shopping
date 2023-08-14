@@ -45,6 +45,10 @@ public class CartItemEntity {
         this.quantity = quantity;
     }
 
+    public int calculatePrice() {
+        return (this.quantity * this.product.getPrice());
+    }
+
     public Long getId() {
         return id;
     }
