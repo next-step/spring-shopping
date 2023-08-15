@@ -17,30 +17,35 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadLoginRequestException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleBadLoginRequestException(final BadLoginRequestException exception) {
+        log.debug("에러 발생 - {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler(TokenInvalidException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleTokenInvalidException(final TokenInvalidException exception) {
+        log.debug("에러 발생 - {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler(TokenNotFoundException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleTokenNotFoundException(final TokenNotFoundException exception) {
+        log.debug("에러 발생 - {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler(ShoppingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleShoppingException(final ShoppingException exception) {
+        log.debug("에러 발생 - {}", exception.getMessage());
         return new ErrorResponse(exception.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleHttpMessageNotReadableException(final HttpMessageNotReadableException exception) {
+        log.debug("에러 발생 - {}", getRootMessage(exception));
         return new ErrorResponse(getRootMessage(exception));
     }
 
