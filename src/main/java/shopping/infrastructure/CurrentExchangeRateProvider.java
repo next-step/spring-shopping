@@ -1,5 +1,6 @@
 package shopping.infrastructure;
 
+import java.time.Clock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shopping.application.ExchangeRateProvider;
@@ -21,8 +22,9 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     private final CacheProvider<ExchangeRates> cachedExchangeRates;
 
     public CurrentExchangeRateProvider(@Value("${shopping.currency.apiKey}") String apiAccessKey,
-                                       CustomRestTemplate customRestTemplate) {
-        this.cachedExchangeRates = new CacheProvider<>(this::initializeExchangeRates);
+                                       CustomRestTemplate customRestTemplate,
+                                       Clock clock) {
+        this.cachedExchangeRates = new CacheProvider<>(this::initializeExchangeRates, clock);
         this.apiAccessKey = apiAccessKey;
         this.customRestTemplate = customRestTemplate;
     }

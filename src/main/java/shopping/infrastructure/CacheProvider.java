@@ -1,5 +1,6 @@
 package shopping.infrastructure;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -10,15 +11,17 @@ public class CacheProvider<T> {
 
     private T cacheTarget;
     private LocalDateTime lastModifiedAt;
+    private final Clock clock;
     private final Supplier<T> cacheSupplier;
 
-    public CacheProvider(final Supplier<T> cacheSupplier) {
-        lastModifiedAt = LocalDateTime.now();
+    public CacheProvider(final Supplier<T> cacheSupplier, final Clock clock) {
+        this.clock = clock;
         this.cacheSupplier = cacheSupplier;
+        lastModifiedAt = getCurrentTime();
     }
 
     public T getData() {
-        if (isCacheNotInitialized() || isCacheExpired(LocalDateTime.now())) {
+        if (isCacheNotInitialized() || isCacheExpired()) {
             updateCache();
         }
         return cacheTarget;
@@ -26,14 +29,18 @@ public class CacheProvider<T> {
 
     public void updateCache() {
         this.cacheTarget = cacheSupplier.get();
-        this.lastModifiedAt = LocalDateTime.now();
+        this.lastModifiedAt = getCurrentTime();
     }
 
     private boolean isCacheNotInitialized() {
         return Objects.isNull(cacheTarget);
     }
 
-    private boolean isCacheExpired(final LocalDateTime compare) {
-        return lastModifiedAt.plusSeconds(CACHE_EXPIRES_SECOND).isBefore(compare);
+    private boolean isCacheExpired() {
+        return lastModifiedAt.plusSeconds(CACHE_EXPIRES_SECOND).isBefore(getCurrentTime());
+    }
+
+    private LocalDateTime getCurrentTime() {
+        return LocalDateTime.now(clock);
     }
 }
