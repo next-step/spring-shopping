@@ -2,6 +2,7 @@ package shopping.application;
 
 import org.springframework.stereotype.Service;
 import shopping.domain.vo.ExchangeRate;
+import shopping.exception.ExchangeRateNotFoundException;
 import shopping.infrastructure.CurrencyCountry;
 import shopping.infrastructure.ExchangeRateProvider;
 
@@ -16,7 +17,7 @@ public class ExchangeRateService {
 
     public ExchangeRate convert(final CurrencyCountry country) {
         final Double exchangeRate = provider.getFrom(country)
-                .orElseThrow();
+                .orElseThrow(ExchangeRateNotFoundException::new);
         return new ExchangeRate(exchangeRate);
     }
 }

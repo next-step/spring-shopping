@@ -20,6 +20,7 @@ public enum ErrorType {
     PASSWORD_NULL("password는 필수 항목입니다"),
     EMAIL_NULL("email은 필수 항목입니다"),
     ORDER_NO_EXIST("유저의 주문을 찾을 수 없습니다"),
+    EXCHANGE_RATE_NULL("환율 정보가 존재하지 않습니다"),
     SERVER_ERROR("서버에 에러가 발생했습니다");
 
     private final String message;
