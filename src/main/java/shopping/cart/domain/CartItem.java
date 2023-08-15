@@ -3,18 +3,21 @@ package shopping.cart.domain;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import java.util.Objects;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import shopping.cart.domain.vo.Quantity;
+import javax.persistence.*;
+
+import org.springframework.context.annotation.Configuration;
+import shopping.common.converter.ImageConverter;
+import shopping.common.domain.Quantity;
+import shopping.common.converter.MoneyConverter;
+import shopping.common.converter.QuantityConverter;
 import shopping.exception.WooWaException;
 import shopping.member.domain.Member;
 import shopping.product.domain.Product;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
+import shopping.product.domain.vo.Image;
 
 @Entity
+@Configuration
 public class CartItem {
 
     private static final int DEFAULT_QUANTITY = 1;
@@ -25,33 +28,43 @@ public class CartItem {
     private Long memberId;
     private Long productId;
     private String productName;
-    @Embedded
+    @Convert(converter = MoneyConverter.class)
     private Money productPrice;
-    @Embedded
+    @Convert(converter = QuantityConverter.class)
     private Quantity quantity;
+    @Convert(converter = ImageConverter.class)
+    private Image image;
 
     protected CartItem() {
     }
 
     public CartItem(Long memberId, Long productId, String productName, Money productPrice,
-        int quantity) {
+        Quantity quantity, Image image) {
         this.memberId = memberId;
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
-        this.quantity = new Quantity(quantity);
+        this.quantity = quantity;
+        this.image = image;
     }
-
-    public CartItem(Long memberId, Long productId, String productName, Money productPrice) {
-        this.memberId = memberId;
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.quantity = new Quantity(DEFAULT_QUANTITY);
+    public CartItem(Product product, Member member, int quantity) {
+        this(member.getId(),
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                new Quantity(quantity),
+                product.getImage()
+        );
     }
 
     public CartItem(Product product, Member member) {
-        this(member.getId(), product.getId(), product.getName(), product.getPrice());
+        this(member.getId(),
+             product.getId(),
+             product.getName(),
+             product.getPrice(),
+             new Quantity(DEFAULT_QUANTITY),
+             product.getImage()
+        );
     }
 
     public boolean isProductChanged(Product product) {
@@ -94,7 +107,11 @@ public class CartItem {
         return productPrice;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
+    }
+
+    public Image getImage() {
+        return image;
     }
 }

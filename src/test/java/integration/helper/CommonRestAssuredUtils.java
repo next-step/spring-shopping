@@ -4,11 +4,14 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.Map;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 public class CommonRestAssuredUtils {
 
     public static final String LONG_EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjkxMDUxMTUyLCJleHAiOjkxNjkxMDUxMTUyfQ.AEu-Z9ndgW24b5M45dj6uSY3ZgY1JpSmB3S05wJZhwo";
+    public static final String BEARER_TYPE = "Bearer ";
 
     public static ExtractableResponse<Response> get(String url) {
         return RestAssured.given().log().all()
@@ -36,6 +39,15 @@ public class CommonRestAssuredUtils {
             .extract();
     }
 
+    public static <T> ExtractableResponse<Response> get(String url, T pathParam, String token) {
+        return RestAssured.given().log().all()
+                .header("Authorization", "Bearer " + token)
+                .when()
+                .get(url, pathParam)
+                .then().log().all()
+                .extract();
+    }
+
     public static <T> ExtractableResponse<Response> get(String url, Map<String, T> params) {
         return RestAssured
             .given().log().all()
@@ -54,6 +66,16 @@ public class CommonRestAssuredUtils {
             .post(url)
             .then().log().all()
             .extract();
+    }
+
+    public static <T> ExtractableResponse<Response> post(String url, String token) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, BEARER_TYPE + token)
+                .when()
+                .post(url)
+                .then().log().all()
+                .extract();
     }
 
     public static <T> ExtractableResponse<Response> post(String url, T pathParam, T body) {
@@ -129,7 +151,7 @@ public class CommonRestAssuredUtils {
         return RestAssured.given().log().all()
             .body(body)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .header("Authorization", "Bearer " + token)
+            .header(HttpHeaders.AUTHORIZATION , BEARER_TYPE + token)
             .when()
             .patch(url, pathParam)
             .then().log().all()

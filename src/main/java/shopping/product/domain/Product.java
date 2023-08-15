@@ -1,15 +1,13 @@
 package shopping.product.domain;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import org.springframework.http.HttpStatus;
-import shopping.common.vo.ImageStoreType;
+import shopping.common.converter.ImageConverter;
+import shopping.common.converter.MoneyConverter;
 import shopping.exception.WooWaException;
 import shopping.product.domain.vo.Image;
-import shopping.product.domain.vo.Money;
+import shopping.common.domain.Money;
 
 @Entity
 public class Product {
@@ -18,9 +16,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Embedded
+    @Convert(converter = ImageConverter.class)
     private Image image;
-    @Embedded
+    @Convert(converter = MoneyConverter.class)
     private Money price;
 
     protected Product() {
@@ -48,7 +46,12 @@ public class Product {
     }
 
     public Product(String name, String imageUrl, String price) {
-        this(name, new Image(ImageStoreType.NONE, imageUrl), new Money(price));
+        this(name, new Image(imageUrl), new Money(price));
+    }
+
+    public Product(Long id, String name, String image, String price) {
+        this(name, image, price);
+        this.id = id;
     }
 
     public Long getId() {
@@ -70,6 +73,6 @@ public class Product {
     public void updateValues(String name, String price, String imageUrl) {
         this.name = name;
         this.price = new Money(price);
-        this.image = new Image(ImageStoreType.NONE, imageUrl);
+        this.image = new Image(imageUrl);
     }
 }

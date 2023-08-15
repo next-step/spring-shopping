@@ -1,6 +1,5 @@
 package shopping.product.dto.request;
 
-import shopping.common.vo.ImageStoreType;
 import shopping.product.domain.Product;
 import shopping.product.domain.vo.Image;
 
@@ -20,7 +19,7 @@ public class ProductCreationRequest {
     }
 
     public Product toEntity() {
-        return new Product(name, new Image(ImageStoreType.NONE, imageUrl), price);
+        return new Product(name, Image.from(imageUrl), price);
     }
 
     public String getName() {

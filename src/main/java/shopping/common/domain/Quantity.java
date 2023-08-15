@@ -1,14 +1,11 @@
-package shopping.cart.domain.vo;
+package shopping.common.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import shopping.exception.WooWaException;
 
-@Embeddable
 public class Quantity {
 
-    @Column(name = "quantity")
     private int value;
 
     protected Quantity() {
@@ -25,11 +22,39 @@ public class Quantity {
         }
     }
 
+    public static Quantity valueOf(int quantity) {
+        return new Quantity(quantity);
+    }
+
     public int getValue() {
         return value;
     }
 
     public Quantity increase() {
         return new Quantity(this.value + 1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Quantity)) {
+            return false;
+        }
+        Quantity quantity = (Quantity) o;
+        return value == quantity.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return "Quantity{" +
+            "value=" + value +
+            '}';
     }
 }

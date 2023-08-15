@@ -17,6 +17,11 @@ dependencies {
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+    // for web-Client
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    testImplementation("com.squareup.okhttp3:okhttp:4.11.0")
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
 

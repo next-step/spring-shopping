@@ -39,7 +39,7 @@ class ProductIntegrationTest extends IntegrationTest {
 
         // then
         String html = response.htmlPath().getString("body");
-        assertThat(html).contains("피자", "치킨", "햄버거", "15000.00", "35000.00", "5000.00");
+        assertThat(html).contains("피자", "치킨", "햄버거", "15000", "35000", "5000");
     }
 
     @Test
@@ -89,7 +89,7 @@ class ProductIntegrationTest extends IntegrationTest {
         // then
         ProductResponse productResponse = getProductResponse(1L);
         Assertions.assertThat(productResponse).extracting("name").isEqualTo("updatedName");
-        Assertions.assertThat(productResponse).extracting("price").isEqualTo("100000.00");
+        Assertions.assertThat(productResponse).extracting("price").isEqualTo("100000");
         Assertions.assertThat(productResponse).extracting("imageUrl").isEqualTo("updatedImageUrl");
     }
 

@@ -6,17 +6,20 @@ const requestOrder = () => {
         return;
     }
 
-    // TODO: [4단계] 장바구니 아이템 추가 스펙에 맞게 변경
-    fetch('', {
-        method: '',
+    fetch('/api/orders', {
+        method: 'POST',
         headers: {
             'Authorization': `Bearer ${credentials}`,
             'Content-Type': 'application/json'
         }
     }).then((response) => {
-        // TODO: [4단계] 주문이 성공하면 주문 상세 페이지로 이동 (order.html 사용)
-        window.location.href = '';
+        if (!response.ok) {
+            console.error('Failed to create order.');
+        }
+        return response.json();
+    }).then(data =>  {
+        window.location.href = '/orders/' + data.id;
     }).catch((error) => {
-        console.error(error);
+        console.error('An error occurred:', error);
     });
 }

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import shopping.auth.TokenProvider;
 import shopping.auth.domain.LoggedInMember;
 import shopping.exception.WooWaException;
+import shopping.member.repository.MemberRepository;
 
 @Component
 public class LoginTokenInterceptor implements HandlerInterceptor {
@@ -15,9 +16,11 @@ public class LoginTokenInterceptor implements HandlerInterceptor {
     public static final String MEMBER_KEY = "memberId";
     private static final String BEARER_TYPE = "Bearer";
     private final TokenProvider tokenProvider;
+    private final MemberRepository memberRepository;
 
-    public LoginTokenInterceptor(TokenProvider tokenProvider) {
+    public LoginTokenInterceptor(TokenProvider tokenProvider, MemberRepository memberRepository) {
         this.tokenProvider = tokenProvider;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -38,7 +41,15 @@ public class LoginTokenInterceptor implements HandlerInterceptor {
             throw new WooWaException("권한이 없습니다", HttpStatus.UNAUTHORIZED);
         }
 
-        request.setAttribute(MEMBER_KEY, new LoggedInMember(tokenProvider.getPayload(accessToken)));
+        LoggedInMember loggedInMember = new LoggedInMember(tokenProvider.getPayload(accessToken));
+        validateMember(loggedInMember.getId());
+        request.setAttribute(MEMBER_KEY, loggedInMember);
         return true;
+    }
+
+    private void validateMember(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new WooWaException("등록되지 않은 유저입니다. memberId: " + memberId, HttpStatus.BAD_REQUEST);
+        }
     }
 }

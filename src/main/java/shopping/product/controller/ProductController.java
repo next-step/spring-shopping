@@ -45,9 +45,9 @@ public class ProductController {
     @PostMapping("/products")
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
-    public void createProduct(@RequestBody ProductCreationRequest productCreationRequest) {
+    public ProductResponse createProduct(@RequestBody ProductCreationRequest productCreationRequest) {
         validCreationRequest(productCreationRequest);
-        productService.createProduct(productCreationRequest);
+        return productService.createProduct(productCreationRequest);
     }
 
     private void validCreationRequest(ProductCreationRequest productCreationRequest) {
