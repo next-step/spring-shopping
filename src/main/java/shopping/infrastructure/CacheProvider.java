@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CacheProvider {
 
     private static final long CACHE_EXPIRES_SECOND = 60 * 60;
@@ -24,8 +26,12 @@ public class CacheProvider {
         cache.put(clazz, cacheInfo);
     }
 
+    public<T> boolean isContains(Class<T> clazz) {
+        return cache.containsKey(clazz);
+    }
+
     public <T> T get(Class<T> clazz) {
-        if (cache.containsKey(clazz)) {
+        if (isContains(clazz)) {
             return (T) cache.get(clazz).getCached(getCurrentTime());
         }
         return null;

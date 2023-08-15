@@ -1,6 +1,5 @@
 package shopping.infrastructure;
 
-import java.time.Clock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shopping.application.ExchangeRateProvider;
@@ -23,9 +22,8 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
 
     public CurrentExchangeRateProvider(@Value("${shopping.currency.apiKey}") String apiAccessKey,
                                        CustomRestTemplate customRestTemplate,
-                                       Clock clock) {
-        this.cache = new CacheProvider(clock);
-        cache.put(ExchangeRates.class, this::initializeExchangeRates);
+                                       CacheProvider cacheProvider) {
+        this.cache = cacheProvider;
         this.apiAccessKey = apiAccessKey;
         this.customRestTemplate = customRestTemplate;
     }
@@ -33,10 +31,17 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     @Override
     public ExchangeRate getExchange(ExchangeCode code) {
         try {
+            putIfAbsent();
             final ExchangeRates exchangeRates = cache.get(ExchangeRates.class);
             return exchangeRates.getRate(code);
         } catch (CurrencyException exception) {
             throw new InfraException(exception.getMessage());
+        }
+    }
+
+    private void putIfAbsent() {
+        if (!cache.isContains(ExchangeRates.class)) {
+            cache.put(ExchangeRates.class, this::initializeExchangeRates);
         }
     }
 
