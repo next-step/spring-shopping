@@ -22,8 +22,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.EmptyExchangeRate;
+import shopping.domain.EmptyExchangeRates;
 import shopping.domain.ExchangeCode;
 import shopping.domain.ExchangeRate;
+import shopping.domain.ExchangeRates;
 import shopping.dto.response.ExchangeResponse;
 import shopping.exception.InfraException;
 
@@ -33,6 +35,9 @@ class CurrentExchangeRateProviderTest {
 
     @Autowired
     private ExchangeRateProvider exchangeRateProvider;
+
+    @MockBean
+    private CacheProvider cacheProvider;
 
     @MockBean
     private CustomRestTemplate customRestTemplate;
@@ -47,9 +52,11 @@ class CurrentExchangeRateProviderTest {
             // given
             ExchangeCode code = ExchangeCode.USDKRW;
             Double codeExchange = 1302.2;
+            ExchangeRates exchangeRates = createExchangeRates(code, codeExchange);
             ExchangeResponse response = createExchangeResponse(code, codeExchange);
 
             given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
+            given(cacheProvider.get(ExchangeRates.class)).willReturn(exchangeRates);
 
             // when
             ExchangeRate exchange = exchangeRateProvider.getExchange(code);
@@ -64,9 +71,11 @@ class CurrentExchangeRateProviderTest {
             // given
             ExchangeCode code = ExchangeCode.USDKRW;
             Double codeExchange = 1302.2;
+            ExchangeRates exchangeRates = createExchangeRates(code, codeExchange);
             ExchangeResponse response = createExchangeResponse(code, codeExchange);
 
             given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
+            given(cacheProvider.get(ExchangeRates.class)).willReturn(exchangeRates);
 
             // when
             ExchangeRate originalExchange = exchangeRateProvider.getExchange(code);
@@ -82,9 +91,11 @@ class CurrentExchangeRateProviderTest {
             // given
             ExchangeCode invalidCode = null;
             Double codeExchange = 1302.2;
+            ExchangeRates exchangeRates = createExchangeRates(ExchangeCode.USDKRW, codeExchange);
             ExchangeResponse response = createExchangeResponse(ExchangeCode.USDKRW, codeExchange);
 
             given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
+            given(cacheProvider.get(ExchangeRates.class)).willReturn(exchangeRates);
 
             // when & then
             assertThatThrownBy(() -> exchangeRateProvider.getExchange(invalidCode))
@@ -99,6 +110,7 @@ class CurrentExchangeRateProviderTest {
             ExchangeCode code = ExchangeCode.USDKRW;
 
             given(customRestTemplate.getResult(anyString(), any())).willThrow(InfraException.class);
+            given(cacheProvider.get(ExchangeRates.class)).willThrow(InfraException.class);
 
             // when & then
             assertThatThrownBy(() -> exchangeRateProvider.getExchange(code))
@@ -112,6 +124,7 @@ class CurrentExchangeRateProviderTest {
             ExchangeCode code = ExchangeCode.USDKRW;
 
             given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.empty());
+            given(cacheProvider.get(ExchangeRates.class)).willReturn(new EmptyExchangeRates());
 
             // when
             ExchangeRate exchange = exchangeRateProvider.getExchange(code);
@@ -125,5 +138,11 @@ class CurrentExchangeRateProviderTest {
         Map<String, Double> exchangeMap = new HashMap<>();
         exchangeMap.put(code.name(), codeExchange);
         return new ExchangeResponse(exchangeMap);
+    }
+
+    private ExchangeRates createExchangeRates(ExchangeCode code, Double codeExchange) {
+        Map<String, Double> exchangeMap = new HashMap<>();
+        exchangeMap.put(code.name(), codeExchange);
+        return new ExchangeRates(exchangeMap);
     }
 }
