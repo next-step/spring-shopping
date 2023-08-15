@@ -84,11 +84,8 @@
             document.querySelector('.order-right-section .order-total-price-won').innerText = `${data.totalPrice} 원`;
 
             const totalConvertedPrice = data.totalConvertedPrice;
-            if (!Number.isFinite(totalConvertedPrice)) {
-                document.querySelector('.order-right-section .order-total-price-dollar').innerText = `정보 없음`;
-            } else {
-                document.querySelector('.order-right-section .order-total-price-dollar').innerText = `${totalConvertedPrice.toFixed(2)} 달러`;
-            }
+            document.querySelector('.order-right-section .order-total-price-dollar').innerText
+                = `${totalConvertedPrice.toFixed(2)} 달러`;
         }).catch((error) => {
             console.error(error);
         });
