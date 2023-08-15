@@ -18,13 +18,14 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     private static final String API_URL = "http://apilayer.net/api/live?access_key=";
 
     private final String apiAccessKey;
+    private final CacheProvider cache;
     private final CustomRestTemplate customRestTemplate;
-    private final CacheProvider<ExchangeRates> cachedExchangeRates;
 
     public CurrentExchangeRateProvider(@Value("${shopping.currency.apiKey}") String apiAccessKey,
                                        CustomRestTemplate customRestTemplate,
                                        Clock clock) {
-        this.cachedExchangeRates = new CacheProvider<>(this::initializeExchangeRates, clock);
+        this.cache = new CacheProvider(clock);
+        cache.put(ExchangeRates.class, this::initializeExchangeRates);
         this.apiAccessKey = apiAccessKey;
         this.customRestTemplate = customRestTemplate;
     }
@@ -32,7 +33,7 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     @Override
     public ExchangeRate getExchange(ExchangeCode code) {
         try {
-            final ExchangeRates exchangeRates = cachedExchangeRates.getData();
+            final ExchangeRates exchangeRates = cache.get(ExchangeRates.class);
             return exchangeRates.getRate(code);
         } catch (CurrencyException exception) {
             throw new InfraException(exception.getMessage());
