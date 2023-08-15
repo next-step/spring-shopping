@@ -11,12 +11,12 @@ public class OrderCreator {
     private final OrderService orderService;
     private final ExchangeRateApi exchangeRateApi;
 
-    public OrderCreator(OrderService orderService, ExchangeRateApi exchangeRateApi) {
+    public OrderCreator(final OrderService orderService, final ExchangeRateApi exchangeRateApi) {
         this.orderService = orderService;
         this.exchangeRateApi = exchangeRateApi;
     }
 
-    public OrderResponse createOrder(Long memberId) {
+    public OrderResponse createOrder(final Long memberId) {
         ExchangeRateResponse exchangeRateResponse = exchangeRateApi.callExchangeRate();
         return orderService.saveOrder(memberId, exchangeRateResponse.getRate());
     }

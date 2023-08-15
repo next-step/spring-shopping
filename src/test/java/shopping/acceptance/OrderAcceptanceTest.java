@@ -66,7 +66,6 @@ class OrderAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.body().as(new TypeRef<List<OrderResponse>>() {
-        }))
-            .hasSize(1);
+        })).hasSize(1);
     }
 }
