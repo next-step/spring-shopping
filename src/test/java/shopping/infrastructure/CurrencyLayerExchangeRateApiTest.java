@@ -70,7 +70,7 @@ class CurrencyLayerExchangeRateApiTest {
         ExchangeRateResponse response = exchangeRateApi.callExchangeRate();
 
         // then
-        assertThat(response).isNull();
+        assertThat(response.getRate()).isNull();
     }
 
     @Test
@@ -86,7 +86,7 @@ class CurrencyLayerExchangeRateApiTest {
         ExchangeRateResponse response = exchangeRateApi.callExchangeRate();
 
         // then
-        assertThat(response).isNull();
+        assertThat(response.getRate()).isNull();
     }
 
 

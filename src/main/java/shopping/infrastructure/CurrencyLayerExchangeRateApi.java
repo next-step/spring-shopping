@@ -42,7 +42,7 @@ public class CurrencyLayerExchangeRateApi implements ExchangeRateApi {
             return new ExchangeRateResponse(quotes.asDouble());
         } catch (ShoppingException e) {
             logger.error(e.getMessage());
-            return null;
+            return new ExchangeRateResponse(null);
         }
     }
 

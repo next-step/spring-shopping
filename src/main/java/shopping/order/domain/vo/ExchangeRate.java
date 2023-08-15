@@ -20,7 +20,7 @@ public class ExchangeRate {
 
     private void validateRate(final Double exchangeRate) {
         if (exchangeRate == null) {
-            throw new ShoppingException("환율이 null 값이면 안됩니다. 입력값: +" + exchangeRate);
+            return;
         }
         if (exchangeRate <= 0) {
             throw new ShoppingException("환율은 0미만이면 안됩니다. 입력값: " + exchangeRate);
