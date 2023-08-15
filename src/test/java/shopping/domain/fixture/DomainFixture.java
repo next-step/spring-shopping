@@ -11,7 +11,7 @@ import java.util.List;
 public class DomainFixture {
 
     public static User createUser() {
-        return new User(1L, new Email("test@test.com"), Password.createEncodedPassword("test", password -> password));
+        return new User(1L, new Email("test@test.com"), Password.from("test"));
     }
 
     public static Product createProduct() {

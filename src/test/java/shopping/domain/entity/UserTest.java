@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.domain.vo.Email;
 import shopping.domain.vo.Password;
-import shopping.infrastructure.SHA256PasswordEncoder;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -17,7 +16,7 @@ class UserTest {
                 .isThrownBy(() -> new User(
                         1L,
                         new Email("test@test.com"),
-                        Password.createEncodedPassword("test", new SHA256PasswordEncoder())
+                        Password.from("test")
                 ));
     }
 }

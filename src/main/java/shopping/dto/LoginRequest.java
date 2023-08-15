@@ -5,7 +5,6 @@ import shopping.domain.vo.Email;
 import shopping.domain.vo.Password;
 import shopping.exception.EmailNotFoundException;
 import shopping.exception.PasswordNotFoundException;
-import shopping.infrastructure.SHA256PasswordEncoder;
 
 public class LoginRequest {
 
@@ -21,7 +20,7 @@ public class LoginRequest {
         validatePasswordNotNull(password);
 
         this.email = new Email(email);
-        this.password = Password.createEncodedPassword(password, new SHA256PasswordEncoder());
+        this.password = Password.from(password);
     }
 
     private void validatePasswordNotNull(final String password) {

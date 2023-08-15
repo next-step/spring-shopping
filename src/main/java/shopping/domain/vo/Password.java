@@ -8,7 +8,7 @@ import java.util.Objects;
 @Embeddable
 public class Password {
 
-    private final String value;
+    private String value;
 
     protected Password() {
         this.value = null;
@@ -18,8 +18,12 @@ public class Password {
         this.value = value;
     }
 
-    public static Password createEncodedPassword(final String password, final PasswordEncoder encoder) {
-        return new Password(encoder.encode(password));
+    public static Password from(final String value) {
+        return new Password(value);
+    }
+
+    public void encode(final PasswordEncoder encoder) {
+        this.value = encoder.encode(value);
     }
 
     public String getValue() {
