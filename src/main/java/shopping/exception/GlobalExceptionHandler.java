@@ -14,6 +14,12 @@ public class GlobalExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
+    @ExceptionHandler(BadLoginRequestException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleShoppingException(final BadLoginRequestException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
+    
     @ExceptionHandler(ShoppingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleShoppingException(final ShoppingException exception) {

@@ -3,6 +3,7 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.entity.User;
+import shopping.domain.vo.Password;
 import shopping.dto.LoginRequest;
 import shopping.dto.LoginResponse;
 import shopping.exception.BadLoginRequestException;
@@ -28,8 +29,10 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public LoginResponse login(final LoginRequest request) {
-        request.getPassword().encode(passwordEncoder);
-        final User user = userRepository.findByEmailAndPassword(request.getEmail(), request.getPassword())
+        final Password password = request.getPassword();
+        password.encode(passwordEncoder);
+
+        final User user = userRepository.findByEmailAndPassword(request.getEmail(), password)
                 .orElseThrow(BadLoginRequestException::new);
 
         return new LoginResponse(tokenProvider.create(user.getId().toString()));
