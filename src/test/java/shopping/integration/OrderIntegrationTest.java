@@ -3,6 +3,7 @@ package shopping.integration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.ResponseActions;
 import org.springframework.web.client.RestTemplate;
+import shopping.dto.response.ErrorResponse;
 import shopping.dto.response.OrderResponse;
+import shopping.exception.ErrorType;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
@@ -128,14 +131,20 @@ class OrderIntegrationTest {
         // given
         final String accessToken = AuthUtil.accessToken();
 
-        // when & then
-        RestAssured
+        // when
+        final ValidatableResponse response = RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get(ORDER_API_URL + "/1")
-                .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .then().log().all();
+
+        // then
+        final String errorMessage = response
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class)
+                .getMessage();
+        assertThat(errorMessage).isEqualTo(ErrorType.ORDER_NO_EXIST.getMessage());
     }
 
     @Test
@@ -234,14 +243,20 @@ class OrderIntegrationTest {
         getMockRequest(1).andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                                              .contentType(MediaType.APPLICATION_JSON));
 
-        // when & then
-        RestAssured
+        // when
+        final ValidatableResponse response = RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().post(ORDER_API_URL)
-                .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .then().log().all();
+
+        // then
+        final String errorMessage = response
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().as(ErrorResponse.class)
+                .getMessage();
+        assertThat(errorMessage).isEqualTo(ErrorType.EXCHANGE_RATE_NULL.getMessage());
     }
 
     private static Map<String, Object> mockSuccessResponse() {
