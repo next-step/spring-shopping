@@ -3,7 +3,7 @@ package shopping.integration.util;
 import io.restassured.RestAssured;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.CartCreateRequest;
+import shopping.dto.request.CartCreateRequest;
 
 public class CartUtil {
 

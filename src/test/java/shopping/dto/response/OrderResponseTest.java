@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.response;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

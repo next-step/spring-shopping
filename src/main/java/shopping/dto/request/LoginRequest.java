@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import shopping.domain.vo.Email;

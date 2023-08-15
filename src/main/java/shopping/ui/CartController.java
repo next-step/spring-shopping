@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shopping.application.CartService;
-import shopping.dto.CartCreateRequest;
-import shopping.dto.CartResponse;
-import shopping.dto.QuantityUpdateRequest;
+import shopping.dto.request.CartCreateRequest;
+import shopping.dto.request.QuantityUpdateRequest;
+import shopping.dto.response.CartResponse;
 import shopping.ui.config.AuthenticationPrincipal;
 
 import java.util.List;

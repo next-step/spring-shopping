@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import shopping.application.ExchangeRateService;
 import shopping.application.OrderService;
 import shopping.domain.vo.ExchangeRate;
-import shopping.dto.OrderResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.ui.config.AuthenticationPrincipal;
 
 import java.net.URI;

@@ -4,7 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.MediaType;
-import shopping.dto.LoginResponse;
+import shopping.dto.response.LoginResponse;
 
 import java.util.HashMap;
 import java.util.Map;

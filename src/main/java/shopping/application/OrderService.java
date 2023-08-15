@@ -7,7 +7,7 @@ import shopping.domain.entity.CartItem;
 import shopping.domain.entity.Order;
 import shopping.domain.entity.OrderItem;
 import shopping.domain.vo.ExchangeRate;
-import shopping.dto.OrderResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.exception.OrderNotFoundException;
 import shopping.repository.CartItemRepository;
 import shopping.repository.OrderRepository;

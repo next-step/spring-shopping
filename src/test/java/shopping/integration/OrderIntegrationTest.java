@@ -14,7 +14,7 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.ResponseActions;
 import org.springframework.web.client.RestTemplate;
-import shopping.dto.OrderResponse;
+import shopping.dto.response.OrderResponse;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
@@ -174,7 +174,7 @@ class OrderIntegrationTest {
     void createOrderWithExchangeRateError() throws JsonProcessingException {
         // given
         final String accessToken = AuthUtil.accessToken();
-        
+
         final String mockSuccessResponseJson = objectMapper.writeValueAsString(mockSuccessResponse());
         getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
                                              .contentType(MediaType.APPLICATION_JSON)

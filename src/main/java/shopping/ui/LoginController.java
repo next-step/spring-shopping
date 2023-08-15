@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shopping.application.AuthService;
-import shopping.dto.LoginRequest;
-import shopping.dto.LoginResponse;
+import shopping.dto.request.LoginRequest;
+import shopping.dto.response.LoginResponse;
 
 @RestController
 @RequestMapping("/api/login")

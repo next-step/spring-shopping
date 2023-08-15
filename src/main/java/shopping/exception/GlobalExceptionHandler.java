@@ -7,7 +7,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import shopping.dto.ErrorResponse;
+import shopping.dto.response.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleShoppingException(final BadLoginRequestException exception) {
         return new ErrorResponse(exception.getMessage());
     }
-    
+
     @ExceptionHandler(ShoppingException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleShoppingException(final ShoppingException exception) {

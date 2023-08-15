@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.request;
 
 import shopping.domain.vo.Quantity;
 

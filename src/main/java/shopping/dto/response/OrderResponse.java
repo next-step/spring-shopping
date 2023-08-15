@@ -1,4 +1,4 @@
-package shopping.dto;
+package shopping.dto.response;
 
 import shopping.domain.entity.Order;
 import shopping.domain.entity.OrderItem;
