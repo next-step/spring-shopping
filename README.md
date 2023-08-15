@@ -48,67 +48,142 @@
     - 장바구니 상품이 0개 미만이거나 1000개 초과일 경우
     - 내가 추가한 장바구니 상품이 아닐 경우
 
+### 4단계 - 주문
+
+- 주문 기능 구현
+    - 기능 목록
+        - 장바구니에 담긴 아이템 전체 주문
+        - 특정 주문의 상세 정보를 확인
+        - 사용자별 주문 목록 확인
+    - 사용자 정보는 요청 header의 Authorization 필드를 사용해 인증 처리를 해서 얻는다.
+    - 주문 기본 정보
+        - 주문 번호
+        - 주문 아이템 정보
+            - 이름, 가격, 이미지, 수량
+        - 총 결제금액
+    - 필요한 경우 주문 정보의 종류를 추가할 수 있다. (ex. 주문 시간, 상태)
+- 주문 페이지 연동
+    - 장바구니 목록 페이지(`/cart`)에서 주문하기 버튼을 통해 장바구니에 담은 아이템을 주문할 수 있다.
+    - 주문 요청이 성공하면 주문 상세 페이지로 이동한다.
+- 사용자별 주문 목록 확인
+    - /order-history url로 접근할 경우 주문 목록 페이지를 조회할 수 있다.
+    - 상세보기 버튼을 클릭해 주문 상세 정보 페이지로 이동할 수 있다.
+- 예외
+    - 주문 요청 시 장바구니가 비어 있는 경우
+    - 존재하지 않는 주문을 조회하는 경우
+    - 다른 사용자의 주문을 조회하는 경우
+
+### 5단계 - 주문 (환율 적용)
+
+- 주문 시점의 실시간 환율 저장
+    - 실시간 환율 정보는 `https://currencylayer.com/` 의 API를 사용해서 조회
+- 주문 관련 페이지에 적용 환율, 변환 금액 반영
+    - 4단계에서 작업한 주문 관련 페이지에 총 주문 금액과 함께 적용 환율, 변환된 총 주문 금액을 함께 노출하도록 변경
+
 ### API 목록
 
-* `GET /` (상품 목록 페이지 요청)
-    * 응답
-        * 상품 목록 페이지 (HTML)
+- `GET /` (상품 목록 페이지 요청)
+    - 응답
+        - 상품 목록 페이지 (HTML)
 
-* `GET /login` (로그인 페이지 요청)
-    * 응답
-        * 로그인 페이지 (HTML)
+- `GET /login` (로그인 페이지 요청)
+    - 응답
+        - 로그인 페이지 (HTML)
 
-* `POST /login/token` (로그인 요청)
-    * 요청
-        * 본문 (JSON)
-            * email: String, password: String
-    * 응답
-        * 본문 (JSON)
-            * accessToken: String
+- `POST /api/v1/login/token` (로그인 API 요청)
+    - 요청
+        - 본문 (JSON)
+            - email: String, password: String
+    - 응답
+        - 본문 (JSON)
+            - accessToken: String
 
-* `GET /cart` (장바구니 페이지 요청)
-    * 응답
-        * 장바구니 페이지 (HTML)
+- `GET /cart` (장바구니 페이지 요청)
+    - 응답
+        - 장바구니 페이지 (HTML)
 
-* `POST /cart/items` (장바구니 상품 추가 요청)
-    * 요청
-        * 헤더
-            * Authorization: Bearer ${ACCESS_TOKEN}
-        * 본문 (JSON)
-            * productId: Long
-    * 응답
-        * 없음 (성공 시 200)
+- `POST /api/v1/cart/items` (장바구니 상품 추가 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+        - 본문 (JSON)
+            - productId: Long
+    - 응답
+        - 없음 (성공 시 200)
 
-* `GET /cart/items` (장바구니 조회 요청)
-    * 요청
-        * 헤더
-            * Authorization: Bearer ${ACCESS_TOKEN}
-    * 응답
-        * 본문 (JSON)
-            * CartItemResponse의 리스트
-                * CartItemResponse
-                    * cartItemId: Long
-                    * name: String
-                    * imageFileName: String
-                    * price: int
-                    * quantity: int
+- `GET /api/v1/cart/items` (장바구니 조회 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+    - 응답
+        - 본문 (JSON)
+            - CartItemResponse의 리스트
+                - CartItemResponse
+                    - cartItemId: Long
+                    - name: String
+                    - imageFileName: String
+                    - price: int
+                    - quantity: int
 
-* `PUT /cart/items/{cartItemId}/quantity` (장바구니 상품 수량 수정 요청)
-    * 요청
-        * 헤더
-            * Authorization: Bearer ${ACCESS_TOKEN}
-        * 파라미터
-            * cartItemId: Long
-        * 본문 (JSON)
-            * quantity: int
-    * 응답
-        * 없음 (성공 시 200)
+- `PUT /api/v1/cart/items/{cartItemId}/quantity` (장바구니 상품 수량 수정 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+        - 파라미터
+            - cartItemId: Long
+        - 본문 (JSON)
+            - quantity: int
+    - 응답
+        - 없음 (성공 시 200)
 
-* `DELETE /cart/items/{cartItemId}` (장바구니 상품 삭제 요청)
-    * 요청
-        * 헤더
-            * Authorization: Bearer ${ACCESS_TOKEN}
-        * 파라미터
-            * cartItemId: Long
-    * 응답
-        * 없음 (성공 시 204)
+- `DELETE /api/v1/cart/items/{cartItemId}` (장바구니 상품 삭제 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+        - 파라미터
+            - cartItemId: Long
+    - 응답
+        - 없음 (성공 시 204)
+
+- `POST /api/v1/order` (주문 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+    - 응답
+        - 헤더
+            - Location: `/order/{orderId}` (생성된 주문의 상세조회 페이지)
+
+- `GET /order/{orderId}` (주문 상세조회 페이지 요청)
+    - 응답
+        - 주문 상세조회 페이지 (HTML)
+
+- `GET /api/v1/order/{orderId}` (주문 상세조회 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+        - 파라미터
+            - orderId: Long
+    - 응답
+        - 본문 (JSON)
+            - OrderDetailResponse
+                - orderId: Long
+                - OrderItemResponse의 리스트
+                    - OrderItemResponse
+                        - cartItemId: Long
+                        - name: String
+                        - imageFileName: String
+                        - price: Long
+                        - quantity: Integer
+                - totalPrice: Long
+
+- `GET /order-history` (주문목록 페이지 요청)
+    - 응답
+        - 주문목록 페이지 (HTML)
+
+- `GET /api/v1/order-history` (주문 목록 정보 API 요청)
+    - 요청
+        - 헤더
+            - Authorization: Bearer ${ACCESS_TOKEN}
+    - 응답
+        - 본문 (JSON)
+            - OrderItemResponse의 리스트

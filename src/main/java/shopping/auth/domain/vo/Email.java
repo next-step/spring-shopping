@@ -1,17 +1,18 @@
 package shopping.auth.domain.vo;
 
+import shopping.common.exception.ErrorCode;
+import shopping.common.exception.ShoppingException;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import shopping.common.exception.ErrorCode;
-import shopping.common.exception.ShoppingException;
 
 @Embeddable
 public class Email {
 
-    private static final String EMAIL_REGEX = "^[\\w]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$";
+    private static final String EMAIL_REGEX = "^[\\w]+@[a-zA-Z0-9]+\\.[a-zA-Z.]{2,}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     @Column(unique = true, name = "email")

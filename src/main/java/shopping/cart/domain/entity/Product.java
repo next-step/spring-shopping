@@ -1,33 +1,33 @@
 package shopping.cart.domain.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import shopping.cart.domain.vo.WonMoney;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "product")
 public class Product {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String imageFileName;
-    private int price;
+    @AttributeOverride(name = "value", column = @Column(name = "price"))
+    private WonMoney price;
 
     protected Product() {
     }
 
     public Product(final Long id, final String name, final String imageFileName,
-        final int price) {
+                   final WonMoney price) {
         this.id = id;
         this.name = name;
         this.imageFileName = imageFileName;
         this.price = price;
     }
 
-    public Product(final String name, final String imageFileName, final int price) {
+    public Product(final String name, final String imageFileName, final WonMoney price) {
         this(null, name, imageFileName, price);
     }
 
@@ -43,7 +43,7 @@ public class Product {
         return imageFileName;
     }
 
-    public int getPrice() {
+    public WonMoney getPrice() {
         return price;
     }
 }

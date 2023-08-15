@@ -1,15 +1,10 @@
 package shopping.cart.domain.entity;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import shopping.auth.domain.entity.User;
 import shopping.cart.domain.vo.Quantity;
+
+import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "cart_item")
@@ -18,7 +13,7 @@ public class CartItem {
     private static final int DEFAULT_QUANTITY = 1;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +31,7 @@ public class CartItem {
     }
 
     public CartItem(final Long id, final User user, final Product product,
-        final int quantity) {
+                    final int quantity) {
         this.id = id;
         this.user = user;
         this.product = product;
@@ -53,6 +48,11 @@ public class CartItem {
 
     public boolean hasUser(final User user) {
         return this.user == user;
+    }
+
+    public BigInteger getTotalPrice() {
+        return BigInteger.valueOf(product.getPrice().getValue())
+                .multiply(BigInteger.valueOf(quantity.getValue()));
     }
 
     public Long getId() {

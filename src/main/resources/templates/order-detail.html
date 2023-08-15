@@ -35,6 +35,14 @@
             <span class="highlight-text">총 결제금액</span>
             <span class="highlight-text order-total-price"></span>
           </div>
+          <div class="flex justify-between p-20 mt-20">
+            <span class="highlight-text">환산 금액</span>
+            <span class="highlight-text order-usd-total-price"></span>
+          </div>
+          <div class="flex justify-between p-20 mt-20">
+            <span class="highlight-text">적용 환율</span>
+            <span class="highlight-text usd-exchange-rate"></span>
+          </div>
         </div>
       </section>
     </div>
@@ -49,10 +57,9 @@
       return;
     }
 
-    const orderId = /*[[${orderId}]]*/ '';
+    const orderId = [[${orderId}]];
 
-    // TODO: [4단계] 주문 상세 조회 스펙에 맞게 변경
-    fetch('', {
+    fetch(`/api/v1/order/${orderId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${credentials}`,
@@ -62,14 +69,15 @@
       return response.json();
     }).then((data) => {
       let element = '<hr class="divide-line-gray mt-10" />';
-      data.items.forEach(orderItem => {
+      data.orderItems.forEach(orderItem => {
+        console.log(orderItem.imageFileName);
         element += `
                     <div class="shopping-container">
                       <div class="flex gap-15 mt-10">
-                        <img class="w-144 h-144" /> <!-- 상품 이미지 -->
+                        <img class="w-144 h-144" src="/assets/${orderItem.imageFileName}"/> <!-- 상품 이미지 -->
                         <div class="flex-col gap-15">
-                          <span class="shopping-name"></span> <!-- 상품 이름 -->
-                          <span class="shopping-info">원 / 수량: 개</span> <!-- 상품 가격 및 수량 -->
+                          <span class="shopping-name">${orderItem.productName}</span> <!-- 상품 이름 -->
+                          <span class="shopping-info">${orderItem.price}원 / 수량: ${orderItem.quantity}개</span> <!-- 상품 가격 및 수량 -->
                         </div>
                       </div>
                     </div>
@@ -78,7 +86,14 @@
       });
 
       document.querySelector('.order-item-list').innerHTML = element;
-      document.querySelector('.order-right-section .order-total-price').innerText = ` 원`; <!-- 상품 가격 및 수량 -->
+      document.querySelector(
+          '.order-right-section .order-total-price').innerText = `${data.totalPrice} 원`; <!-- 상품 가격 및 수량 -->
+      document.querySelector(
+          '.order-right-section .order-usd-total-price').innerText = `${data.dollarTotalPrice.toFixed(
+          2)} 달러`;
+      document.querySelector(
+          '.order-right-section .usd-exchange-rate').innerText = `${data.exchangeRate.toFixed(
+          2)} 원/달러`;
     }).catch((error) => {
       console.error(error);
     });

@@ -1,4 +1,4 @@
-package shopping.cart.controller;
+package shopping.cart.controller.api;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import shopping.cart.dto.response.CartItemResponse;
 import shopping.cart.service.CartService;
 
 @RestController
-@RequestMapping("/cart/items")
+@RequestMapping("/api/v1/cart/items")
 public class CartItemController {
 
     private final CartService cartService;
