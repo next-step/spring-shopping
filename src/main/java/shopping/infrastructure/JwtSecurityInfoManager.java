@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import shopping.domain.SecurityInfo;
 import shopping.domain.SecurityInfoManager;
-import shopping.domain.UserInfo;
+import shopping.domain.MemberInfo;
 import shopping.exception.TokenException;
 
 @Component
@@ -51,7 +51,7 @@ public class JwtSecurityInfoManager implements SecurityInfoManager {
                 .parseClaimsJws(token)
                 .getBody()
                 .get(MEMBER_ID_KEY, String.class);
-            return objectMapper.readValue(json, UserInfo.class);
+            return objectMapper.readValue(json, MemberInfo.class);
         } catch (JwtException | IllegalArgumentException e) {
             throw new TokenException("토큰이 유효하지 않습니다");
         } catch (JsonProcessingException e) {

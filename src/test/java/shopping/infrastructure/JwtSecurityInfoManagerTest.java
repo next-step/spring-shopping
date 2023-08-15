@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import shopping.domain.SecurityInfo;
 import shopping.domain.SecurityInfoManager;
-import shopping.domain.UserInfo;
+import shopping.domain.MemberInfo;
 import shopping.exception.TokenException;
 
 @DisplayName("JwtTokenProvider 클래스")
@@ -33,7 +33,7 @@ class JwtSecurityInfoManagerTest {
         void returnJwtToken() {
             // given
             Long memberId = 1L;
-            SecurityInfo securityInfo = new UserInfo(memberId);
+            SecurityInfo securityInfo = new MemberInfo(memberId);
 
             // when
             String jwt = securityInfoManager.encode(securityInfo);
@@ -52,7 +52,7 @@ class JwtSecurityInfoManagerTest {
         void returnMemberIdFromJwt() {
             // given
             Long memberId = 1L;
-            SecurityInfo securityInfo = new UserInfo(memberId);
+            SecurityInfo securityInfo = new MemberInfo(memberId);
             String jwt = securityInfoManager.encode(securityInfo);
 
             // when

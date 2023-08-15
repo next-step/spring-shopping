@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
-public class UserInfo implements SecurityInfo {
+public class MemberInfo implements SecurityInfo {
 
     private Long principal;
 
     @JsonCreator
-    public UserInfo(@JsonProperty final Long principal) {
+    public MemberInfo(@JsonProperty final Long principal) {
         this.principal = principal;
     }
 
-    private UserInfo() {
+    private MemberInfo() {
     }
 
     @Override
@@ -29,8 +29,8 @@ public class UserInfo implements SecurityInfo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        final UserInfo userInfo = (UserInfo) o;
-        return Objects.equals(principal, userInfo.principal);
+        final MemberInfo memberInfo = (MemberInfo) o;
+        return Objects.equals(principal, memberInfo.principal);
     }
 
     @Override
