@@ -3,6 +3,7 @@ package shopping.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import shopping.domain.SecurityInfo;
 import shopping.domain.SecurityInfoManager;
+import shopping.domain.UserInfo;
 import shopping.exception.TokenException;
 
 @DisplayName("JwtTokenProvider 클래스")
@@ -19,7 +21,8 @@ class JwtSecurityInfoManagerTest {
     private static final String TEST_SECRET_KEY = "this is test secret key";
     private static final int TEST_TOKEN_VALIDITY_MILLI = 60 * 60 * 1000;
 
-    private final SecurityInfoManager securityInfoManager = new JwtSecurityInfoManager(TEST_SECRET_KEY);
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final SecurityInfoManager securityInfoManager = new JwtSecurityInfoManager(TEST_SECRET_KEY, objectMapper);
 
     @DisplayName("createToken 메서드는")
     @Nested
@@ -30,7 +33,7 @@ class JwtSecurityInfoManagerTest {
         void returnJwtToken() {
             // given
             Long memberId = 1L;
-            SecurityInfo securityInfo = new SecurityInfo(memberId);
+            SecurityInfo securityInfo = new UserInfo(memberId);
 
             // when
             String jwt = securityInfoManager.encode(securityInfo);
@@ -49,14 +52,14 @@ class JwtSecurityInfoManagerTest {
         void returnMemberIdFromJwt() {
             // given
             Long memberId = 1L;
-            SecurityInfo securityInfo = new SecurityInfo(memberId);
+            SecurityInfo securityInfo = new UserInfo(memberId);
             String jwt = securityInfoManager.encode(securityInfo);
 
             // when
             SecurityInfo decoded = securityInfoManager.decode(jwt);
 
             // then
-            assertThat(decoded.getPrincipal()).isEqualTo(memberId);
+            assertThat((Long) decoded.getPrincipal()).isEqualTo(memberId);
         }
 
         @DisplayName("유효하지 않은 jwt 토큰 해독을 시도하면 TokenException 을 던진다.")

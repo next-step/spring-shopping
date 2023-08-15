@@ -11,6 +11,7 @@ import shopping.domain.Email;
 import shopping.domain.Member;
 import shopping.domain.SecurityInfo;
 import shopping.domain.SecurityInfoManager;
+import shopping.domain.UserInfo;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
@@ -51,7 +52,7 @@ public class AuthServiceTest {
             Member member = new Member(1L, email.getValue(), password);
 
             given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
-            given(securityInfoManager.encode(new SecurityInfo(member.getId()))).willReturn("token");
+            given(securityInfoManager.encode(new UserInfo(member.getId()))).willReturn("token");
 
             // when
             LoginResponse loginResponse = authService.login(loginRequest);

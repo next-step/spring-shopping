@@ -3,8 +3,8 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import shopping.domain.Email;
 import shopping.domain.Member;
-import shopping.domain.SecurityInfo;
 import shopping.domain.SecurityInfoManager;
+import shopping.domain.UserInfo;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
@@ -31,7 +31,7 @@ public class AuthService {
             throw new AuthException("비밀번호가 일치하지 않습니다.");
         }
 
-        String token = securityInfoManager.encode(new SecurityInfo(member.getId()));
+        String token = securityInfoManager.encode(new UserInfo(member.getId()));
         return new LoginResponse(token);
     }
 }
