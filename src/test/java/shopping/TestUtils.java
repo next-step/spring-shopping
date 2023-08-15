@@ -22,9 +22,19 @@ public class TestUtils {
         return new Product(sequence, name, "image_file_name_" + sequence, new WonMoney(price));
     }
 
+    public static Product createProductWithoutId(String name, long price) {
+        sequence++;
+        return new Product(null, name, "image_file_name_" + sequence, new WonMoney(price));
+    }
+
     public static User createUser() {
         sequence++;
         return new User(sequence, "test_email" + sequence + "@gmail.com", "test_password");
+    }
+
+    public static User createUserWithoutId() {
+        sequence++;
+        return new User(null, "test_email" + sequence + "@gmail.com", "test_password");
     }
 
     public static ExtractableResponse<Response> login(final LoginRequest loginRequest) {
