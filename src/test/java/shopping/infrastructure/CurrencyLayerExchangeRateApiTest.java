@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +22,7 @@ import shopping.infrastructure.dto.ExchangeRateResponse;
 
 @RestClientTest(CurrencyLayerExchangeRateApi.class)
 @Import(CurrencyLayerExchangeRateApiTestConfig.class)
+@ActiveProfiles("currencyTest")
 class CurrencyLayerExchangeRateApiTest {
 
     private @Value("${currency.accessKey}") String accessKey;
