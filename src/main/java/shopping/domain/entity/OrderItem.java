@@ -16,7 +16,7 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @Column
@@ -89,5 +89,9 @@ public class OrderItem {
 
     public Quantity getQuantity() {
         return quantity;
+    }
+
+    public void setOrder(final Order order) {
+        this.order = order;
     }
 }

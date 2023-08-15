@@ -25,6 +25,7 @@ class OrderRepositoryTest {
         // given
         final long userId = 1L;
         final Order order = DomainFixture.createOrder(userId);
+        order.getItems().forEach(orderItem -> orderItem.setOrder(order));
         final Long id = orderRepository.save(order).getId();
 
         // when
@@ -40,6 +41,7 @@ class OrderRepositoryTest {
         // given
         final long userId = 1L;
         final Order order = DomainFixture.createOrder(userId);
+        order.getItems().forEach(orderItem -> orderItem.setOrder(order));
         final Long id = orderRepository.save(order).getId();
 
         // when
@@ -56,6 +58,7 @@ class OrderRepositoryTest {
         final long userId = 1L;
         final List<OrderItem> orderItems = List.of(DomainFixture.createOrderItem());
         final Order order = DomainFixture.createOrder(userId);
+        order.getItems().forEach(orderItem -> orderItem.setOrder(order));
         orderRepository.save(order);
 
         // when

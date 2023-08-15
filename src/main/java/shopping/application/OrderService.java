@@ -37,6 +37,7 @@ public class OrderService {
         cartItemRepository.deleteAllInBatch(cartItems);
 
         final Order order = Order.of(userId, orderItems, exchangeRate);
+        order.getItems().forEach(orderItem -> orderItem.setOrder(order));
         return orderRepository.save(order).getId();
     }
 
