@@ -32,11 +32,20 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
     public ExchangeRate getExchange(ExchangeCode code) {
         try {
             putIfAbsent();
-            final ExchangeRates exchangeRates = cache.get(ExchangeRates.class);
+            final ExchangeRates exchangeRates = getFromCache();
             return exchangeRates.getRate(code);
         } catch (CurrencyException exception) {
             throw new InfraException(exception.getMessage());
         }
+    }
+
+    private ExchangeRates getFromCache() {
+        ExchangeRates exchangeRates = cache.get(ExchangeRates.class);
+        if (exchangeRates instanceof EmptyExchangeRates) {
+            cache.put(ExchangeRates.class, this::initializeExchangeRates);
+            exchangeRates = cache.get(ExchangeRates.class);
+        }
+        return exchangeRates;
     }
 
     private void putIfAbsent() {

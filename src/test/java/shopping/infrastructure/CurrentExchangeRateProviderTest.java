@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.HashMap;
@@ -83,6 +84,25 @@ class CurrentExchangeRateProviderTest {
 
             // then
             assertThat(originalExchange).isSameAs(cachedExchange);
+        }
+
+        @DisplayName("캐싱된 환율 정보가 Empty 이면 다시 초기화한다")
+        @Test
+        void getExchange_putToCache_ifReturnIsEmpty() {
+            // given
+            ExchangeCode code = ExchangeCode.USDKRW;
+            Double codeExchange = 1302.2;
+            ExchangeRates exchangeRates = createExchangeRates(code, codeExchange);
+            ExchangeResponse response = createExchangeResponse(code, codeExchange);
+
+            given(customRestTemplate.getResult(anyString(), any())).willReturn(Optional.of(response));
+            given(cacheProvider.get(ExchangeRates.class)).willReturn(new EmptyExchangeRates());
+
+            // when
+            exchangeRateProvider.getExchange(code);
+
+            // then
+            verify(cacheProvider, times(2)).put(any(), any());
         }
 
         @DisplayName("유효하지 않은 quote 를 입력하면 InfraException 을 던진다 ")
