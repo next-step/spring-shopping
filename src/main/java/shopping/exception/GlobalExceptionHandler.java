@@ -16,7 +16,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadLoginRequestException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse handleShoppingException(final BadLoginRequestException exception) {
+    public ErrorResponse handleBadLoginRequestException(final BadLoginRequestException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
+
+    @ExceptionHandler(TokenInvalidException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleTokenInvalidException(final TokenInvalidException exception) {
+        return new ErrorResponse(exception.getMessage());
+    }
+
+    @ExceptionHandler(TokenNotFoundException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleTokenNotFoundException(final TokenNotFoundException exception) {
         return new ErrorResponse(exception.getMessage());
     }
 

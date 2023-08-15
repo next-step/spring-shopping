@@ -125,7 +125,7 @@ class AuthIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get(CART_API_URL)
                 .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .extract().as(ErrorResponse.class);
 
         assertThat(response.getMessage()).isEqualTo("토큰 정보가 없습니다");
@@ -140,7 +140,7 @@ class AuthIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get(CART_API_URL)
                 .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .extract().as(ErrorResponse.class);
 
         assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다");
@@ -155,7 +155,7 @@ class AuthIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get(CART_API_URL)
                 .then().log().all()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .extract().as(ErrorResponse.class);
 
         assertThat(response.getMessage()).isEqualTo("토큰이 유효하지 않습니다");
