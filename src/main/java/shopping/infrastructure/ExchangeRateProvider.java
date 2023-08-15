@@ -1,6 +1,8 @@
 package shopping.infrastructure;
 
+import java.util.Optional;
+
 public interface ExchangeRateProvider {
 
-    double getFrom(final CurrencyCountry country);
+    Optional<Double> getFrom(final CurrencyCountry country);
 }

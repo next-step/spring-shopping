@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -26,51 +25,57 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
 
     private final String accessKey;
     private final RestTemplate restTemplate;
+    private Double cache;
 
     public CurrencyLayerExchangeRateProvider(@Value("${currency-layer.access-key}") final String accessKey,
                                              final RestTemplate restTemplate) {
         this.accessKey = accessKey;
         this.restTemplate = restTemplate;
+        this.cache = null;
     }
 
     @Override
-    public double getFrom(final CurrencyCountry country) {
+    public Optional<Double> getFrom(final CurrencyCountry country) {
         final URI uri = createUri(country.getCurrencyLayerName());
 
         try {
-            log.info("환율 서버와 통신 ({})", uri);
+            log.info("환율 서버와 통신\n({})", uri);
             final ResponseEntity<JsonNode> response = restTemplate.getForEntity(uri, JsonNode.class);
             validateStatusCode(response.getStatusCode());
 
             final JsonNode body = findBody(response);
-            return getExchangeRate(country, body);
-        } catch (final RestClientException exception) {
-            log.error("환율 서버와 통신 중 에러가 발생했습니다");
-            throw new IllegalStateException();
+            validateBody(body);
+
+            final Optional<Double> exchangeRate = getExchangeRate(country, body);
+            renewCache(exchangeRate);
+            return exchangeRate;
+        } catch (final RuntimeException exception) {
+            return Optional.ofNullable(cache);
         }
     }
 
-    private double getExchangeRate(final CurrencyCountry country, final JsonNode body) {
-        if (checkSuccess(body)) {
-            return findResult(body, country.getCurrencyLayerName()).asDouble();
+    private void renewCache(final Optional<Double> exchangeRate) {
+        exchangeRate.ifPresent(rate -> cache = rate);
+    }
+
+    private void validateBody(final JsonNode body) {
+        if (!body.get("success").asBoolean(false)) {
+            log.error("환율 서버에서 실패한 응답 반환\n응답 내용: {}", body.get("error"));
+            throw new IllegalArgumentException();
         }
-        return Double.MIN_VALUE;
+    }
+
+    private Optional<Double> getExchangeRate(final CurrencyCountry country, final JsonNode body) {
+        return Optional.of(findResult(body, country.getCurrencyLayerName()).asDouble());
     }
 
     private JsonNode findBody(final ResponseEntity<JsonNode> response) {
-        if (Optional.ofNullable(response.getBody()).isEmpty()) {
-            log.error("응답이 존재하지 않습니다");
-            throw new IllegalArgumentException();
-        }
-        return response.getBody();
-    }
-
-    private boolean checkSuccess(final JsonNode body) {
-        if (!body.get("success").asBoolean(false)) {
-            log.error("환율 서버에서 에러가 발생했습니다\n{}", body.get("error"));
-            return false;
-        }
-        return true;
+        return Optional.ofNullable(response.getBody()).orElseThrow(
+                () -> {
+                    log.error("비어있는 응답 반환");
+                    return new IllegalArgumentException();
+                }
+        );
     }
 
     private static JsonNode findResult(final JsonNode response, final String country) {
@@ -79,8 +84,14 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
                     .path(QUOTES)
                     .path(country.concat(KOREA.getCurrencyLayerName()));
         } catch (final NullPointerException exception) {
-            log.error("환율 서버에서 원하는 결과를 찾지 못했습니다");
+            log.error("응답 파싱 에러\n응답 - {}", response);
             throw new IllegalArgumentException();
+        }
+    }
+
+    private void validateStatusCode(final HttpStatus statusCode) {
+        if (!statusCode.is2xxSuccessful()) {
+            log.error("실패한 응답 - {}", statusCode);
         }
     }
 
@@ -92,12 +103,5 @@ public class CurrencyLayerExchangeRateProvider implements ExchangeRateProvider {
                 .queryParam("format", 1)
                 .encode()
                 .build().toUri();
-    }
-
-    private void validateStatusCode(final HttpStatus statusCode) {
-        if (!statusCode.is2xxSuccessful()) {
-            log.error("환율 서버로부터 실패한 응답을 받았습니다");
-            throw new IllegalStateException();
-        }
     }
 }

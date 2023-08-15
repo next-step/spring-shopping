@@ -15,6 +15,8 @@ public class ExchangeRateService {
     }
 
     public ExchangeRate convert(final CurrencyCountry country) {
-        return new ExchangeRate(provider.getFrom(country));
+        final Double exchangeRate = provider.getFrom(country)
+                .orElseThrow();
+        return new ExchangeRate(exchangeRate);
     }
 }
