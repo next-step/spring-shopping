@@ -14,7 +14,6 @@ import shopping.cart.dto.response.OrderHistoryResponse;
 import shopping.cart.dto.response.OrderResponse;
 import shopping.cart.repository.CartItemRepository;
 import shopping.cart.repository.OrderRepository;
-import shopping.cart.service.currency.ExchangeRateProvider;
 import shopping.common.exception.ErrorCode;
 import shopping.common.exception.ShoppingException;
 
@@ -27,23 +26,21 @@ public class OrderService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
-    private final ExchangeRateProvider exchangeRateProvider;
 
-    public OrderService(UserRepository userRepository, OrderRepository orderRepository, CartItemRepository cartItemRepository, ExchangeRateProvider exchangeRateProvider) {
+    public OrderService(UserRepository userRepository, OrderRepository orderRepository,
+                        CartItemRepository cartItemRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
-        this.exchangeRateProvider = exchangeRateProvider;
     }
 
     @Transactional
-    public OrderResponse order(final Long userId) {
+    public OrderResponse order(final Long userId, final ExchangeRate exchangeRate) {
         final User user = userRepository.getReferenceById(userId);
         final List<CartItem> cartItems = cartItemRepository.findByUserId(userId);
 
         validateNotEmpty(cartItems);
         Order.validateTotalPrice(cartItems);
-        final ExchangeRate exchangeRate = exchangeRateProvider.fetchExchangeRate();
         final Order order = Order.from(user, cartItems, exchangeRate);
         cartItemRepository.deleteAll(cartItems);
         return OrderResponse.from(orderRepository.save(order));
@@ -61,7 +58,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderHistoryResponse> getOrderHistory(final Long userId) {
         final List<Order> orders = orderRepository.findAllByUserIdWithOrderItems(userId,
-                Sort.by(Direction.DESC, "id"));
+                                                                                 Sort.by(Direction.DESC, "id"));
         return orders.stream()
                 .map(OrderHistoryResponse::from)
                 .collect(Collectors.toUnmodifiableList());

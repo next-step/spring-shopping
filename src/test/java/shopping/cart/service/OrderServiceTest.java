@@ -12,9 +12,7 @@ import shopping.cart.domain.entity.CartItem;
 import shopping.cart.domain.entity.Order;
 import shopping.cart.domain.vo.ExchangeRate;
 import shopping.cart.repository.CartItemRepository;
-import shopping.cart.repository.OrderItemRepository;
 import shopping.cart.repository.OrderRepository;
-import shopping.cart.service.currency.ExchangeRateProvider;
 
 import java.util.List;
 
@@ -33,11 +31,8 @@ class OrderServiceTest {
     @Mock
     OrderRepository orderRepository;
     @Mock
-    OrderItemRepository orderItemRepository;
-    @Mock
     CartItemRepository cartItemRepository;
-    @Mock
-    ExchangeRateProvider exchangeRateProvider;
+
     @InjectMocks
     OrderService orderService;
 
@@ -46,20 +41,17 @@ class OrderServiceTest {
     void orderSuccess() {
         /* given */
         final User user = createUser();
-        final CartItem cartItem1 = new CartItem(1L, createUser(), createProduct("치킨", 10000),
-                1);
-        final CartItem cartItem2 = new CartItem(2L, createUser(), createProduct("피자", 20000),
-                2);
+        final CartItem cartItem1 = new CartItem(1L, createUser(), createProduct("치킨", 10000), 1);
+        final CartItem cartItem2 = new CartItem(2L, createUser(), createProduct("피자", 20000), 2);
         final List<CartItem> cartItems = List.of(cartItem1, cartItem2);
         final ExchangeRate exchangeRate = new ExchangeRate(1300);
 
         doReturn(user).when(userRepository).getReferenceById(user.getId());
         doReturn(cartItems).when(cartItemRepository).findByUserId(user.getId());
-        doReturn(exchangeRate).when(exchangeRateProvider).fetchExchangeRate();
         doReturn(new Order(1L, user, exchangeRate)).when(orderRepository).save(any());
 
         /* when */
-        orderService.order(user.getId());
+        orderService.order(user.getId(), new ExchangeRate(1300));
 
         /* then */
         verify(cartItemRepository).deleteAll(cartItems);

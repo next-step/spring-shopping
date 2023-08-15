@@ -1,4 +1,4 @@
-package shopping.cart.service.currency;
+package shopping.cart.component;
 
 import shopping.cart.domain.vo.ExchangeRate;
 

@@ -10,6 +10,7 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestTemplate;
+import shopping.cart.component.DefaultExchangeRateProvider;
 import shopping.cart.domain.vo.ExchangeRate;
 
 import static org.assertj.core.api.Assertions.assertThat;
