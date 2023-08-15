@@ -1,7 +1,6 @@
 package shopping.infrastructure;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.EmptyExchangeRates;
@@ -19,18 +18,19 @@ public class CurrentExchangeRateProvider implements ExchangeRateProvider {
 
     private final String apiAccessKey;
     private final CustomRestTemplate customRestTemplate;
+    private final CacheProvider<ExchangeRates> cachedExchangeRates;
 
     public CurrentExchangeRateProvider(@Value("${shopping.currency.apiKey}") String apiAccessKey,
-            CustomRestTemplate customRestTemplate) {
+                                       CustomRestTemplate customRestTemplate) {
+        this.cachedExchangeRates = new CacheProvider<>(this::initializeExchangeRates);
         this.apiAccessKey = apiAccessKey;
         this.customRestTemplate = customRestTemplate;
     }
 
-    @Cacheable(cacheNames = "exchangeRate", key = "#code", unless = "#result.value == 0.0")
     @Override
     public ExchangeRate getExchange(ExchangeCode code) {
         try {
-            ExchangeRates exchangeRates = initializeExchangeRates();
+            final ExchangeRates exchangeRates = cachedExchangeRates.getData();
             return exchangeRates.getRate(code);
         } catch (CurrencyException exception) {
             throw new InfraException(exception.getMessage());
