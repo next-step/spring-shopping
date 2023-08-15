@@ -32,8 +32,16 @@
         <hr class="divide-line-thin"/>
         <div class="order-right-section__bottom">
           <div class="flex justify-between p-20 mt-20">
-            <span class="highlight-text">총 결제금액</span>
-            <span class="highlight-text order-total-price"></span>
+            <span class="highlight-text">총 결제금액(₩)</span>
+            <span class="highlight-text order-total-price" id="price-korea"></span>
+          </div>
+          <div class="flex justify-between p-20 mt-20">
+            <span class="highlight-text">총 결제금액($)</span>
+            <span class="highlight-text order-total-price" id="price-usa"></span>
+          </div>
+          <div class="flex justify-between p-20 mt-20">
+            <span class="">환율</span>
+            <span class="order-total-price" id="price-ratio"></span>
           </div>
         </div>
       </section>
@@ -49,10 +57,10 @@
       return;
     }
 
-    const orderId = /*[[${orderId}]]*/ '';
+    const orderId = [[${orderId}]];
+    console.log(orderId);
 
-    // TODO: [4단계] 주문 상세 조회 스펙에 맞게 변경
-    fetch('', {
+    fetch('/orders/' + orderId, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${credentials}`,
@@ -61,15 +69,16 @@
     }).then((response) => {
       return response.json();
     }).then((data) => {
+      console.log(data);
       let element = '<hr class="divide-line-gray mt-10" />';
-      data.items.forEach(orderItem => {
+      data.orderItems.forEach(orderItem => {
         element += `
                     <div class="cart-container">
                       <div class="flex gap-15 mt-10">
-                        <img class="w-144 h-144" /> <!-- 아이템 이미지 -->
+                        <img class="w-144 h-144" src="${orderItem.imageUrl}"/> <!-- 아이템 이미지 -->
                         <div class="flex-col gap-15">
-                          <span class="cart-name"></span> <!-- 아이템 이름 -->
-                          <span class="cart-info">원 / 수량: 개</span> <!-- 아이템 가격 및 수량 -->
+                          <span class="cart-name">${orderItem.name}</span> <!-- 아이템 이름 -->
+                          <span class="cart-info">${orderItem.price}원 / 수량: ${orderItem.quantity}개</span> <!-- 아이템 가격 및 수량 -->
                         </div>
                       </div>
                     </div>
@@ -78,7 +87,12 @@
       });
 
       document.querySelector('.order-item-list').innerHTML = element;
-      document.querySelector('.order-right-section .order-total-price').innerText = ` 원`; <!-- 아이템 가격 및 수량 -->
+      document.querySelector('#price-korea').innerText = ` ${data.totalPrice}원`;
+      document.querySelector('#price-usa').innerText = `$ ${(data.totalPrice / data.ratio).toFixed(
+          2)}`;
+      document.querySelector(
+          '#price-ratio').innerHTML = `${(data.ratio).toFixed(2)} 원/달러
+                  <br> (${data.createdDate} 기준)`;
     }).catch((error) => {
       console.error(error);
     });

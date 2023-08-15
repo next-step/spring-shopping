@@ -1,21 +1,24 @@
 package shopping.dto.request;
 
+import static shopping.dto.request.validator.RequestArgumentValidator.validateNumberNotNullAndPositive;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.util.Assert;
 
 public class CartItemCreateRequest {
+
+    private static final String PRODUCT_ID_NAME = "productId";
 
     private final Long productId;
 
     @JsonCreator
-    public CartItemCreateRequest(@JsonProperty("productId") Long productId) {
+    public CartItemCreateRequest(@JsonProperty(PRODUCT_ID_NAME) final Long productId) {
         validate(productId);
         this.productId = productId;
     }
 
     private void validate(Long productId) {
-        Assert.notNull(productId, "상품 아이디는 null일수 없습니다.");
+        validateNumberNotNullAndPositive(productId, PRODUCT_ID_NAME);
     }
 
     public Long getProductId() {

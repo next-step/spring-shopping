@@ -75,6 +75,10 @@ public class CartItem {
         return !this.user.equals(user);
     }
 
+    public Long totalPrice() {
+        return quantity.getQuantity() * product.getPrice();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -84,13 +88,11 @@ public class CartItem {
             return false;
         }
         CartItem cartItem = (CartItem) o;
-        return Objects.equals(id, cartItem.id) && Objects.equals(user,
-                cartItem.user) && Objects.equals(product, cartItem.product)
-                && Objects.equals(quantity, cartItem.quantity);
+        return Objects.equals(id, cartItem.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, product, quantity);
+        return id != null ? id.hashCode() : 0;
     }
 }

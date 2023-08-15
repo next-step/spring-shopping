@@ -1,0 +1,4 @@
+secret:
+  currency:
+    access_key: test-access-key
+    url: http://127.0.0.1

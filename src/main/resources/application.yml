@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: default
   thymeleaf:
     cache: false
   jpa:
@@ -14,3 +16,8 @@ security:
   jwt:
     secret-key: 57aaefa3f13fcbdf27b6a06b21a9383bba4d03c6c2d1074c806513b8c8dd1fb0
     expiration: 3600000
+
+secret:
+  currency:
+    access_key: ${CURRENCY_KEY}
+    url: http://api.currencylayer.com/live?currencies=KRW&access_key=

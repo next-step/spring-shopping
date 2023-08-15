@@ -1,12 +1,13 @@
 package shopping.domain;
 
+import java.util.Objects;
 import javax.persistence.Embeddable;
 import shopping.exception.ArgumentValidateFailException;
 
 @Embeddable
 public class Price {
 
-    private static final int MIN_PRICE = 0;
+    private static final long MIN_PRICE = 0L;
     private Long price;
 
     protected Price() {
@@ -28,5 +29,22 @@ public class Price {
 
     public Long getPrice() {
         return price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Price price1 = (Price) o;
+        return Objects.equals(price, price1.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(price);
     }
 }

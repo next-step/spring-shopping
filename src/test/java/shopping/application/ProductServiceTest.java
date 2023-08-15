@@ -7,15 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.Product;
+import shopping.dto.request.ShoppingPageRequest;
 import shopping.dto.response.ProductResponse;
 import shopping.repository.ProductRepository;
 
 @Transactional
 @SpringBootTest
+@ActiveProfiles("test")
 @DisplayName("상품 테스트 통합 테스트")
-class ProductServiceSpringBootTest {
+class ProductServiceTest {
 
     @Autowired
     ProductService productService;
@@ -37,7 +40,8 @@ class ProductServiceSpringBootTest {
         Product salad2Result = productRepository.save(salad2);
 
         // when
-        Page<ProductResponse> products = productService.findAllByPage(1);
+        Page<ProductResponse> products = productService.findAllByPage(
+                ShoppingPageRequest.of(1, 12));
 
         // then
         assertThat(products.toList()).containsExactly(
@@ -60,7 +64,8 @@ class ProductServiceSpringBootTest {
         Product saladResult = productRepository.save(salad);
 
         // when
-        Page<ProductResponse> products = productService.findAllByPage(-1);
+        Page<ProductResponse> products = productService.findAllByPage(
+                ShoppingPageRequest.of(-1, 12));
 
         // then
         assertThat(products.toList()).containsExactly(
