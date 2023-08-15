@@ -77,8 +77,8 @@ class OrderIntegrationTest {
 
         final String mockResponseJson = objectMapper.writeValueAsString(mockSuccessResponse());
         getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mockResponseJson));
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .body(mockResponseJson));
 
         // when & then
         RestAssured
@@ -103,8 +103,8 @@ class OrderIntegrationTest {
 
         final String mockResponseJson = objectMapper.writeValueAsString(mockSuccessResponse());
         getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mockResponseJson));
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .body(mockResponseJson));
 
         final String url = OrderUtil.createOrder(accessToken).header("Location");
 
@@ -146,8 +146,8 @@ class OrderIntegrationTest {
 
         final String mockResponseJson = objectMapper.writeValueAsString(mockSuccessResponse());
         getMockRequest(2).andRespond(withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mockResponseJson));
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .body(mockResponseJson));
 
         CartUtil.createCartItem(accessToken, 1L);
         OrderUtil.createOrder(accessToken);
@@ -170,15 +170,22 @@ class OrderIntegrationTest {
     }
 
     @Test
-    @DisplayName("환율 서버에 이상이 생겨도 주문이 생성된다.")
-    void createOrderWhenExchangeRateError() throws JsonProcessingException {
+    @DisplayName("환율 서버에 이상이 생겨도, 캐싱된 환율이 있으면 주문이 생성된다.")
+    void createOrderWithExchangeRateError() throws JsonProcessingException {
         // given
         final String accessToken = AuthUtil.accessToken();
-
-        final String mockResponseJson = objectMapper.writeValueAsString(mockFailResponse());
+        
+        final String mockSuccessResponseJson = objectMapper.writeValueAsString(mockSuccessResponse());
         getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mockResponseJson));
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .body(mockSuccessResponseJson));
+
+        final String mockFailResponseJson = objectMapper.writeValueAsString(mockFailResponse());
+        getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .body(mockFailResponseJson));
+
+        OrderUtil.createOrder(accessToken);
 
         // when & then
         RestAssured
@@ -188,7 +195,26 @@ class OrderIntegrationTest {
                 .when().post(ORDER_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .header("Location", ORDER_API_URL + "/1");
+                .header("Location", ORDER_API_URL + "/2");
+    }
+
+    @Test
+    @DisplayName("환율 서버에 이상이 생겼을 때, 캐싱된 환율이 없으면 주문에 실패한다.")
+    void createOrderWithExchangeRateErrorAndExchangeRateCacheIsNull() throws JsonProcessingException {
+        // given
+        final String accessToken = AuthUtil.accessToken();
+
+        getMockRequest(1).andRespond(withStatus(HttpStatus.BAD_REQUEST)
+                                             .contentType(MediaType.APPLICATION_JSON));
+
+        // when & then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post(ORDER_API_URL)
+                .then().log().all()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
     private static Map<String, Object> mockSuccessResponse() {
@@ -208,9 +234,9 @@ class OrderIntegrationTest {
     private ResponseActions getMockRequest(final int requestCount) {
         return mockServer
                 .expect(ExpectedCount.times(requestCount), requestTo("http://apilayer.net/api/live" +
-                        "?access_key=" + accessKey +
-                        "&currencies=KRW" +
-                        "&source=USD" +
-                        "&format=1"));
+                                                                             "?access_key=" + accessKey +
+                                                                             "&currencies=KRW" +
+                                                                             "&source=USD" +
+                                                                             "&format=1"));
     }
 }
