@@ -1,6 +1,5 @@
-package shopping.cart.service.currency;
+package shopping.cart.component;
 
-import shopping.cart.component.ExchangeRateProvider;
 import shopping.cart.domain.vo.ExchangeRate;
 
 public class MockExchangeRateProvider implements ExchangeRateProvider {
