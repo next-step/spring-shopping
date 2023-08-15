@@ -4,12 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class CartItems {
+public class Cart {
 
     private final List<CartItem> items;
+    private final Long userId;
 
-    public CartItems(final List<CartItem> items) {
+    public Cart(final List<CartItem> items, Long userId) {
         this.items = items;
+        this.userId = userId;
     }
 
     public CartItem add(final CartItem item) {
@@ -35,7 +37,17 @@ public class CartItems {
         return items.contains(cartItem);
     }
 
+    public long calculateTotalPrice() {
+        return items.stream()
+                .mapToLong(CartItem::calculateTotalPrice)
+                .sum();
+    }
+
     public List<CartItem> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 }

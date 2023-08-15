@@ -1,6 +1,7 @@
 package shopping.domain.cart;
 
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Quantity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public class CartItem {
 
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Product product;
 
     @Column
@@ -59,6 +60,10 @@ public class CartItem {
         return this.product.equals(other.product);
     }
 
+    public long calculateTotalPrice() {
+        return (long) product.getPrice().getPrice() * quantity.getQuantity();
+    }
+
     public Long getId() {
         return id;
     }
@@ -71,7 +76,7 @@ public class CartItem {
         return product;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
     }
 }

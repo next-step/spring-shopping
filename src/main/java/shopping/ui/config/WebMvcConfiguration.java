@@ -1,12 +1,10 @@
-package shopping.config;
+package shopping.ui.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import shopping.config.interceptor.AuthInterceptor;
-import shopping.ui.AuthenticationPrincipalArgumentResolver;
 
 import java.util.List;
 
@@ -26,12 +24,14 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addViewControllers(final ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/cart").setViewName("cart");
+        registry.addViewController("/order-history").setViewName("order-history");
     }
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/carts/**");
+                .addPathPatterns("/carts/**")
+                .addPathPatterns("/orders/**");
     }
 
     @Override

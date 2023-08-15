@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorType {
 
     CART_ITEM_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 장바구니 상품 id입니다 : "),
-    USER_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 사용자 id입니다 : "),
+    CART_NO_ITEM(HttpStatus.BAD_REQUEST, "장바구니에 상품이 없습니다."),
     PRODUCT_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 상품 id입니다 : "),
     USER_NOT_CONTAINS_ITEM(HttpStatus.BAD_REQUEST, "사용자에게 접근 권한이 없는 cart item 입니다 : "),
     WRONG_LOGIN_REQUEST(HttpStatus.BAD_REQUEST, "이메일이 존재하지 않거나 올바르지 않은 비밀번호입니다."),
@@ -21,7 +21,10 @@ public enum ErrorType {
     PRODUCT_NULL(HttpStatus.BAD_REQUEST, "productId는 필수 항목입니다."),
     PASSWORD_NULL(HttpStatus.BAD_REQUEST, "password는 필수 항목입니다."),
     EMAIL_NULL(HttpStatus.BAD_REQUEST, "email은 필수 항목입니다."),
-    DECODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "복호화 실패");
+    ORDER_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "주문 접근 권한이 없습니다."),
+    ORDER_NO_EXIST(HttpStatus.BAD_REQUEST, "존재하지 않는 주문 번호입니다 : "),
+    DECODING_FAIL(HttpStatus.INTERNAL_SERVER_ERROR, "복호화 실패"),
+    NO_EXCHANGE_RATE(HttpStatus.BAD_REQUEST, "환율 정보를 조회하는데 실패했습니다.");
 
     private final HttpStatus status;
     private final String message;

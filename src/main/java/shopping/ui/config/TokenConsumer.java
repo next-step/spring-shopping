@@ -1,4 +1,4 @@
-package shopping.config.interceptor;
+package shopping.ui.config;
 
 public interface TokenConsumer {
     String getPayload(final String token);

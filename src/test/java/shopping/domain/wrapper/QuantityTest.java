@@ -1,4 +1,4 @@
-package shopping.domain.cart;
+package shopping.domain.wrapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ class QuantityTest {
         Quantity newQuantity = quantity.increase();
 
         // then
-        assertThat(newQuantity.getValue()).isEqualTo(5);
+        assertThat(newQuantity.getQuantity()).isEqualTo(5);
     }
 
     @Test
@@ -30,7 +30,7 @@ class QuantityTest {
         Quantity newQuantity = quantity.update(6);
 
         // then
-        assertThat(newQuantity.getValue()).isEqualTo(6);
+        assertThat(newQuantity.getQuantity()).isEqualTo(6);
     }
 
     @Test
@@ -40,7 +40,7 @@ class QuantityTest {
         Quantity quantity = new Quantity(4);
 
         // when, then
-        assertThat(quantity.getValue()).isEqualTo(4);
+        assertThat(quantity.getQuantity()).isEqualTo(4);
     }
 
     @Test

@@ -346,7 +346,7 @@ public class CartIntegrationTest {
         String accessToken = AuthUtil.login().as(LoginResponse.class).getAccessToken();
         CartUtil.createCartItem(accessToken, 1L);
 
-        // when, then
+        // when
         ErrorResponse response = RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)

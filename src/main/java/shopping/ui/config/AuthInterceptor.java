@@ -1,4 +1,4 @@
-package shopping.config.interceptor;
+package shopping.ui.config;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

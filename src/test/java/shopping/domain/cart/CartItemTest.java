@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shopping.domain.DomainFixture;
 import shopping.domain.product.Product;
+import shopping.domain.wrapper.Quantity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +21,7 @@ class CartItemTest {
         cartItem.increaseQuantity();
 
         // then
-        assertThat(cartItem.getQuantity()).isEqualTo(2);
+        assertThat(cartItem.getQuantity().getQuantity()).isEqualTo(2);
     }
 
     @Test
@@ -34,6 +35,18 @@ class CartItemTest {
         cartItem.updateQuantity(4);
 
         // then
-        assertThat(cartItem.getQuantity()).isEqualTo(4);
+        assertThat(cartItem.getQuantity().getQuantity()).isEqualTo(4);
+    }
+
+    @Test
+    @DisplayName("장바구니 항목 총 금액을 계산한다.")
+    void calculateTotalPrice() {
+        // given
+        Product product = DomainFixture.createProduct();
+        CartItem cartItem = new CartItem(1L, product, new Quantity(1_000_000));
+
+        // when
+        assertThat(cartItem.calculateTotalPrice()).isEqualTo(20_000_000_000L);
+
     }
 }

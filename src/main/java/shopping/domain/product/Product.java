@@ -1,5 +1,8 @@
 package shopping.domain.product;
 
+import shopping.domain.wrapper.Image;
+import shopping.domain.wrapper.Name;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,12 +26,12 @@ public class Product {
     private Image image;
 
     @Column
-    private Price price;
+    private ProductPrice price;
 
     protected Product() {
     }
-    
-    public Product(final Long id, final Name name, final Image image, final Price price) {
+
+    public Product(final Long id, final Name name, final Image image, final ProductPrice price) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -39,16 +42,16 @@ public class Product {
         return id;
     }
 
-    public String getName() {
-        return name.getName();
+    public Name getName() {
+        return name;
     }
 
-    public String getImage() {
-        return image.getImage();
+    public Image getImage() {
+        return image;
     }
 
-    public int getPrice() {
-        return price.getPrice();
+    public ProductPrice getPrice() {
+        return price;
     }
 
     @Override
