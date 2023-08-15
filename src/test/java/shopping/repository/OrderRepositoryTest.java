@@ -36,7 +36,7 @@ class OrderRepositoryTest {
             new ProductImage(imageUrl),
             new Price(price),
             new Quantity(10));
-        Order order = new Order(memberId, new MockExchangeRateApi().callExchangeRate());
+        Order order = new Order(memberId, new MockExchangeRateApi().callExchangeRate().getRate());
         order.addOrderProducts(List.of(orderProduct));
         orderRepository.save(order);
 

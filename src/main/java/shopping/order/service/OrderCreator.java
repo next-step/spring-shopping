@@ -18,6 +18,6 @@ public class OrderCreator {
 
     public OrderResponse createOrder(Long memberId) {
         ExchangeRateResponse exchangeRateResponse = exchangeRateApi.callExchangeRate();
-        return orderService.saveOrder(memberId, exchangeRateResponse);
+        return orderService.saveOrder(memberId, exchangeRateResponse.getRate());
     }
 }

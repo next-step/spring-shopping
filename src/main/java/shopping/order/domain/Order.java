@@ -51,9 +51,9 @@ public class Order {
         this.exchangeRate = new ExchangeRate(exchangeRate.getRate());
     }
 
-    public Order(final Long memberId, final ExchangeRateResponse exchangeRate) {
+    public Order(final Long memberId, final Double exchangeRate) {
         this.memberId = memberId;
-        this.exchangeRate = new ExchangeRate(exchangeRate.getRate());
+        this.exchangeRate = new ExchangeRate(exchangeRate);
     }
 
     public void addOrderProducts(final List<OrderProduct> orderProducts) {

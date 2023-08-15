@@ -50,7 +50,7 @@ class OrderTest {
         final int price = 20000;
         final Long memberId = 1L;
 
-        Order order = new Order(memberId, exchangeRateApi.callExchangeRate());
+        Order order = new Order(memberId, exchangeRateApi.callExchangeRate().getRate());
         OrderProduct orderProduct = new OrderProduct(
             1L,
             new Name(name),

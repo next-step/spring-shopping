@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shopping.global.exception.ShoppingException;
 import shopping.infrastructure.dto.ExchangeRateResponse;
-import shopping.order.domain.vo.ExchangeRate;
 
 @Component
 @Profile("!test")
@@ -18,18 +17,16 @@ public class CurrencyLayerExchangeRateApi implements ExchangeRateApi {
     private static final String targetCountry = "KRW";
     private static final String sourceCountry = "USD";
     private static final String baseurl = "/live";
-    private static final Logger logger = LoggerFactory.getLogger(ExchangeRate.class);
+    private static final Logger logger = LoggerFactory
+        .getLogger(CurrencyLayerExchangeRateApi.class);
     private final String url;
-
     private final RestTemplate restTemplate;
-    private final String accessKey;
 
     public CurrencyLayerExchangeRateApi(
         final @Value("${currency.accessKey}") String accessKey,
         final @Value("${currency.baseUrl}") String baseurl,
         final RestTemplate restTemplate
     ) {
-        this.accessKey = accessKey;
         this.url = baseurl + this.baseurl
             + "?currencies=" + targetCountry
             + "&access_key=" + accessKey;

@@ -49,7 +49,10 @@ class OrderServiceTest {
             .findAllByMemberId(memberId);
         assertThat(cartProducts).isNotEmpty();
         // when
-        OrderResponse orderResponse = orderService.saveOrder(memberId, exchangeRateResponse);
+        OrderResponse orderResponse = orderService.saveOrder(
+            memberId,
+            exchangeRateResponse.getRate()
+        );
         // then
         assertThat(orderResponse.getItems().size()).isEqualTo(cartProducts.size());
     }
@@ -63,7 +66,10 @@ class OrderServiceTest {
         assertThat(cartProductRepository.findAllByMemberId(memberId)).isEmpty();
 
         // when & then
-        assertThatCode(() -> orderService.saveOrder(memberId, exchangeRateResponse))
+        assertThatCode(() -> orderService.saveOrder(
+            memberId,
+            exchangeRateResponse.getRate())
+        )
             .isInstanceOf(ShoppingException.class)
             .hasMessage("주문하실 상품이 존재하지 않습니다.");
     }
@@ -114,7 +120,10 @@ class OrderServiceTest {
         ExchangeRateResponse exchangeRateResponse = new ExchangeRateResponse(1300D);
 
         // when & then
-        assertThatCode(() -> orderService.saveOrder(memberId, exchangeRateResponse))
+        assertThatCode(() -> orderService.saveOrder(
+            memberId,
+            exchangeRateResponse.getRate())
+        )
             .isInstanceOf(ShoppingException.class)
             .hasMessage("주문하실 상품이 존재하지 않습니다.");
     }

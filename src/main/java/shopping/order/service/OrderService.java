@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import shopping.cart.domain.CartProduct;
 import shopping.cart.repository.CartProductRepository;
 import shopping.global.exception.ShoppingException;
-import shopping.infrastructure.dto.ExchangeRateResponse;
 import shopping.order.domain.Order;
 import shopping.order.domain.OrderProduct;
 import shopping.order.dto.OrderResponse;
@@ -29,8 +28,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse saveOrder(final Long memberId,
-        ExchangeRateResponse exchangeRateResponse) {
+    public OrderResponse saveOrder(final Long memberId, Double exchangeRate) {
         List<CartProduct> cartProducts = cartProductRepository
             .findAllByMemberId(memberId);
 
@@ -38,7 +36,7 @@ public class OrderService {
             throw new ShoppingException("주문하실 상품이 존재하지 않습니다.");
         }
 
-        Order order = new Order(memberId, exchangeRateResponse);
+        Order order = new Order(memberId, exchangeRate);
         orderRepository.save(order);
 
         List<OrderProduct> orderProducts = convertOrderProduct(cartProducts);
