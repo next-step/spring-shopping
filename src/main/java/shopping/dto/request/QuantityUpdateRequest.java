@@ -1,19 +1,17 @@
 package shopping.dto.request;
 
-import shopping.domain.vo.Quantity;
-
 public class QuantityUpdateRequest {
 
-    private Quantity quantity;
+    private int quantity;
 
     private QuantityUpdateRequest() {
     }
 
     public QuantityUpdateRequest(final int quantity) {
-        this.quantity = new Quantity(quantity);
+        this.quantity = quantity;
     }
 
-    public Quantity getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 }

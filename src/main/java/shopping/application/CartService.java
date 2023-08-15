@@ -78,7 +78,8 @@ public class CartService {
         final CartItem item = items.find(cartItemId)
                 .orElseThrow(UserNotHasCartItemException::new);
 
-        item.updateQuantity(request.getQuantity());
+        final Quantity quantity = new Quantity(request.getQuantity());
+        item.updateQuantity(quantity);
     }
 
     @Transactional
