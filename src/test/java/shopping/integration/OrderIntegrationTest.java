@@ -170,8 +170,8 @@ class OrderIntegrationTest {
     }
 
     @Test
-    @DisplayName("환율 서버에 이상이 생겨도, 캐싱된 환율이 있으면 주문이 생성된다.")
-    void createOrderWithExchangeRateError() throws JsonProcessingException {
+    @DisplayName("환율 서버의 응답 값이 이상해도, 캐싱된 환율이 있으면 주문이 생성된다.")
+    void createOrderWithInvalidResponse() throws JsonProcessingException {
         // given
         final String accessToken = AuthUtil.accessToken();
 
@@ -199,12 +199,39 @@ class OrderIntegrationTest {
     }
 
     @Test
+    @DisplayName("환율 서버에서 실패한 응답을 받아도, 캐싱된 환율이 있으면 주문이 생성된다.")
+    void createOrderWithFailStatusCode() throws JsonProcessingException {
+        // given
+        final String accessToken = AuthUtil.accessToken();
+
+        final String mockSuccessResponseJson = objectMapper.writeValueAsString(mockSuccessResponse());
+        getMockRequest(1).andRespond(withStatus(HttpStatus.OK)
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .body(mockSuccessResponseJson));
+
+        getMockRequest(1).andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                                             .contentType(MediaType.APPLICATION_JSON));
+
+        OrderUtil.createOrder(accessToken);
+
+        // when & then
+        RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().post(ORDER_API_URL)
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .header("Location", ORDER_API_URL + "/2");
+    }
+
+    @Test
     @DisplayName("환율 서버에 이상이 생겼을 때, 캐싱된 환율이 없으면 주문에 실패한다.")
     void createOrderWithExchangeRateErrorAndExchangeRateCacheIsNull() throws JsonProcessingException {
         // given
         final String accessToken = AuthUtil.accessToken();
 
-        getMockRequest(1).andRespond(withStatus(HttpStatus.BAD_REQUEST)
+        getMockRequest(1).andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                                              .contentType(MediaType.APPLICATION_JSON));
 
         // when & then
@@ -233,10 +260,13 @@ class OrderIntegrationTest {
 
     private ResponseActions getMockRequest(final int requestCount) {
         return mockServer
-                .expect(ExpectedCount.times(requestCount), requestTo("http://apilayer.net/api/live" +
-                                                                             "?access_key=" + accessKey +
-                                                                             "&currencies=KRW" +
-                                                                             "&source=USD" +
-                                                                             "&format=1"));
+                .expect(
+                        ExpectedCount.times(requestCount),
+                        requestTo("http://apilayer.net/api/live" +
+                                          "?access_key=" + accessKey +
+                                          "&currencies=KRW" +
+                                          "&source=USD" +
+                                          "&format=1")
+                );
     }
 }
