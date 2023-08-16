@@ -12,10 +12,10 @@ import org.springframework.http.HttpStatus;
 import shopping.acceptance.helper.AuthHelper;
 import shopping.acceptance.helper.CartProductHelper;
 import shopping.acceptance.helper.RestHelper;
-import shopping.dto.request.CartProductCreateRequest;
-import shopping.dto.request.CartProductQuantityUpdateRequest;
-import shopping.dto.response.CartResponse;
-import shopping.exception.dto.ExceptionResponse;
+import shopping.cart.dto.request.CartProductCreateRequest;
+import shopping.cart.dto.request.CartProductQuantityUpdateRequest;
+import shopping.cart.dto.response.CartResponse;
+import shopping.global.exception.dto.ExceptionResponse;
 
 @DisplayName("장바구니 상품 관련 기능 인수 테스트")
 class CartProductAcceptanceTest extends AcceptanceTest {
@@ -139,7 +139,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(response.body().as(ExceptionResponse.class).getMessage())
-            .isEqualTo("장바구니 상품 개수는 0이하면 안됩니다. 입력값: " + quantity);
+            .isEqualTo("상품 개수는 0이하면 안됩니다. 입력값: " + quantity);
     }
 
 

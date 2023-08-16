@@ -1,6 +1,8 @@
 package shopping.service;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.times;
@@ -13,12 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import shopping.domain.cart.CartProduct;
-import shopping.domain.product.Product;
-import shopping.dto.request.CartProductCreateRequest;
-import shopping.exception.ShoppingException;
-import shopping.repository.CartProductRepository;
-import shopping.repository.ProductRepository;
+import shopping.cart.domain.CartProduct;
+import shopping.cart.dto.request.CartProductCreateRequest;
+import shopping.cart.repository.CartProductRepository;
+import shopping.cart.service.CartService;
+import shopping.global.exception.ShoppingException;
+import shopping.product.domain.Product;
+import shopping.product.repository.ProductRepository;
 
 @DisplayName("장바구니 상품 Service 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -39,13 +42,13 @@ class CartProductServiceTest {
         /* given */
         final Long memberId = 1L;
         final Long productId = 1L;
+        Product product = new Product("치킨, ", "/asset/img/chicken", 20000);
 
         given(productRepository.findById(productId)).willReturn(
-            Optional.of(new Product("치킨, ", "/asset/img/chicken", 20000))
+            Optional.of(product)
         );
-        given(cartProductRepository.findByMemberIdAndProductId(memberId, productId)).willReturn(
-            Optional.empty()
-        );
+        given(cartProductRepository.findByMemberIdAndProduct(memberId, product))
+            .willReturn(Optional.empty());
 
         /* when */
         cartService.createCartProduct(memberId, new CartProductCreateRequest(productId));
@@ -53,7 +56,7 @@ class CartProductServiceTest {
         /* then */
         verify(productRepository, atLeast(1)).findById(productId);
         verify(cartProductRepository, atLeast(1))
-            .findByMemberIdAndProductId(memberId, productId);
+            .findByMemberIdAndProduct(memberId, product);
     }
 
     @Test
@@ -69,12 +72,13 @@ class CartProductServiceTest {
         assertThatCode(
             () -> cartService.createCartProduct(memberId,
                 new CartProductCreateRequest(productId))
-        ).isInstanceOf(ShoppingException.class)
+        )
+            .isInstanceOf(ShoppingException.class)
             .hasMessage("존재하지 않는 상품입니다. 입력값: " + productId);
 
         verify(productRepository, times(1)).findById(productId);
         verify(cartProductRepository, times(0))
-            .findByMemberIdAndProductId(memberId, productId);
+            .findByMemberIdAndProduct(eq(memberId), any(Product.class));
     }
 
     @Test
@@ -84,11 +88,12 @@ class CartProductServiceTest {
         final Long memberId = 1L;
         final Long productId = 1L;
 
+        Product product = new Product(productId, "치킨", "/asset/img/chicken", 20000);
         given(productRepository.findById(productId)).willReturn(
-            Optional.of(new Product("치킨, ", "/asset/img/chicken", 20000))
+            Optional.of(product)
         );
-        given(cartProductRepository.findByMemberIdAndProductId(memberId, productId)).willReturn(
-            Optional.of(new CartProduct(memberId, productId))
+        given(cartProductRepository.findByMemberIdAndProduct(memberId, product)).willReturn(
+            Optional.of(new CartProduct(memberId, product))
         );
 
         /* when & then */
@@ -100,6 +105,6 @@ class CartProductServiceTest {
 
         verify(productRepository, times(1)).findById(productId);
         verify(cartProductRepository, times(1))
-            .findByMemberIdAndProductId(memberId, productId);
+            .findByMemberIdAndProduct(memberId, product);
     }
 }

@@ -2,8 +2,8 @@ package shopping.acceptance.helper;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import shopping.dto.request.LoginRequest;
-import shopping.dto.response.LoginResponse;
+import shopping.auth.dto.request.LoginRequest;
+import shopping.auth.dto.response.LoginResponse;
 
 public class AuthHelper {
 
