@@ -9,10 +9,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import shopping.domain.Email;
 import shopping.domain.Member;
+import shopping.domain.SecurityInfoManager;
+import shopping.domain.MemberInfo;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
 
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class AuthServiceTest {
     private MemberRepository memberRepository;
 
     @Mock
-    private TokenManager tokenProvider;
+    private SecurityInfoManager securityInfoManager;
 
     @Nested
     @DisplayName("login 메소드는")
@@ -50,7 +51,7 @@ public class AuthServiceTest {
             Member member = new Member(1L, email.getValue(), password);
 
             given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
-            given(tokenProvider.createToken(member.getId())).willReturn("token");
+            given(securityInfoManager.encode(new MemberInfo(member.getId()))).willReturn("token");
 
             // when
             LoginResponse loginResponse = authService.login(loginRequest);

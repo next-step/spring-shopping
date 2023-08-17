@@ -1,6 +1,7 @@
 package shopping.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
@@ -12,15 +13,43 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import shopping.domain.CartProduct;
+import shopping.domain.Member;
+import shopping.domain.Product;
 import shopping.exception.CartException;
 
 @DisplayName("CartRepository 클래스")
 @DataJpaTest
-@Import(value = {CartProductRepository.class})
+@Import(value = {CartProductRepository.class, MemberRepository.class, ProductRepository.class})
 public class CartProductRepositoryTest {
 
+    private final CartProductRepository cartRepository;
+    private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
+
     @Autowired
-    private CartProductRepository cartRepository;
+    public CartProductRepositoryTest(CartProductRepository cartRepository,
+        MemberRepository memberRepository, ProductRepository productRepository) {
+        this.cartRepository = cartRepository;
+        this.memberRepository = memberRepository;
+        this.productRepository = productRepository;
+    }
+
+    @Nested
+    @DisplayName("save 메소드는")
+    class Save {
+
+        @Test
+        @DisplayName("cartProduct 를 저장한다.")
+        void save() {
+            // given
+            Member member = memberRepository.findById(1L).get();
+            Product product = productRepository.findById(5L).get();
+            CartProduct cartProduct = new CartProduct(member, product, 1);
+
+            // when & then
+            assertThatNoException().isThrownBy(() -> cartRepository.save(cartProduct));
+        }
+    }
 
     @Nested
     @DisplayName("findAllByMemberId 메소드는")
@@ -110,6 +139,25 @@ public class CartProductRepositoryTest {
             // then
             assertThatThrownBy(() -> cartRepository.findOneByMemberIdAndProductId(1L, 1L))
                 .isInstanceOf(CartException.class);
+        }
+    }
+
+    @Nested
+    @Rollback
+    @DisplayName("deleteByMemberId 메소드는")
+    class DeleteByMemberId {
+
+        @Test
+        @DisplayName("member 의 모든 장바구니를 제거한다.")
+        void deleteCartProductByMemberId() {
+            // given
+            Long memberId = 1L;
+
+            // when
+            cartRepository.deleteByMemberId(memberId);
+
+            // then
+            assertThat(cartRepository.findAllByMemberId(memberId)).isEmpty();
         }
     }
 }

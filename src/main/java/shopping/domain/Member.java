@@ -1,5 +1,6 @@
 package shopping.domain;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,6 +37,13 @@ public class Member {
         if (!StringUtils.hasText(password)) {
             throw new MemberException("사용자 비밀번호가 존재하지 않습니다");
         }
+    }
+
+    public boolean matchId(Long other) {
+        if (Objects.isNull(other)) {
+            return false;
+        }
+        return this.id.equals(other);
     }
 
     protected Member() {

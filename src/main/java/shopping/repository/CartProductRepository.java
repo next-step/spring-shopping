@@ -4,12 +4,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.CartProduct;
 import shopping.exception.CartException;
 
 @Repository
-@Transactional
 public class CartProductRepository {
 
     private final EntityManager entityManager;
@@ -22,7 +20,6 @@ public class CartProductRepository {
         entityManager.persist(cartProduct);
     }
 
-    @Transactional(readOnly = true)
     public List<CartProduct> findAllByMemberId(Long memberId) {
         return entityManager.createQuery(
                 "select c from CartProduct c join fetch c.product p where c.member.id = :memberId",
@@ -31,7 +28,6 @@ public class CartProductRepository {
             .getResultList();
     }
 
-    @Transactional(readOnly = true)
     public CartProduct findOneByMemberIdAndProductId(Long memberId, Long productId) {
         try {
             return entityManager.createQuery(
@@ -59,5 +55,11 @@ public class CartProductRepository {
             .setParameter("id", id)
             .executeUpdate();
 
+    }
+
+    public void deleteByMemberId(Long memberId) {
+        entityManager.createQuery("delete from CartProduct c where c.member.id = :memberId")
+            .setParameter("memberId", memberId)
+            .executeUpdate();
     }
 }

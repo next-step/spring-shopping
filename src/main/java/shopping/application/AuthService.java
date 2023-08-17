@@ -3,10 +3,11 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import shopping.domain.Email;
 import shopping.domain.Member;
+import shopping.domain.SecurityInfoManager;
+import shopping.domain.MemberInfo;
 import shopping.dto.request.LoginRequest;
 import shopping.dto.response.LoginResponse;
 import shopping.exception.AuthException;
-import shopping.jwt.TokenManager;
 import shopping.repository.MemberRepository;
 
 
@@ -14,11 +15,11 @@ import shopping.repository.MemberRepository;
 public class AuthService {
 
     private final MemberRepository memberRepository;
-    private final TokenManager tokenProvider;
+    private final SecurityInfoManager securityInfoManager;
 
-    public AuthService(MemberRepository memberRepository, TokenManager tokenProvider) {
+    public AuthService(MemberRepository memberRepository, SecurityInfoManager securityInfoManager) {
         this.memberRepository = memberRepository;
-        this.tokenProvider = tokenProvider;
+        this.securityInfoManager = securityInfoManager;
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
@@ -30,7 +31,7 @@ public class AuthService {
             throw new AuthException("비밀번호가 일치하지 않습니다.");
         }
 
-        String token = tokenProvider.createToken(member.getId());
+        String token = securityInfoManager.encode(new MemberInfo(member.getId()));
         return new LoginResponse(token);
     }
 }

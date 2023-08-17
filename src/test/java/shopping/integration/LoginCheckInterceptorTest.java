@@ -22,7 +22,7 @@ class LoginCheckInterceptorTest extends IntegrationTest {
                 .given().log().all()
                 .auth().none()
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/products")
+                .when().get("/api/cart")
                 .then().log().all().extract();
 
         // then
@@ -41,7 +41,7 @@ class LoginCheckInterceptorTest extends IntegrationTest {
                 .given().log().all()
                 .auth().oauth2(invalidToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/products")
+                .when().get("/api/cart")
                 .then().log().all().extract();
 
         // then
@@ -60,7 +60,7 @@ class LoginCheckInterceptorTest extends IntegrationTest {
                 .given().log().all()
                 .header("Authorization", token)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/cart/products")
+                .when().get("/api/cart")
                 .then().log().all().extract();
 
         // then

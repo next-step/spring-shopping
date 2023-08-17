@@ -14,7 +14,7 @@ public class AuthIntegrationSupporter {
                 .body(new LoginRequest(email, password))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login")
+                .when().post("/api/login")
                 .then().log().all().extract();
     }
 
@@ -24,7 +24,7 @@ public class AuthIntegrationSupporter {
             .body(jsonRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/login")
+            .when().post("/api/login")
             .then().log().all().extract();
     }
 }
