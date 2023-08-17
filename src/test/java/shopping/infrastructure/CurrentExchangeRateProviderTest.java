@@ -11,16 +11,13 @@ import static org.mockito.Mockito.verify;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import shopping.application.ExchangeRateProvider;
 import shopping.domain.EmptyExchangeRate;
 import shopping.domain.EmptyExchangeRates;
@@ -30,6 +27,7 @@ import shopping.domain.ExchangeRates;
 import shopping.dto.response.ExchangeResponse;
 import shopping.exception.InfraException;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @DisplayName("CurrentExchangeRateProvider 클래스")
 class CurrentExchangeRateProviderTest {
