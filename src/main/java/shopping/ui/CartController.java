@@ -2,24 +2,17 @@ package shopping.ui;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import shopping.application.CartService;
-import shopping.dto.CartCreateRequest;
-import shopping.dto.CartResponse;
-import shopping.dto.QuantityUpdateRequest;
+import shopping.dto.request.CartCreateRequest;
+import shopping.dto.request.QuantityUpdateRequest;
+import shopping.dto.response.CartResponse;
 import shopping.ui.config.AuthenticationPrincipal;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/api/carts")
 public class CartController {
 
     private final CartService cartService;

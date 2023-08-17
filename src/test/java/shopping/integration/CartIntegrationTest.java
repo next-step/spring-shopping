@@ -5,7 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import shopping.dto.*;
+import shopping.dto.request.CartCreateRequest;
+import shopping.dto.request.QuantityUpdateRequest;
+import shopping.dto.response.CartResponse;
+import shopping.dto.response.ErrorResponse;
+import shopping.dto.response.LoginResponse;
 import shopping.integration.config.IntegrationTest;
 import shopping.integration.util.AuthUtil;
 import shopping.integration.util.CartUtil;
@@ -16,9 +20,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static shopping.integration.util.CartUtil.CART_API_URL;
 
 @IntegrationTest
-public class CartIntegrationTest {
+class CartIntegrationTest {
 
     @Test
     @DisplayName("장바구니 페이지 접속 테스트.")
@@ -43,7 +48,7 @@ public class CartIntegrationTest {
                 .body(new CartCreateRequest(1L))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
+                .when().post(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
     }
@@ -62,7 +67,7 @@ public class CartIntegrationTest {
                 .body(new CartCreateRequest(1L))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
+                .when().post(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
 
@@ -70,7 +75,7 @@ public class CartIntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/carts")
+                .when().get(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(CartResponse[].class);
@@ -95,7 +100,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
+                .when().post(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -119,7 +124,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
+                .when().post(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -143,7 +148,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/carts")
+                .when().post(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -166,7 +171,7 @@ public class CartIntegrationTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/carts")
+                .when().get(CART_API_URL)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(CartResponse[].class);
@@ -189,7 +194,7 @@ public class CartIntegrationTest {
                 .body(new QuantityUpdateRequest(3))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/1/quantity")
+                .when().patch(CART_API_URL + "/1/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
@@ -217,7 +222,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/2/quantity")
+                .when().patch(CART_API_URL + "/2/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -242,7 +247,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/2/quantity")
+                .when().patch(CART_API_URL + "/2/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -267,7 +272,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/1/quantity")
+                .when().patch(CART_API_URL + "/1/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -292,7 +297,7 @@ public class CartIntegrationTest {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().patch("/carts/1/quantity")
+                .when().patch(CART_API_URL + "/1/quantity")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -312,7 +317,7 @@ public class CartIntegrationTest {
         RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .when().delete("/carts/1")
+                .when().delete(CART_API_URL + "/1")
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
@@ -330,7 +335,7 @@ public class CartIntegrationTest {
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/carts/2")
+                .when().delete(CART_API_URL + "/2")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);
@@ -358,7 +363,7 @@ public class CartIntegrationTest {
                 .auth().oauth2(accessToken1)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/carts/2")
+                .when().delete(CART_API_URL + "/2")
                 .then().log().all()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().as(ErrorResponse.class);

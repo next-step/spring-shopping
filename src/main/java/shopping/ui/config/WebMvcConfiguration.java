@@ -24,12 +24,14 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public void addViewControllers(final ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/cart").setViewName("cart");
+        registry.addViewController("/order-history").setViewName("order-history");
     }
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/carts/**");
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/login/**");
     }
 
     @Override

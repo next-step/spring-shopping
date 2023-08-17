@@ -1,5 +1,7 @@
 package shopping.domain.entity;
 
+import shopping.domain.vo.Quantity;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,6 +19,7 @@ public class CartItem {
     private Product product;
 
     @Column
+    @AttributeOverride(name = "value", column = @Column(name = "quantity"))
     private Quantity quantity;
 
     protected CartItem() {
@@ -57,12 +60,11 @@ public class CartItem {
         return product;
     }
 
-    public int getQuantity() {
-        return quantity.getValue();
+    public Quantity getQuantity() {
+        return quantity;
     }
 
-    public boolean equalsById(final long id) {
-        return this.id == id;
+    public boolean equalsByProductId(final Long productId) {
+        return this.product.equalsById(productId);
     }
-
 }

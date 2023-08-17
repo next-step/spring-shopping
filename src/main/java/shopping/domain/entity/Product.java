@@ -1,5 +1,9 @@
 package shopping.domain.entity;
 
+import shopping.domain.vo.Image;
+import shopping.domain.vo.Name;
+import shopping.domain.vo.Price;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -12,12 +16,15 @@ public class Product {
     private Long id;
 
     @Column(nullable = false, length = 20)
+    @AttributeOverride(name = "value", column = @Column(name = "name"))
     private Name name;
 
     @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "image"))
     private Image image;
 
-    @Column
+    @Column(nullable = false)
+    @AttributeOverride(name = "value", column = @Column(name = "price"))
     private Price price;
 
     protected Product() {
@@ -34,16 +41,16 @@ public class Product {
         return id;
     }
 
-    public String getName() {
-        return name.getName();
+    public Name getName() {
+        return name;
     }
 
-    public String getImage() {
-        return image.getImage();
+    public Image getImage() {
+        return image;
     }
 
-    public int getPrice() {
-        return price.getPrice();
+    public Price getPrice() {
+        return price;
     }
 
     @Override
@@ -59,7 +66,7 @@ public class Product {
         return Objects.hash(id);
     }
 
-    public boolean equalsById(final long id) {
-        return Objects.equals(this.id, id);
+    public boolean equalsById(final Long productId) {
+        return Objects.equals(this.id, productId);
     }
 }

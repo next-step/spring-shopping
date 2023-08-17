@@ -3,9 +3,12 @@ package shopping.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.entity.User;
-import shopping.dto.LoginRequest;
-import shopping.dto.LoginResponse;
+import shopping.domain.vo.Email;
+import shopping.domain.vo.Password;
+import shopping.dto.request.LoginRequest;
+import shopping.dto.response.LoginResponse;
 import shopping.exception.BadLoginRequestException;
+import shopping.infrastructure.PasswordEncoder;
 import shopping.infrastructure.TokenProvider;
 import shopping.repository.UserRepository;
 
@@ -15,16 +18,23 @@ public class AuthService {
 
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthService(final TokenProvider tokenProvider,
-                       final UserRepository userRepository) {
+                       final UserRepository userRepository,
+                       final PasswordEncoder passwordEncoder) {
         this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
     public LoginResponse login(final LoginRequest request) {
-        final User user = userRepository.findByEmailAndPassword(request.getEmail(), request.getPassword())
+        final Email email = new Email(request.getEmail());
+        final Password password = Password.from(request.getPassword());
+        password.encode(passwordEncoder);
+
+        final User user = userRepository.findByEmailAndPassword(email, password)
                 .orElseThrow(BadLoginRequestException::new);
 
         return new LoginResponse(tokenProvider.create(user.getId().toString()));

@@ -1,7 +1,6 @@
 package shopping.domain;
 
 import shopping.domain.entity.CartItem;
-import shopping.exception.UserNotHasCartItemException;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,11 +22,10 @@ public class CartItems {
         return items.contains(cartItem);
     }
 
-    public CartItem find(final Long itemId) {
+    public Optional<CartItem> find(final Long productId) {
         return items.stream()
-                .filter(cartItem -> cartItem.equalsById(itemId))
-                .findAny()
-                .orElseThrow(UserNotHasCartItemException::new);
+                .filter(cartItem -> cartItem.equalsByProductId(productId))
+                .findAny();
     }
 
     public List<CartItem> getItems() {

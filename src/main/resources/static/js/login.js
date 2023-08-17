@@ -11,7 +11,7 @@ form.addEventListener('submit', (event) => {
         loginRequest[key] = value;
     }
 
-    fetch('/login/token', {
+    fetch('/api/login/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
