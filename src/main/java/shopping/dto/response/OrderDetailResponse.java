@@ -30,7 +30,7 @@ public class OrderDetailResponse {
         return new OrderDetailResponse(
             order.getId(),
             generateOrderProductResponses(order),
-            order.computeTotalPrice(),
+            order.getTotalPrice(),
             null
         );
     }
@@ -42,7 +42,7 @@ public class OrderDetailResponse {
         return new OrderDetailResponse(
             order.getId(),
             generateOrderProductResponses(order),
-            order.computeTotalPrice(),
+            order.getTotalPrice(),
             currencyExchangeRate.getRate()
         );
     }

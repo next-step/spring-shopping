@@ -33,6 +33,9 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.ORDERED;
 
+    @Column(name = "total_price")
+    private OrderProductPrice totalPrice;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
@@ -45,14 +48,12 @@ public class Order {
         orderProducts.forEach(orderProduct -> orderProduct.updateOrder(this));
     }
 
-    public long computeTotalPrice() {
-        return this.orderProducts.stream()
-            .mapToLong(OrderProduct::computeTotalPrice)
-            .sum();
-    }
-
     public Long getId() {
         return this.id;
+    }
+
+    public int getTotalPrice() {
+        return this.totalPrice.getPrice();
     }
 
     public List<OrderProduct> getOrderProducts() {
