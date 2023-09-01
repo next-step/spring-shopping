@@ -10,9 +10,9 @@ insert into cart_products(member_id, product_id, quantity)
 values (1, 1, 3),
        (1, 2, 1);
 
-insert into orders(member_id, status)
-values (1, 'ORDERED'),
-       (1, 'ORDERED');
+insert into orders(member_id, status, price)
+values (1, 'ORDERED', '110000'),
+       (1, 'ORDERED', '30000');
 
 insert into order_products(order_id, ordered_image, ordered_name, ordered_price, quantity)
 values (1, '/assets/img/chicken.png', '치킨', 20000, 3),

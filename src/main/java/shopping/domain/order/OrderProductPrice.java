@@ -9,27 +9,27 @@ import shopping.exception.ShoppingException;
 @Embeddable
 public class OrderProductPrice {
 
-    private int price;
+    private long price;
 
     protected OrderProductPrice() {
     }
 
-    public OrderProductPrice(final int price) {
+    public OrderProductPrice(final long price) {
         validatePriceLessThanEqualZero(price);
 
         this.price = price;
     }
 
-    private void validatePriceLessThanEqualZero(final int value) {
+    private void validatePriceLessThanEqualZero(final long value) {
         if (value <= 0) {
             throw new ShoppingException(INVALID_PRICE_SIZE, value);
         }
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return this.price;
     }
-    
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

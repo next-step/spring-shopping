@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,6 +35,7 @@ public class Order {
     private OrderStatus status = OrderStatus.ORDERED;
 
     @Column(name = "total_price")
+    @Embedded
     private OrderProductPrice totalPrice;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -45,14 +47,22 @@ public class Order {
     public Order(final Long memberId, final List<OrderProduct> orderProducts) {
         this.memberId = memberId;
         this.orderProducts = orderProducts;
+
+        this.totalPrice = new OrderProductPrice(computeTotalPrice(orderProducts));
         orderProducts.forEach(orderProduct -> orderProduct.updateOrder(this));
+    }
+
+    private long computeTotalPrice(final List<OrderProduct> orderProducts) {
+        return orderProducts.stream()
+            .mapToLong(OrderProduct::computeTotalPrice)
+            .sum();
     }
 
     public Long getId() {
         return this.id;
     }
 
-    public int getTotalPrice() {
+    public long getTotalPrice() {
         return this.totalPrice.getPrice();
     }
 
