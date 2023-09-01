@@ -1,9 +1,10 @@
 package shopping.domain.order;
 
-import java.util.Objects;
-import javax.persistence.Embeddable;
 import shopping.exception.OrderExceptionType;
 import shopping.exception.ShoppingException;
+
+import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Embeddable
 public class OrderCurrencyRate {
@@ -32,7 +33,7 @@ public class OrderCurrencyRate {
         }
     }
 
-    public double getCurrencyRate() {
+    public Double getCurrencyRate() {
         return this.currencyRate;
     }
 

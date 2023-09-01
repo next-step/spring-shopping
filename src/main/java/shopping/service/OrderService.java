@@ -1,40 +1,57 @@
 package shopping.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shopping.domain.cart.Cart;
 import shopping.domain.order.Order;
+import shopping.domain.order.OrderCartService;
+import shopping.dto.response.OrderDetailResponse;
 import shopping.dto.response.OrderHistoryResponse;
+import shopping.exception.OrderExceptionType;
+import shopping.exception.ShoppingException;
+import shopping.exchange.CurrencyExchanger;
+import shopping.exchange.CurrencyType;
 import shopping.repository.CartProductRepository;
 import shopping.repository.OrderRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
 
-    private final CartProductRepository cartProductRepository;
-    private final OrderRepository orderRepository;
+    private static final CurrencyType DEFAULT_CURRENCY_TYPE_FROM = CurrencyType.USD;
+    private static final CurrencyType DEFAULT_CURRENCY_TYPE_TO = CurrencyType.KRW;
+
     private final OrderMapper orderMapper;
+    private final CurrencyExchanger currencyExchanger;
+    private final OrderCartService orderCartService;
+    private final OrderRepository orderRepository;
+    private final CartProductRepository cartProductRepository;
 
     public OrderService(
-        final CartProductRepository cartProductRepository,
+        final OrderMapper orderMapper,
+        final CurrencyExchanger currencyExchanger,
+        final OrderCartService orderCartService,
         final OrderRepository orderRepository,
-        final OrderMapper orderMapper
+        final CartProductRepository cartProductRepository
     ) {
-        this.cartProductRepository = cartProductRepository;
-        this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
+        this.currencyExchanger = currencyExchanger;
+        this.orderCartService = orderCartService;
+        this.orderRepository = orderRepository;
+        this.cartProductRepository = cartProductRepository;
     }
 
-    @Transactional
     public Long createOrder(final Long memberId) {
         final Cart cart = new Cart(memberId, cartProductRepository.findAllByMemberId(memberId));
-        final Order order = orderRepository.save(orderMapper.mapFrom(cart));
 
-        cleanUpCart(memberId);
+        final Order order = currencyExchanger
+            .findCurrencyExchangeRate(DEFAULT_CURRENCY_TYPE_FROM, DEFAULT_CURRENCY_TYPE_TO)
+            .map(rate -> orderMapper.mapOf(cart, rate.getRate()))
+            .orElse(orderMapper.mapFrom(cart));
 
-        return order.getId();
+        return orderCartService.saveOrder(order).getId();
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +63,11 @@ public class OrderService {
             .collect(Collectors.toList());
     }
 
-    private void cleanUpCart(final Long memberId) {
-        cartProductRepository.deleteAllByMemberId(memberId);
+    @Transactional(readOnly = true)
+    public OrderDetailResponse findOrderDetail(final Long memberId, final Long orderId) {
+        final Order order = orderRepository.findByIdAndMemberId(orderId, memberId)
+            .orElseThrow(() -> new ShoppingException(OrderExceptionType.NOT_FOUND_ORDER, orderId));
+
+        return OrderDetailResponse.from(order);
     }
 }

@@ -1,19 +1,9 @@
 package shopping.domain.order;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "orders")
@@ -48,12 +38,24 @@ public class Order {
     protected Order() {
     }
 
-    public Order(final Long memberId, final List<OrderProduct> orderProducts) {
+    public Order(
+        final Long memberId,
+        final Double usdRate,
+        final List<OrderProduct> orderProducts
+    ) {
         this.memberId = memberId;
+        this.orderCurrencyRate = usdRate == null ? null : new OrderCurrencyRate(usdRate);
         this.orderProducts = orderProducts;
 
         this.totalPrice = new OrderProductPrice(computeTotalPrice(orderProducts));
         orderProducts.forEach(orderProduct -> orderProduct.updateOrder(this));
+    }
+
+    public Order(
+        final Long memberId,
+        final List<OrderProduct> orderProducts
+    ) {
+        this(memberId, null, orderProducts);
     }
 
     private long computeTotalPrice(final List<OrderProduct> orderProducts) {
@@ -66,8 +68,16 @@ public class Order {
         return this.id;
     }
 
+    public Long getMemberId() {
+        return this.memberId;
+    }
+
     public long getTotalPrice() {
         return this.totalPrice.getPrice();
+    }
+
+    public Double getOrderCurrencyRate() {
+        return this.orderCurrencyRate.getCurrencyRate();
     }
 
     public List<OrderProduct> getOrderProducts() {

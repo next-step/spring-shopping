@@ -1,10 +1,10 @@
 package shopping.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import shopping.domain.order.Order;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import shopping.domain.order.Order;
-import shopping.exchange.CurrencyExchangeRate;
 
 public class OrderDetailResponse {
 
@@ -31,19 +31,7 @@ public class OrderDetailResponse {
             order.getId(),
             generateOrderProductResponses(order),
             order.getTotalPrice(),
-            null
-        );
-    }
-
-    public static OrderDetailResponse of(
-        final Order order,
-        final CurrencyExchangeRate currencyExchangeRate
-    ) {
-        return new OrderDetailResponse(
-            order.getId(),
-            generateOrderProductResponses(order),
-            order.getTotalPrice(),
-            currencyExchangeRate.getRate()
+            order.getOrderCurrencyRate()
         );
     }
 
