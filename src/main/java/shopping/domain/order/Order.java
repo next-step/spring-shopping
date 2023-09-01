@@ -38,6 +38,10 @@ public class Order {
     @Embedded
     private OrderProductPrice totalPrice;
 
+    @Column(name = "currency_rate")
+    @Embedded
+    private OrderCurrencyRate orderCurrencyRate;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
