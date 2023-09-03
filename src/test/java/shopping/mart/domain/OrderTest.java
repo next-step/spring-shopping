@@ -1,14 +1,15 @@
 package shopping.mart.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
-
-import java.math.BigInteger;
-import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import shopping.core.exception.BadRequestException;
+
+import java.math.BigInteger;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
 
 @DisplayName("Order 클래스")
 class OrderTest {
@@ -26,6 +27,7 @@ class OrderTest {
                     new Product("맥주", "images/beer.jpeg", "5500"), 1,
                     new Product("막걸리", "images/makgeolli.png", "6000"), 2
             );
+            CurrencyRate currencyRate = new CurrencyRate(1000.0);
 
             String expectedTotalPrice = products.entrySet().stream()
                     .map(item -> new BigInteger(item.getKey().getPrice()).multiply(new BigInteger(item.getValue().toString())))
@@ -34,7 +36,7 @@ class OrderTest {
                     .toString();
 
             // when
-            Order order = new Order(products);
+            Order order = new Order(products, currencyRate.getValue());
 
             // then
             assertThat(order.getTotalPrice()).isEqualTo(expectedTotalPrice);
@@ -45,9 +47,10 @@ class OrderTest {
         void throw_BadRequestException_when_product_list_is_null_or_empty() {
             // given
             Map<Product, Integer> products = Map.of();
+            CurrencyRate currencyRate = new CurrencyRate(1000.0);
 
             // when
-            Exception exception = catchException(() -> new Order(products));
+            Exception exception = catchException(() -> new Order(products, currencyRate.getValue()));
 
             // then
             assertThat(exception).isExactlyInstanceOf(BadRequestException.class);

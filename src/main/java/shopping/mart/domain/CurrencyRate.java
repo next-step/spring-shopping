@@ -6,16 +6,14 @@ public class CurrencyRate {
 
     private final Double value;
 
-    public CurrencyRate() {
-        this(null);
-    }
-
     public CurrencyRate(final Double value) {
-        this.value = value > 0 ? value : null;
+        this.value = !Objects.isNull(value) && value > 0
+                ? value
+                : null;
     }
 
     public static CurrencyRate empty() {
-        return new CurrencyRate();
+        return new CurrencyRate(null);
     }
 
     public Double getValue() {
