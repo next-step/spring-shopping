@@ -1,12 +1,5 @@
 package shopping.mart.persist;
 
-import static java.util.function.Function.identity;
-
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.OrderEntity;
 import shopping.core.entity.OrderProductEntity;
@@ -16,6 +9,14 @@ import shopping.mart.domain.Product;
 import shopping.mart.domain.status.OrderExceptionStatus;
 import shopping.mart.persist.repository.OrderJpaRepository;
 import shopping.mart.persist.repository.OrderProductJpaRepository;
+
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.function.Function.identity;
 
 @Repository
 public class OrderRepository {
@@ -45,7 +46,7 @@ public class OrderRepository {
                         product.getPrice()
                 ), OrderProductEntity::getCount));
 
-        return new Order(orderEntity.getId(), productCounts);
+        return new Order(orderEntity.getId(), productCounts, orderEntity.getCurrencyByUsd());
     }
 
     public List<Order> findOrderHistory(Long userId) {
@@ -65,12 +66,14 @@ public class OrderRepository {
         });
 
         return orderEntities.stream()
-                .map(orderEntity -> new Order(orderEntity.getId(), mergeTable.get(orderEntity)))
+                .map(orderEntity -> new Order(
+                        orderEntity.getId(), mergeTable.get(orderEntity), orderEntity.getCurrencyByUsd()
+                ))
                 .collect(Collectors.toList());
     }
 
     public Long order(Long userId, Order order) {
-        OrderEntity orderEntity = new OrderEntity(userId);
+        OrderEntity orderEntity = new OrderEntity(userId, order.getCurrencyByUsd());
         OrderEntity savedOrder = orderJpaRepository.save(orderEntity);
 
         List<OrderProductEntity> savedOrderProducts = order.getProductCounts().entrySet().stream()

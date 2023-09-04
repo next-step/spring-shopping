@@ -7,14 +7,16 @@ public final class OrderDetailResponse {
     private Long orderId;
     private List<OrderedProductResponse> items;
     private String totalPrice;
+    private String usd;
 
     public OrderDetailResponse() {
     }
 
-    public OrderDetailResponse(Long orderId, List<OrderedProductResponse> items, String totalPrice) {
+    public OrderDetailResponse(Long orderId, List<OrderedProductResponse> items, String totalPrice, String usd) {
         this.orderId = orderId;
         this.items = items;
         this.totalPrice = totalPrice;
+        this.usd = usd;
     }
 
     public Long getOrderId() {
@@ -27,6 +29,10 @@ public final class OrderDetailResponse {
 
     public String getTotalPrice() {
         return totalPrice;
+    }
+
+    public String getUsd() {
+        return usd;
     }
 
     public static final class OrderedProductResponse {

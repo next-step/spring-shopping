@@ -1,26 +1,33 @@
 package shopping.mart.domain;
 
-import java.math.BigInteger;
-import java.util.Map;
-import java.util.Objects;
 import shopping.core.exception.BadRequestException;
 import shopping.mart.domain.status.OrderExceptionStatus;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.Map;
+import java.util.Objects;
+
 public class Order {
+
+    private static final int DIVIDE_SCALE = 2;
 
     private Long orderId;
     private final Map<Product, Integer> productCounts;
     private final Price totalPrice;
+    private final Double currencyByUsd;
 
-    public Order(final Map<Product, Integer> productCounts) {
-        this(null, productCounts);
+    public Order(final Map<Product, Integer> productCounts, final Double currency) {
+        this(null, productCounts, currency);
     }
 
-    public Order(final Long orderId, final Map<Product, Integer> productCounts) {
+    public Order(final Long orderId, final Map<Product, Integer> productCounts, final Double currency) {
         validate(productCounts);
         this.orderId = orderId;
         this.productCounts = productCounts;
         this.totalPrice = calcTotalPrice(productCounts);
+        this.currencyByUsd = currency;
     }
 
     private void validate(final Map<Product, Integer> productCounts) {
@@ -49,6 +56,21 @@ public class Order {
 
     public String getTotalPrice() {
         return totalPrice.getValue().toString();
+    }
+
+    public Double getCurrencyByUsd() {
+        return currencyByUsd;
+    }
+
+    public String getUsd() {
+        if (Objects.isNull(currencyByUsd)) {
+            return null;
+        }
+
+        BigDecimal totalPrice = new BigDecimal(this.totalPrice.getValue());
+        BigDecimal usd = new BigDecimal(currencyByUsd.toString());
+
+        return totalPrice.divide(usd, DIVIDE_SCALE, RoundingMode.HALF_UP).toString();
     }
 
     public void setOrderId(final Long orderId) {

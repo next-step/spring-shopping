@@ -13,6 +13,14 @@ public class CurrencyLayerResponse {
     public CurrencyLayerResponse() {
     }
 
+    public CurrencyLayerResponse(final boolean success, final long timestamp, final String source,
+                                 final Map<String, Double> quotes) {
+        this.success = success;
+        this.timestamp = timestamp;
+        this.source = source;
+        this.quotes = quotes;
+    }
+
     public Double getCurrency(final String key) {
         if (Objects.isNull(quotes)) {
             return null;

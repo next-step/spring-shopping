@@ -1,9 +1,5 @@
 package shopping.mart.infra.exchange;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +9,11 @@ import shopping.mart.domain.CurrencyRate;
 import shopping.mart.domain.CurrencyType;
 import shopping.mart.domain.ExchangeRateProvider;
 import shopping.mart.dto.currencylayer.CurrencyLayerResponse;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class ExchangeRateProviderImpl implements ExchangeRateProvider {
@@ -38,11 +39,11 @@ public class ExchangeRateProviderImpl implements ExchangeRateProvider {
             CurrencyLayerResponse.class
         );
 
-        if (isInvalidResponse(response) || Objects.isNull(response.getBody())) {
+        if (isInvalidResponse(response)) {
             return CurrencyRate.empty();
         }
 
-        Double currencyRate = response.getBody().getCurrency(source.name() + target.name());
+        Double currencyRate = response.getBody().getCurrency(target.name());
 
         return new CurrencyRate(currencyRate);
     }
