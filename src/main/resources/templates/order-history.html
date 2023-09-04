@@ -61,7 +61,7 @@
                 element += `
                     <div class="order-list">
                       <div class="order-list__header">
-                        <span>주문 번호: ${order.orderId}</span>
+                        <span>주문 번호: ${order.orderId} | USD : $ ${order.usd}</span>
                         <a href="/orders/${order.orderId}">상세보기 ></a>
                       </div>
                       ${itemElement}

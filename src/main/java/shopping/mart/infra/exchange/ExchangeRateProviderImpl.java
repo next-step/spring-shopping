@@ -43,7 +43,7 @@ public class ExchangeRateProviderImpl implements ExchangeRateProvider {
             return CurrencyRate.empty();
         }
 
-        Double currencyRate = response.getBody().getCurrency(target.name());
+        Double currencyRate = response.getBody().getCurrency(source.name() + target.name());
 
         return new CurrencyRate(currencyRate);
     }

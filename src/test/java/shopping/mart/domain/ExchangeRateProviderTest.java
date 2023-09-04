@@ -41,7 +41,7 @@ class ExchangeRateProviderTest {
         void return_currency_rate_by_source_and_target() {
             // given
             CurrencyLayerResponse body = new CurrencyLayerResponse(true, 12345678L, "USD",
-                    Map.of("KRW", 1234.56));
+                    Map.of("USDKRW", 1234.56));
             when(restTemplate.getForEntity(anyString(), any()))
                     .thenReturn(new ResponseEntity<>(body, HttpStatus.OK));
 
