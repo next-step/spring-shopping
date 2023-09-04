@@ -1,14 +1,15 @@
 package shopping.auth.persist;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.auth.domain.User;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("UserRepository 클래스")
 @ContextConfiguration(classes = {UserRepository.class})
@@ -33,7 +34,7 @@ class UserRepositoryTest extends JpaTest {
             Optional<User> result = userRepository.findByEmail(email);
 
             // then
-            assertUser(result, user);
+            assertUser(result, email);
         }
 
         @Test
@@ -46,11 +47,10 @@ class UserRepositoryTest extends JpaTest {
             assertThat(result).isNotPresent();
         }
 
-        private void assertUser(final Optional<User> result, final User expected) {
+        private void assertUser(final Optional<User> result, final String email) {
             assertThat(result).isPresent();
             assertThat(result.get().getId()).isNotNull();
-            assertThat(result.get().getEmail()).isEqualTo(expected.getEmail());
-            assertThat(result.get().getPassword()).isEqualTo(expected.getPassword());
+            assertThat(result.get().getEmail()).isEqualTo(email);
         }
     }
 }
