@@ -2,6 +2,7 @@ package shopping.app.accept;
 
 
 import io.restassured.RestAssured;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +16,6 @@ import org.springframework.test.context.ContextConfiguration;
 import shopping.TestDefaultLocation;
 import shopping.mart.dto.ProductResponse;
 import shopping.mart.service.ProductService;
-
-import java.util.List;
 
 @ContextConfiguration(classes = TestDefaultLocation.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

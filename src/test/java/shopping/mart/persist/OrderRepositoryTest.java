@@ -1,5 +1,10 @@
 package shopping.mart.persist;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,12 +14,6 @@ import shopping.core.exception.BadRequestException;
 import shopping.mart.domain.CurrencyRate;
 import shopping.mart.domain.Order;
 import shopping.mart.domain.Product;
-
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("OrderRepository 클래스")
 @ContextConfiguration(classes = {OrderRepository.class})

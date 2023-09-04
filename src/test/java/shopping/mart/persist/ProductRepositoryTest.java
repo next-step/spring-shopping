@@ -1,5 +1,9 @@
 package shopping.mart.persist;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,11 +14,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ContextConfiguration;
 import shopping.mart.domain.Product;
 import shopping.mart.persist.repository.ProductJpaRepository;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ProductRepository 클래스")
 @ContextConfiguration(classes = {ProductRepository.class})

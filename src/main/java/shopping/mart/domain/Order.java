@@ -1,13 +1,12 @@
 package shopping.mart.domain;
 
-import shopping.core.exception.BadRequestException;
-import shopping.mart.domain.status.OrderExceptionStatus;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Objects;
+import shopping.core.exception.BadRequestException;
+import shopping.mart.domain.status.OrderExceptionStatus;
 
 public class Order {
 
