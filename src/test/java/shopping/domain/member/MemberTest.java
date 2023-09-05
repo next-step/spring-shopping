@@ -1,12 +1,9 @@
-package shopping.domain;
+package shopping.domain.member;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.domain.member.Member;
-import shopping.domain.member.MemberEmail;
-import shopping.domain.member.MemberPassword;
 
 @DisplayName("회원 테스트")
 class MemberTest {

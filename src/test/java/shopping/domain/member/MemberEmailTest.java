@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.member;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import shopping.domain.member.MemberEmail;
 import shopping.exception.ShoppingException;
 
 @DisplayName("회원 이메일 테스트")

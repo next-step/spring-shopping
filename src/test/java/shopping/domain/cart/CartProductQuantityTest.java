@@ -1,4 +1,4 @@
-package shopping.domain;
+package shopping.domain.cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import shopping.domain.cart.CartProductQuantity;
 import shopping.exception.ShoppingException;
 
 @DisplayName("장바구니 상품 수량 테스트")

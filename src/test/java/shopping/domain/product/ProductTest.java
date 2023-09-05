@@ -1,10 +1,9 @@
-package shopping.domain;
+package shopping.domain.product;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import shopping.domain.product.Product;
 
 @DisplayName("상품 테스트")
 class ProductTest {

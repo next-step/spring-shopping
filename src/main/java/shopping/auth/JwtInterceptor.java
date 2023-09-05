@@ -10,11 +10,11 @@ import shopping.exception.ShoppingException;
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
 
-    private final JwtHelper jwtHelper;
+    private final JwtResolver jwtResolver;
     private final TokenExtractor tokenExtractor;
 
-    public JwtInterceptor(final JwtHelper jwtHelper, final BearerExtractor tokenExtractor) {
-        this.jwtHelper = jwtHelper;
+    public JwtInterceptor(final JwtResolver jwtResolver, final BearerExtractor tokenExtractor) {
+        this.jwtResolver = jwtResolver;
         this.tokenExtractor = tokenExtractor;
     }
 
@@ -23,9 +23,9 @@ public class JwtInterceptor implements HandlerInterceptor {
         final HttpServletRequest request,
         final HttpServletResponse response,
         final Object handler
-    ) throws Exception {
+    ) {
         final String jwt = tokenExtractor.extract(request);
-        if (!jwtHelper.validateToken(jwt)) {
+        if (!jwtResolver.validateToken(jwt)) {
             throw new ShoppingException(AuthExceptionType.INVALID_TOKEN, jwt);
         }
 

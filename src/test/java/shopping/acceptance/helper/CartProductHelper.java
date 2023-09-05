@@ -12,8 +12,8 @@ public class CartProductHelper {
 
     public static ExtractableResponse<Response> createCartProduct(
         final String jwt,
-        final CartProductCreateRequest request
+        final Long productId
     ) {
-        return RestHelper.post("/api/cartProduct", jwt, request);
+        return RestHelper.post("/api/cart-product", jwt, new CartProductCreateRequest(productId));
     }
 }

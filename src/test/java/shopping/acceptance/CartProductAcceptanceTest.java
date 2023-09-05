@@ -28,7 +28,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductCreateRequest request = new CartProductCreateRequest(3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart-product", jwt,
             request);
 
         /* then */
@@ -43,7 +43,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductCreateRequest request = new CartProductCreateRequest(3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart-product", jwt,
             request);
 
         /* then */
@@ -58,7 +58,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         final CartProductCreateRequest request = new CartProductCreateRequest(123L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
+        final ExtractableResponse<Response> response = RestHelper.post("/api/cart-product", jwt,
             request);
 
         /* then */
@@ -72,12 +72,10 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void createCartProductBadRequestWithExistCartProduct() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        final CartProductCreateRequest request = new CartProductCreateRequest(3L);
-        CartProductHelper.createCartProduct(jwt, request);
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.post("/api/cartProduct", jwt,
-            request);
+        final ExtractableResponse<Response> response = CartProductHelper.createCartProduct(jwt, 3L);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -91,10 +89,10 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void getAllCartProducts() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         /* when */
-        final ExtractableResponse<Response> response = RestHelper.get("/api/cartProduct", jwt);
+        final ExtractableResponse<Response> response = RestHelper.get("/api/cart-product", jwt);
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -107,14 +105,14 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void updateCartProductQuantity() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1L;
         final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(2);
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -126,7 +124,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
         /* given */
         final int quantity = -1;
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1L;
         final CartProductQuantityUpdateRequest request =
@@ -134,7 +132,7 @@ class CartProductAcceptanceTest extends AcceptanceTest {
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -148,13 +146,13 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void deleteCartProduct() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 3L;
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .delete("/api/cartProduct/{cartProductId}", jwt, List.of(cartProductId));
+            .delete("/api/cart-product/{cartProductId}", jwt, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -165,20 +163,20 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void updateCartProductQuantityWithZeroQuantity() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1L;
         final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(0);
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(
             RestHelper
-                .get("/api/cartProduct", jwt).body().as(new TypeRef<List<CartResponse>>() {
+                .get("/api/cart-product", jwt).body().as(new TypeRef<List<CartResponse>>() {
                 })).hasSize(2);
     }
 
@@ -187,14 +185,14 @@ class CartProductAcceptanceTest extends AcceptanceTest {
     void updateCartProductQuantityWithNotFoundCartProduct() {
         /* given */
         final String jwt = AuthHelper.login("woowacamp@naver.com", "woowacamp");
-        CartProductHelper.createCartProduct(jwt, new CartProductCreateRequest(3L));
+        CartProductHelper.createCartProduct(jwt, 3L);
 
         final Long cartProductId = 1234L;
         final CartProductQuantityUpdateRequest request = new CartProductQuantityUpdateRequest(2);
 
         /* when */
         final ExtractableResponse<Response> response = RestHelper
-            .patch("/api/cartProduct/{cartProductId}", jwt, request, List.of(cartProductId));
+            .patch("/api/cart-product/{cartProductId}", jwt, request, List.of(cartProductId));
 
         /* then */
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());

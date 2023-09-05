@@ -69,6 +69,9 @@
 
 ### 3단계
 
+- [x] 장바구니 도메인을 정의한다.
+    - [x] 장바구니는 장바구니를 소유한 회원 ID, 장바구니 물품들로 구성된다.
+    - [x] 장바구니는 비어있을 수 없다.
 - [x] 장바구니 상품 도메인을 정의한다.
     - [x] 장바구니 상품은 회원 ID, 상품 ID, 상품 개수로 구성된다.
     - [x] 장바구니 상품 개수는 1개 이상이여야한다.
@@ -84,7 +87,7 @@
         - [x] 상품이 존재하지 않는 경우 `존재하지 않는 상품입니다.`로 응답한다.
         - [x] 장바구니에 이미 상품이 있는 경우 `이미 장바구니에 담긴 상품입니다.`로 응답한다.
     ```http request
-    POST /api/cartProduct
+    POST /api/cart-product
     
     {
       "productId": 5
@@ -92,7 +95,7 @@
     ```
     - [x] 장바구니에 담긴 아이템 목록 조회
     ```http request
-    GET /api/cartProduct
+    GET /api/cart-product
     ``` 
 
     - [x] 장바구니에 담긴 아이템 수량 변경
@@ -100,7 +103,7 @@
     - [x] 장바구니 담긴 상품이 존재하지 않는 경우 `존재하지 않는 장바구니 상품입니다.`, Bad Request로 응답한다.
     - [x] 장바구니 상품 개수를 0개 이하로 변경하는 경우 `0개 이하로 수량을 변경할 수 없습니다.`, Bad Request로 응답한다.
     ```http request
-    PATCH /api/cartProduct/{cartProductId}
+    PATCH /api/cart-product/{cartProductId}
     
     {
       "quantity": 5
@@ -109,7 +112,7 @@
 
     - [x] 장바구니에 담긴 아이템 제거
     ```http request
-    DELETE /api/cartProduct/{cartProductId}
+    DELETE /api/cart-product/{cartProductId}
     ```
 
 - [x] 웹 페이지와 연동한다.
@@ -118,4 +121,110 @@
 
 ### 4단계
 
+- [x] 도메인을 정의한다.
+    - [x] 주문 도메인
+        - [x] 주문한 회원, 주문 시간, 주문 상태(주문, 주문 취소), 주문 상품 목록을 갖는다.
+    - [x] 주문 상품 도메인
+        - [x] 주문, 주문 당시 상품 이미지, 주문 당시 상품 이름, 주문 당시 상품 가격, 주문 개수
+- [ ] 주문 요구 사항을 구현한다.
+    - [x] 회원은 장바구니에 담긴 상품을 주문할 수 있다.
+        - [x] end-point
+            - request
+                ```http request
+                POST /api/order
+                ``` 
+            - response
+                ```http request
+                {
+                  "orderId": 1
+                }
+                ```
+        - [x] 장바구니의 모든 상품만 주문할 수 있다. (개별 구매 X)
+        - [x] 주문에 성공할 경우 장바구니의 상품을 모두 삭제한다.
+    - [ ] 회원은 주문 내역들을 조회할 수 있다.
+        - [ ] 본인의 주문 내역만 확인할 수 있다.
+            - [x] end-point
+                - request
+                    ```http request
+                    GET /api/order
+                    ``` 
+                - response
+                    ```http request
+                    [
+                        {
+                          "orderId": 1,
+                          "orderProducts": [
+                            {
+                            "orderedImage": "/assets/img/hamburger.jpeg",
+                            "orderedName": "햄버거",
+                            "orderedPrice": 10000,
+                            "quantity": 3
+                            }
+                          ]
+                        },
+                        {
+                          "orderId": 2,
+                          "orderProducts": [
+                            {
+                            "orderedImage": "/assets/img/hamburger.jpeg",
+                            "orderedName": "햄버거",
+                            "orderedPrice": 10000,
+                            "quantity": 3
+                            }
+                          ]
+                        }
+                    ]
+                   ```
+    - [x] 회원은 주문 목록 중 개별의 주문 상세 내역을 확인할 수 있다.
+        - [x] 본인의 주문 목록만 확인할 수 있다.
+        - [x] endpoint
+            * request
+              ```http request
+              GET /api/order/{orderId}
+              ```
+            * response
+              ```http request
+              {
+                "orderId": 1,
+                "orderProducts": [
+                  {
+                    "orderedImage": "/assets/img/chicken.png",
+                    "orderedName": "치킨",
+                    "orderedPrice": 20000,
+                    "quantity": 3
+                  },
+                  {
+                    "orderedImage": "/assets/img/hamburger.jpeg",
+                    "orderedName": "햄버거",
+                    "orderedPrice": 10000,
+                    "quantity": 1
+                  },
+                  {
+                    "orderedImage": "/assets/img/pizza.jpg",
+                    "orderedName": "피자",
+                    "orderedPrice": 20000,
+                    "quantity": 2
+                  }
+                ],
+                "totalPrice": 50000
+              }
+              ```
+- [x] 웹 페이지와 연동한다.
+    - [x] 주문 목록 페이지로 이동할 수 있다.
+        - [x] 각각의 주문에 대하여 상세 정보를 확인할 수 있다.
+
 ### 5단계
+
+- [x] 환율 적용 요구 사항을 구현한다.
+    - [x] 주문 당시 시점 환율을 저장한다.
+    - [x] 실시간 환율을 가져올 수 있어야한다.
+    - [x] 외부 API의 의존성을 최대한 줄인다.
+        - [x] API를 다른 API로 변경하였을 때 코드의 변경이 최소한으로 이루어져야한다.
+        - [x] 외부 API의 문제로 환율 정보를 가져오지 못했을 때도 원화 주문은 원활하게 작동해야한다.
+    - [x] 환율 정보는 1초 안에 조회할 수 있어야한다.
+
+- [x] 웹 페이지와 연동한다.
+    - [x] 주문 상세 정보 페이지에서 환율 정보를 출력한다.
+        - [x] 총 주문 금액을 출력한다.
+        - [x] 적용 환율을 출력한다.
+        - [x] 주문 조회시 당시 환율만 반환하고 프론트에서 변환 금액을 계산한다.

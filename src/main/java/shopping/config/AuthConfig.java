@@ -9,21 +9,22 @@ import shopping.auth.AuthArgumentResolver;
 import shopping.auth.JwtInterceptor;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class AuthConfig implements WebMvcConfigurer {
 
     private final JwtInterceptor jwtInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
 
-    public WebConfig(final JwtInterceptor jwtInterceptor,
+    public AuthConfig(final JwtInterceptor jwtInterceptor,
         final AuthArgumentResolver authArgumentResolver) {
         this.jwtInterceptor = jwtInterceptor;
         this.authArgumentResolver = authArgumentResolver;
     }
 
+
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-            .excludePathPatterns("/", "/login", "/cart")
+            .excludePathPatterns("/", "/login", "/cart", "/order-history", "/order-detail/**")
             .excludePathPatterns("/api/login")
             .excludePathPatterns("/css/**", "/js/**", "/assets/**", "/favicon.ico");
     }
