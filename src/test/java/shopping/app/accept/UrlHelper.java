@@ -44,7 +44,7 @@ class UrlHelper {
                     .body(cartAddRequest)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .when().post("/carts")
+                    .when().post("/api/carts")
                     .then().log().all()
                     .extract();
         }
@@ -54,7 +54,7 @@ class UrlHelper {
                     .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .when().get("/carts")
+                    .when().get("/api/carts")
                     .then().log().all()
                     .extract();
         }
@@ -65,7 +65,7 @@ class UrlHelper {
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .body(cartUpdateRequest)
-                    .when().patch("/carts")
+                    .when().patch("/api/carts")
                     .then().log().all()
                     .extract();
         }
@@ -75,7 +75,37 @@ class UrlHelper {
                     .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .param("product-id", deleteTargetId)
-                    .when().delete("/carts")
+                    .when().delete("/api/carts")
+                    .then().log().all()
+                    .extract();
+        }
+    }
+
+    static final class Order {
+
+        static ExtractableResponse<Response> orderCart(String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().post("/api/orders")
+                    .then().log().all()
+                    .extract();
+        }
+
+        static ExtractableResponse<Response> findOrderDetail(String accessToken, Long orderId) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().get("/api/orders/" + orderId)
+                    .then().log().all()
+                    .extract();
+        }
+
+        static ExtractableResponse<Response> findOrderHistory(String accessToken) {
+            return given().log().all()
+                    .header(HttpHeaders.AUTHORIZATION, "bearer " + accessToken)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when().get("/api/orders")
                     .then().log().all()
                     .extract();
         }

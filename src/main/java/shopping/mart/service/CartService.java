@@ -29,7 +29,7 @@ public class CartService {
 
     @Transactional
     public void addProduct(final long userId, final CartAddRequest request) {
-        Cart cart = getCartByUserId(userId);
+        Cart cart = cartRepository.getByUserId(userId);
         Product product = findProductById(request.getProductId());
 
         cart.addProduct(product);
@@ -39,7 +39,7 @@ public class CartService {
 
     @Transactional
     public void updateProduct(final long userId, final CartUpdateRequest request) {
-        Cart cart = getCartByUserId(userId);
+        Cart cart = cartRepository.getByUserId(userId);
         Product product = findProductById(request.getProductId());
 
         cart.updateProduct(product, request.getCount());
@@ -49,7 +49,7 @@ public class CartService {
 
     @Transactional
     public void deleteProduct(final long userId, final long productId) {
-        Cart cart = getCartByUserId(userId);
+        Cart cart = cartRepository.getByUserId(userId);
         Product product = findProductById(productId);
 
         cart.deleteProduct(product);
@@ -59,7 +59,7 @@ public class CartService {
 
     @Transactional
     public CartResponse findCart(final long userId) {
-        Cart cart = getCartByUserId(userId);
+        Cart cart = cartRepository.getByUserId(userId);
 
         List<ProductResponse> products = cart.getProductCounts().entrySet().stream()
                 .map(entry -> new ProductResponse(entry.getKey().getId(), entry.getValue(),
@@ -67,14 +67,6 @@ public class CartService {
                 .collect(Collectors.toList());
 
         return new CartResponse(cart.getCartId(), products);
-    }
-
-    private Cart getCartByUserId(long userId) {
-        if (!cartRepository.existCartByUserId(userId)) {
-            cartRepository.newCart(userId);
-        }
-
-        return cartRepository.getByUserId(userId);
     }
 
     private Product findProductById(long productId) {

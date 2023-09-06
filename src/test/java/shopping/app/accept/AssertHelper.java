@@ -95,6 +95,16 @@ class AssertHelper {
         }
     }
 
+    static final class Order {
+
+        static void assertEmptyCart(final ExtractableResponse<Response> response) {
+            ErrorTemplate errorTemplate = response.as(ErrorTemplate.class);
+
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+            assertThat(errorTemplate.getStatusCode()).isEqualTo("ORDER-401");
+        }
+    }
+
     static final class Http {
 
         static void assertIsOk(final ExtractableResponse<Response> response) {

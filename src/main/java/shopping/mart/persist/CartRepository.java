@@ -9,7 +9,6 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 import shopping.core.entity.CartEntity;
 import shopping.core.entity.CartProductEntity;
@@ -47,6 +46,10 @@ public class CartRepository {
     }
 
     public Cart getByUserId(long userId) {
+        if (!existCartByUserId(userId)) {
+            newCart(userId);
+        }
+
         List<CartProductEntity> cartProductEntities = cartProductJpaRepository.findAllByUserId(userId);
         if (cartProductEntities.isEmpty()) {
             return getEmptyCart(userId);
@@ -140,5 +143,15 @@ public class CartRepository {
         CartProductEntity cartProductEntity = new CartProductEntity(null, cartEntity, productEntity, INITIAL_COUNT);
 
         cartProductJpaRepository.save(cartProductEntity);
+    }
+
+    public void deleteAllProducts(Long userId) {
+        CartEntity cartEntity = cartJpaRepository.findByUserId(userId)
+                        .orElseThrow(() -> new IllegalStateException(MessageFormat.format(
+                                "userId\"{0}\"에 해당하는 Cart가 존재하지 않습니다.", userId)));
+
+        List<CartProductEntity> cartProducts = cartProductJpaRepository.findAllByCartEntity(cartEntity);
+
+        cartProductJpaRepository.deleteAllInBatch(cartProducts);
     }
 }
