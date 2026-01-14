@@ -1,16 +1,24 @@
 # spring-shopping
 ### 서버 구성
-- 레이어드 아키텍쳐
+- 레이어드 아키텍쳐 구성
   - Controller
   - Service
   - Repository
-- 단, 멀티모듈 구성까지는 진행하지 않는다. 
+- 단, 멀티모듈 구성까지는 진행하지 않는다.
+- 샘플 형태로 hello world 출력하는 1 cycle 구성
+```
+package 로 모듈 구분
+ㄴ web : controller, request, response
+ㄴ application : service
+ㄴ core : entity, repository 
+```
 
 ### 상품 도메인 구성
 - 속성 : 이름, 가격, 이미지 경로
 - 도메인 애플리케이션 로직 구성
   - 조회, 추가, 수정, 삭제
 - 별도 데이터베이스 없이 적절한 코틀린 컬렉션 프레임워크를 이용해 메모리 저장
+
 
 ### API 추가
 - 필요한 API : 상품 조회, 추가, 수정, 삭제
