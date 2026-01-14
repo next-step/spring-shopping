@@ -15,4 +15,6 @@ class Product(var name: String, var price: Long, var imageUrl: String) {
 
         require(imageUrl.isNotBlank()) { "이미지 URL은 빈 값일 수 없습니다. 이미지 URL : $imageUrl" }
     }
+
+    fun isChanged(product: Product): Boolean = this.name != product.name || this.price != product.price || this.imageUrl != product.imageUrl
 }
