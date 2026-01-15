@@ -17,7 +17,7 @@ class ProductRepository {
     fun findById(id: Long): Product? = storage[id]
 
     fun save(product: Product): Product {
-        val id = product.id ?: idGenerator.getAndIncrement()
+        val id = if (product.id == 0L) idGenerator.getAndIncrement() else product.id
         val savedProduct = product.copy(id)
         storage[id] = savedProduct
         return savedProduct
