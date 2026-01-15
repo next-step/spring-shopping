@@ -3,14 +3,18 @@ package shopping.repository
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import shopping.domain.Product
 
-class ProductRepositoryTest :
-    BehaviorSpec({
+@SpringBootTest
+class ProductRepositoryTest : BehaviorSpec() {
+    @Autowired
+    lateinit var productRepository: ProductRepository
+
+    init {
 
         Given("Product를 생성한다.") {
-            val productRepository = ProductRepository()
-
             val originName = "apple"
             val originPrice = 1000L
             val originUri = "url"
@@ -52,4 +56,5 @@ class ProductRepositoryTest :
                 }
             }
         }
-    })
+    }
+}
