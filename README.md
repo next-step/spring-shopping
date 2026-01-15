@@ -37,7 +37,10 @@
 
 ## 룰로 가져가볼 것?
 1. dto 클래스에서 entity를 참조하게 할지?(toEntity) 혹은 스코프 함수로 반환할지?
+2. 요청/응답 dto 널처리 어떻게 할지?
+   - request -> dto (널체크) -> entity(? 구분이 명확) -> queryDto -> response(json 때문에 nullable 해야하긴함)
 
 ## 궁금한 것
 1. 테스트 Autowired 받을 때 아래에서 받는지? 생성자로 받는지?
 2. kotest 로 integration 테스트 하는거 너무 복잡한 것 같음 애초에  integration 테스트를 위한 용도가 아닌거 같음 어떻게 테스트 하시는지 궁금
+3. kotest + springBootTest 많이 하는지 궁금 너무 불편

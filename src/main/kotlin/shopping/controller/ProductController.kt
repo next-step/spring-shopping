@@ -1,16 +1,20 @@
 package shopping.controller
 
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import shopping.controller.dto.ProductRequest
 import shopping.service.ProductService
 
-@RestController("/v1/products")
+@Validated
+@RestController
+@RequestMapping("/v1/products")
 class ProductController(
     private val productService: ProductService,
 ) {
@@ -19,19 +23,19 @@ class ProductController(
         @RequestBody productRequest: ProductRequest,
     ) = productService.save(productRequest)
 
-    @GetMapping
+    @GetMapping("/{productId}")
     fun get(
-        @RequestParam id: Long,
-    ) = productService.getById(id)
+        @PathVariable productId: Long,
+    ) = productService.getById(productId)
 
-    @PutMapping
+    @PutMapping("/{productId}")
     fun update(
-        @RequestParam id: Long,
+        @PathVariable productId: Long,
         @RequestBody productRequest: ProductRequest,
-    ) = productService.update(id, productRequest)
+    ) = productService.update(productId, productRequest)
 
-    @DeleteMapping
+    @DeleteMapping("/{productId}")
     fun delete(
-        @RequestParam id: Long,
-    ) = productService.delete(id)
+        @PathVariable productId: Long,
+    ) = productService.delete(productId)
 }

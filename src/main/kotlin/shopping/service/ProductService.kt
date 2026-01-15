@@ -2,6 +2,7 @@ package shopping.service
 
 import org.springframework.stereotype.Service
 import shopping.controller.dto.ProductRequest
+import shopping.controller.dto.ProductResponse
 import shopping.domain.Product
 import shopping.repository.ProductRepository
 
@@ -11,7 +12,7 @@ class ProductService(
 ) {
     fun save(request: ProductRequest) = request.run { productRepository.save(Product(name, price, imageUrl)) }
 
-    fun getById(id: Long) = productRepository.getById(id)
+    fun getById(id: Long) = productRepository.getById(id).let { ProductResponse(it.name, it.price, it.imageUrl) }
 
     fun update(
         id: Long,
