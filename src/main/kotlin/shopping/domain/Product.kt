@@ -1,6 +1,6 @@
 package shopping.domain
 
-import shopping.util.BadWordFilterUtils.checkBadWord
+import shopping.client.BadWordClient.checkBadWord
 
 private val PATTERN = "^[a-zA-Z0-9가-힣()\\[\\]+\\-&/_]*$".toRegex()
 
