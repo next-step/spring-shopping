@@ -29,7 +29,7 @@ class ProductTest : FreeSpec({
         }
 
         "상품의 이름은 비속어가 불가하다." - {
-            val name = "호냥년"
+            val name = "arse"
             val exception = shouldThrow<IllegalArgumentException> { Product(name, 100L, "url") }
 
             exception.message shouldBe "상품 이름은 비속어를 포함할 수 없습니다. 이름 : $name"
@@ -51,6 +51,65 @@ class ProductTest : FreeSpec({
             val exception = shouldThrow<IllegalArgumentException> { Product("name", 1000L, imageUrl) }
 
             exception.message shouldBe "이미지 URL은 빈 값일 수 없습니다. 이미지 URL : $imageUrl"
+        }
+    }
+
+    "상품 변경 확인 테스트" - {
+        "상품의 이름이 변경된 경우" - {
+            val product = Product("name", 1000L, "url")
+            val isChanged = product.isChanged(Product("name1", 1000L, "url"))
+
+            isChanged shouldBe true
+        }
+
+        "상품의 가격이 변경된 경우" - {
+            val product = Product("name", 1000L, "url")
+            val isChanged = product.isChanged(Product("name", 100L, "url"))
+
+            isChanged shouldBe true
+        }
+
+        "상품의 이미지 URL이 변경된 경우" - {
+            val product = Product("name", 1000L, "url")
+            val isChanged = product.isChanged(Product("name", 1000L, "ur"))
+
+            isChanged shouldBe true
+        }
+
+        "상품이 변경되지 않은 경우" - {
+            val product = Product("name", 1000L, "url")
+            val isChanged = product.isChanged(Product("name", 1000L, "url"))
+
+            isChanged shouldBe false
+        }
+    }
+
+    "상품을 수정한다" - {
+        "상품의 이름이 변경된 경우" - {
+            val product = Product("name", 1000L, "url")
+            product.update(name = "name1")
+
+            product.name shouldBe "name1"
+            product.price shouldBe 1000L
+            product.imageUrl shouldBe "url"
+        }
+
+        "상품의 가격이 변경된 경우" - {
+            val product = Product("name", 1000L, "url")
+            product.update(price = 100L)
+
+            product.name shouldBe "name"
+            product.price shouldBe 100L
+            product.imageUrl shouldBe "url"
+        }
+
+        "상품의 이미지 URL이 변경된 경우" - {
+            val product = Product("name", 1000L, "url")
+            product.update(imageUrl = "ur")
+
+            product.name shouldBe "name"
+            product.price shouldBe 1000L
+            product.imageUrl shouldBe "ur"
         }
     }
 })

@@ -21,7 +21,7 @@ class ProductRepository {
     ) {
         get(id).let {
             if (it.isChanged(product)) {
-                products[id] = product
+                it.update(product.name, product.price, product.imageUrl)
             }
         }
     }

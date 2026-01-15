@@ -3,7 +3,7 @@ package shopping.client
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 
-class BadWordFilterUtilsTest : FreeSpec({
+class BadWordClientTest : FreeSpec({
     "check BadWord" - {
         BadWordClient.checkBadWord("arse") shouldBe false
     }
