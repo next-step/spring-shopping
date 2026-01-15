@@ -1,0 +1,32 @@
+### Product 전체 조회
+GET localhost:8080/api/products
+Accept: application/json
+
+### Product 단건 조회
+GET localhost:8080/api/products/2
+Accept: application/json
+
+### Product 생성
+POST localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "iphone",
+  "price": 100,
+  "imageUrl": "url"
+}
+
+### Product 수정
+PUT localhost:8080/api/products/1
+Content-Type: application/json
+
+{
+  "name": "iphone17",
+  "price": 100,
+  "imageUrl": "url",
+  "id": 1
+}
+
+### Product 삭제
+DELETE localhost:8080/api/products/2
+Content-Type: application/json

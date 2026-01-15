@@ -28,6 +28,10 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.junit.jupiter", "junit-jupiter", "5.10.2")
+    testImplementation("org.assertj", "assertj-core", "3.25.3")
+    testImplementation("io.kotest", "kotest-runner-junit5", "5.8.0")
+    testImplementation(kotlin("test"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
