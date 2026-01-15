@@ -9,17 +9,15 @@ class ProductRepository {
     private var autoIncrementer: AtomicLong = AtomicLong(0L)
     private val products: MutableMap<Long, Product> = mutableMapOf()
 
-    fun save(product: Product): Long {
-        return autoIncrementer.addAndGet(1L).also { products[it] = product }
-    }
+    fun save(product: Product): Long = autoIncrementer.addAndGet(1L).also { products[it] = product }
 
-    fun get(id: Long) = products[id] ?: throw IllegalArgumentException("상품이 존재하지 않습니다.")
+    fun getById(id: Long) = products[id] ?: throw IllegalArgumentException("상품이 존재하지 않습니다.")
 
     fun update(
         id: Long,
         product: Product,
     ) {
-        get(id).let {
+        getById(id).let {
             if (it.isChanged(product)) {
                 it.update(product.name, product.price, product.imageUrl)
             }
