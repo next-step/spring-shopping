@@ -51,13 +51,13 @@ Content-Type: application/json
   "imageUrl": "url"
 }
 
-### Product 수정 - 유효성 실패 : 허용되지 않는 특수문자 입력
+### Product 수정 - 유효성 실패 : 허용되지 않는 특수문자 입력, price 음수 입력
 PUT localhost:8080/api/products/1
 Content-Type: application/json
 
 {
   "name": "i$$$$$$$",
-  "price": 300,
+  "price": -1000,
   "imageUrl": "url"
 }
 

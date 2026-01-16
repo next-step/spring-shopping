@@ -34,6 +34,7 @@ dependencies {
     testImplementation("org.junit.jupiter", "junit-jupiter", "5.10.2")
     testImplementation("org.assertj", "assertj-core", "3.25.3")
     testImplementation("io.kotest", "kotest-runner-junit5", "5.8.0")
+    testImplementation("io.kotest.extensions", "kotest-extensions-spring", "1.1.3")
     testImplementation(kotlin("test"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
