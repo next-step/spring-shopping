@@ -1,19 +1,13 @@
 package shopping.application.product.validator
 
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestClient
+import shopping.client.purgomalum.PurgomalumClient
 
 @Component
 class ProductValidator(
-    val restClient: RestClient,
+    private val purgomalumClient: PurgomalumClient,
 ) {
     fun containsProfanity(text: String): Boolean {
-        val response =
-            restClient.get()
-                .uri("/service/containsprofanity?text={text}", text)
-                .retrieve()
-                .body(String::class.java)
-
-        return response?.toBoolean() ?: false
+        return purgomalumClient.containsProfanity(text)
     }
 }
