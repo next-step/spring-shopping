@@ -1,4 +1,56 @@
 # spring-shopping
+
+## 프로젝트 구조
+
+### 아키텍처 패턴
+**레이어드 아키텍처** 기반으로 구성되어 있으며, 패키지별로 명확한 역할 분리가 되어 있습니다:
+
+### 패키지 구조
+```
+shopping/
+├── web/           # 웹 계층 (Controller, Request/Response DTO)
+├── application/   # 애플리케이션 계층 (Service, Validator)
+├── core/          # 도메인 계층 (Entity, Repository)
+└── client/        # 외부 연동 계층 (External API Client)
+```
+
+### 주요 컴포넌트
+
+**1. Web Layer (`shopping.web`)**
+- `ProductController`: REST API 엔드포인트 제공 (CRUD)
+- `ProductRequest`: 입력 검증이 포함된 요청 DTO
+- `ProductResponse`: 응답 DTO
+
+**2. Application Layer (`shopping.application`)**
+- `ProductService`: 비즈니스 로직 처리
+- `ProductValidator`: 상품명 비속어 검증 (PurgoMalum API 연동)
+
+**3. Core Layer (`shopping.core`)**
+- `Product`: 도메인 엔티티 (name, price, imageUrl, id)
+- `ProductRepository`: 메모리 기반 데이터 저장소 (ConcurrentHashMap 사용)
+
+**4. Client Layer (`shopping.client`)**
+- `PurgomalumClient`: 외부 API 호출 담당
+- `PurgomalumRestClientConfig`: RestClient Bean 설정 (@Qualifier로 구분)
+
+### 기술 스택
+- **언어**: Kotlin
+- **프레임워크**: Spring Boot 3.5.9
+- **검증**: Jakarta Validation (Bean Validation)
+- **HTTP 클라이언트**: Spring RestClient
+- **데이터 저장**: 메모리 기반 (AtomicLong ID 생성)
+- **코드 품질**: ktlint
+
+### 특징
+1. **멀티모듈 없이 패키지로 모듈 구분**
+2. **외부 API 연동을 위한 전용 Client 레이어**
+3. **Bean Validation을 통한 입력 검증**
+4. **메모리 기반 저장소로 DB 의존성 제거**
+5. **@Qualifier를 통한 RestClient Bean 구분**
+
+---
+## 과제 요구사항
+
 ### 서버 구성
 - 레이어드 아키텍쳐 구성
   - Controller
@@ -53,7 +105,3 @@ Content-Type: application/json
   - PurgoMalum 을 이용한다 (외부 API 호출) 
 
 
-###
-- Repository 테스트 ? (CRUD) 
-- 외부요청에 대한 테스트 ? 
-- integration 테스트 (Controller 부터 시작)
