@@ -22,9 +22,8 @@ Content-Type: application/json
 
 {
   "name": "iphone17",
-  "price": 100,
-  "imageUrl": "url",
-  "id": 1
+  "price": 300,
+  "imageUrl": "url"
 }
 
 ### Product 삭제
