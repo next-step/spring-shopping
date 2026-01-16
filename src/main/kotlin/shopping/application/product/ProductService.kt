@@ -1,13 +1,17 @@
 package shopping.application.product
 
 import org.springframework.stereotype.Service
+import shopping.application.product.validator.ProductValidator
 import shopping.core.product.Product
 import shopping.core.product.ProductRepository
 import shopping.web.product.ProductResponse
 import shopping.web.product.ProductsResponse
 
 @Service
-class ProductService(val productRepository: ProductRepository) {
+class ProductService(
+    val productRepository: ProductRepository,
+    val productValidator: ProductValidator,
+) {
     fun findAll(): ProductsResponse = ProductsResponse.fromDomain(productRepository.findAll())
 
     fun findById(id: Long): ProductResponse {
@@ -15,7 +19,10 @@ class ProductService(val productRepository: ProductRepository) {
         return ProductResponse.fromDomain(product)
     }
 
-    fun save(product: Product): ProductResponse = ProductResponse.fromDomain(productRepository.save(product))
+    fun save(product: Product): ProductResponse {
+        require(!productValidator.containsProfanity(product.name)) { "Product name is invalid" }
+        return ProductResponse.fromDomain(productRepository.save(product))
+    }
 
     fun deleteById(id: Long): Boolean = productRepository.deleteById(id)
 }

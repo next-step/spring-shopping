@@ -60,3 +60,13 @@ Content-Type: application/json
   "price": 300,
   "imageUrl": "url"
 }
+
+### Product 생성 - 유효성 실패 : 비속어 포함
+POST localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "fuck",
+  "price": 100,
+  "imageUrl": "url"
+}
