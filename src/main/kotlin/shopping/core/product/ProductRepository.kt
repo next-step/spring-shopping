@@ -24,4 +24,6 @@ class ProductRepository {
     }
 
     fun deleteById(id: Long): Boolean = storage.remove(id) != null
+
+    fun deleteAll(): Unit = storage.clear()
 }
