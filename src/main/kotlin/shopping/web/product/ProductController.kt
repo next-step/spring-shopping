@@ -1,5 +1,6 @@
 package shopping.web.product
 
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,7 +28,7 @@ class ProductController(val productService: ProductService) {
 
     @PostMapping
     fun create(
-        @RequestBody productRequest: ProductRequest,
+        @Valid @RequestBody productRequest: ProductRequest,
     ): ProductResponse {
         return productService.save(productRequest.toDomain())
     }
@@ -35,7 +36,7 @@ class ProductController(val productService: ProductService) {
     @PutMapping("/{id}")
     fun update(
         @PathVariable("id") id: Long,
-        @RequestBody productRequest: ProductRequest,
+        @Valid @RequestBody productRequest: ProductRequest,
     ): ProductResponse {
         return productService.save(productRequest.toDomain(id))
     }
