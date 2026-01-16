@@ -1,4 +1,4 @@
-package shopping.web.product
+package shopping.web.product.request
 
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank

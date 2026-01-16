@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import shopping.application.product.ProductService
+import shopping.web.product.request.ProductRequest
+import shopping.web.product.response.ProductResponse
+import shopping.web.product.response.ProductsResponse
 
 @RestController
 @RequestMapping("/api/products")
