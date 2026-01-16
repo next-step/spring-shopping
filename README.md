@@ -51,3 +51,9 @@ Content-Type: application/json
   - 그 외 특수 문자 사용 불가
 - 상품 이름에는 비속어를 포함할 수 없다.
   - PurgoMalum 을 이용한다 (외부 API 호출) 
+
+
+###
+- Repository 테스트 ? (CRUD) 
+- 외부요청에 대한 테스트 ? 
+- integration 테스트 (Controller 부터 시작)

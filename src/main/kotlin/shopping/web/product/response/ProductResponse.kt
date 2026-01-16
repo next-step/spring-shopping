@@ -1,4 +1,4 @@
-package shopping.web.product
+package shopping.web.product.response
 
 import shopping.core.product.Product
 

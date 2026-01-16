@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service
 import shopping.application.product.validator.ProductValidator
 import shopping.core.product.Product
 import shopping.core.product.ProductRepository
-import shopping.web.product.ProductResponse
-import shopping.web.product.ProductsResponse
+import shopping.web.product.response.ProductResponse
+import shopping.web.product.response.ProductsResponse
 
 @Service
 class ProductService(
