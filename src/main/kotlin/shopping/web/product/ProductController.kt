@@ -27,16 +27,17 @@ class ProductController(val productService: ProductService) {
 
     @PostMapping
     fun create(
-        @RequestBody productCreateRequest: ProductCreateRequest,
+        @RequestBody productRequest: ProductRequest,
     ): ProductResponse {
-        return productService.save(productCreateRequest.toDomain())
+        return productService.save(productRequest.toDomain())
     }
 
     @PutMapping("/{id}")
     fun update(
-        @RequestBody productUpdateRequest: ProductUpdateRequest,
+        @PathVariable("id") id: Long,
+        @RequestBody productRequest: ProductRequest,
     ): ProductResponse {
-        return productService.save(productUpdateRequest.toDomain())
+        return productService.save(productRequest.toDomain(id))
     }
 
     @DeleteMapping("/{id}")
