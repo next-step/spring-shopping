@@ -11,7 +11,7 @@ class ProductService(
 ) {
     fun findAll(): List<Product> = productRepository.findAll()
 
-    fun findById(id: Long): Product? = productRepository.findById(id)
+    fun getById(id: Long): Product = productRepository.findById(id) ?: throw NotFoundException()
 
     fun create(product: Product): Product = productRepository.save(product)
 

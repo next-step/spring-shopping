@@ -1,6 +1,6 @@
 package shopping.repository.model
 
-data class Product(
+class Product(
     var name: String,
     var price: Int,
     var imageUrl: String,
