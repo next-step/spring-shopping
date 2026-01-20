@@ -2,6 +2,7 @@ package shopping.web.product.request
 
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 import shopping.core.product.Product
@@ -14,6 +15,7 @@ data class ProductRequest(
         message = "입력할 수 있는 특수문자는 ( ), [ ], +, -, &, /, _ 입니다.",
     )
     val name: String,
+    @field:NotNull(message = "가격은 필수입니다.")
     @field:Min(value = 0, message = "금액은 0 이상이어야 합니다.")
     val price: Long,
     @field:NotBlank(message = "이미지 경로는 필수입니다.")

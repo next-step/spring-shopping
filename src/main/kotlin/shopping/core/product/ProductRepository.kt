@@ -1,6 +1,7 @@
 package shopping.core.product
 
 import org.springframework.stereotype.Repository
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
 /**
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong
  */
 @Repository
 class ProductRepository {
-    private val storage = mutableMapOf<Long, Product>()
+    private val storage = ConcurrentHashMap<Long, Product>()
     private var idGenerator = AtomicLong(1L)
 
     fun findAll(): List<Product> = storage.values.toList()
