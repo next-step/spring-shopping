@@ -12,6 +12,7 @@ Content-Type: application/json
 
 {
   "name": "iphone22",
+  "price": 100,
   "imageUrl": "url"
 }
 
