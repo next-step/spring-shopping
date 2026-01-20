@@ -3,23 +3,24 @@ package shopping.controller
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import shopping.controller.model.ProductListResponseBody
 import shopping.controller.model.ProductRequestBody
 import shopping.controller.model.ProductResponseBody
 import shopping.exception.NotFoundException
 import shopping.service.ProductService
-import shopping.service.PurgoMalumService
 
 @RestController
 @RequestMapping("/api/products")
 class ProductController(
     private val productService: ProductService,
-    private val purgoMalumService: PurgoMalumService,
 ) {
     @GetMapping
-    fun getProducts(): List<ProductResponseBody> =
+    fun getProducts(): ProductListResponseBody = ProductListResponseBody(
         productService
             .findAll()
             .map(ProductResponseBody::from)
+    )
+
 
     @GetMapping("/{id}")
     fun getProduct(
