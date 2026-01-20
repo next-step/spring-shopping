@@ -17,15 +17,15 @@ data class ProductRequest(
     val name: String,
     @field:NotNull(message = "가격은 필수입니다.")
     @field:Min(value = 0, message = "금액은 0 이상이어야 합니다.")
-    val price: Long,
+    val price: Long?,
     @field:NotBlank(message = "이미지 경로는 필수입니다.")
     val imageUrl: String,
 ) {
     fun toDomain(): Product {
-        return Product(name, price, imageUrl)
+        return Product(name, price!!, imageUrl)
     }
 
     fun toDomain(id: Long): Product {
-        return Product(name, price, imageUrl, id)
+        return Product(name, price!!, imageUrl, id)
     }
 }

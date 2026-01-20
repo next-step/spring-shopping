@@ -11,8 +11,7 @@ POST localhost:8080/api/products
 Content-Type: application/json
 
 {
-  "name": "iphone",
-  "price": 100,
+  "name": "iphone22",
   "imageUrl": "url"
 }
 
