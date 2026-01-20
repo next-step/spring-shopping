@@ -13,21 +13,17 @@ import shopping.exception.NotFoundException
 class CustomRestControllerAdvice {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @ResponseBody
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(): ResponseEntity<String> = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found.")
 
-    @ResponseBody
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
 
-    @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException): ResponseEntity<String> =
         ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.fieldError?.defaultMessage)
 
-    @ResponseBody
     @ExceptionHandler(Exception::class)
     fun handleUnknownException(ex: Exception): ResponseEntity<String> {
         log.error("An unexpected error occurred", ex)
