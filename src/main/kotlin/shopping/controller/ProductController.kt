@@ -34,7 +34,6 @@ class ProductController(
     fun createProduct(
         @RequestBody @Valid requestBody: ProductRequestBody,
     ): ProductResponseBody {
-        validate(requestBody)
         val saved = productService.create(requestBody.toEntity())
         return ProductResponseBody.from(saved)
     }
@@ -44,7 +43,6 @@ class ProductController(
         @PathVariable id: Long,
         @RequestBody @Valid requestBody: ProductRequestBody,
     ): ProductResponseBody {
-        validate(requestBody)
         val saved = productService.update(id, requestBody.toEntity())
         return ProductResponseBody.from(saved)
     }
@@ -57,9 +55,4 @@ class ProductController(
         return "Product with id $id deleted successfully."
     }
 
-    private fun validate(product: ProductRequestBody) {
-        if (purgoMalumService.containsProfanity(product.name)) {
-            throw IllegalArgumentException("Product name contains profanity.")
-        }
-    }
 }
