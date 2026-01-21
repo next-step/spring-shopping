@@ -4,7 +4,11 @@ import shopping.client.BadWordClient.checkBadWord
 
 private val PATTERN = "^[a-zA-Z0-9가-힣()\\[\\]+\\-&/_]*$".toRegex()
 
-class Product(private var _name: String, private var _price: Long, private var _imageUrl: String) {
+class Product(
+    private var _name: String,
+    private var _price: Long,
+    private var _imageUrl: String,
+) {
     val name: String
         get() = _name
     val price: Long
@@ -13,9 +17,7 @@ class Product(private var _name: String, private var _price: Long, private var _
         get() = _imageUrl
 
     init {
-        validateName(_name)
-        validatePrice(_price)
-        validateImage(_imageUrl)
+        validate(name, price, imageUrl)
     }
 
     fun isChanged(product: Product): Boolean =
@@ -26,12 +28,20 @@ class Product(private var _name: String, private var _price: Long, private var _
         price: Long = this._price,
         imageUrl: String = this._imageUrl,
     ) {
-        validateName(name)
-        validatePrice(price)
-        validateImage(imageUrl)
+        validate(name, price, imageUrl)
         this._name = name
         this._price = price
         this._imageUrl = imageUrl
+    }
+
+    private fun validate(
+        name: String,
+        price: Long,
+        imageUrl: String,
+    ) {
+        validateName(name)
+        validatePrice(price)
+        validateImage(imageUrl)
     }
 
     private fun validateName(name: String) {
