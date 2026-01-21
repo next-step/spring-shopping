@@ -1,5 +1,6 @@
 package shopping.controller
 
+import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,7 +21,7 @@ class ProductController(
 ) {
     @PostMapping
     fun save(
-        @RequestBody productRequest: ProductRequest,
+        @Valid @RequestBody productRequest: ProductRequest,
     ) = productService.save(productRequest)
 
     @GetMapping("/{productId}")
@@ -31,7 +32,7 @@ class ProductController(
     @PutMapping("/{productId}")
     fun update(
         @PathVariable productId: Long,
-        @RequestBody productRequest: ProductRequest,
+        @Valid @RequestBody productRequest: ProductRequest,
     ) = productService.update(productId, productRequest)
 
     @DeleteMapping("/{productId}")
