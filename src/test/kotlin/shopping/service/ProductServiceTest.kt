@@ -1,56 +1,65 @@
 package shopping.service
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import shopping.controller.dto.ProductRequest
+import shopping.domain.FakeBadWordValidator
+import shopping.domain.Product
+import shopping.repository.ProductRepository
 
-@SpringBootTest
-class ProductServiceTest : BehaviorSpec() {
-    @Autowired
-    lateinit var productService: ProductService
+class ProductServiceTest :
+    StringSpec({
+        val badWordValidator = FakeBadWordValidator(setOf("나쁜말", "욕설"))
+        val productRepository = FakeProductRepository()
+        val productService = ProductService(productRepository, badWordValidator)
 
-    init {
-        Given("상품을 관리하는 Service") {
-            val product = ProductRequest("name", 1000L, "url")
-            val id = productService.save(product)
-            Then("상품이 정상적으로 저장된다.") {
-                id shouldNotBe null
-            }
+        "비속어 포함시 상품 저장 실패" {
+            val request = ProductRequest("나쁜말상품", 1000, "http://image.url")
 
-            When("상품을 조회한다.") {
-                val result = productService.getById(id)
-                Then("상품이 정상적으로 조회된다.") {
-                    result.run {
-                        name shouldBe "name"
-                        price shouldBe 1000L
-                        imageUrl shouldBe "url"
-                    }
-                }
-            }
-
-            When("상품을 수정한다.") {
-                val updateProduct = ProductRequest("name2", 2000L, "url2")
-                productService.update(id, updateProduct)
-                Then("상품 조회시 수정된 데이터가 조회된다.") {
-                    productService.getById(id).run {
-                        name shouldBe "name2"
-                        price shouldBe 2000L
-                        imageUrl shouldBe "url2"
-                    }
-                }
-            }
-
-            When("상품을 삭제한다.") {
-                productService.delete(id)
-                Then("상품이 조회되지 않는다.") {
-                    val exception = shouldThrow<IllegalArgumentException> { productService.getById(id) }
-                    exception.message shouldBe "상품이 존재하지 않습니다."
-                }
+            shouldThrow<IllegalArgumentException> {
+                productService.save(request)
             }
         }
+
+        "비속어 없으면 상품 저장 성공" {
+            val request = ProductRequest("좋은상품", 1000, "http://image.url")
+
+            val id = productService.save(request)
+
+            id shouldBe 1L
+        }
+
+        "비속어 포함시 상품 수정 실패" {
+            val saveRequest = ProductRequest("좋은상품", 1000, "http://image.url")
+            val id = productService.save(saveRequest)
+
+            val updateRequest = ProductRequest("나쁜말상품", 2000, "http://image.url")
+
+            shouldThrow<IllegalArgumentException> {
+                productService.update(id, updateRequest)
+            }
+        }
+    })
+
+class FakeProductRepository : ProductRepository() {
+    private val products = mutableMapOf<Long, Product>()
+    private var sequence = 0L
+
+    override fun save(product: Product): Long {
+        val id = ++sequence
+        products[id] = product
+        return id
     }
+
+    override fun getById(id: Long) = products[id] ?: throw NoSuchElementException()
+
+    override fun update(
+        id: Long,
+        product: Product,
+    ) {
+        products[id] = product
+    }
+
+    override fun delete(id: Long) = products.remove(id)
 }
