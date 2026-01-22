@@ -33,7 +33,7 @@ class ProductController(val productService: ProductService) {
     fun create(
         @Valid @RequestBody productRequest: ProductRequest,
     ): ProductResponse {
-        return productService.save(productRequest.toDomain())
+        return productService.upsert(productRequest.toDomain())
     }
 
     @PutMapping("/{id}")
@@ -41,7 +41,7 @@ class ProductController(val productService: ProductService) {
         @PathVariable("id") id: Long,
         @Valid @RequestBody productRequest: ProductRequest,
     ): ProductResponse {
-        return productService.save(productRequest.toDomain(id))
+        return productService.upsert(productRequest.toDomain(id))
     }
 
     @DeleteMapping("/{id}")

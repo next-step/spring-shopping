@@ -19,7 +19,7 @@ class ProductService(
         return ProductResponse.fromDomain(product)
     }
 
-    fun save(product: Product): ProductResponse {
+    fun upsert(product: Product): ProductResponse {
         require(!productValidator.containsProfanity(product.name)) { "Product name is invalid" }
         return ProductResponse.fromDomain(productRepository.save(product))
     }

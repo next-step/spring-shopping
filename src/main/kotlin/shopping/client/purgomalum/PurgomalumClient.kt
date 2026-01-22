@@ -3,6 +3,7 @@ package shopping.client.purgomalum
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.body
 
 @Component
 class PurgomalumClient(
@@ -13,7 +14,7 @@ class PurgomalumClient(
             restClient.get()
                 .uri("/service/containsprofanity?text={text}", text)
                 .retrieve()
-                .body(String::class.java)
+                .body<String>()
 
         return response?.toBoolean() ?: false
     }
