@@ -38,6 +38,9 @@ class ProductService(
 
     @Transactional
     fun deleteById(id: Long) {
-        productRepository.deleteById(id)
+        val found =
+            productRepository.findById(id)
+                ?: throw ProductNotFoundException(id)
+        productRepository.deleteById(found.id!!)
     }
 }

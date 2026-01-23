@@ -30,4 +30,9 @@ class ProductRepository {
     }
 
     fun getNextId(): Long = idGenerator.getAndIncrement()
+
+    @Transactional
+    fun deleteAll() {
+        products.clear()
+    }
 }
