@@ -58,7 +58,7 @@ class ProductControllerTest : BehaviorSpec() {
                 restTemplate.delete("$productUri/1")
                 Then("상품 삭제 성공") {
                     val response =
-                        restTemplate.getForEntity("$productUri/1", ProductResponse::class.java)
+                        restTemplate.getForEntity("$productUri/1", Unit::class.java)
                     response.statusCode.value() shouldBe 500
                 }
             }

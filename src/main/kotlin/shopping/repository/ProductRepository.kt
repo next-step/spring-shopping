@@ -19,5 +19,7 @@ class ProductRepository {
         product: Product,
     ) = getById(id).update(product)
 
-    fun delete(id: Long) = products.remove(id)
+    fun delete(id: Long) {
+        products.remove(id)
+    }
 }

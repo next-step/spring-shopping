@@ -13,7 +13,7 @@ class BadWordValidatorClient : BadWordValidator {
             .baseUrl("http://www.purgomalum.com/service")
             .build()
 
-    override fun containsBadWord(text: String): Boolean =
+    override fun notContainsBadWord(text: String): Boolean =
         !client
             .get()
             .uri {

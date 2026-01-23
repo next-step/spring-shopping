@@ -61,5 +61,7 @@ class FakeProductRepository : ProductRepository() {
         products[id] = product
     }
 
-    override fun delete(id: Long) = products.remove(id)
+    override fun delete(id: Long) {
+        products.remove(id)
+    }
 }

@@ -27,9 +27,9 @@ class ProductService(
         productRepository.update(id, Product(request.name, request.price, request.imageUrl))
     }
 
-    fun delete(id: Long) = productRepository.delete(id)
+    fun delete(id: Long): Unit = productRepository.delete(id)
 
     private fun validateBadWord(name: String) {
-        require(!badWordValidator.containsBadWord(name)) { "상품 이름은 비속어를 포함할 수 없습니다. 이름 : $name" }
+        require(badWordValidator.notContainsBadWord(name)) { "상품 이름은 비속어를 포함할 수 없습니다. 이름 : $name" }
     }
 }
