@@ -13,9 +13,12 @@ class CustomRestControllerAdvice {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(NotFoundException::class)
-    fun handleNotFoundException(ex: NotFoundException): ResponseEntity<String> = ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-        ex.message
-    )
+    fun handleNotFoundException(ex: NotFoundException): ResponseEntity<String> =
+        ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(
+                ex.message,
+            )
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<String> =
