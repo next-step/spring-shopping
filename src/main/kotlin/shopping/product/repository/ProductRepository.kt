@@ -1,8 +1,8 @@
-package shopping.repository
+package shopping.product.repository
 
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import shopping.repository.model.Product
+import shopping.product.entity.Product
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 

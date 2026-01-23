@@ -1,4 +1,4 @@
-package shopping.service
+package shopping.common
 
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient

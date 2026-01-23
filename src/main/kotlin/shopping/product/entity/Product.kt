@@ -1,4 +1,4 @@
-package shopping.repository.model
+package shopping.product.entity
 
 data class Product(
     var name: String,

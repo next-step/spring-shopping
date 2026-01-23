@@ -1,22 +1,14 @@
-package shopping.controller
+package shopping.product.controller
 
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
-import shopping.controller.model.ProductListResponseBody
-import shopping.controller.model.ProductRequestBody
-import shopping.controller.model.ProductResponseBody
-import shopping.exception.ProductNotFoundException
-import shopping.service.ProductService
-import shopping.service.PurgoMalumVerifier
+import org.springframework.web.bind.annotation.*
+import shopping.common.PurgoMalumVerifier
+import shopping.product.dto.response.ProductListResponseBody
+import shopping.product.dto.request.ProductRequestBody
+import shopping.product.dto.response.ProductResponseBody
+import shopping.product.exception.ProductNotFoundException
+import shopping.product.service.ProductService
 
 @RestController
 @RequestMapping("/api/products")

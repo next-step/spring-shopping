@@ -1,10 +1,10 @@
-package shopping.service
+package shopping.product.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import shopping.exception.ProductNotFoundException
-import shopping.repository.ProductRepository
-import shopping.repository.model.Product
+import shopping.product.exception.ProductNotFoundException
+import shopping.product.repository.ProductRepository
+import shopping.product.entity.Product
 
 @Transactional(readOnly = true)
 @Service

@@ -1,11 +1,12 @@
-package shopping.controller.model
+package shopping.product.dto.response
 
-import shopping.repository.model.Product
+import shopping.product.entity.Product
 
 data class ProductResponseBody(
     val name: String,
     val price: Int,
     val imageUrl: String,
+    val id: Long,
 ) {
     companion object {
         fun from(product: Product): ProductResponseBody =
@@ -13,6 +14,7 @@ data class ProductResponseBody(
                 name = product.name,
                 price = product.price,
                 imageUrl = product.imageUrl,
+                id = requireNotNull(product.id),
             )
     }
 }

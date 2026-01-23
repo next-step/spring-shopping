@@ -1,3 +1,3 @@
-package shopping.controller.model
+package shopping.product.dto.response
 
 data class ProductListResponseBody(val products: List<ProductResponseBody>)
