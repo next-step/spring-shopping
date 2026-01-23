@@ -21,7 +21,7 @@ class Product(
     fun isChanged(product: Product): Boolean =
         this._name != product._name || this._price != product._price || this._imageUrl != product._imageUrl
 
-    fun update(
+    private fun update(
         name: String = this._name,
         price: Long = this._price,
         imageUrl: String = this._imageUrl,
@@ -30,6 +30,12 @@ class Product(
         this._name = name
         this._price = price
         this._imageUrl = imageUrl
+    }
+
+    fun update(product: Product) {
+        if (isChanged(product)) {
+            update(product.name, product.price, product.imageUrl)
+        }
     }
 
     private fun validate(

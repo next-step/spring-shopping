@@ -17,13 +17,7 @@ class ProductRepository {
     fun update(
         id: Long,
         product: Product,
-    ) {
-        getById(id).let {
-            if (it.isChanged(product)) {
-                it.update(product.name, product.price, product.imageUrl)
-            }
-        }
-    }
+    ) = getById(id).update(product)
 
     fun delete(id: Long) = products.remove(id)
 }
