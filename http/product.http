@@ -1,0 +1,72 @@
+### Product 전체 조회
+GET localhost:8080/api/products
+Accept: application/json
+
+### Product 단건 조회
+GET localhost:8080/api/products/2
+Accept: application/json
+
+### Product 생성
+POST localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "iphone",
+  "price": 100,
+  "imageUrl": "url"
+}
+
+### Product 수정
+PUT localhost:8080/api/products/1
+Content-Type: application/json
+
+{
+  "name": "iphone17",
+  "price": 300,
+  "imageUrl": "url"
+}
+
+### Product 삭제
+DELETE localhost:8080/api/products/2
+Content-Type: application/json
+
+
+### Product 생성 - 유효성 실패 : 15자리 이상
+POST localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "iphoneeeeeeeeeeeeeeee",
+  "price": 100,
+  "imageUrl": "url"
+}
+
+### Product 수정 - 유효성 통과 : 허용되는 특수문자 입력
+PUT localhost:8080/api/products/1
+Content-Type: application/json
+
+{
+  "name": "i()[]+- &/_",
+  "price": 300,
+  "imageUrl": "url"
+}
+
+### Product 수정 - 유효성 실패 : 허용되지 않는 특수문자 입력, price 음수 입력
+PUT localhost:8080/api/products/1
+Content-Type: application/json
+
+{
+  "name": "i$$$$$$$",
+  "price": -1000,
+  "imageUrl": "url"
+}
+
+### Product 생성 - 유효성 실패 : 비속어 포함
+POST localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "fuck",
+  "price": 100,
+  "imageUrl": "url"
+}
