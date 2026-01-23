@@ -1,10 +1,11 @@
 package shopping.service
 
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestClient
+import org.springframework.web.client.body
 
-@Service
-class PurgoMalumService(
+@Component
+class PurgoMalumVerifier(
     private val restClient: RestClient
 ) {
     fun containsProfanity(text: String): Boolean {
@@ -15,7 +16,7 @@ class PurgoMalumService(
         val response = restClient.get().uri("/service/containsprofanity?text=$text")
             .header("Accept", "text/plain")
             .retrieve()
-            .body(String::class.java);
+            .body<String>()
         return response?.toBoolean() ?: throw IllegalStateException("Failed to check profanity.")
     }
 }

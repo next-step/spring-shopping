@@ -1,10 +1,12 @@
 package shopping.service
 
 import org.springframework.stereotype.Service
-import shopping.exception.NotFoundException
+import org.springframework.transaction.annotation.Transactional
+import shopping.exception.ProductNotFoundException
 import shopping.repository.ProductRepository
 import shopping.repository.model.Product
 
+@Transactional(readOnly = true)
 @Service
 class ProductService(
     private val productRepository: ProductRepository,
@@ -13,15 +15,17 @@ class ProductService(
 
     fun findById(id: Long): Product? = productRepository.findById(id)
 
+    @Transactional
     fun create(product: Product): Product = productRepository.save(product)
 
+    @Transactional
     fun update(
         id: Long,
         product: Product,
     ): Product {
         val found =
             productRepository.findById(id)
-                ?: throw NotFoundException()
+                ?: throw ProductNotFoundException(id)
 
         found.apply {
             name = product.name
@@ -32,6 +36,7 @@ class ProductService(
         return productRepository.save(found)
     }
 
+    @Transactional
     fun deleteById(id: Long) {
         productRepository.deleteById(id)
     }

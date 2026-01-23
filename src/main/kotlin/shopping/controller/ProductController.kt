@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.*
 import shopping.controller.model.ProductListResponseBody
 import shopping.controller.model.ProductRequestBody
 import shopping.controller.model.ProductResponseBody
-import shopping.exception.NotFoundException
+import shopping.exception.ProductNotFoundException
 import shopping.service.ProductService
+import shopping.service.PurgoMalumVerifier
 
 @RestController
 @RequestMapping("/api/products")
 class ProductController(
+    private val purgoMalumVerifier: PurgoMalumVerifier,
     private val productService: ProductService,
 ) {
     @GetMapping
@@ -26,7 +28,7 @@ class ProductController(
     fun getProduct(
         @PathVariable id: Long,
     ): ProductResponseBody {
-        val found = productService.findById(id) ?: throw NotFoundException()
+        val found = productService.findById(id) ?: throw ProductNotFoundException(id)
         return ProductResponseBody.from(found)
     }
 
@@ -35,6 +37,7 @@ class ProductController(
     fun createProduct(
         @RequestBody @Valid requestBody: ProductRequestBody,
     ): ProductResponseBody {
+        purgoMalumVerifier.containsProfanity(requestBody.name)
         val saved = productService.create(requestBody.toEntity())
         return ProductResponseBody.from(saved)
     }
@@ -44,6 +47,7 @@ class ProductController(
         @PathVariable id: Long,
         @RequestBody @Valid requestBody: ProductRequestBody,
     ): ProductResponseBody {
+        purgoMalumVerifier.containsProfanity(requestBody.name)
         val saved = productService.update(id, requestBody.toEntity())
         return ProductResponseBody.from(saved)
     }

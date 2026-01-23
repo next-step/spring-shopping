@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import shopping.exception.NotFoundException
 
@@ -14,7 +13,9 @@ class CustomRestControllerAdvice {
     private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(NotFoundException::class)
-    fun handleNotFoundException(): ResponseEntity<String> = ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found.")
+    fun handleNotFoundException(ex: NotFoundException): ResponseEntity<String> = ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+        ex.message
+    )
 
     @ExceptionHandler(IllegalArgumentException::class)
     fun handleIllegalArgumentException(ex: IllegalArgumentException): ResponseEntity<String> =
