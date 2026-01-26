@@ -2,12 +2,13 @@ package shopping.repository
 
 import org.springframework.stereotype.Repository
 import shopping.domain.Product
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
 @Repository
 class ProductRepository {
     private var autoIncrementer: AtomicLong = AtomicLong(0L)
-    private val products: MutableMap<Long, Product> = mutableMapOf()
+    private val products = ConcurrentHashMap<Long, Product>()
 
     fun save(product: Product): Long = autoIncrementer.addAndGet(1L).also { products[it] = product }
 
