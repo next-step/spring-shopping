@@ -57,7 +57,6 @@ shopping/
   - Service
   - Repository
 - 단, 멀티모듈 구성까지는 진행하지 않는다.
-- 샘플 형태로 hello world 출력하는 1 cycle 구성
 ```
 package 로 모듈 구분
 ㄴ web : controller, request, response
