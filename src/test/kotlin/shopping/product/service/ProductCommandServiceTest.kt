@@ -14,65 +14,13 @@ import shopping.product.repository.ProductRepository
 
 @SpringBootTest
 @ActiveProfiles("test")
-class ProductServiceTest(
-    private val productService: ProductService,
+class ProductCommandServiceTest(
+    private val productCommandService: ProductCommandService,
     private val productRepository: ProductRepository,
 ) : FunSpec({
 
     beforeEach {
         productRepository.deleteAll()
-    }
-
-    context("findAll") {
-        test("모든 리스트를 조회한다.") {
-            // given
-            val product1 = Product(name = "Product1", price = 1000, imageUrl = "http://example.com/1.jpg")
-            val product2 = Product(name = "Product2", price = 2000, imageUrl = "http://example.com/2.jpg")
-
-            productRepository.save(product1)
-            productRepository.save(product2)
-
-            // when
-            val result = productService.findAll()
-
-            // then
-            result.size shouldBe 2
-            result.any { it.name == "Product1" && it.price == 1000 } shouldBe true
-            result.any { it.name == "Product2" && it.price == 2000 } shouldBe true
-        }
-
-        test("데이터가 없으면 사이즈가 0이다.") {
-            // when
-            val result = productService.findAll()
-
-            // then
-            result.size shouldBe 0
-        }
-    }
-
-    context("findById") {
-        test("id 를 통해 요청한다.") {
-            // given
-            val product = Product(name = "Product1", price = 1000, imageUrl = "http://example.com/1.jpg")
-            val saved = productRepository.save(product)
-
-            // when
-            val result = productService.findById(saved.id!!)
-
-            // then
-            result shouldNotBe null
-            result?.name shouldBe "Product1"
-            result?.price shouldBe 1000
-            result?.imageUrl shouldBe "http://example.com/1.jpg"
-        }
-
-        test("id 가 없으면 null 을 리턴한다.") {
-            // when
-            val result = productService.findById(999L)
-
-            // then
-            result.shouldBeNull()
-        }
     }
 
     context("create") {
@@ -81,7 +29,7 @@ class ProductServiceTest(
             val newProduct = Product(name = "New Product", price = 3000, imageUrl = "http://example.com/new.jpg")
 
             // when
-            val result = productService.create(newProduct)
+            val result = productCommandService.create(newProduct)
 
             // then
             result.id shouldNotBe null
@@ -90,7 +38,7 @@ class ProductServiceTest(
             result.imageUrl shouldBe "http://example.com/new.jpg"
 
             // 저장 확인
-            val found = productRepository.findById(result.id!!)
+            val found = productRepository.findById(result.id!!).orElse(null)
             found shouldNotBe null
             found?.name shouldBe "New Product"
         }
@@ -105,7 +53,7 @@ class ProductServiceTest(
                 Product(name = "Updated Product", price = 2000, imageUrl = "http://example.com/updated.jpg")
 
             // when
-            val result = productService.update(saved.id!!, updateData)
+            val result = productCommandService.update(saved.id!!, updateData)
 
             // then
             result.name shouldBe "Updated Product"
@@ -114,7 +62,7 @@ class ProductServiceTest(
             result.id shouldBe saved.id
 
             // 실제 저장 확인
-            val found = productRepository.findById(saved.id!!)
+            val found = productRepository.findById(saved.id!!).orElse(null)
             found shouldNotBe null
             found?.name shouldBe "Updated Product"
             found?.price shouldBe 2000
@@ -127,7 +75,7 @@ class ProductServiceTest(
 
             // when & then
             val exception = shouldThrow<ProductNotFoundException> {
-                productService.update(999L, updateData)
+                productCommandService.update(999L, updateData)
             }
 
             exception.shouldBeInstanceOf<ProductNotFoundException>()
@@ -141,17 +89,17 @@ class ProductServiceTest(
             val saved = productRepository.save(product)
 
             // when
-            productService.deleteById(saved.id!!)
+            productCommandService.deleteById(saved.id!!)
 
             // then
-            val found = productRepository.findById(saved.id!!)
+            val found = productRepository.findById(saved.id!!).orElse(null)
             found.shouldBeNull()
         }
 
         test("id 가 없으면 예외를 발생시킨다.") {
             // when & then
             val exception = shouldThrow<ProductNotFoundException> {
-                productService.deleteById(999L)
+                productCommandService.deleteById(999L)
             }
 
             exception.shouldBeInstanceOf<ProductNotFoundException>()

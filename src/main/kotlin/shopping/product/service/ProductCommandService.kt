@@ -2,29 +2,22 @@ package shopping.product.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import shopping.product.exception.ProductNotFoundException
-import shopping.product.repository.ProductRepository
 import shopping.product.entity.Product
+import shopping.product.repository.ProductRepository
 
-@Transactional(readOnly = true)
+@Transactional
 @Service
-class ProductService(
+class ProductCommandService(
+    private val productQueryService: ProductQueryService,
     private val productRepository: ProductRepository,
 ) {
-    fun findAll(): List<Product> = productRepository.findAll()
-
-    fun findById(id: Long): Product? = productRepository.findById(id).orElse(null)
-
-    @Transactional
     fun create(product: Product): Product = productRepository.save(product)
 
-    @Transactional
     fun update(
         id: Long,
         product: Product,
     ): Product {
-        val found =
-            productRepository.findById(id).orElseThrow { ProductNotFoundException(id) }
+        val found = productQueryService.getById(id)
 
         found.apply {
             name = product.name
@@ -35,11 +28,8 @@ class ProductService(
         return productRepository.save(found)
     }
 
-    @Transactional
     fun deleteById(id: Long) {
-        if (!productRepository.existsById(id)) {
-            throw ProductNotFoundException(id)
-        }
-        productRepository.deleteById(id)
+        val found = productQueryService.getById(id)
+        productRepository.delete(found)
     }
 }

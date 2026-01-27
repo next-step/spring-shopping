@@ -4,34 +4,16 @@ import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import shopping.common.PurgoMalumVerifier
-import shopping.product.dto.response.ProductListResponseBody
 import shopping.product.dto.request.ProductRequestBody
 import shopping.product.dto.response.ProductResponseBody
-import shopping.product.exception.ProductNotFoundException
-import shopping.product.service.ProductService
+import shopping.product.service.ProductCommandService
 
 @RestController
 @RequestMapping("/api/products")
-class ProductController(
+class ProductCommandController(
     private val purgoMalumVerifier: PurgoMalumVerifier,
-    private val productService: ProductService,
+    private val productService: ProductCommandService,
 ) {
-    @GetMapping
-    fun getProducts(): ProductListResponseBody =
-        ProductListResponseBody(
-            productService
-                .findAll()
-                .map(ProductResponseBody::from),
-        )
-
-    @GetMapping("/{id}")
-    fun getProduct(
-        @PathVariable id: Long,
-    ): ProductResponseBody {
-        val found = productService.findById(id) ?: throw ProductNotFoundException(id)
-        return ProductResponseBody.from(found)
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createProduct(
