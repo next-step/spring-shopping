@@ -1,6 +1,7 @@
 package shopping.web.product
 
 import jakarta.validation.Valid
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,6 +14,7 @@ import shopping.application.product.ProductService
 import shopping.web.product.request.ProductRequest
 import shopping.web.product.response.ProductResponse
 import shopping.web.product.response.ProductsResponse
+import java.net.URI
 
 @RestController
 @RequestMapping("/api/products")
@@ -32,8 +34,9 @@ class ProductController(val productService: ProductService) {
     @PostMapping
     fun create(
         @Valid @RequestBody productRequest: ProductRequest,
-    ): ProductResponse {
-        return productService.save(productRequest.toDomain())
+    ): ResponseEntity<ProductResponse> {
+        val response = productService.save(productRequest.toDomain())
+        return ResponseEntity.created(URI.create("/api/products/${response.id}")).body(response)
     }
 
     @PutMapping("/{id}")
