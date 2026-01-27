@@ -13,7 +13,7 @@ class ProductService(
 ) {
     fun findAll(): List<Product> = productRepository.findAll()
 
-    fun findById(id: Long): Product? = productRepository.findById(id)
+    fun findById(id: Long): Product? = productRepository.findById(id).orElse(null)
 
     @Transactional
     fun create(product: Product): Product = productRepository.save(product)
@@ -24,8 +24,7 @@ class ProductService(
         product: Product,
     ): Product {
         val found =
-            productRepository.findById(id)
-                ?: throw ProductNotFoundException(id)
+            productRepository.findById(id).orElseThrow { ProductNotFoundException(id) }
 
         found.apply {
             name = product.name
@@ -38,9 +37,9 @@ class ProductService(
 
     @Transactional
     fun deleteById(id: Long) {
-        val found =
-            productRepository.findById(id)
-                ?: throw ProductNotFoundException(id)
-        productRepository.deleteById(found.id!!)
+        if (!productRepository.existsById(id)) {
+            throw ProductNotFoundException(id)
+        }
+        productRepository.deleteById(id)
     }
 }
