@@ -32,13 +32,7 @@ class ProductRepository(
             statement.executeQuery().use { resultSet ->
                 val result = mutableListOf<Product>()
                 while (resultSet.next()) {
-                    result +=
-                        Product(
-                            name = resultSet.getString("name"),
-                            price = resultSet.getLong("price"),
-                            imageUrl = resultSet.getString("image_url"),
-                            id = resultSet.getLong("id"),
-                        )
+                    result += Product.fromResultSet(resultSet)
                 }
                 return result
             }
@@ -51,12 +45,7 @@ class ProductRepository(
             statement.setLong(1, id)
             statement.executeQuery().use { resultSet ->
                 return if (resultSet.next()) {
-                    Product(
-                        name = resultSet.getString("name"),
-                        price = resultSet.getLong("price"),
-                        imageUrl = resultSet.getString("image_url"),
-                        id = resultSet.getLong("id"),
-                    )
+                    Product.fromResultSet(resultSet)
                 } else {
                     throw IllegalArgumentException("Product not found")
                 }
