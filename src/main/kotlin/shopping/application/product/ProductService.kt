@@ -1,15 +1,16 @@
 package shopping.application.product
 
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import shopping.application.product.validator.ProductValidator
+import shopping.application.annotation.ShoppingReadOnlyTransactional
+import shopping.application.annotation.ShoppingTransactional
 import shopping.core.product.Product
 import shopping.core.product.ProductRepository
 import shopping.web.product.response.ProductResponse
 import shopping.web.product.response.ProductsResponse
 
 @Service
-@Transactional(readOnly = true)
+@ShoppingReadOnlyTransactional
 class ProductService(
     val productRepository: ProductRepository,
     val productValidator: ProductValidator,
@@ -21,12 +22,12 @@ class ProductService(
         return ProductResponse.fromDomain(product)
     }
 
-    @Transactional
+    @ShoppingTransactional
     fun save(product: Product): ProductResponse {
         require(!productValidator.containsProfanity(product.name)) { "Product name is invalid" }
         return ProductResponse.fromDomain(productRepository.save(product))
     }
 
-    @Transactional
+    @ShoppingTransactional
     fun deleteById(id: Long) = productRepository.deleteById(id)
 }
