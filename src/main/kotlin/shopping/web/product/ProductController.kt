@@ -47,7 +47,7 @@ class ProductController(val productService: ProductService) {
     @DeleteMapping("/{id}")
     fun deleteById(
         @PathVariable("id") id: Long,
-    ): Boolean {
-        return productService.deleteById(id)
+    ) {
+        productService.deleteById(id)
     }
 }

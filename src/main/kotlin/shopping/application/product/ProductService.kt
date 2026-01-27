@@ -15,7 +15,7 @@ class ProductService(
     fun findAll(): ProductsResponse = ProductsResponse.fromDomain(productRepository.findAll())
 
     fun findById(id: Long): ProductResponse {
-        val product = productRepository.findById(id) ?: throw IllegalArgumentException("Product not found")
+        val product = productRepository.findById(id).orElseThrow { IllegalArgumentException("Product not found") }
         return ProductResponse.fromDomain(product)
     }
 
@@ -24,5 +24,5 @@ class ProductService(
         return ProductResponse.fromDomain(productRepository.save(product))
     }
 
-    fun deleteById(id: Long): Boolean = productRepository.deleteById(id)
+    fun deleteById(id: Long) = productRepository.deleteById(id)
 }
