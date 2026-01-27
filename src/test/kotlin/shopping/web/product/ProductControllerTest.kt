@@ -39,7 +39,7 @@ class ProductControllerTest(
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)),
             )
-                .andExpect(status().isOk)
+                .andExpect(status().isCreated)
                 .andExpect(jsonPath("$.name").value("iphone"))
                 .andExpect(jsonPath("$.price").value(100))
                 .andExpect(jsonPath("$.imageUrl").value("url"))
@@ -53,7 +53,7 @@ class ProductControllerTest(
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)),
             )
-                .andExpect(status().isOk)
+                .andExpect(status().isCreated)
                 .andExpect(jsonPath("$.name").value("i()[]+- &/_"))
         }
 
