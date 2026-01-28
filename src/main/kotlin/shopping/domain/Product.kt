@@ -1,12 +1,23 @@
 package shopping.domain
 
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+
 private val PATTERN = "^[a-zA-Z0-9가-힣()\\[\\]+\\-&/_]*$".toRegex()
 
+@Entity
 class Product(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private var _id: Long? = null,
     private var _name: String,
     private var _price: Long,
     private var _imageUrl: String,
 ) {
+    val id: Long?
+        get() = _id
     val name: String
         get() = _name
     val price: Long
@@ -18,24 +29,11 @@ class Product(
         validate(name, price, imageUrl)
     }
 
-    fun isChanged(product: Product): Boolean =
-        this._name != product._name || this._price != product._price || this._imageUrl != product._imageUrl
-
-    private fun update(
-        name: String = this._name,
-        price: Long = this._price,
-        imageUrl: String = this._imageUrl,
-    ) {
-        validate(name, price, imageUrl)
-        this._name = name
-        this._price = price
-        this._imageUrl = imageUrl
-    }
-
     fun update(product: Product) {
-        if (isChanged(product)) {
-            update(product.name, product.price, product.imageUrl)
-        }
+        validate(product.name, product.price, product.imageUrl)
+        this._name = product.name
+        this._price = product.price
+        this._imageUrl = product.imageUrl
     }
 
     private fun validate(
