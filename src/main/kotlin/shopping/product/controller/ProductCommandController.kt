@@ -12,7 +12,7 @@ import shopping.product.service.ProductCommandService
 @RequestMapping("/api/products")
 class ProductCommandController(
     private val purgoMalumVerifier: PurgoMalumVerifier,
-    private val productService: ProductCommandService,
+    private val productCommandService: ProductCommandService,
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -20,7 +20,7 @@ class ProductCommandController(
         @RequestBody @Valid requestBody: ProductRequestBody,
     ): ProductResponseBody {
         purgoMalumVerifier.containsProfanity(requestBody.name)
-        val saved = productService.create(requestBody.toEntity())
+        val saved = productCommandService.create(requestBody.toEntity())
         return ProductResponseBody.from(saved)
     }
 
@@ -30,7 +30,7 @@ class ProductCommandController(
         @RequestBody @Valid requestBody: ProductRequestBody,
     ): ProductResponseBody {
         purgoMalumVerifier.containsProfanity(requestBody.name)
-        val saved = productService.update(id, requestBody.toEntity())
+        val saved = productCommandService.update(id, requestBody.toEntity())
         return ProductResponseBody.from(saved)
     }
 
@@ -38,7 +38,7 @@ class ProductCommandController(
     fun deleteProduct(
         @PathVariable id: Long,
     ): String {
-        productService.deleteById(id)
+        productCommandService.deleteById(id)
         return "Product with id $id deleted successfully."
     }
 }
