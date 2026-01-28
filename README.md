@@ -38,6 +38,16 @@
 
 ## 배운 것 
 1. 스코프함수에서 this, it 을 생략하고 쓴 변수와 상위 스코프의 변수명이 겹치면, 컴파일 에러는 발생하지 않고, 상위 스코프를 참조한다.
+2. 코틀린의 플러그인들 : 코틀린 사용을 편하게 해준다~
+   - jvm
+     - 코틀린 코드를 JVM 바이트 코드로 컴파일 해줌
+       - Kotlin Compiler 실행
+         - .kt → .class 변환
+         - Kotlin stdlib 자동 의존성 추가
+         - Java 코드와 상호운용 가능하게 설정
+   - plugin.jpa
+     - @Entity, @MappedSuperclass, @Embeddable 이 붙은 클래스를 자동으로 open 키워드 추가
+     - @Entity 이 붙은 클래스에 자동으로 기본 생성자를 생성
 
 ## 룰로 가져가볼 것?
 1. dto 클래스에서 entity를 참조하게 할지?(toEntity) 혹은 스코프 함수로 반환할지?
