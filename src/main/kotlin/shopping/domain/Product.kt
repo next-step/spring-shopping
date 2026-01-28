@@ -1,5 +1,6 @@
 package shopping.domain
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -11,9 +12,13 @@ private val PATTERN = "^[a-zA-Z0-9가-힣()\\[\\]+\\-&/_]*$".toRegex()
 class Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private var _id: Long? = null,
+    @Column(name = "name")
     private var _name: String,
+    @Column(name = "price")
     private var _price: Long,
+    @Column(name = "image_url")
     private var _imageUrl: String,
 ) {
     val id: Long?
