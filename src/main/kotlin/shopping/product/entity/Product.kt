@@ -1,16 +1,16 @@
 package shopping.product.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 data class Product(
-    var name: String = "",
-    var price: Int = 0,
-    var imageUrl: String = "",
+    @Column(nullable = false)
+    var name: String,
+    @Column(nullable = false)
+    var price: Int,
+    @Column(nullable = false)
+    var imageUrl: String,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    val id: Long? = null,
 )
