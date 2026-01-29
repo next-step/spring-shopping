@@ -1,5 +1,6 @@
 package shopping.service
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import shopping.exception.NotFoundException
 import shopping.repository.ProductRepository
@@ -11,7 +12,7 @@ class ProductService(
 ) {
     fun findAll(): List<Product> = productRepository.findAll()
 
-    fun getById(id: Long): Product = productRepository.findById(id) ?: throw NotFoundException()
+    fun getById(id: Long): Product = productRepository.findByIdOrNull(id) ?: throw NotFoundException()
 
     fun create(product: Product): Product = productRepository.save(product)
 
@@ -20,7 +21,7 @@ class ProductService(
         product: Product,
     ): Product {
         val found =
-            productRepository.findById(id)
+            productRepository.findByIdOrNull(id)
                 ?: throw NotFoundException()
 
         found.apply {
