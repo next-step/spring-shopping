@@ -35,7 +35,6 @@ class Product(
     }
 
     fun update(product: Product) {
-        validate(product.name, product.price, product.imageUrl)
         this._name = product.name
         this._price = product.price
         this._imageUrl = product.imageUrl
