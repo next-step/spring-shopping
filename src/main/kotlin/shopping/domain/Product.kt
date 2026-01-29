@@ -1,10 +1,25 @@
 package shopping.domain
 
+import jakarta.persistence.*
 import shopping.client.BadWordClient.checkBadWord
 
 private val PATTERN = "^[a-zA-Z0-9가-힣()\\[\\]+\\-&/_]*$".toRegex()
 
-class Product(private var _name: String, private var _price: Long, private var _imageUrl: String) {
+@Entity
+class Product(
+    @Column(name = "name", nullable = false)
+    private var _name: String,
+
+    @Column(name = "price", nullable = false)
+    private var _price: Long,
+
+    @Column(name = "image_url")
+    private var _imageUrl: String
+) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null
+
     val name: String
         get() = _name
     val price: Long
