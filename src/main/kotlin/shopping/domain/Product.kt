@@ -10,25 +10,25 @@ private val PATTERN = "^[a-zA-Z0-9가-힣()\\[\\]+\\-&/_]*$".toRegex()
 
 @Entity
 class Product(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private var _id: Long? = null,
     @Column(name = "name")
     private var _name: String,
     @Column(name = "price")
     private var _price: Long,
     @Column(name = "image_url")
     private var _imageUrl: String,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private var _id: Long? = null,
 ) {
-    val id: Long?
-        get() = _id
     val name: String
         get() = _name
     val price: Long
         get() = _price
     val imageUrl: String
         get() = _imageUrl
+    val id: Long?
+        get() = _id
 
     init {
         validate(name, price, imageUrl)

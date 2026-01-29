@@ -22,10 +22,5 @@ data class ProductRequest(
     val price: Long get() = _price!!
     val imageUrl: String get() = _imageUrl!!
 
-    fun toDomain(): Product =
-        Product(
-            _name = name,
-            _price = price,
-            _imageUrl = imageUrl,
-        )
+    fun toDomain(): Product = Product(name, price, imageUrl)
 }
