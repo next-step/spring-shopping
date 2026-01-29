@@ -13,9 +13,10 @@ import shopping.repository.ProductRepository
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class ProductServiceTest(
     private val productRepository: ProductRepository,
+    private val productTransactionalService: ProductTransactionalService,
 ) : BehaviorSpec({
         val badWordValidator = FakeBadWordValidator(setOf("나쁜말", "욕설"))
-        val productService = ProductService(productRepository, badWordValidator)
+        val productService = ProductService(productTransactionalService, badWordValidator)
 
         Given("비속어가 포함된 상품 요청") {
             val request = ProductRequest("나쁜말상품", 1000, "http://image.url")
