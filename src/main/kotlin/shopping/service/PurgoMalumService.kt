@@ -11,8 +11,8 @@ import org.springframework.web.client.exchange
 class PurgoMalumService(
     private val restTemplate: RestTemplate,
 ) {
-    fun containsProfanity(text: String): Boolean {
-        if (text.isBlank()) {
+    fun containsProfanity(text: String?): Boolean {
+        if (text.isNullOrBlank()) {
             return false
         }
 
