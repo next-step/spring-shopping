@@ -20,12 +20,12 @@ class ProductService(
     }
 
     fun save(product: Product): ProductResponse {
-        require(!productValidator.containsProfanity(product.name)) { "Product name is invalid" }
+        require(productValidator.hasNoProfanity(product.name)) { "Product name is invalid" }
         return ProductResponse.fromDomain(productRepository.save(product))
     }
 
     fun update(product: Product): ProductResponse {
-        require(!productValidator.containsProfanity(product.name)) { "Product name is invalid" }
+        require(productValidator.hasNoProfanity(product.name)) { "Product name is invalid" }
         return ProductResponse.fromDomain(productRepository.update(product))
     }
 
