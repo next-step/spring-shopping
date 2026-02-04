@@ -7,7 +7,7 @@ import shopping.client.purgomalum.PurgomalumClient
 class ProductValidator(
     private val purgomalumClient: PurgomalumClient,
 ) {
-    fun containsProfanity(text: String): Boolean {
-        return purgomalumClient.containsProfanity(text)
+    fun hasNoProfanity(text: String): Boolean {
+        return !purgomalumClient.containsProfanity(text)
     }
 }

@@ -1,11 +1,21 @@
 package shopping.core.product
 
-// 추후 가능하다면 Price 일급객체 선언해서 사용 가능
+import java.sql.ResultSet
+
 class Product(
     val name: String,
     val price: Long,
     val imageUrl: String,
     val id: Long = 0L,
 ) {
-    fun copy(id: Long): Product = Product(this.name, this.price, this.imageUrl, id)
+    companion object {
+        fun fromResultSet(resultSet: ResultSet): Product {
+            return Product(
+                name = resultSet.getString("name"),
+                price = resultSet.getLong("price"),
+                imageUrl = resultSet.getString("image_url"),
+                id = resultSet.getLong("id"),
+            )
+        }
+    }
 }

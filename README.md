@@ -57,7 +57,6 @@ shopping/
   - Service
   - Repository
 - 단, 멀티모듈 구성까지는 진행하지 않는다.
-- 샘플 형태로 hello world 출력하는 1 cycle 구성
 ```
 package 로 모듈 구분
 ㄴ web : controller, request, response
@@ -104,4 +103,5 @@ Content-Type: application/json
 - 상품 이름에는 비속어를 포함할 수 없다.
   - PurgoMalum 을 이용한다 (외부 API 호출) 
 
-
+### h2 데이터베이스를 사용한다.
+- 사용하는 테이블은 애플리케이션이 실행될 때 구축되어야 한다.

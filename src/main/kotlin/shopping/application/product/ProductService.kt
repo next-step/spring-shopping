@@ -15,13 +15,18 @@ class ProductService(
     fun findAll(): ProductsResponse = ProductsResponse.fromDomain(productRepository.findAll())
 
     fun findById(id: Long): ProductResponse {
-        val product = productRepository.findById(id) ?: throw IllegalArgumentException("Product not found")
+        val product = productRepository.findById(id)
         return ProductResponse.fromDomain(product)
     }
 
-    fun upsert(product: Product): ProductResponse {
-        require(!productValidator.containsProfanity(product.name)) { "Product name is invalid" }
+    fun save(product: Product): ProductResponse {
+        require(productValidator.hasNoProfanity(product.name)) { "Product name is invalid" }
         return ProductResponse.fromDomain(productRepository.save(product))
+    }
+
+    fun update(product: Product): ProductResponse {
+        require(productValidator.hasNoProfanity(product.name)) { "Product name is invalid" }
+        return ProductResponse.fromDomain(productRepository.update(product))
     }
 
     fun deleteById(id: Long): Boolean = productRepository.deleteById(id)
