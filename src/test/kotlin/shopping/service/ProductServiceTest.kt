@@ -1,67 +1,59 @@
 package shopping.service
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestConstructor
 import shopping.controller.dto.ProductRequest
 import shopping.domain.FakeBadWordValidator
-import shopping.domain.Product
 import shopping.repository.ProductRepository
 
-class ProductServiceTest :
-    StringSpec({
+@SpringBootTest
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+class ProductServiceTest(
+    private val productRepository: ProductRepository,
+    private val productTransactionalService: ProductTransactionalService,
+) : BehaviorSpec({
         val badWordValidator = FakeBadWordValidator(setOf("나쁜말", "욕설"))
-        val productRepository = FakeProductRepository()
-        val productService = ProductService(productRepository, badWordValidator)
+        val productService = ProductService(productTransactionalService, badWordValidator)
 
-        "비속어 포함시 상품 저장 실패" {
+        Given("비속어가 포함된 상품 요청") {
             val request = ProductRequest("나쁜말상품", 1000, "http://image.url")
 
-            shouldThrow<IllegalArgumentException> {
-                productService.save(request)
+            When("상품을 저장하면") {
+                Then("예외가 발생한다") {
+                    shouldThrow<IllegalArgumentException> {
+                        productService.save(request)
+                    }
+                }
             }
         }
 
-        "비속어 없으면 상품 저장 성공" {
+        Given("정상 상품 요청") {
             val request = ProductRequest("좋은상품", 1000, "http://image.url")
 
-            val id = productService.save(request)
+            When("상품을 저장하면") {
+                val id = productService.save(request)
 
-            id shouldBe 1L
+                Then("상품이 저장된다") {
+                    productRepository.findById(id).isPresent shouldBe true
+                }
+            }
         }
 
-        "비속어 포함시 상품 수정 실패" {
+        Given("상품이 저장되어 있을 때") {
             val saveRequest = ProductRequest("좋은상품", 1000, "http://image.url")
             val id = productService.save(saveRequest)
 
-            val updateRequest = ProductRequest("나쁜말상품", 2000, "http://image.url")
+            When("비속어 포함 이름으로 수정하면") {
+                val updateRequest = ProductRequest("나쁜말상품", 2000, "http://image.url")
 
-            shouldThrow<IllegalArgumentException> {
-                productService.update(id, updateRequest)
+                Then("예외가 발생한다") {
+                    shouldThrow<IllegalArgumentException> {
+                        productService.update(id, updateRequest)
+                    }
+                }
             }
         }
     })
-
-class FakeProductRepository : ProductRepository() {
-    private val products = mutableMapOf<Long, Product>()
-    private var sequence = 0L
-
-    override fun save(product: Product): Long {
-        val id = ++sequence
-        products[id] = product
-        return id
-    }
-
-    override fun getById(id: Long) = products[id] ?: throw NoSuchElementException()
-
-    override fun update(
-        id: Long,
-        product: Product,
-    ) {
-        products[id] = product
-    }
-
-    override fun delete(id: Long) {
-        products.remove(id)
-    }
-}

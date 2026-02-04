@@ -14,44 +14,45 @@ class ProductRepositoryTest : BehaviorSpec() {
 
     init {
 
-        Given("Product를 생성한다.") {
-            val originName = "apple"
-            val originPrice = 1000L
-            val originUri = "url"
-            val id = productRepository.save(Product(originName, originPrice, originUri))
+        Given("Product를 저장하면") {
+            val product = productRepository.save(Product("apple", 1000L, "url"))
 
-            When("Product를 조회한다.") {
-                val product = productRepository.getById(1L)
+            When("id로 조회하면") {
+                val found = productRepository.findById(product.id!!).orElseThrow()
 
-                Then("Product가 정상 조회된다.") {
-                    product.run {
-                        name shouldBe originName
-                        price shouldBe originPrice
-                        imageUrl shouldBe originUri
-                    }
+                Then("저장된 Product가 조회된다") {
+                    found.name shouldBe "apple"
+                    found.price shouldBe 1000L
+                    found.imageUrl shouldBe "url"
                 }
+            }
+        }
 
-                When("Product를 수정한다.") {
-                    val updateName = "banana"
-                    val updatePrice = 5000L
-                    val updateUrl = "url123"
-                    productRepository.update(id, Product(updateName, updatePrice, updateUrl))
+        Given("Product를 저장하고") {
+            val product = productRepository.save(Product("apple", 1000L, "url"))
 
-                    Then("Product가 정상 수정된다.") {
-                        productRepository.getById(id).run {
-                            name shouldBe updateName
-                            price shouldBe updatePrice
-                            imageUrl shouldBe updateUrl
-                        }
-                    }
+            When("수정하면") {
+                product.update(Product("banana", 5000L, "url123"))
+                productRepository.save(product)
+
+                Then("변경사항이 반영된다") {
+                    val updated = productRepository.findById(product.id!!).orElseThrow()
+                    updated.name shouldBe "banana"
+                    updated.price shouldBe 5000L
+                    updated.imageUrl shouldBe "url123"
                 }
+            }
+        }
 
-                When("Product가 제거된다.") {
-                    productRepository.delete(id)
+        Given("Product를 저장하고") {
+            val product = productRepository.save(Product("apple", 1000L, "url"))
 
-                    Then("Product가 조회되지 않는다.") {
-                        val exception = shouldThrow<IllegalArgumentException> { productRepository.getById(id) }
-                        exception.message shouldBe "상품이 존재하지 않습니다."
+            When("삭제하면") {
+                productRepository.delete(product)
+
+                Then("조회되지 않는다") {
+                    shouldThrow<NoSuchElementException> {
+                        productRepository.findById(product.id!!).orElseThrow()
                     }
                 }
             }

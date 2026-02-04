@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
+import shopping.domain.Product
 
 data class ProductRequest(
     @field:NotBlank
@@ -20,4 +21,6 @@ data class ProductRequest(
     val name: String get() = _name!!
     val price: Long get() = _price!!
     val imageUrl: String get() = _imageUrl!!
+
+    fun toDomain(): Product = Product(name, price, imageUrl)
 }
