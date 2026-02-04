@@ -10,14 +10,23 @@ import shopping.repository.ProductRepository
 class ProductService(
     private val productRepository: ProductRepository,
 ) {
-    fun save(request: ProductRequest) = request.run { productRepository.save(Product(name, price, imageUrl)) }
+    fun save(request: ProductRequest): Long =
+        request.run { productRepository.save(Product(name, price, imageUrl)).id!! }
 
-    fun getById(id: Long) = productRepository.getById(id).let { ProductResponse(it.name, it.price, it.imageUrl) }
+    fun getById(id: Long): ProductResponse =
+        productRepository.findById(id)
+            .orElseThrow { throw IllegalArgumentException("상품이 존재하지 않습니다.") }
+            .let { ProductResponse(it.name, it.price, it.imageUrl) }
 
     fun update(
         id: Long,
         request: ProductRequest,
-    ) = productRepository.update(id, request.run { Product(name, price, imageUrl) })
+    ) {
+        val product = productRepository.findById(id)
+            .orElseThrow { throw IllegalArgumentException("상품이 존재하지 않습니다.") }
+        product.update(request.name, request.price, request.imageUrl)
+        productRepository.save(product)
+    }
 
-    fun delete(id: Long) = productRepository.delete(id)
+    fun delete(id: Long): Unit = productRepository.deleteById(id)
 }
