@@ -1,5 +1,7 @@
 package shopping
 
+import shopping.domain.Product
+
 data class ProductRequest(
     val name: String,
     val price: Int,

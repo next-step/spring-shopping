@@ -1,14 +1,9 @@
 package shopping
 
 import org.springframework.stereotype.Service
+import shopping.domain.Product
 import java.util.concurrent.atomic.AtomicLong
 
-class Product(
-    val id: Long,
-    val name: String,
-    val price: Int,
-    val imageUrl: String
-)
 
 @Service
 class ProductService {

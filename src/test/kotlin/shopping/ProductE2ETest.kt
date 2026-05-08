@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.TestConstructor
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.web.client.RestClient
@@ -19,6 +20,7 @@ import org.springframework.web.client.toEntity
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 class ProductE2ETest(
     @LocalServerPort private val port: Int,
     private val builder: RestClient.Builder
@@ -97,4 +99,6 @@ class ProductE2ETest(
         response shouldHaveSize 1
         response shouldContain body
     }
+
+
 }
