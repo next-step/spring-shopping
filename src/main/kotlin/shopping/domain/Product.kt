@@ -8,5 +8,11 @@ class Product(
     val price: Int,
     val imageUrl: String,
 ) {
+    init {
+        require(imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+            "[ERROR] imageUrl must start with http:// or https://"
+        }
+    }
+
     fun toResponse() = ProductResponse(id, name.name, price, imageUrl)
 }
