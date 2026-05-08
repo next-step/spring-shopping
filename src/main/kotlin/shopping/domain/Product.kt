@@ -17,9 +17,7 @@ class Product(
     var imageUrl: String,
     val id: Long = 0L,
 
-)
-
-{
+) {
     init {
         require(isValidName(name)) { "사용할 수 없는 특수문자가 포함되어 있습니다." }
         require(name.length <= 15) { "상품이름은 15자 이상은 불가합니다." }
