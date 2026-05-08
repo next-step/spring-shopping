@@ -1,7 +1,8 @@
-package shopping
+package shopping.infra
 
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
+import shopping.domain.ProfanityChecker
 
 @Component
 class PurgoMalumProfanityChecker(

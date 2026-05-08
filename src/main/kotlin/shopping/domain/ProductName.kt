@@ -1,4 +1,4 @@
-package shopping
+package shopping.domain
 
 private val ALLOWED_PATTERN = Regex("^[a-zA-Z0-9가-힣\\s()\\[\\]+\\-&/_]*$")
 

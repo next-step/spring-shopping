@@ -1,4 +1,6 @@
-package shopping
+package shopping.domain
+
+import shopping.api.ProductResponse
 
 class Product(
     val id: Long,

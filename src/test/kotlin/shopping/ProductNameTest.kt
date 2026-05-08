@@ -3,6 +3,7 @@ package shopping
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import shopping.domain.ProductName
 
 class ProductNameTest {
     @Test

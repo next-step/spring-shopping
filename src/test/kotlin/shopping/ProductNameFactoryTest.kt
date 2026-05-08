@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.web.client.RestTemplate
+import shopping.domain.ProductNameFactory
+import shopping.infra.PurgoMalumProfanityChecker
 
 class ProductNameFactoryTest {
     private val restTemplate = RestTemplate()

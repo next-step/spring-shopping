@@ -1,4 +1,4 @@
-package shopping
+package shopping.domain
 
 import org.springframework.stereotype.Component
 

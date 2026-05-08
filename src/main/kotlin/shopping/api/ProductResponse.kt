@@ -1,4 +1,4 @@
-package shopping
+package shopping.api
 
 data class ProductResponse(
     val id: Long,

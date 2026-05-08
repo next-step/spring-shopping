@@ -1,6 +1,8 @@
-package shopping
+package shopping.api
 
 import org.springframework.stereotype.Service
+import shopping.domain.Product
+import shopping.domain.ProductNameFactory
 import java.util.concurrent.atomic.AtomicLong
 
 @Service
