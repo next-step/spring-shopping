@@ -36,4 +36,8 @@ class ProductService(
     fun getSingleProduct(id: Long): ProductResponse {
         return products[id]?.toResponse() ?: throw ProductNotFoundException(id)
     }
+
+    fun deleteProduct(id: Long) {
+        products.remove(id)
+    }
 }

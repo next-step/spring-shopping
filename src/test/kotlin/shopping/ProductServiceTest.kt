@@ -95,5 +95,15 @@ class ProductServiceTest {
 
     @Test
     fun `상품이 삭제되어야 한다`() {
+        // given
+        every { productNameFactory.create(any()) } returns ProductName("아이스 카페 아메리카노 T")
+        val addProductResponse = productService.addProduct(productRequest)
+
+        // when
+        productService.deleteProduct(addProductResponse.id)
+
+        // then
+        shouldThrow<ProductNotFoundException> { productService.getSingleProduct(addProductResponse.id) }
+
     }
 }
