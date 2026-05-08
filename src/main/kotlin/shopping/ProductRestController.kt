@@ -21,9 +21,9 @@ class ProductRestController(
     }
 
     @PostMapping("/api/product")
-    fun addProducts(@RequestBody @Valid request: ProductRequest): ResponseEntity<Unit> {
+    fun addProducts(@RequestBody @Valid request: ProductRequest): ResponseEntity<ProductResponse> {
         val response = productService.addProduct(request)
-        return ResponseEntity.created(URI.create("/api/products/${response.id}")).build()
+        return ResponseEntity.created(URI.create("/api/products/${response.id}")).body(response)
     }
 
     @PutMapping("/api/product/{id}")
