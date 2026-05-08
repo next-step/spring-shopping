@@ -12,10 +12,10 @@ import shopping.NoBadWord
 @Table(name = "products")
 class Product(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
     var name: String,
     var price: Int,
-    var imageUrl: String
+    var imageUrl: String,
+    val id: Long = 0L,
 
 )
 
