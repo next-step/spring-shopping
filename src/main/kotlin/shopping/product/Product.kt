@@ -5,11 +5,17 @@ import jakarta.validation.constraints.Email
 
 
 class Product(
-    var id: Int,
-    val name: String,
-    val price: Int,
-    val imageUrl: String
+    var id: Long,
+    var name: String,
+    var price: Int,
+    var imageUrl: String
 ) {
+    fun update(request: ProductRequest) {
+        name = request.name
+        price = request.price
+        imageUrl = request.imageUrl
+    }
+
     constructor(
         name: String,
         price: Int,

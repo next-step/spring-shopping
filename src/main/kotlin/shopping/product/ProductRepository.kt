@@ -1,10 +1,10 @@
 package shopping.product
 
-import kotlinx.atomicfu.atomic
+import java.util.concurrent.atomic.AtomicLong
 
 
 class ProductRepository {
-    private val idPool = atomic(0)
+    private val idPool = AtomicLong(0)
     private val products: Map<Long, Product> = mutableMapOf()
     fun create(
         name: String,
