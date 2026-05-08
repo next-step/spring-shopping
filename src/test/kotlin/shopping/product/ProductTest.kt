@@ -15,6 +15,7 @@ class ProductTest :
                             name = "아이스 아메리카노",
                             price = 4500,
                             imageUrl = "https://example.com/image.jpg",
+                            profanities = { false }
                         )
                     product.name shouldBe "아이스 아메리카노"
                     product.price shouldBe 4500
@@ -28,6 +29,7 @@ class ProductTest :
                             name = "a".repeat(16),
                             price = 4500,
                             imageUrl = "https://example.com/image.jpg",
+                            profanities = { false }
                         )
                     }
                 }
@@ -40,6 +42,7 @@ class ProductTest :
                             name = "아이스 아메리카노$",
                             price = 4500,
                             imageUrl = "https://example.com/image.jpg",
+                            profanities = { false }
                         )
                     }
                 }
@@ -52,6 +55,7 @@ class ProductTest :
                             name = "아이스 아메리카노",
                             price = 4500,
                             imageUrl = "example.com/image.jpg",
+                            profanities = { true }
                         )
                     }
                 }
