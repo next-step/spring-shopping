@@ -7,6 +7,5 @@ import org.springframework.stereotype.Service
  */
 @Service
 class FakeProfanities : Profanities {
-
     override fun contains(text: String): Boolean = false
 }

@@ -1,15 +1,18 @@
 package shopping.product
 
 import org.springframework.stereotype.Service
+import shopping.profanity.Profanities
 
 @Service
 class ProductService(
     private val productRepository: ProductRepository,
+    private val profanities: Profanities,
 ) {
     fun getProduct(id: Long): ProductResponse = ProductResponse.of(productRepository.getOrThrow(id))
 
     fun addProduct(request: ProductRequest): ProductResponse {
-        val product = productRepository.save(request)
+        val product = Product.of(request, profanities)
+        productRepository.save(product)
         return ProductResponse.of(product)
     }
 
@@ -17,10 +20,13 @@ class ProductService(
         id: Long,
         request: ProductRequest,
     ) {
-        productRepository.update(id, request)
+        val product = productRepository.getOrThrow(id)
+        product.update(request, profanities)
+        productRepository.save(product)
     }
 
     fun deleteProduct(id: Long) {
-        productRepository.delete(id)
+        val product = productRepository.getOrThrow(id)
+        productRepository.delete(product)
     }
 }

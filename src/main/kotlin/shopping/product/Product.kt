@@ -1,24 +1,42 @@
 package shopping.product
 
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Transient
 import shopping.profanity.Profanities
 
 private val NAME_PATTERN = Regex("[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ ()\\[\\]+\\-&/_]*")
 private val URL_PATTERN = Regex("https?://[\\w\\-._~:/?#\\[\\]@!$&'()*+,;=%]+")
 
+@Entity
 class Product(
     var name: String,
     var price: Int,
     var imageUrl: String,
+    @Transient
     val profanities: Profanities,
-    val id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 ) {
-    fun update(request: ProductRequest) {
+    fun update(
+        request: ProductRequest,
+        profanities: Profanities,
+    ) {
         name = request.name
         price = request.price
         imageUrl = request.imageUrl
+
+        checkConstraints(profanities)
     }
 
     init {
+        checkConstraints(profanities)
+    }
+
+    private fun checkConstraints(profanities: Profanities) {
         require(name.length <= 15) {
             "이름은 15자 이내로 입력하십시오."
         }
@@ -35,12 +53,10 @@ class Product(
 
     companion object {
         fun of(
-            id: Long,
             request: ProductRequest,
             profanities: Profanities,
         ): Product =
             Product(
-                id = id,
                 name = request.name,
                 price = request.price,
                 imageUrl = request.imageUrl,

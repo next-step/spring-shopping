@@ -41,6 +41,38 @@ class ProductTest :
                 }
             }
         }
+
+        Given("상품을 수정할 때") {
+            val product = createProduct()
+            When("이름이 15자 초과하여 입력하면") {
+                Then("상품이 정상 수정되지 않는다.") {
+                    shouldThrow<IllegalArgumentException> {
+                        product.update(
+                            createProductRequest(
+                                name = "a".repeat(16),
+                            ),
+                            { false },
+                        )
+                    }
+                }
+            }
+
+            When("이름에 허용되지 않는 특수 문자를 포함하여 입력하면") {
+                Then("상품이 정상 수정되지 않는다.") {
+                    shouldThrow<IllegalArgumentException> {
+                        createProduct(name = "아이스 아메리카노$")
+                    }
+                }
+            }
+
+            When("이름에 비속어가 포함되어 있으면") {
+                Then("상품이 정상 수정되지 않는다.") {
+                    shouldThrow<IllegalArgumentException> {
+                        createProduct(profanities = { true })
+                    }
+                }
+            }
+        }
     })
 
 private fun createProduct(
@@ -54,4 +86,15 @@ private fun createProduct(
         price = price,
         imageUrl = imageUrl,
         profanities = profanities,
+    )
+
+private fun createProductRequest(
+    name: String = "아이스 아메리카노",
+    price: Int = 4500,
+    imageUrl: String = "https://example.com/image.jpg",
+): ProductRequest =
+    ProductRequest(
+        name = name,
+        price = price,
+        imageUrl = imageUrl,
     )
