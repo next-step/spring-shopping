@@ -6,11 +6,18 @@ private val NAME_PATTERN = Regex("[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ ()\\[\\]+\\-&/
 private val URL_PATTERN = Regex("https?://[\\w\\-._~:/?#\\[\\]@!$&'()*+,;=%]+")
 
 class Product(
-    val name: String,
-    val price: Int,
-    val imageUrl: String,
-    val profanities: Profanities
+    var name: String,
+    var price: Int,
+    var imageUrl: String,
+    val profanities: Profanities,
+    val id: Long = 0,
 ) {
+    fun update(request: ProductRequest) {
+        name = request.name
+        price = request.price
+        imageUrl = request.imageUrl
+    }
+
     init {
         require(name.length <= 15) {
             "이름은 15자 이내로 입력하십시오."
@@ -24,6 +31,20 @@ class Product(
         require(imageUrl.matches(URL_PATTERN)) {
             "이미지URL이 올바른 URL 형식이 아닙니다"
         }
+    }
 
+    companion object {
+        fun of(
+            id: Long,
+            request: ProductRequest,
+            profanities: Profanities,
+        ): Product =
+            Product(
+                id = id,
+                name = request.name,
+                price = request.price,
+                imageUrl = request.imageUrl,
+                profanities = profanities,
+            )
     }
 }
