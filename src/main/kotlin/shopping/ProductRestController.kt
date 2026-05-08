@@ -1,5 +1,6 @@
 package shopping
 
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +18,7 @@ class ProductRestController(
     }
 
     @PostMapping("/api/products")
-    fun addProducts(@RequestBody request: ProductRequest): ResponseEntity<Unit> {
+    fun addProducts(@RequestBody @Valid request: ProductRequest): ResponseEntity<Unit> {
         val response = productService.addProduct(request)
         return ResponseEntity.created(URI.create("/api/products/${response.id}")).build()
     }

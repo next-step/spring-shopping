@@ -55,7 +55,7 @@ class ProductE2ETest(
     @Test
     fun test2() {
         // given
-        val request = ProductRequest("아이스 카페 아메리카노 T", 4500,
+        val request = ProductRequest("카페 아메리카노 T shit", 4500,
             "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
 
         // when
@@ -64,10 +64,10 @@ class ProductE2ETest(
             .contentType(MediaType.APPLICATION_JSON)
             .body(request)
             .retrieve()
-            .toBodilessEntity()
+            .onStatus({ it.is4xxClientError }) { _, _ -> }
+            .toEntity(String::class.java)
 
-        actual.statusCode shouldBe HttpStatus.CREATED
-        actual.headers.location.toString() shouldContain "/api/products"
+        actual.statusCode shouldBe HttpStatus.BAD_REQUEST
     }
 
     @Test

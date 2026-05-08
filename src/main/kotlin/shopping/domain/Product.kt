@@ -1,5 +1,8 @@
 package shopping.domain
 
+import jakarta.validation.constraints.Size
+import shopping.NoBadWord
+
 class Product(
     val id: Long,
     val name: String,
@@ -10,7 +13,6 @@ class Product(
 
 {
     init {
-        require(name.length <= 15) { "상품 이름은 최대 15자까지입니다." }
         require(isValidName(name)) { "사용할 수 없는 특수문자가 포함되어 있습니다." }
     }
 

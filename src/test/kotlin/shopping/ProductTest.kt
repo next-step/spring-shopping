@@ -27,6 +27,7 @@ class ProductTest {
     fun `특수문자는 일부 이외에는 불가능하다`(param: String) {
         shouldThrow<IllegalArgumentException> { ProductFixture.of(param) }
     }
+
 }
 
 class ProductFixture() {
