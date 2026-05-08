@@ -20,4 +20,8 @@ class ProductService(
         products[id] = product
         return product.toResponse()
     }
+
+    fun getSingleProduct(id: Long): ProductResponse {
+        return products[id]?.toResponse() ?: throw ProductNotFoundException(id)
+    }
 }
