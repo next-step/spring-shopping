@@ -4,29 +4,34 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
-import shopping.api.ProductNotFoundException
-import shopping.api.ProductRequest
-import shopping.api.ProductService
-import shopping.api.UpdateRequest
+import shopping.domain.Product
 import shopping.domain.ProductName
 import shopping.domain.ProductNameFactory
+import shopping.infra.ProductRepository
 
 class ProductServiceTest {
-    private val productRequest = ProductRequest(
-        name = "아이스 카페 아메리카노 T",
-        price = 4500,
-        imageUrl = "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg",
-    )
+    private val productRequest =
+        ProductRequest(
+            name = "아이스 카페 아메리카노 T",
+            price = 4500,
+            imageUrl = "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg",
+        )
+
+    private val productName = ProductName("아이스 카페 아메리카노 T")
+    private val savedProduct = Product(1L, productName, 4500, productRequest.imageUrl)
 
     private val productNameFactory = mockk<ProductNameFactory>()
-    private val productService = ProductService(productNameFactory)
+    private val productRepository = mockk<ProductRepository>()
+    private val productService = ProductService(productNameFactory, productRepository)
 
     @Test
     fun `상품이 추가되어야 한다`() {
         // given
-        every { productNameFactory.create(any()) } returns ProductName("아이스 카페 아메리카노 T")
+        every { productNameFactory.create(any()) } returns productName
+        every { productRepository.save(any()) } returns savedProduct
 
         // when
         val result = productService.addProduct(productRequest)
@@ -39,8 +44,7 @@ class ProductServiceTest {
     @Test
     fun `상품이 조회되어야 한다`() {
         // given
-        every { productNameFactory.create(any()) } returns ProductName("아이스 카페 아메리카노 T")
-        productService.addProduct(productRequest)
+        every { productRepository.findAll() } returns listOf(savedProduct)
 
         // when
         val result = productService.getProducts()
@@ -54,19 +58,21 @@ class ProductServiceTest {
     @Test
     fun `상품 1개만 조회한다`() {
         // given
-        every { productNameFactory.create(any()) } returns ProductName("아이스 카페 아메리카노 T")
-        val addProductResponse = productService.addProduct(productRequest)
+        every { productRepository.findById(1L) } returns savedProduct
 
         // when
-        val result = productService.getSingleProduct(addProductResponse.id)
+        val result = productService.getSingleProduct(1L)
 
         // then
-        result.id shouldBe addProductResponse.id
+        result.id shouldBe 1L
         result.name shouldBe "아이스 카페 아메리카노 T"
     }
 
     @Test
     fun `상품 조회 실패시 에러 발생`() {
+        // given
+        every { productRepository.findById(any()) } returns null
+
         // then
         shouldThrow<ProductNotFoundException> { productService.getSingleProduct(1) }
     }
@@ -74,16 +80,17 @@ class ProductServiceTest {
     @Test
     fun `상품이 수정되어야 한다`() {
         // given
-        every { productNameFactory.create(any()) } returns ProductName("아이스 카페 아메리카노 T")
-        val addProductResponse = productService.addProduct(productRequest)
-
+        every { productRepository.findById(1L) } returns savedProduct
         every { productNameFactory.create(any()) } returns ProductName("콜드브루")
-        val updateRequest = UpdateRequest(
-            id = addProductResponse.id,
-            name = "콜드브루",
-            price = 5000,
-            imageUrl = productRequest.imageUrl,
-        )
+        justRun { productRepository.update(any()) }
+
+        val updateRequest =
+            UpdateRequest(
+                id = 1L,
+                name = "콜드브루",
+                price = 5000,
+                imageUrl = productRequest.imageUrl,
+            )
 
         // when
         val result = productService.updateProduct(updateRequest)
@@ -96,14 +103,14 @@ class ProductServiceTest {
     @Test
     fun `상품이 삭제되어야 한다`() {
         // given
-        every { productNameFactory.create(any()) } returns ProductName("아이스 카페 아메리카노 T")
-        val addProductResponse = productService.addProduct(productRequest)
+        every { productRepository.findById(1L) } returns savedProduct
+        justRun { productRepository.delete(1L) }
 
         // when
-        productService.deleteProduct(addProductResponse.id)
+        productService.deleteProduct(1L)
 
         // then
-        shouldThrow<ProductNotFoundException> { productService.getSingleProduct(addProductResponse.id) }
-
+        every { productRepository.findById(1L) } returns null
+        shouldThrow<ProductNotFoundException> { productService.getSingleProduct(1L) }
     }
 }

@@ -3,41 +3,38 @@ package shopping.api
 import org.springframework.stereotype.Service
 import shopping.domain.Product
 import shopping.domain.ProductNameFactory
-import java.util.concurrent.atomic.AtomicLong
+import shopping.infra.ProductRepository
 
 @Service
 class ProductService(
     private val productNameFactory: ProductNameFactory,
+    private val productRepository: ProductRepository,
 ) {
-    private val ids: AtomicLong = AtomicLong(0)
-    private val products: MutableMap<Long, Product> = mutableMapOf()
-
-    fun getProducts(): List<ProductResponse> = products.values.map { it.toResponse() }
+    fun getProducts(): List<ProductResponse> = productRepository.findAll().map { it.toResponse() }
 
     fun addProduct(request: ProductRequest): ProductResponse {
-        val id = ids.incrementAndGet()
-        val product = Product(id, productNameFactory.create(request.name), request.price, request.imageUrl)
-        products[id] = product
-        return product.toResponse()
+        val product = Product(0, productNameFactory.create(request.name), request.price, request.imageUrl)
+        return productRepository.save(product).toResponse()
     }
 
     fun updateProduct(request: UpdateRequest): ProductResponse {
         getSingleProduct(request.id)
-        val updated = Product(
-            id = request.id,
-            name = productNameFactory.create(request.name),
-            price = request.price,
-            imageUrl = request.imageUrl,
-        )
-        products[updated.id] = updated
+        val updated =
+            Product(
+                id = request.id,
+                name = productNameFactory.create(request.name),
+                price = request.price,
+                imageUrl = request.imageUrl,
+            )
+        productRepository.update(updated)
         return updated.toResponse()
     }
 
     fun getSingleProduct(id: Long): ProductResponse {
-        return products[id]?.toResponse() ?: throw ProductNotFoundException(id)
+        return productRepository.findById(id)?.toResponse() ?: throw ProductNotFoundException(id)
     }
 
     fun deleteProduct(id: Long) {
-        products.remove(id)
+        productRepository.delete(id)
     }
 }
