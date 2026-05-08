@@ -17,9 +17,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.web.client.RestClient
 import org.springframework.web.client.body
 import org.springframework.web.client.toEntity
-import shopping.api.ProductRequest
-import shopping.api.ProductResponse
-import shopping.api.ProductService
 import kotlin.test.Test
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
