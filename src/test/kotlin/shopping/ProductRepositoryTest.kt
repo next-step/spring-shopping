@@ -31,6 +31,12 @@ class ProductRepositoryTest {
 
     @Test
     fun `상품을 추가하면 저장한다`() {
+        // when
+        val result = productRepository.saveProduct(product)
+
+        // then
+        result.name.name shouldBe "아이스 카페 아메리카노 T"
+        result.price shouldBe 4500
     }
 
     @Test
