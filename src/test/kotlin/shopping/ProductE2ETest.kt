@@ -38,11 +38,12 @@ open class ProductE2ETest(
     @Test
     open fun test1() {
         // when
-        val actual = client
-            .get()
-            .uri("/api/products")
-            .retrieve()
-            .toEntity<List<ProductResponse>>()
+        val actual =
+            client
+                .get()
+                .uri("/api/products")
+                .retrieve()
+                .toEntity<List<ProductResponse>>()
 
         // then
         actual.statusCode shouldBe HttpStatus.OK
@@ -54,21 +55,23 @@ open class ProductE2ETest(
     @Test
     open fun test2() {
         // given
-        val response = ProductResponse(
-            8146027,
-            "아이스 카페 아메리카노 T",
-            4500,
-            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg",
-        )
+        val response =
+            ProductResponse(
+                8146027,
+                "아이스 카페 아메리카노 T",
+                4500,
+                "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg",
+            )
 
         given(productService.getProducts()).willReturn(listOf(response))
 
         // when
-        val actual = client
-            .get()
-            .uri("/api/products")
-            .retrieve()
-            .toEntity<List<ProductResponse>>()
+        val actual =
+            client
+                .get()
+                .uri("/api/products")
+                .retrieve()
+                .toEntity<List<ProductResponse>>()
 
         // then
         actual.statusCode shouldBe HttpStatus.OK
@@ -81,22 +84,24 @@ open class ProductE2ETest(
     @Test
     open fun test3() {
         // given
-        val request = ProductRequest(
-            "아이스 카페 아메리카노 T",
-            4500,
-            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg",
-        )
+        val request =
+            ProductRequest(
+                "아이스 카페 아메리카노 T",
+                4500,
+                "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg",
+            )
         val response = ProductResponse(1L, request.name, request.price, request.imageUrl)
         given(productService.addProduct(any())).willReturn(response)
 
         // when
-        val actual = client
-            .post()
-            .uri("/api/products")
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(request)
-            .retrieve()
-            .toBodilessEntity()
+        val actual =
+            client
+                .post()
+                .uri("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(request)
+                .retrieve()
+                .toBodilessEntity()
 
         // then
         actual.statusCode shouldBe HttpStatus.CREATED

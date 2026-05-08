@@ -24,5 +24,4 @@ class ProductNameTest {
     fun `상품이름에 지정된 특수문자 외에는 사용이 불가하다`() {
         assertThrows<IllegalArgumentException> { ProductName("Genesis80![GV)") }
     }
-
 }
