@@ -21,6 +21,18 @@ class ProductService(
         return product.toResponse()
     }
 
+    fun updateProduct(request: UpdateRequest): ProductResponse {
+        getSingleProduct(request.id)
+        val updated = Product(
+            id = request.id,
+            name = productNameFactory.create(request.name),
+            price = request.price,
+            imageUrl = request.imageUrl,
+        )
+        products[updated.id] = updated
+        return updated.toResponse()
+    }
+
     fun getSingleProduct(id: Long): ProductResponse {
         return products[id]?.toResponse() ?: throw ProductNotFoundException(id)
     }
