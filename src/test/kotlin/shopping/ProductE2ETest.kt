@@ -20,13 +20,10 @@ import org.springframework.web.client.toEntity
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext
 class ProductE2ETest(
     @LocalServerPort private val port: Int,
     private val builder: RestClient.Builder
 ) {
-//    @MockitoBean
-//    private lateinit var productService: ProductService
     private lateinit var client: RestClient
 
     @BeforeEach
@@ -37,7 +34,7 @@ class ProductE2ETest(
     }
 
     @Test
-    fun test1() {
+    fun `Product전체 조회`() {
         // when
         val actual = client.get()
             .uri("/api/products")
@@ -53,14 +50,14 @@ class ProductE2ETest(
     }
 
     @Test
-    fun test2() {
+    fun `Product추가 실패`() {
         // given
         val request = ProductRequest("카페 아메리카노 T shit", 4500,
             "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
 
         // when
         val actual = client.post()
-            .uri("/api/products")
+            .uri("/api/product")
             .contentType(MediaType.APPLICATION_JSON)
             .body(request)
             .retrieve()
@@ -71,13 +68,13 @@ class ProductE2ETest(
     }
 
     @Test
-    fun test3() {
+    fun `Product 추가 후 조회`() {
         // given
         val request = ProductRequest("아이스 카페 아메리카노 T", 4500,
             "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
 
         client.post()
-            .uri("/api/products")
+            .uri("/api/product")
             .contentType(MediaType.APPLICATION_JSON)
             .body(request)
             .retrieve()
@@ -100,5 +97,63 @@ class ProductE2ETest(
         response shouldContain body
     }
 
+    @Test
+    fun `Product 추가 후 수정`() {
+        // given
+        val request = ProductRequest("아이스 카페 아메리카노 T", 4500,
+            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
+
+        client.post()
+            .uri("/api/product")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .toBodilessEntity()
+
+        val body = ProductResponse(1, "아이스 카페 아메리카노 T", 4500,
+            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
+
+        val actual = client.put()
+            .uri("/api/product/1")
+            .body(ProductRequest("아이스 카페 아메리카노 T2", 4500,
+                "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"))
+            .retrieve()
+            .toEntity<ProductResponse>()
+
+        // then
+        actual.statusCode shouldBe HttpStatus.OK
+
+        val response = actual.body
+        response.shouldNotBeNull()
+        response.id shouldBe 1
+        response.name shouldBe "아이스 카페 아메리카노 T2"
+        response.price shouldBe 4500
+
+    }
+
+    @Test
+    fun `Product 추가 후 삭제`() {
+        // given
+        val request = ProductRequest("아이스 카페 아메리카노 T", 4500,
+            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
+
+        client.post()
+            .uri("/api/product")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .toBodilessEntity()
+
+        val body = ProductResponse(1, "아이스 카페 아메리카노 T", 4500,
+            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg")
+
+        val actual = client.delete()
+            .uri("/api/product/1")
+            .retrieve()
+            .toBodilessEntity()
+
+        // then
+        actual.statusCode shouldBe HttpStatus.NO_CONTENT
+    }
 
 }

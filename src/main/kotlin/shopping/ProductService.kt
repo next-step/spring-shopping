@@ -20,4 +20,15 @@ class ProductService {
             .also { products[id] = it }
             .let(::ProductResponse)
     }
+
+    fun update(id: Long, request: ProductRequest): ProductResponse {
+        val product = Product(id, request.name, request.price, request.imageUrl)
+        products[id] = product
+
+        return ProductResponse(product)
+    }
+
+    fun delete(id: Long) {
+        products.remove(id)
+    }
 }
