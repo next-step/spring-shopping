@@ -1,4 +1,4 @@
-package shopping
+package shopping.infra
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.jdbc.core.JdbcTemplate
 import shopping.domain.Product
 import shopping.domain.ProductName
+import shopping.infra.ProductRepository
 
 @JdbcTest
 class ProductRepositoryTest {

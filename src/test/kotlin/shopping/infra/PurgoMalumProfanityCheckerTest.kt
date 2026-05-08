@@ -1,4 +1,4 @@
-package shopping
+package shopping.infra
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.containsString

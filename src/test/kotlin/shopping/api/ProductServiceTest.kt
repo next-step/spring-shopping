@@ -1,4 +1,4 @@
-package shopping
+package shopping.api
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldHaveSize

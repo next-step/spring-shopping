@@ -1,4 +1,4 @@
-package shopping
+package shopping.infra
 
 import org.springframework.jdbc.core.JdbcTemplate
 import shopping.domain.Product

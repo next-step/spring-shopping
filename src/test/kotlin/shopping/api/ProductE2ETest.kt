@@ -1,4 +1,4 @@
-package shopping
+package shopping.api
 
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldHaveSize
