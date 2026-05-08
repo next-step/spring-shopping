@@ -1,7 +1,9 @@
 package shopping
 
+import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 
+@Component
 class PurgoMalumProfanityChecker(
     private val restTemplate: RestTemplate,
 ) : ProfanityChecker {

@@ -1,5 +1,8 @@
 package shopping
 
+import org.springframework.stereotype.Component
+
+@Component
 class ProductNameFactory(
     private val profanityChecker: ProfanityChecker,
 ) {
