@@ -34,6 +34,8 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:${kotestVersion}")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.3.0")
     testImplementation("io.kotest:kotest-framework-datatest:${kotestVersion}")
+    testImplementation("io.mockk:mockk:1.13.17")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

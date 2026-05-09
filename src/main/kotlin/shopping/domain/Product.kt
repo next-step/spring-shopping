@@ -1,9 +1,10 @@
 package shopping.domain
 
 class Product (
-    private val name: String,
-    private val price: Int,
-    private val imageUrl: String,
+    val name: String,
+    val price: Int,
+    val imageUrl: String,
+    val id: Long,
 ) {
     init {
         require(name.length <= MAX_NAME_LENGTH) {

@@ -4,6 +4,7 @@ import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.datatest.withData
+import shopping.dto.ProductFixture
 
 open class ProductTest : FreeSpec({
     "상품 이름은 15자를 초과할 수 없다" - {
@@ -36,7 +37,3 @@ open class ProductTest : FreeSpec({
         }
     }
 })
-
-object ProductFixture {
-    fun of(name: String): Product = Product(name, 1000, "https://image.url")
-}
