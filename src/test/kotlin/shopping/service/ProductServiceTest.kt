@@ -73,7 +73,7 @@ class ProductServiceTest : BehaviorSpec({
         `when`("존재하지 않는 id가 주어졌을 때") {
             then("예외를 던진다") {
                 // when
-                shouldThrow<IllegalArgumentException> {
+                shouldThrow<NoSuchElementException> {
                     ProductService(repository).update(
                         1, ProductRequest("아메리카노", 1500, "test.com")
                     )

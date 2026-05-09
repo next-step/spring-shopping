@@ -1,9 +1,11 @@
 package shopping.service
 
+import org.springframework.stereotype.Service
 import shopping.domain.Product
 import shopping.dto.ProductRequest
 import java.util.concurrent.atomic.AtomicLong
 
+@Service
 class ProductService(
     private val repository: MutableMap<Long, Product>) {
     private val idGenerator = AtomicLong(0)
@@ -32,5 +34,5 @@ class ProductService(
     }
 
     private fun findProduct(id: Long): Product =
-        repository[id] ?: throw IllegalArgumentException("상품(id=$id)이 존재하지 않습니다.")
+        repository[id] ?: throw NoSuchElementException("상품(id=$id)이 존재하지 않습니다.")
 }
