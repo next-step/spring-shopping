@@ -1,10 +1,16 @@
 package shopping.domain
 
+import jakarta.persistence.*
+
+@Entity
+@Table(name = "product")
 class Product (
     val name: String,
     val price: Int,
     val imageUrl: String,
-    val id: Long,
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L
 ) {
     init {
         require(name.length <= MAX_NAME_LENGTH) {
