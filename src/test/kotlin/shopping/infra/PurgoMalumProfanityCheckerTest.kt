@@ -27,15 +27,15 @@ class PurgoMalumProfanityCheckerTest {
             .expect(requestTo(containsString("containsprofanity")))
             .andRespond(withSuccess("true", MediaType.TEXT_PLAIN))
 
-        assertThat(checker.containsProfanity("ass")).isFalse()
+        assertThat(checker.containsProfanity("ass")).isTrue()
     }
 
     @Test
-    fun `비속어가 없는 텍스트는 true를 반환한다`() {
+    fun `비속어가 없는 텍스트는 false를 반환한다`() {
         mockServer
             .expect(requestTo(containsString("containsprofanity")))
             .andRespond(withSuccess("false", MediaType.TEXT_PLAIN))
 
-        assertThat(checker.containsProfanity("goood")).isTrue()
+        assertThat(checker.containsProfanity("goood")).isFalse()
     }
 }

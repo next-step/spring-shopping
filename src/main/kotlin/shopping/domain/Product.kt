@@ -1,7 +1,5 @@
 package shopping.domain
 
-import shopping.api.ProductResponse
-
 class Product(
     val id: Long,
     val name: ProductName,
@@ -13,6 +11,4 @@ class Product(
             "[ERROR] imageUrl must start with http:// or https://"
         }
     }
-
-    fun toResponse() = ProductResponse(id, name.name, price, imageUrl)
 }
